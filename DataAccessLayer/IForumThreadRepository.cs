@@ -12,7 +12,7 @@ namespace AvaNet.DataAccessLayer
 
         IEnumerable<ForumThread> GetAll();
 
-        ForumThread Find(int id);
+        ForumThread Find(int id, bool eager);
 
         void Remove(int id);
 

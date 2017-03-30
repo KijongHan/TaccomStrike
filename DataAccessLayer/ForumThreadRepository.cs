@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AvaNet.Models;
 using AvaNet.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace AvaNet.DataAccessLayer
 {
@@ -22,9 +23,21 @@ namespace AvaNet.DataAccessLayer
             context.SaveChanges();
         }
 
-        public ForumThread Find(int id)
+        public ForumThread Find(int id, bool eager)
         {
-            return context.ForumThreads.FirstOrDefault<ForumThread>(t => t.ForumThreadID == id);
+            if (eager)
+            {
+                ForumThread forumThread = context.ForumThreads
+                    .Include(t => t.ForumComments).ThenInclude(c => c.ApplicationUser)
+                    .Include(t => t.ForumComments).ThenInclude(c => c.ForumLikes)
+                    .Include(t => t.ForumTopic)
+                    .Include(t => t.ForumLikes)
+                    .Include(t => t.ApplicationUser)
+                    .FirstOrDefault(t => t.ForumThreadID == id);
+                return forumThread;
+            }
+
+            return context.ForumThreads.FirstOrDefault(t => t.ForumThreadID == id);
         }
 
         public IEnumerable<ForumThread> GetAll()
