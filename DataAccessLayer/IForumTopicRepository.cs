@@ -12,7 +12,7 @@ namespace AvaNet.DataAccessLayer
 
         IEnumerable<ForumTopic> GetAll();
 
-        ForumTopic Find(int id);
+        ForumTopic Find(int id, bool eager);
 
         ForumTopic Find(string title);
 

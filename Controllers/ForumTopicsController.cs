@@ -32,7 +32,7 @@ namespace AvaNet.Controllers
         public IActionResult Details(int ID)
         {
             //Retrieve the forum topic corresponding to id
-            ForumTopic forumTopic = forumTopicRepository.Find(ID);
+            ForumTopic forumTopic = forumTopicRepository.Find(ID, true);
             return View(forumTopic);
         }
     }
