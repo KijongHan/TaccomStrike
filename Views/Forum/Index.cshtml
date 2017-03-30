@@ -1,0 +1,13 @@
+﻿@model IEnumerable<AvaNet.Models.ForumTopic>
+
+@{
+    ViewData["Title"] = "About";
+}
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+
+@foreach (var item in Model)
+{
+    @Html.DisplayFor(modelItem => item.Title)
+    @Html.DisplayFor(modelItem => item.Description)
+}
