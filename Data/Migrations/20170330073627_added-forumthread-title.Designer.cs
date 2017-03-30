@@ -8,9 +8,10 @@ using AvaNet.Data;
 namespace AvaNet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170330073627_added-forumthread-title")]
+    partial class addedforumthreadtitle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -285,7 +286,7 @@ namespace AvaNet.Data.Migrations
                         .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("AvaNet.Models.ForumTopic", "ForumTopic")
-                        .WithMany("ForumThreads")
+                        .WithMany()
                         .HasForeignKey("ForumTopicID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

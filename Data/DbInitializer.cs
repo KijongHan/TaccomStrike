@@ -13,7 +13,10 @@ namespace AvaNet.Data
         {
             var topics = new ForumTopic[]
             {
-                new ForumTopic { Title="General Discussion", Description="General discussion topics" }
+                new ForumTopic { Title="General Discussion", Description="Discussion about just general topics that don't belong anywhere else" },
+                new ForumTopic { Title="Ideas and Suggestions", Description="Discussion about game ideas and other suggestions" },
+                new ForumTopic { Title="Gameplay", Description="Discussion about the gameplay" },
+                new ForumTopic { Title="Story", Description="Discussion about the story" }
             };
 
             foreach (ForumTopic topic in forumTopicRepository.GetAll())

@@ -11,6 +11,8 @@ namespace AvaNet.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ForumThreadID { get; set; }
 
+        public string Title { get; set; }
+
         public string Content { get; set; }
         
         public ApplicationUser ApplicationUser { get; set; }
