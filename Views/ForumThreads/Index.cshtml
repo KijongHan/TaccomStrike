@@ -1,0 +1,23 @@
+﻿@model AvaNet.Models.ForumThread
+
+@{
+    ViewData["Title"] = "About";
+}
+
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+
+<div>
+    @Html.DisplayFor(modelItem => Model.ApplicationUser.UserName)
+    @Html.DisplayFor(modelItem => Model.Title)
+    @Html.DisplayFor(modelItem => Model.Content)
+    @Html.DisplayFor(modelItem => Model.ForumThreadCreationTime)
+</div>
+
+<div>
+    @foreach (ForumComment comment in Model.ForumComments)
+    {
+        @Html.DisplayFor(modelItem => comment.ApplicationUser.UserName)
+        @Html.DisplayFor(modelItem => comment.Content)
+    }
+</div>

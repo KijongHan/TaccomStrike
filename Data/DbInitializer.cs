@@ -13,16 +13,13 @@ namespace AvaNet.Data
         {
             var topics = new ForumTopic[]
             {
+                new ForumTopic { Title="Game News and Updates", Description="Discussion about the latest news topics or game updates"},
                 new ForumTopic { Title="General Discussion", Description="Discussion about just general topics that don't belong anywhere else" },
                 new ForumTopic { Title="Ideas and Suggestions", Description="Discussion about game ideas and other suggestions" },
                 new ForumTopic { Title="Gameplay", Description="Discussion about the gameplay" },
                 new ForumTopic { Title="Story", Description="Discussion about the story" }
+                
             };
-
-            foreach (ForumTopic topic in forumTopicRepository.GetAll())
-            {
-                forumTopicRepository.Remove(topic.ForumTopicID);
-            }
 
             foreach (ForumTopic topic in topics)
             {

@@ -50,6 +50,7 @@ namespace AvaNet.Controllers
 
             //Set creator of forum thread
             forumThread.ApplicationUser = user;
+            forumThread.ForumThreadCreationTime = DateTime.UtcNow;
             forumThreadRepository.Add(forumThread);
 
             return RedirectToAction("Index/" + forumThread.ForumThreadID);
