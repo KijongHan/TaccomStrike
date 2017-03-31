@@ -21,3 +21,10 @@
         @Html.DisplayFor(modelItem => comment.Content)
     }
 </div>
+
+<form asp-action="Create" asp-controller="ForumThreads">
+    <div>
+        <input name="Content" />
+    </div>
+    <input type="submit" value="Submit Comment" />
+</form>
