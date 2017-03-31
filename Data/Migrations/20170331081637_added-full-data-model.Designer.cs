@@ -8,8 +8,8 @@ using AvaNet.Data;
 namespace AvaNet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170331045658_added-creation-times")]
-    partial class addedcreationtimes
+    [Migration("20170331081637_added-full-data-model")]
+    partial class addedfulldatamodel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -66,6 +66,24 @@ namespace AvaNet.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("AvaNet.Models.ApplicationUsersFriendship", b =>
+                {
+                    b.Property<int>("ApplicationUsersFriendshipID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserFriendId");
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.HasKey("ApplicationUsersFriendshipID");
+
+                    b.HasIndex("ApplicationUserFriendId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("ApplicationUsersFriendships");
+                });
+
             modelBuilder.Entity("AvaNet.Models.ForumComment", b =>
                 {
                     b.Property<int>("ForumCommentID")
@@ -79,7 +97,7 @@ namespace AvaNet.Data.Migrations
 
                     b.Property<DateTime>("ForumCommentCreationTime");
 
-                    b.Property<int?>("ForumThreadID");
+                    b.Property<int>("ForumThreadID");
 
                     b.HasKey("ForumCommentID");
 
@@ -263,15 +281,27 @@ namespace AvaNet.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("AvaNet.Models.ApplicationUsersFriendship", b =>
+                {
+                    b.HasOne("AvaNet.Models.ApplicationUser", "ApplicationUserFriend")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserFriendId");
+
+                    b.HasOne("AvaNet.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+                });
+
             modelBuilder.Entity("AvaNet.Models.ForumComment", b =>
                 {
                     b.HasOne("AvaNet.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("ForumComments")
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("AvaNet.Models.ForumThread")
+                    b.HasOne("AvaNet.Models.ForumThread", "ForumThread")
                         .WithMany("ForumComments")
-                        .HasForeignKey("ForumThreadID");
+                        .HasForeignKey("ForumThreadID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("AvaNet.Models.ForumLike", b =>

@@ -6,9 +6,10 @@
 <h2>@ViewData["Title"].</h2>
 <h3>@ViewData["Message"]</h3>
 
-@foreach (var item in Model.ForumThreads)
+@foreach (ForumThread item in Model.ForumThreads)
 {
     <div>
         @Html.DisplayFor(modelItem => item.Title)
-    </div>
+        <a asp-action="Index" asp-route-id="@item.ForumThreadID" asp-controller="ForumThreads">Link</a>
+</div>
 }

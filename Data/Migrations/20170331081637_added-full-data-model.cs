@@ -5,10 +5,36 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace AvaNet.Data.Migrations
 {
-    public partial class datamodels : Migration
+    public partial class addedfulldatamodel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ApplicationUsersFriendships",
+                columns: table => new
+                {
+                    ApplicationUsersFriendshipID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ApplicationUserFriendId = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationUsersFriendships", x => x.ApplicationUsersFriendshipID);
+                    table.ForeignKey(
+                        name: "FK_ApplicationUsersFriendships_AspNetUsers_ApplicationUserFriendId",
+                        column: x => x.ApplicationUserFriendId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ApplicationUsersFriendships_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateTable(
                 name: "ForumTopics",
                 columns: table => new
@@ -30,8 +56,10 @@ namespace AvaNet.Data.Migrations
                     ForumThreadID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ApplicationUserId = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true),
-                    ForumTopicID = table.Column<int>(nullable: false)
+                    Content = table.Column<string>(maxLength: 1500, nullable: false),
+                    ForumThreadCreationTime = table.Column<DateTime>(nullable: false),
+                    ForumTopicID = table.Column<int>(nullable: false),
+                    Title = table.Column<string>(maxLength: 300, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,8 +85,9 @@ namespace AvaNet.Data.Migrations
                     ForumCommentID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ApplicationUserId = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true),
-                    ForumThreadID = table.Column<int>(nullable: true)
+                    Content = table.Column<string>(maxLength: 1500, nullable: false),
+                    ForumCommentCreationTime = table.Column<DateTime>(nullable: false),
+                    ForumThreadID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,7 +103,7 @@ namespace AvaNet.Data.Migrations
                         column: x => x.ForumThreadID,
                         principalTable: "ForumThreads",
                         principalColumn: "ForumThreadID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,6 +139,16 @@ namespace AvaNet.Data.Migrations
                         principalColumn: "ForumThreadID",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationUsersFriendships_ApplicationUserFriendId",
+                table: "ApplicationUsersFriendships",
+                column: "ApplicationUserFriendId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationUsersFriendships_ApplicationUserId",
+                table: "ApplicationUsersFriendships",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ForumComments_ApplicationUserId",
@@ -149,6 +188,9 @@ namespace AvaNet.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ApplicationUsersFriendships");
+
             migrationBuilder.DropTable(
                 name: "ForumLikes");
 

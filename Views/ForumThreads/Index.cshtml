@@ -22,9 +22,10 @@
     }
 </div>
 
-<form asp-action="Create" asp-controller="ForumThreads">
+<form asp-action="Create" asp-controller="ForumComments">
     <div>
         <input name="Content" />
+        <input type="hidden" name="ForumThreadID" value="@Model.ForumThreadID"/>
     </div>
     <input type="submit" value="Submit Comment" />
 </form>

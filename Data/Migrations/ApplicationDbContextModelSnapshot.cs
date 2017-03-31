@@ -96,7 +96,7 @@ namespace AvaNet.Data.Migrations
 
                     b.Property<DateTime>("ForumCommentCreationTime");
 
-                    b.Property<int?>("ForumThreadID");
+                    b.Property<int>("ForumThreadID");
 
                     b.HasKey("ForumCommentID");
 
@@ -297,9 +297,10 @@ namespace AvaNet.Data.Migrations
                         .WithMany("ForumComments")
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("AvaNet.Models.ForumThread")
+                    b.HasOne("AvaNet.Models.ForumThread", "ForumThread")
                         .WithMany("ForumComments")
-                        .HasForeignKey("ForumThreadID");
+                        .HasForeignKey("ForumThreadID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("AvaNet.Models.ForumLike", b =>
