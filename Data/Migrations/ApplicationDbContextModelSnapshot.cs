@@ -65,6 +65,24 @@ namespace AvaNet.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("AvaNet.Models.ApplicationUsersFriendship", b =>
+                {
+                    b.Property<int>("ApplicationUsersFriendshipID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserFriendId");
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.HasKey("ApplicationUsersFriendshipID");
+
+                    b.HasIndex("ApplicationUserFriendId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("ApplicationUsersFriendships");
+                });
+
             modelBuilder.Entity("AvaNet.Models.ForumComment", b =>
                 {
                     b.Property<int>("ForumCommentID")
@@ -260,6 +278,17 @@ namespace AvaNet.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("AvaNet.Models.ApplicationUsersFriendship", b =>
+                {
+                    b.HasOne("AvaNet.Models.ApplicationUser", "ApplicationUserFriend")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserFriendId");
+
+                    b.HasOne("AvaNet.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("AvaNet.Models.ForumComment", b =>

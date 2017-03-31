@@ -59,6 +59,7 @@ namespace AvaNet
             //Service beans
             services.AddScoped<IForumTopicRepository, ForumTopicRepository>();
             services.AddScoped<IForumThreadRepository, ForumThreadRepository>();
+            services.AddScoped<IForumCommentRepository, ForumCommentRepository>();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();

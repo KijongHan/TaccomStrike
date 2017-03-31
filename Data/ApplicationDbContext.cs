@@ -16,6 +16,7 @@ namespace AvaNet.Data
         }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<ApplicationUsersFriendship> ApplicationUsersFriendships { get; set; }
         public DbSet<ForumComment> ForumComments { get; set; }
         public DbSet<ForumLike> ForumLikes { get; set; }
         public DbSet<ForumThread> ForumThreads { get; set; }

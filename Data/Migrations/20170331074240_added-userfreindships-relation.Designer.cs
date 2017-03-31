@@ -8,8 +8,8 @@ using AvaNet.Data;
 namespace AvaNet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170331054017_Added-user-friendships-relation")]
-    partial class Addeduserfriendshipsrelation
+    [Migration("20170331074240_added-userfreindships-relation")]
+    partial class addeduserfreindshipsrelation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -64,6 +64,24 @@ namespace AvaNet.Data.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("AvaNet.Models.ApplicationUsersFriendship", b =>
+                {
+                    b.Property<int>("ApplicationUsersFriendshipID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserFriendId");
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.HasKey("ApplicationUsersFriendshipID");
+
+                    b.HasIndex("ApplicationUserFriendId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("ApplicationUsersFriendships");
                 });
 
             modelBuilder.Entity("AvaNet.Models.ForumComment", b =>
@@ -261,6 +279,17 @@ namespace AvaNet.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("AvaNet.Models.ApplicationUsersFriendship", b =>
+                {
+                    b.HasOne("AvaNet.Models.ApplicationUser", "ApplicationUserFriend")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserFriendId");
+
+                    b.HasOne("AvaNet.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("AvaNet.Models.ForumComment", b =>

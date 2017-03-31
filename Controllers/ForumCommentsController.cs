@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using AvaNet.Models;
+using Microsoft.AspNetCore.Identity;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,6 +13,13 @@ namespace AvaNet.Controllers
 {
     public class ForumCommentsController : Controller
     {
+
+        private readonly UserManager<ApplicationUser> userManager;
+
+        public ForumCommentsController(UserManager<ApplicationUser> userManager)
+        {
+            this.userManager = userManager;
+        }
 
         // GET: /<controller>/
         public IActionResult Index()
