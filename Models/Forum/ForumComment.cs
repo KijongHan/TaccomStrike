@@ -23,5 +23,6 @@ namespace AvaNet.Models
 
         public ApplicationUser ApplicationUser { get; set; }
 
+        public ICollection<ForumThreadLike> ForumLikes { get; set; }
     }
 }

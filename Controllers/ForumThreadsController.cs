@@ -56,6 +56,7 @@ namespace AvaNet.Controllers
             // Generate the token and send it
             ApplicationUser user = await GetCurrentUserAsync();
             ForumThread forumThread = forumThreadRepository.Find(forumThreadID, true);
+            
             //Check if user hasnt already pressed a like for this, and if it is different from one specified
             foreach (ForumThreadLike forumLike in forumThread.ForumLikes)
             {
