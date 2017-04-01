@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<AvaNet.Models.GameLore>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -92,4 +94,17 @@
             <div class="panelTitle">About this Game</div>
         </div>
     </div>
+</div>
+
+<div class="gapOne"></div>
+
+<div class="row">
+    @foreach (GameLore gameLore in Model)
+    {
+        <div class="col-md-4">
+            <div id="gameLorePanel">
+                <div class="panelTitle">@gameLore.Title</div>
+            </div>
+        </div>
+    }
 </div>

@@ -61,6 +61,7 @@ namespace AvaNet
             services.AddScoped<IForumThreadRepository, ForumThreadRepository>();
             services.AddScoped<IForumCommentRepository, ForumCommentRepository>();
             services.AddScoped<IForumLikeRepository, ForumLikeRepository>();
+            services.AddScoped<IGameLoreRepository, GameLoreRepository>();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -88,7 +89,7 @@ namespace AvaNet
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IForumTopicRepository forumTopicRepository)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IForumTopicRepository forumTopicRepository, IGameLoreRepository gameLoreRepository)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -121,7 +122,7 @@ namespace AvaNet
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            DbInitializer.Initialize(forumTopicRepository);
+            DbInitializer.Initialize(forumTopicRepository, gameLoreRepository);
         }
     }
 }

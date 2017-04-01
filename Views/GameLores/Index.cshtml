@@ -1,0 +1,16 @@
+﻿@model IEnumerable<AvaNet.Models.GameLore>
+
+@{
+    ViewData["Title"] = "About";
+}
+
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+
+@foreach (GameLore item in Model)
+{
+    <div>
+        @Html.DisplayFor(modelItem => item.Title)
+        <a asp-action="Details" asp-route-id="@item.GameLoreID" asp-controller="GameLores">Link</a>
+    </div>
+}

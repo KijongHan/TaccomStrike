@@ -25,6 +25,7 @@ namespace AvaNet.Data
         public DbSet<ForumTopic> ForumTopics { get; set; }
 
         public DbSet<GameUser> GameUsers { get; set; }
+        public DbSet<GameLore> GameLores { get; set; }
              
         protected override void OnModelCreating(ModelBuilder builder)
         {
