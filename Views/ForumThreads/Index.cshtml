@@ -15,7 +15,13 @@
     @Html.DisplayFor(modelItem => Model.ForumLikes.Count)
 </div>
 <div>
-    <a asp-action="Like" asp-route-forumThreadID="@Model.ForumThreadID" asp-route-weight="1">Like</a>
+    <form asp-action="Like">
+        <div>
+            <input type="hidden" name="Weight" value="1" />
+            <input type="hidden" name="ForumThreadID" value="@Model.ForumThreadID" />
+        </div>
+        <input type="submit" value="Like" />
+    </form>
 </div>
 
 <div>

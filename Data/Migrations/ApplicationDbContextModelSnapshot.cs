@@ -104,11 +104,15 @@ namespace AvaNet.Data.Migrations
 
                     b.Property<int>("ForumThreadID");
 
+                    b.Property<int?>("ForumThreadID1");
+
                     b.HasKey("ForumCommentID");
 
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("ForumThreadID");
+
+                    b.HasIndex("ForumThreadID1");
 
                     b.ToTable("ForumComments");
                 });
@@ -154,6 +158,8 @@ namespace AvaNet.Data.Migrations
 
                     b.Property<int>("ForumTopicID");
 
+                    b.Property<int?>("ForumTopicID1");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 300);
@@ -165,6 +171,8 @@ namespace AvaNet.Data.Migrations
                     b.HasIndex("ApplicationUserId1");
 
                     b.HasIndex("ForumTopicID");
+
+                    b.HasIndex("ForumTopicID1");
 
                     b.ToTable("ForumThreads");
                 });
@@ -324,10 +332,14 @@ namespace AvaNet.Data.Migrations
                         .WithMany("ForumComments")
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("AvaNet.Models.ForumThread", "ForumThread")
+                    b.HasOne("AvaNet.Models.ForumThread")
                         .WithMany("ForumComments")
                         .HasForeignKey("ForumThreadID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AvaNet.Models.ForumThread", "ForumThread")
+                        .WithMany()
+                        .HasForeignKey("ForumThreadID1");
                 });
 
             modelBuilder.Entity("AvaNet.Models.ForumLike", b =>
@@ -356,10 +368,14 @@ namespace AvaNet.Data.Migrations
                         .WithMany("ForumThreads")
                         .HasForeignKey("ApplicationUserId1");
 
-                    b.HasOne("AvaNet.Models.ForumTopic", "ForumTopic")
+                    b.HasOne("AvaNet.Models.ForumTopic")
                         .WithMany("ForumThreads")
                         .HasForeignKey("ForumTopicID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AvaNet.Models.ForumTopic", "ForumTopic")
+                        .WithMany()
+                        .HasForeignKey("ForumTopicID1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

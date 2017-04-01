@@ -45,35 +45,34 @@ namespace AvaNet.Controllers
 
         //Method called when the user has presedd a like/dislike/neutral button
         [Authorize]
-        public async Task<IActionResult> Like(int forumThreadID, int weight)
+        [HttpPost]
+        public async Task<IActionResult> Like([Bind("ForumThreadID, Weight")] ForumLike forumLike)
         {
             //Not in the boundary of like weightings
-            if (weight < -1 && weight > 1)
+            if (forumLike.Weight < -1 && forumLike.Weight > 1)
             {
                 return null;
             }
 
             // Generate the token and send it
             ApplicationUser user = await GetCurrentUserAsync();
-            ForumThread forumThread = forumThreadRepository.Find(forumThreadID, true);
+            ForumThread forumThread = forumThreadRepository.Find(forumLike.ForumThreadID, true);
             
             //Check if user hasnt already pressed a like for this, and if it is different from one specified
-            foreach (ForumLike forumLike in forumThread.ForumLikes)
+            foreach (ForumLike fl in forumThread.ForumLikes)
             {
-                if (forumLike.ApplicationUser.Id.Equals(user.Id))
+                if (fl.ApplicationUser.Id.Equals(user.Id))
                 {
-                    if (weight == forumLike.Weight)
+                    if (forumLike.Weight == fl.Weight)
                     {
-                        return RedirectToAction("Index/" + forumThreadID);
+                        return RedirectToAction("Index/" + forumLike.ForumThreadID);
                     }
                 }
             }
 
-            forumLikeRepository.Add
-                ( 
-                    new ForumLike { ForumThreadID=forumThreadID, Weight=weight,ApplicationUser=user }
-                );
-            return RedirectToAction("Index/" + forumThreadID);
+            forumLike.ApplicationUser = user;
+            forumLikeRepository.Add(forumLike);
+            return RedirectToAction("Index/" + forumLike.ForumThreadID);
             
         }
 

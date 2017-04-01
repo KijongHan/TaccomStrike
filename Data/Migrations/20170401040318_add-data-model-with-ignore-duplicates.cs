@@ -71,6 +71,7 @@ namespace AvaNet.Data.Migrations
                     Content = table.Column<string>(maxLength: 1500, nullable: false),
                     ForumThreadCreationTime = table.Column<DateTime>(nullable: false),
                     ForumTopicID = table.Column<int>(nullable: false),
+                    ForumTopicID1 = table.Column<int>(nullable: true),
                     Title = table.Column<string>(maxLength: 300, nullable: false)
                 },
                 constraints: table =>
@@ -94,6 +95,12 @@ namespace AvaNet.Data.Migrations
                         principalTable: "ForumTopics",
                         principalColumn: "ForumTopicID",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ForumThreads_ForumTopics_ForumTopicID1",
+                        column: x => x.ForumTopicID1,
+                        principalTable: "ForumTopics",
+                        principalColumn: "ForumTopicID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -105,7 +112,8 @@ namespace AvaNet.Data.Migrations
                     ApplicationUserId = table.Column<string>(nullable: true),
                     Content = table.Column<string>(maxLength: 1500, nullable: false),
                     ForumCommentCreationTime = table.Column<DateTime>(nullable: false),
-                    ForumThreadID = table.Column<int>(nullable: false)
+                    ForumThreadID = table.Column<int>(nullable: false),
+                    ForumThreadID1 = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -122,6 +130,12 @@ namespace AvaNet.Data.Migrations
                         principalTable: "ForumThreads",
                         principalColumn: "ForumThreadID",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ForumComments_ForumThreads_ForumThreadID1",
+                        column: x => x.ForumThreadID1,
+                        principalTable: "ForumThreads",
+                        principalColumn: "ForumThreadID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -191,6 +205,11 @@ namespace AvaNet.Data.Migrations
                 column: "ForumThreadID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ForumComments_ForumThreadID1",
+                table: "ForumComments",
+                column: "ForumThreadID1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ForumLikes_ApplicationUserId",
                 table: "ForumLikes",
                 column: "ApplicationUserId");
@@ -219,6 +238,11 @@ namespace AvaNet.Data.Migrations
                 name: "IX_ForumThreads_ForumTopicID",
                 table: "ForumThreads",
                 column: "ForumTopicID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumThreads_ForumTopicID1",
+                table: "ForumThreads",
+                column: "ForumTopicID1");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUsers_GameUsers_GameUserID",
