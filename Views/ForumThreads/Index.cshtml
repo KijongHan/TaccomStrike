@@ -17,8 +17,12 @@
 <div>
     @foreach (ForumComment comment in Model.ForumComments)
     {
-        @Html.DisplayFor(modelItem => comment.ApplicationUser.UserName)
-        @Html.DisplayFor(modelItem => comment.Content)
+        <div>
+            @Html.DisplayFor(modelItem => comment.ApplicationUser.UserName)
+            @Html.DisplayFor(modelItem => comment.Content)
+            @Html.DisplayFor(modelItem => comment.ForumLikes.Count)
+            <a asp-action="Like" asp-route-forumThreadID="@Model.ForumThreadID" asp-route-weight="1">Like</a>
+        </div>
     }
 </div>
 

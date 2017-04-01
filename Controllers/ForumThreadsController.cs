@@ -20,12 +20,15 @@ namespace AvaNet.Controllers
 
         private readonly IForumTopicRepository forumTopicRepository;
 
+        private readonly IForumLikeRepository forumLikeRepository;
+
         private readonly UserManager<ApplicationUser> userManager;
 
-        public ForumThreadsController(IForumTopicRepository forumTopicRepository, IForumThreadRepository forumThreadRepository, UserManager<ApplicationUser> userManager)
+        public ForumThreadsController(IForumLikeRepository forumLikeRepository, IForumTopicRepository forumTopicRepository, IForumThreadRepository forumThreadRepository, UserManager<ApplicationUser> userManager)
         {
             this.forumThreadRepository = forumThreadRepository;
             this.forumTopicRepository = forumTopicRepository;
+            this.forumLikeRepository = forumLikeRepository;
             this.userManager = userManager;
         }
 
@@ -38,6 +41,39 @@ namespace AvaNet.Controllers
         public IActionResult Create()
         {
             return View(forumTopicRepository.GetAll());
+        }
+
+        //Method called when the user has presedd a like/dislike/neutral button
+        [Authorize]
+        public async Task<IActionResult> Like(int forumThreadID, int weight)
+        {
+            //Not in the boundary of like weightings
+            if (weight < -1 && weight > 1)
+            {
+                return null;
+            }
+
+            // Generate the token and send it
+            ApplicationUser user = await GetCurrentUserAsync();
+            ForumThread forumThread = forumThreadRepository.Find(forumThreadID, true);
+            //Check if user hasnt already pressed a like for this, and if it is different from one specified
+            foreach (ForumThreadLike forumLike in forumThread.ForumLikes)
+            {
+                if (forumLike.ApplicationUser.Id.Equals(user.Id))
+                {
+                    if (weight == forumLike.Weight)
+                    {
+                        return RedirectToAction("Index/" + forumThreadID);
+                    }
+                }
+            }
+
+            forumLikeRepository.Add
+                ( 
+                    new ForumThreadLike { ForumThreadID=forumThreadID, Weight=weight,ApplicationUser=user }
+                );
+            return RedirectToAction("Index/" + forumThreadID);
+            
         }
 
         [HttpPost]

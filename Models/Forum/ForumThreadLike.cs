@@ -6,18 +6,16 @@ using System.Threading.Tasks;
 
 namespace AvaNet.Models
 {
-    public class ForumLike
+    public class ForumThreadLike
     {
-        public enum LikeWeight
-        {
-            Like, Dislike, Neutral
-        }
-
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ForumLikeID { get; set; }
+        public int ForumThreadLikeID { get; set; }
 
         public int Weight { get; set; }
-        
+
         public ApplicationUser ApplicationUser { get; set; }
+
+        public int ForumThreadID { get; set; }
+        public ForumThread ForumThread { get; set; }
     }
 }

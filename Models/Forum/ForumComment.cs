@@ -20,9 +20,8 @@ namespace AvaNet.Models
         public string Content { get; set; }
 
         public DateTime ForumCommentCreationTime { get; set; }
-        
+
         public ApplicationUser ApplicationUser { get; set; }
 
-        public ICollection<ForumLike> ForumLikes { get; set; }
     }
 }
