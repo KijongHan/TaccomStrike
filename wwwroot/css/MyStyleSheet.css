@@ -1,0 +1,150 @@
+﻿body 
+{
+    position: relative;
+    background-color: black;
+    font-family: 'Orbitron', sans-serif;
+}
+
+body:before 
+{
+    content : "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url("../images/background-image.png");
+    width: 100%;
+    height: 100%;
+    opacity : 0.2;
+    z-index: -1;
+}
+
+#bodyContent 
+{
+    position: relative;
+    z-index: 1;
+    height: 1300px;
+}
+
+.navbar.navbar-inverse 
+{
+    font-size: larger;
+    background-color: rgba(0,0,0,0.9);
+    background-size: 150%;
+
+    -webkit-box-shadow: 0px 1px 3px 0px rgba(206, 255, 251, 0.75);
+    -moz-box-shadow: 0px 1px 3px 0px rgba(206, 255, 251, 0.75);
+    box-shadow: 0px 1px 3px 0px rgba(206, 255, 251, 0.75);
+}
+
+.navbar.navbar-inverse li a 
+{
+    color: rgba(66, 244, 224, 1);
+}
+
+#myCarousel 
+{
+    -webkit-box-shadow: 0px 2px 1px 1px rgba(206, 255, 251, 0.85);
+    -moz-box-shadow: 0px 2px 1px 1px rgba(206, 255, 251, 0.85);
+    box-shadow: 0px 2px 1px 1px rgba(206, 255, 251, 0.85);
+}
+
+#myCarousel, #myCarousel .item, #myCarousel .item img
+{
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 560px;
+    max-height: 560px;
+}
+
+#downloadPanel 
+{
+    max-height: 350px;
+    min-height: 350px;
+}
+
+#downloadPanel:before
+{
+    content : "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity : 0.6;
+    z-index: -1;
+    background-image: url("../images/gamescreenshots/Capture.JPG");
+    background-size: cover;
+
+    -webkit-box-shadow: 0px 0px 0px 2px rgba(255,255,255,1);
+    -moz-box-shadow: 0px 0px 0px 2px rgba(255,255,255,1);
+    box-shadow: 0px 0px 0px 2px rgba(255,255,255,1);
+}
+
+#gameGuidePanel 
+{
+    max-height: 350px;
+    min-height: 350px;
+}
+
+#gameGuidePanel:before
+{
+    content : "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity : 0.6;
+    z-index: -1;
+    background-image: url("../images/gamescreenshots/Capture3.JPG");
+    background-size: cover;
+
+    -webkit-box-shadow: 0px 0px 0px 2px rgba(255,255,255,1);
+    -moz-box-shadow: 0px 0px 0px 2px rgba(255,255,255,1);
+    box-shadow: 0px 0px 0px 2px rgba(255,255,255,1);
+}
+
+.panelTitle 
+{
+    font-size: xx-large;
+    font-weight: 700;
+    color: rgba(219, 252, 250, 1);
+    text-align: center;
+
+    padding-top: 35px;
+    padding-bottom: 20px;
+}
+
+.gapOne 
+{
+    max-height: 100px;
+    min-height: 100px;
+}
+
+#aboutPanel 
+{
+    max-height: 530px;
+    min-height: 530px;
+}
+
+#aboutPanel:before
+{
+    content : "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity : 0.6;
+    z-index: -1;
+    background-image: url("../images/gamescreenshots/Capture2.JPG");
+    background-size: cover;
+
+    -webkit-box-shadow: 0px 0px 0px 2px rgba(255,255,255,1);
+    -moz-box-shadow: 0px 0px 0px 2px rgba(255,255,255,1);
+    box-shadow: 0px 0px 0px 2px rgba(255,255,255,1);
+}
