@@ -8,6 +8,6 @@ namespace AvaNet.DataAccessLayer
 {
     public interface IForumLikeRepository
     {
-        void Add(ForumThreadLike like);
+        void Add(ForumLike like);
     }
 }

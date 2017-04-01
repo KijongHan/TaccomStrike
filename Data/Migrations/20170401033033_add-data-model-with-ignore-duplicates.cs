@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace AvaNet.Data.Migrations
 {
-    public partial class readdeddatamodel : Migration
+    public partial class adddatamodelwithignoreduplicates : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -125,10 +125,10 @@ namespace AvaNet.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ForumThreadLikes",
+                name: "ForumLikes",
                 columns: table => new
                 {
-                    ForumThreadLikeID = table.Column<int>(nullable: false)
+                    ForumLikeID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ApplicationUserId = table.Column<string>(nullable: true),
                     ForumCommentID = table.Column<int>(nullable: true),
@@ -137,21 +137,21 @@ namespace AvaNet.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ForumThreadLikes", x => x.ForumThreadLikeID);
+                    table.PrimaryKey("PK_ForumLikes", x => x.ForumLikeID);
                     table.ForeignKey(
-                        name: "FK_ForumThreadLikes_AspNetUsers_ApplicationUserId",
+                        name: "FK_ForumLikes_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ForumThreadLikes_ForumComments_ForumCommentID",
+                        name: "FK_ForumLikes_ForumComments_ForumCommentID",
                         column: x => x.ForumCommentID,
                         principalTable: "ForumComments",
                         principalColumn: "ForumCommentID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ForumThreadLikes_ForumThreads_ForumThreadID",
+                        name: "FK_ForumLikes_ForumThreads_ForumThreadID",
                         column: x => x.ForumThreadID,
                         principalTable: "ForumThreads",
                         principalColumn: "ForumThreadID",
@@ -191,6 +191,21 @@ namespace AvaNet.Data.Migrations
                 column: "ForumThreadID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ForumLikes_ApplicationUserId",
+                table: "ForumLikes",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumLikes_ForumCommentID",
+                table: "ForumLikes",
+                column: "ForumCommentID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumLikes_ForumThreadID",
+                table: "ForumLikes",
+                column: "ForumThreadID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ForumThreads_ApplicationUserId",
                 table: "ForumThreads",
                 column: "ApplicationUserId");
@@ -204,21 +219,6 @@ namespace AvaNet.Data.Migrations
                 name: "IX_ForumThreads_ForumTopicID",
                 table: "ForumThreads",
                 column: "ForumTopicID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ForumThreadLikes_ApplicationUserId",
-                table: "ForumThreadLikes",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ForumThreadLikes_ForumCommentID",
-                table: "ForumThreadLikes",
-                column: "ForumCommentID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ForumThreadLikes_ForumThreadID",
-                table: "ForumThreadLikes",
-                column: "ForumThreadID");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUsers_GameUsers_GameUserID",
@@ -247,7 +247,7 @@ namespace AvaNet.Data.Migrations
                 name: "ApplicationUsersFriendships");
 
             migrationBuilder.DropTable(
-                name: "ForumThreadLikes");
+                name: "ForumLikes");
 
             migrationBuilder.DropTable(
                 name: "GameUsers");

@@ -8,8 +8,8 @@ using AvaNet.Data;
 namespace AvaNet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170401004517_readded-data-model")]
-    partial class readdeddatamodel
+    [Migration("20170401033033_add-data-model-with-ignore-duplicates")]
+    partial class adddatamodelwithignoreduplicates
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -114,6 +114,30 @@ namespace AvaNet.Data.Migrations
                     b.ToTable("ForumComments");
                 });
 
+            modelBuilder.Entity("AvaNet.Models.ForumLike", b =>
+                {
+                    b.Property<int>("ForumLikeID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<int?>("ForumCommentID");
+
+                    b.Property<int>("ForumThreadID");
+
+                    b.Property<int>("Weight");
+
+                    b.HasKey("ForumLikeID");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ForumCommentID");
+
+                    b.HasIndex("ForumThreadID");
+
+                    b.ToTable("ForumLikes");
+                });
+
             modelBuilder.Entity("AvaNet.Models.ForumThread", b =>
                 {
                     b.Property<int>("ForumThreadID")
@@ -144,30 +168,6 @@ namespace AvaNet.Data.Migrations
                     b.HasIndex("ForumTopicID");
 
                     b.ToTable("ForumThreads");
-                });
-
-            modelBuilder.Entity("AvaNet.Models.ForumThreadLike", b =>
-                {
-                    b.Property<int>("ForumThreadLikeID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ApplicationUserId");
-
-                    b.Property<int?>("ForumCommentID");
-
-                    b.Property<int>("ForumThreadID");
-
-                    b.Property<int>("Weight");
-
-                    b.HasKey("ForumThreadLikeID");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("ForumCommentID");
-
-                    b.HasIndex("ForumThreadID");
-
-                    b.ToTable("ForumThreadLikes");
                 });
 
             modelBuilder.Entity("AvaNet.Models.ForumTopic", b =>
@@ -331,6 +331,22 @@ namespace AvaNet.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("AvaNet.Models.ForumLike", b =>
+                {
+                    b.HasOne("AvaNet.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("AvaNet.Models.ForumComment")
+                        .WithMany("ForumLikes")
+                        .HasForeignKey("ForumCommentID");
+
+                    b.HasOne("AvaNet.Models.ForumThread", "ForumThread")
+                        .WithMany("ForumLikes")
+                        .HasForeignKey("ForumThreadID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("AvaNet.Models.ForumThread", b =>
                 {
                     b.HasOne("AvaNet.Models.ApplicationUser", "ApplicationUser")
@@ -344,22 +360,6 @@ namespace AvaNet.Data.Migrations
                     b.HasOne("AvaNet.Models.ForumTopic", "ForumTopic")
                         .WithMany("ForumThreads")
                         .HasForeignKey("ForumTopicID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("AvaNet.Models.ForumThreadLike", b =>
-                {
-                    b.HasOne("AvaNet.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("AvaNet.Models.ForumComment")
-                        .WithMany("ForumLikes")
-                        .HasForeignKey("ForumCommentID");
-
-                    b.HasOne("AvaNet.Models.ForumThread", "ForumThread")
-                        .WithMany("ForumLikes")
-                        .HasForeignKey("ForumThreadID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

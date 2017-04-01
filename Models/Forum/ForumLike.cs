@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace AvaNet.Models
 {
-    public class ForumThreadLike
+    public class ForumLike
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ForumThreadLikeID { get; set; }
+        public int ForumLikeID { get; set; }
 
         public int Weight { get; set; }
 

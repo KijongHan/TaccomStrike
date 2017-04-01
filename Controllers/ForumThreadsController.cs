@@ -58,7 +58,7 @@ namespace AvaNet.Controllers
             ForumThread forumThread = forumThreadRepository.Find(forumThreadID, true);
             
             //Check if user hasnt already pressed a like for this, and if it is different from one specified
-            foreach (ForumThreadLike forumLike in forumThread.ForumLikes)
+            foreach (ForumLike forumLike in forumThread.ForumLikes)
             {
                 if (forumLike.ApplicationUser.Id.Equals(user.Id))
                 {
@@ -71,7 +71,7 @@ namespace AvaNet.Controllers
 
             forumLikeRepository.Add
                 ( 
-                    new ForumThreadLike { ForumThreadID=forumThreadID, Weight=weight,ApplicationUser=user }
+                    new ForumLike { ForumThreadID=forumThreadID, Weight=weight,ApplicationUser=user }
                 );
             return RedirectToAction("Index/" + forumThreadID);
             

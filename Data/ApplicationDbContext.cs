@@ -19,7 +19,7 @@ namespace AvaNet.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<ApplicationUsersFriendship> ApplicationUsersFriendships { get; set; }
 
-        public DbSet<ForumThreadLike> ForumThreadLikes { get; set; }
+        public DbSet<ForumLike> ForumLikes { get; set; }
         public DbSet<ForumComment> ForumComments { get; set; }
         public DbSet<ForumThread> ForumThreads { get; set; }
         public DbSet<ForumTopic> ForumTopics { get; set; }
@@ -32,7 +32,12 @@ namespace AvaNet.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
-            builder.Entity<ForumThreadLike>()
+            builder.Entity<ForumLike>()
+                .Ignore(t => t.ApplicationUser);
+            builder.Entity<ForumThread>()
+                .Ignore(t => t.ApplicationUser);
+            
+            builder.Entity<ForumLike>()
                 .HasOne(c => c.ApplicationUser)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);

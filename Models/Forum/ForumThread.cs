@@ -29,6 +29,6 @@ namespace AvaNet.Models
 
         public ICollection<ForumComment> ForumComments { get; set; }
 
-        public ICollection<ForumThreadLike> ForumLikes { get; set; }
+        public ICollection<ForumLike> ForumLikes { get; set; }
     }
 }

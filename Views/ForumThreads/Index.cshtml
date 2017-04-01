@@ -12,6 +12,10 @@
     @Html.DisplayFor(modelItem => Model.Title)
     @Html.DisplayFor(modelItem => Model.Content)
     @Html.DisplayFor(modelItem => Model.ForumThreadCreationTime)
+    @Html.DisplayFor(modelItem => Model.ForumLikes.Count)
+</div>
+<div>
+    <a asp-action="Like" asp-route-forumThreadID="@Model.ForumThreadID" asp-route-weight="1">Like</a>
 </div>
 
 <div>

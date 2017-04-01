@@ -17,9 +17,9 @@ namespace AvaNet.DataAccessLayer
             this.context = context;
         }
 
-        public void Add(ForumThreadLike like)
+        public void Add(ForumLike like)
         {
-            context.ForumThreadLikes.Add(like);
+            context.ForumLikes.Add(like);
             context.SaveChanges();
         }
     }
