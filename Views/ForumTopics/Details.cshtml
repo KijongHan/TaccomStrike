@@ -46,6 +46,7 @@
 {
     <div>
         @Html.DisplayFor(modelItem => item.Title)
+        @Html.DisplayFor(modelItem => item.ApplicationUser.GameUserID)
         <a asp-action="Index" asp-route-id="@item.ForumThreadID" asp-controller="ForumThreads">Link</a>
     </div>
 }

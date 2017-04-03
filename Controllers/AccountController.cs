@@ -125,7 +125,7 @@ namespace AvaNet.Controllers
                 if (result.Succeeded)
                 {
                     //User creation successful, add the game user association here
-                    gameUserRepository.Add(new GameUser { GameUserID = model.GameUserID });
+                    gameUserRepository.Add(new GameUser { GameUserID = model.GameUserID, ApplicationUser = user });
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link

@@ -8,7 +8,7 @@
 <h3>@ViewData["Message"]</h3>
 
 <div>
-    @Html.DisplayFor(modelItem => Model.ApplicationUser.UserName)
+    @Html.DisplayFor(modelItem => Model.ApplicationUser.GameUserID)
     @Html.DisplayFor(modelItem => Model.Title)
     @Html.DisplayFor(modelItem => Model.Content)
     @Html.DisplayFor(modelItem => Model.ForumThreadCreationTime)
@@ -23,12 +23,11 @@
         <input type="submit" value="Like" />
     </form>
 </div>
-
 <div>
     @foreach (ForumComment comment in Model.ForumComments)
     {
         <div>
-            @Html.DisplayFor(modelItem => comment.ApplicationUser.UserName)
+            @Html.DisplayFor(modelItem => comment.ApplicationUser.GameUserID)
             @Html.DisplayFor(modelItem => comment.Content)
             @Html.DisplayFor(modelItem => comment.ForumLikes.Count)
             <a asp-action="Like" asp-route-forumThreadID="@Model.ForumThreadID" asp-route-weight="1">Like</a>

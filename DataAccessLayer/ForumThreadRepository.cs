@@ -32,7 +32,7 @@ namespace AvaNet.DataAccessLayer
                     .Include(t => t.ForumComments).ThenInclude(c => c.ForumLikes)
                     .Include(t => t.ForumTopic)
                     .Include(t => t.ForumLikes)
-                    .Include(t => t.ApplicationUser)
+                    .Include(t => t.ApplicationUser).ThenInclude(c => c.GameUser)
                     .FirstOrDefault(t => t.ForumThreadID == id);
                 return forumThread;
             }
@@ -42,7 +42,9 @@ namespace AvaNet.DataAccessLayer
 
         public IEnumerable<ForumThread> GetAll()
         {
-            return context.ForumThreads.ToList();
+            return context.ForumThreads
+                .Include(t => t.ApplicationUser).ThenInclude(c => c.GameUser)
+                .ToList();
         }
 
         public void Remove(int id)
