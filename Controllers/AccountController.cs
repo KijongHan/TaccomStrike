@@ -12,6 +12,7 @@ using AvaNet.Models;
 using AvaNet.Models.AccountViewModels;
 using AvaNet.Services;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using AvaNet.DataAccessLayer;
 
 namespace AvaNet.Controllers
 {
@@ -24,13 +25,18 @@ namespace AvaNet.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
 
+        private readonly IGameUserRepository gameUserRepository;
+
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IGameUserRepository gameUserRepository)
         {
+            this.gameUserRepository = gameUserRepository;
+
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
@@ -106,10 +112,21 @@ namespace AvaNet.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                //Game user repository returns something, means that this game user id tag already exists
+                if (gameUserRepository.Find(model.GameUserID) != null)
+                {
+                    //Ideally want to show all results together, and after all the checks are done. 
+                    AddErrors(IdentityResult.Failed(new IdentityError { Description="This Game User ID already exists" }));
+                    return View(model);
+                }
+
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    //User creation successful, add the game user association here
+                    gameUserRepository.Add(new GameUser { GameUserID = model.GameUserID });
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

@@ -62,6 +62,8 @@ namespace AvaNet
             services.AddScoped<IForumThreadRepository, ForumThreadRepository>();
             services.AddScoped<IForumCommentRepository, ForumCommentRepository>();
             services.AddScoped<IForumLikeRepository, ForumLikeRepository>();
+
+            services.AddScoped<IGameUserRepository, GameUserRepository>();
             services.AddScoped<IGameLoreRepository, GameLoreRepository>();
 
             // Add application services.

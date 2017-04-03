@@ -23,5 +23,10 @@ namespace AvaNet.Models.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Game User ID")]
+        [StringLength(25)]
+        public string GameUserID { get; set; }
     }
 }
