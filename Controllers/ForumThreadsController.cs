@@ -8,6 +8,8 @@ using AvaNet.DataAccessLayer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Encodings.Web;
+using AvaNet.Services;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,12 +26,15 @@ namespace AvaNet.Controllers
 
         private readonly UserManager<ApplicationUser> userManager;
 
-        public ForumThreadsController(IForumLikeRepository forumLikeRepository, IForumTopicRepository forumTopicRepository, IForumThreadRepository forumThreadRepository, UserManager<ApplicationUser> userManager)
+        private readonly HtmlSanitizer htmlSanitizer;
+
+        public ForumThreadsController(HtmlSanitizer htmlSanitizer, IForumLikeRepository forumLikeRepository, IForumTopicRepository forumTopicRepository, IForumThreadRepository forumThreadRepository, UserManager<ApplicationUser> userManager)
         {
             this.forumThreadRepository = forumThreadRepository;
             this.forumTopicRepository = forumTopicRepository;
             this.forumLikeRepository = forumLikeRepository;
             this.userManager = userManager;
+            this.htmlSanitizer = htmlSanitizer;
         }
 
         // GET: /<controller>/
@@ -81,6 +86,11 @@ namespace AvaNet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Title, Content, ForumTopicID")] ForumThread forumThread)
         {
+            //Convert any new line characters.
+            forumThread.Content = forumThread.Content.Replace("\r\n", "<br />");
+            //Security check
+            //forumThread.Content = HtmlAgilityPack.HtmlDocument.HtmlEncode(forumThread.Content);
+            forumThread.Content = htmlSanitizer.RemoveUnwantedTags(forumThread.Content);
             // Generate the token and send it
             ApplicationUser user = await GetCurrentUserAsync();
 

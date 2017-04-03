@@ -45,7 +45,8 @@
         "version": "1.0.0-preview2-final",
         "type": "build"
     },
-    "Microsoft.EntityFrameworkCore.InMemory": "1.0.1"
+    "Microsoft.EntityFrameworkCore.InMemory": "1.0.1",
+    "HtmlAgilityPack.NetCore": "1.5.0.1"
   },
 
   "tools": {

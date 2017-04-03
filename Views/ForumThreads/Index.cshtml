@@ -10,7 +10,7 @@
 <div>
     @Html.DisplayFor(modelItem => Model.ApplicationUser.GameUserID)
     @Html.DisplayFor(modelItem => Model.Title)
-    @Html.DisplayFor(modelItem => Model.Content)
+    @Html.Raw(Model.Content)
     @Html.DisplayFor(modelItem => Model.ForumThreadCreationTime)
     @Html.DisplayFor(modelItem => Model.ForumLikes.Count)
 </div>
