@@ -27,7 +27,11 @@ namespace AvaNet.DataAccessLayer
         {
             if (eager)
             {
-                return context.ForumTopics.Include(t => t.ForumThreads).FirstOrDefault(e => e.ForumTopicID == id);
+                return context.ForumTopics
+                    .Include(t => t.ForumThreads).ThenInclude(c => c.ApplicationUser)
+                    .Include(t => t.ForumThreads).ThenInclude(c => c.ForumComments)
+                    .Include(t => t.ForumThreads).ThenInclude(c => c.ForumLikes)
+                    .FirstOrDefault(e => e.ForumTopicID == id);
             }
 
             return context.ForumTopics.FirstOrDefault(e => e.ForumTopicID == id);
