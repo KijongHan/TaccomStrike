@@ -67,44 +67,62 @@
     </a>
 </div>
 
-<div class="gapOne"></div>
+<div class="container">
+    <div class="gapOne"></div>
 
-<div class="row">
-    <div class="col-md-6">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <a asp-action="Index">
+                    <div id="downloadPanel">
+                        <div class="panelTitle">Play Now</div>
+                        <div id="downloadPanelImage"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <a asp-action="Index">
+                    <div id="gameGuidePanel">
+                        <div class="panelTitle">Game Guide</div>
+                        <div id="gameGuidePanelImage"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="gapOne"></div>
+
+    <div class="row">
         <div class="col-md-12">
-            <div id="downloadPanel">
-                <div class="panelTitle">Play Now</div>
+            <div id="aboutPanel">
+                <div class="panelTitle">About this Game</div>
             </div>
         </div>
     </div>
-    <div class="col-md-6">
+
+    <div class="gapOne"></div>
+
+    <div class="row">
         <div class="col-md-12">
-            <div id="gameGuidePanel">
-                <div class="panelTitle">Game Guide</div>
-            </div>
+            <div id="gameLorePanelsTitle">Game Lore</div>
         </div>
     </div>
-</div>
-
-<div class="gapOne"></div>
-
-<div class="row">
-    <div class="col-md-12">
-        <div id="aboutPanel">
-            <div class="panelTitle">About this Game</div>
-        </div>
-    </div>
-</div>
-
-<div class="gapOne"></div>
-
-<div class="row">
-    @foreach (GameLore gameLore in Model)
-    {
-        <div class="col-md-4">
-            <div id="gameLorePanel">
-                <div class="panelTitle">@gameLore.Title</div>
+    <div class="row">
+        @foreach (GameLore gameLore in Model)
+        {
+            <div class="col-md-4">
+                <a asp-action="Index">
+                    <div class="gameLorePanel">
+                        <div class="gameLorePanelTitle">@gameLore.Title</div>
+                        <img src="@gameLore.ImageURL" style="" />
+                    </div>
+                </a>
             </div>
-        </div>
-    }
+        }
+    </div>
+
+    <div class="gapTwo"></div>
 </div>

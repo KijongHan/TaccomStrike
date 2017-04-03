@@ -23,7 +23,7 @@ namespace AvaNet.Controllers
             List<GameLore> mainGameLores = new List<GameLore>();
             mainGameLores.Add(gameLoreRepository.Find("NetSEC"));
             mainGameLores.Add(gameLoreRepository.Find("Nationalist Frontier"));
-            mainGameLores.Add(gameLoreRepository.Find("The Old Republic"));
+            mainGameLores.Add(gameLoreRepository.Find("Unified Republic"));
 
             return View(mainGameLores);
         }

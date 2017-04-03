@@ -1,10 +1,46 @@
 ﻿@model AvaNet.Models.ForumTopic
 
-@{
-    ViewData["Title"] = "About";
-}
-<h2>@ViewData["Title"].</h2>
-<h3>@ViewData["Message"]</h3>
+<div class="row">
+    <div class="col-md-7">
+        <div id="forumTopicTitle2">@Model.Title</div>
+    </div>
+    <div class="col-md-3"></div>
+    <div class="col-md-2">
+        <div id="forumThreadCreateButton">+ New Thread</div>
+    </div>
+</div>
+<div class="gapFour"></div>
+
+<form class="form-group" id="forumThreadForm" asp-action="Create" asp-controller="ForumThreads">
+    <div class="row">
+        <div class="form-group col-md-3">
+            <div id="forumThreadFormTitleLabel">Thread Title:</div>
+        </div>
+        <div class="form-group col-md-8">
+            <input name="Title" class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-3">
+            <div id="forumThreadFormContentLabel">Thread Content:</div>
+        </div>
+        <div class="form-group col-md-8">
+            <textarea id="forumThreadFormContentInput" name="Content" class="form-control"></textarea>
+        </div>
+    </div>
+    <input type="hidden" name="ForumTopicID" value="@Model.ForumTopicID">
+    <div class="row">
+        <div class="form-group col-md-3"></div>
+        <div class="form-group col-md-3">
+            <input id="forumThreadFormSubmit" type="submit" value="Submit Thread" />
+        </div>
+        <div class="form-group col-md-1"></div>
+        <div class="form-group col-md-3">
+            <div id="forumThreadCloseButton">Close</div>
+        </div>
+        <div class="form-group col-md-2"></div>
+    </div>
+</form>
 
 @foreach (ForumThread item in Model.ForumThreads)
 {
@@ -13,3 +49,14 @@
         <a asp-action="Index" asp-route-id="@item.ForumThreadID" asp-controller="ForumThreads">Link</a>
     </div>
 }
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+
+    $("#forumThreadCreateButton").click(function () {
+        $("#forumThreadForm").slideDown();
+    });
+    $("#forumThreadCloseButton").click(function () {
+        $("#forumThreadForm").slideUp();
+    });
+</script>

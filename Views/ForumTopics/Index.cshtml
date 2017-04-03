@@ -1,20 +1,24 @@
 ﻿@model IEnumerable<AvaNet.Models.ForumTopic>
 
-@{
-    ViewData["Title"] = "About";
-}
-<h2>@ViewData["Title"].</h2>
-<h3>@ViewData["Message"]</h3>
+<div id="forumTopicsJumbotron">
+    <div id="forumTopicsJumbotronGap"></div>
+    <div id="forumTopicsTitle">Welcome to the AvaNet forums</div>
+</div>
 
-@foreach (var item in Model)
-{
-    <div>
-        @Html.DisplayFor(modelItem => item.Title)
-        @Html.DisplayFor(modelItem => item.Description)
-        <a asp-action="Details" asp-route-id="@item.ForumTopicID">Link</a>
-    </div>
-}
+<div class="gapOne"></div>
 
+<div id="forumTopicsWrapper">
+    @foreach (var item in Model)
+    {
+        <div class="forumTopicPanel">
+            <a asp-action="Details" asp-route-id="@item.ForumTopicID">
+                <div class="forumTopicTitle">@Html.DisplayFor(modelItem => item.Title)</div>
+            </a>
+            <div class="forumTopicDescription">@Html.DisplayFor(modelItem => item.Description)</div>
+        </div>
+        <div class="gapThree"></div>
+    }
+</div>
 <div>
     <a asp-action="Create" asp-controller="ForumThreads">Create</a>
 </div>

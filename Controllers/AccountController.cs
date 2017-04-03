@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using AvaNet.Models;
 using AvaNet.Models.AccountViewModels;
 using AvaNet.Services;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace AvaNet.Controllers
 {
@@ -117,6 +118,13 @@ namespace AvaNet.Controllers
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
+
+                    //Give admin privilege to my account
+                    if (user.UserName.Equals("khan465@aucklanduni.ac.nz"))
+                    {
+                        await _userManager.AddToRoleAsync(user, "Administrator");
+                    }
+
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);

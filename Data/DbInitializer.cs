@@ -1,5 +1,7 @@
 ﻿using AvaNet.DataAccessLayer;
 using AvaNet.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +12,7 @@ namespace AvaNet.Data
 {
     public class DbInitializer
     {
-        public static void Initialize(IForumTopicRepository forumTopicRepository, IGameLoreRepository gameLoreRepository)
+        public static async void Initialize(IForumTopicRepository forumTopicRepository, IGameLoreRepository gameLoreRepository, RoleManager<IdentityRole> roleManager)
         {
             var topics = new ForumTopic[]
             {
@@ -23,9 +25,15 @@ namespace AvaNet.Data
 
             var gameLores = new GameLore[]
             {
-                new GameLore { Title="NetSEC", ImageURL=Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "gamelores", "netsec.jpg"), Content="write here." },
-                new GameLore { Title="Nationalist Frontier", ImageURL=Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "gamelores", "nationalistfrontier.jpg"), Content="write here." },
-                new GameLore { Title="The Old Republic", ImageURL=Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "gamelores", "theoldrepublic.jpg"), Content="write here." },
+                new GameLore { Title="NetSEC", ImageURL="../images/gamelores/netsec.jpg", Content="write here." },
+                new GameLore { Title="Nationalist Frontier", ImageURL="../images/gamelores/nationalistfrontier.jpg", Content="write here." },
+                new GameLore { Title="Unified Republic", ImageURL="../images/gamelores/unifiedrepublic.jpg", Content="write here." },
+            };
+
+            var roles = new string[]
+            {
+                "Administrator",
+                "Moderator"
             };
 
             foreach (ForumTopic topic in topics)
@@ -43,6 +51,14 @@ namespace AvaNet.Data
                 if (gameLoreRepository.Find(gameLore.Title) == null)
                 {
                     gameLoreRepository.Add(gameLore);
+                }
+            }
+
+            foreach (string role in roles)
+            {
+                if (!await roleManager.RoleExistsAsync(role))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
                 }
             }
         }
