@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.Encodings.Web;
 using AvaNet.Services;
+using AvaNet.Models.ViewModels.ForumViewModels;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,6 +18,7 @@ namespace AvaNet.Controllers
 {
     public class ForumThreadsController : Controller
     {
+        private static int NUMBER_OF_THREADS_PER_PAGE = 20;
 
         private readonly IForumThreadRepository forumThreadRepository;
 
@@ -37,10 +39,38 @@ namespace AvaNet.Controllers
             this.htmlSanitizer = htmlSanitizer;
         }
 
-        public IActionResult Index(int ID, int startIndex, int endIndex)
+        public IActionResult Index(int ID, int startIndex, string orderBy)
         {
             ForumTopic forumTopic = forumTopicRepository.Find(ID, true);
-            return View(forumTopic);
+
+            ForumThreadsIndexViewModel viewModel = new ForumThreadsIndexViewModel();
+            viewModel.ForumTopicID = forumTopic.ForumTopicID;
+            viewModel.ForumTopicTitle = forumTopic.Title;
+
+            //No current user input of how to order threads
+            if (orderBy == null)
+            {
+                viewModel.ForumThreads = forumTopic.ForumThreads
+                    .OrderByDescending(t => t.ForumThreadCreationTime)
+                    .Skip(startIndex)
+                    .Take(NUMBER_OF_THREADS_PER_PAGE);
+            }
+            else if (orderBy.Equals("likes"))
+            {
+                viewModel.ForumThreads = forumTopic.ForumThreads
+                    .OrderByDescending(t => t.ForumLikes.Count)
+                    .Skip(startIndex)
+                    .Take(NUMBER_OF_THREADS_PER_PAGE);
+            }
+            else if (orderBy.Equals("latest"))
+            {
+                viewModel.ForumThreads = forumTopic.ForumThreads
+                    .OrderByDescending(t => t.ForumThreadCreationTime)
+                    .Skip(startIndex)
+                    .Take(NUMBER_OF_THREADS_PER_PAGE);
+            }
+
+            return View(viewModel);
         }
 
         // GET: /<controller>/
@@ -85,7 +115,6 @@ namespace AvaNet.Controllers
             forumLike.ApplicationUser = user;
             forumLikeRepository.Add(forumLike);
             return RedirectToAction("Details/" + forumLike.ForumThreadID);
-            
         }
 
         [HttpPost]

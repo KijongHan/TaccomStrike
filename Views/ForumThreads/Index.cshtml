@@ -1,8 +1,8 @@
-﻿@model AvaNet.Models.ForumTopic
+﻿@model AvaNet.Models.ViewModels.ForumViewModels.ForumThreadsIndexViewModel
 
 <div class="row">
     <div class="col-md-7">
-        <div id="forumTopicTitle2">@Model.Title</div>
+        <div id="forumTopicTitle2">@Model.ForumTopicTitle</div>
     </div>
     <div class="col-md-3"></div>
     <div class="col-md-2">
@@ -41,6 +41,8 @@
         <div class="form-group col-md-2"></div>
     </div>
 </form>
+
+<hr/>
 
 @foreach (ForumThread item in Model.ForumThreads)
 {
