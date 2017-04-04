@@ -48,12 +48,15 @@
     </div>
     <div class="container body-content">
         @RenderBody()
+    </div>
+    <div class="myFooter">
+        <div class="gap"></div>
         <hr />
         <footer>
             <p>&copy; 2017 - AvaNet</p>
         </footer>
     </div>
-
+    
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -71,8 +74,6 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-    <div class="container">
-        <div id="bodyContent">@RenderSection("scripts", required: false)</div>
-    </div>
+    @RenderSection("scripts", required: false)
 </body>
 </html>

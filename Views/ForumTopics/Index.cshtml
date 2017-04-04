@@ -11,7 +11,7 @@
     @foreach (var item in Model)
     {
         <div class="forumTopicPanel">
-            <a asp-action="Details" asp-route-id="@item.ForumTopicID">
+            <a asp-controller="ForumThreads" asp-action="Index" asp-route-id="@item.ForumTopicID">
                 <div class="forumTopicTitle">@Html.DisplayFor(modelItem => item.Title)</div>
             </a>
             <div class="forumTopicDescription">@Html.DisplayFor(modelItem => item.Description)</div>

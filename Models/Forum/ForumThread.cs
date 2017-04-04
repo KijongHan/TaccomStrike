@@ -13,7 +13,7 @@ namespace AvaNet.Models
         public int ForumThreadID { get; set; }
 
         [Required]
-        [StringLength(300, ErrorMessage = "Title cannot be longer than 300 characters.")]
+        [StringLength(60, ErrorMessage = "Title cannot be longer than 300 characters.")]
         public string Title { get; set; }
 
         [Required]

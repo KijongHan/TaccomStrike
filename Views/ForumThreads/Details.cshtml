@@ -1,0 +1,44 @@
+﻿@model AvaNet.Models.ForumThread
+
+@{
+    ViewData["Title"] = "About";
+}
+
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+
+<div>
+    @Html.DisplayFor(modelItem => Model.ApplicationUser.GameUserID)
+    @Html.DisplayFor(modelItem => Model.Title)
+    @Html.Raw(Model.Content)
+    @Html.DisplayFor(modelItem => Model.ForumThreadCreationTime)
+    @Html.DisplayFor(modelItem => Model.ForumLikes.Count)
+</div>
+<div>
+    <form asp-action="Like">
+        <div>
+            <input type="hidden" name="Weight" value="1" />
+            <input type="hidden" name="ForumThreadID" value="@Model.ForumThreadID" />
+        </div>
+        <input type="submit" value="Like" />
+    </form>
+</div>
+<div>
+    @foreach (ForumComment comment in Model.ForumComments)
+    {
+        <div>
+            @Html.DisplayFor(modelItem => comment.ApplicationUser.GameUserID)
+            @Html.DisplayFor(modelItem => comment.Content)
+            @Html.DisplayFor(modelItem => comment.ForumLikes.Count)
+            <a asp-action="Like" asp-route-forumThreadID="@Model.ForumThreadID" asp-route-weight="1">Like</a>
+        </div>
+    }
+</div>
+
+<form asp-action="Create" asp-controller="ForumComments">
+    <div>
+        <input name="Content" />
+        <input type="hidden" name="ForumThreadID" value="@Model.ForumThreadID"/>
+    </div>
+    <input type="submit" value="Submit Comment" />
+</form>
