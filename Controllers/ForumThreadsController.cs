@@ -37,17 +37,24 @@ namespace AvaNet.Controllers
             this.htmlSanitizer = htmlSanitizer;
         }
 
+        public IActionResult Index(int ID, int startIndex, int endIndex)
+        {
+            ForumTopic forumTopic = forumTopicRepository.Find(ID, true);
+            return View(forumTopic);
+        }
+
         // GET: /<controller>/
-        public IActionResult Index(int ID)
+        public IActionResult Details(int ID)
         {   
             return View(forumThreadRepository.Find(ID, true));
         }
 
+        //Called when the user is not logged in
         public IActionResult Create()
         {
-            return View(forumTopicRepository.GetAll());
+            return Redirect("/");
         }
-
+        
         //Method called when the user has presedd a like/dislike/neutral button
         [Authorize]
         [HttpPost]
@@ -70,14 +77,14 @@ namespace AvaNet.Controllers
                 {
                     if (forumLike.Weight == fl.Weight)
                     {
-                        return RedirectToAction("Index/" + forumLike.ForumThreadID);
+                        return RedirectToAction("Details/" + forumLike.ForumThreadID);
                     }
                 }
             }
 
             forumLike.ApplicationUser = user;
             forumLikeRepository.Add(forumLike);
-            return RedirectToAction("Index/" + forumLike.ForumThreadID);
+            return RedirectToAction("Details/" + forumLike.ForumThreadID);
             
         }
 
@@ -88,8 +95,8 @@ namespace AvaNet.Controllers
         {
             //Convert any new line characters.
             forumThread.Content = forumThread.Content.Replace("\r\n", "<br />");
-            //Security check
-            //forumThread.Content = HtmlAgilityPack.HtmlDocument.HtmlEncode(forumThread.Content);
+
+            //Security check, allow desired html tags and remove malicious ones
             forumThread.Content = htmlSanitizer.RemoveUnwantedTags(forumThread.Content);
             // Generate the token and send it
             ApplicationUser user = await GetCurrentUserAsync();
@@ -99,7 +106,7 @@ namespace AvaNet.Controllers
             forumThread.ForumThreadCreationTime = DateTime.UtcNow;
             forumThreadRepository.Add(forumThread);
 
-            return RedirectToAction("Index/" + forumThread.ForumThreadID);
+            return RedirectToAction("Details/" + forumThread.ForumThreadID);
         }
 
         private async Task<ApplicationUser> GetCurrentUserAsync()
