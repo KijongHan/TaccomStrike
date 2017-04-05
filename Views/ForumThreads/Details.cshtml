@@ -4,30 +4,36 @@
     <div class="col-md-1">
         <div>
             Upvote
-            <form asp-action="Like">
+            <form asp-action="Create" asp-controller="ForumLikes">
                 <div>
                     <input type="hidden" name="Weight" value="1" />
                     <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
+                    <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
+                    <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
                 </div>
                 <input type="submit" value="Like" />
             </form>
         </div>
         <div>
             Neutral
-            <form asp-action="Like">
+            <form asp-action="Create" asp-controller="ForumLikes">
                 <div>
                     <input type="hidden" name="Weight" value="0" />
                     <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
+                    <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
+                    <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
                 </div>
                 <input type="submit" value="Like" />
             </form>
         </div>
         <div>
             DownVote
-            <form asp-action="Like">
+            <form asp-action="Create" asp-controller="ForumLikes">
                 <div>
                     <input type="hidden" name="Weight" value="-1" />
                     <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
+                    <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
+                    <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
                 </div>
                 <input type="submit" value="Like" />
             </form>
