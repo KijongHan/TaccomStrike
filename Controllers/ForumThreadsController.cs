@@ -104,9 +104,50 @@ namespace AvaNet.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Details(int ID)
-        {   
-            return View(forumThreadRepository.Find(ID, true));
+        public IActionResult Details(int ID, int startIndex, string orderBy)
+        {
+            ForumThread forumThread = forumThreadRepository.Find(ID, true);
+
+            //Check to see if the user has altered the query parameter.
+            if (startIndex % ForumThreadsDetailsViewModel.NUMBER_OF_COMMENTS_PER_PAGE != 0)
+            {
+                return Redirect("/ForumThreads/Details/" + ID + "?startIndex=0&orderBy=newestComments");
+            }
+            if (!ForumThreadsDetailsViewModel.IsStartIndexInRange(startIndex, forumThread.ForumComments.Count))
+            {
+                return Redirect("/ForumThreads/Details/" + ID + "?startIndex=0&orderBy=oldestComments");
+            }
+
+            ForumThreadsDetailsViewModel viewModel = new ForumThreadsDetailsViewModel();
+            viewModel.ForumThread = forumThread;
+            viewModel.OrderBy = orderBy;
+
+            if (orderBy == null)
+            {
+                viewModel.ForumThread.ForumComments = viewModel.ForumThread.ForumComments
+                    .OrderBy(t => t.ForumCommentCreationTime)
+                    .Skip(viewModel.StartIndex)
+                    .Take(ForumThreadsDetailsViewModel.NUMBER_OF_COMMENTS_PER_PAGE)
+                    .ToList();
+            }
+            else if (orderBy.Equals("oldestComments"))
+            {
+                viewModel.ForumThread.ForumComments = viewModel.ForumThread.ForumComments
+                    .OrderBy(t => t.ForumCommentCreationTime)
+                    .Skip(viewModel.StartIndex)
+                    .Take(ForumThreadsDetailsViewModel.NUMBER_OF_COMMENTS_PER_PAGE)
+                    .ToList();
+            }
+            else if (orderBy.Equals("newestComments"))
+            {
+                viewModel.ForumThread.ForumComments = viewModel.ForumThread.ForumComments
+                    .OrderByDescending(t => t.ForumCommentCreationTime)
+                    .Skip(viewModel.StartIndex)
+                    .Take(ForumThreadsDetailsViewModel.NUMBER_OF_COMMENTS_PER_PAGE)
+                    .ToList();
+            }
+
+            return View(viewModel);
         }
 
         //Called when the user is not logged in

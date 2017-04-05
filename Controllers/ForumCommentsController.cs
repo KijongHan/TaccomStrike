@@ -31,6 +31,37 @@ namespace AvaNet.Controllers
             return View();
         }
 
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Like([Bind("ForumThreadID, Weight")] ForumLike forumLike)
+        {
+            //Not in the boundary of like weightings
+            if (forumLike.Weight < -1 && forumLike.Weight > 1)
+            {
+                return null;
+            }
+
+            // Generate the token and send it
+            ApplicationUser user = await GetCurrentUserAsync();
+            ForumThread forumThread = forumCommentRepository.Find(forumLike.ForumThreadID, true);
+
+            //Check if user hasnt already pressed a like for this, and if it is different from one specified
+            foreach (ForumLike fl in forumThread.ForumLikes)
+            {
+                if (fl.ApplicationUser.Id.Equals(user.Id))
+                {
+                    if (forumLike.Weight == fl.Weight)
+                    {
+                        return RedirectToAction("Details/" + forumLike.ForumThreadID);
+                    }
+                }
+            }
+
+            forumLike.ApplicationUser = user;
+            forumLikeRepository.Add(forumLike);
+            return RedirectToAction("Details/" + forumLike.ForumThreadID);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -41,9 +72,10 @@ namespace AvaNet.Controllers
 
             //Set comment creator
             forumComment.ApplicationUser = user;
+            forumComment.ForumCommentCreationTime = DateTime.UtcNow; 
             forumCommentRepository.Add(forumComment);
 
-            return Redirect("/ForumThreads/Index/" + forumComment.ForumThreadID);
+            return Redirect("/ForumThreads/Details/" + forumComment.ForumThreadID);
         }
 
         private async Task<ApplicationUser> GetCurrentUserAsync()

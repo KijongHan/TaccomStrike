@@ -1,4 +1,4 @@
-﻿@model AvaNet.Models.ForumThread
+﻿@model AvaNet.Models.ViewModels.ForumViewModels.ForumThreadsDetailsViewModel
 
 @{
     ViewData["Title"] = "About";
@@ -8,29 +8,29 @@
 <h3>@ViewData["Message"]</h3>
 
 <div>
-    @Html.DisplayFor(modelItem => Model.ApplicationUser.GameUserID)
-    @Html.DisplayFor(modelItem => Model.Title)
-    @Html.Raw(Model.Content)
-    @Html.DisplayFor(modelItem => Model.ForumThreadCreationTime)
-    @Html.DisplayFor(modelItem => Model.ForumLikes.Count)
+    @Html.DisplayFor(modelItem => Model.ForumThread.ApplicationUser.GameUserID)
+    @Html.DisplayFor(modelItem => Model.ForumThread.Title)
+    @Html.Raw(Model.ForumThread.Content)
+    @Html.DisplayFor(modelItem => Model.ForumThread.ForumThreadCreationTime)
+    @Html.DisplayFor(modelItem => Model.ForumThread.ForumLikes.Count)
 </div>
 <div>
     <form asp-action="Like">
         <div>
             <input type="hidden" name="Weight" value="1" />
-            <input type="hidden" name="ForumThreadID" value="@Model.ForumThreadID" />
+            <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
         </div>
         <input type="submit" value="Like" />
     </form>
 </div>
 <div>
-    @foreach (ForumComment comment in Model.ForumComments)
+    @foreach (ForumComment comment in Model.ForumThread.ForumComments)
     {
         <div>
             @Html.DisplayFor(modelItem => comment.ApplicationUser.GameUserID)
             @Html.DisplayFor(modelItem => comment.Content)
             @Html.DisplayFor(modelItem => comment.ForumLikes.Count)
-            <a asp-action="Like" asp-route-forumThreadID="@Model.ForumThreadID" asp-route-weight="1">Like</a>
+            <a asp-action="Like" asp-route-forumThreadID="@Model.ForumThread.ForumThreadID" asp-route-weight="1">Like</a>
         </div>
     }
 </div>
@@ -38,7 +38,7 @@
 <form asp-action="Create" asp-controller="ForumComments">
     <div>
         <input name="Content" />
-        <input type="hidden" name="ForumThreadID" value="@Model.ForumThreadID"/>
+        <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID"/>
     </div>
     <input type="submit" value="Submit Comment" />
 </form>
