@@ -46,6 +46,7 @@ a:hover, a:visited, a:link, a:active
     margin-left: 5%;
     position: absolute;
     bottom: 0px;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 body 
@@ -71,7 +72,7 @@ body:before
     z-index: -1;
 }
 
-.navbar.navbar-inverse  .navbar-brand 
+.navbar.navbar-inverse .navbar-brand 
 {
     color: rgba(255, 195, 102, 0.9);
 }
@@ -123,10 +124,12 @@ body:before
     0% 
     {
         color: rgba(219, 252, 250, 0.6);
+        background-color: rgba(0, 0, 0, 0.7);
     }
     100% 
     {
         color: rgba(219, 252, 250, 1);
+        background-color: rgba(0, 0, 0, 0.85);
     }
 }
 
@@ -229,7 +232,7 @@ body:before
     font-size: xx-large;
     font-weight: 700;
     color: rgba(219, 252, 250, 0.65);
-    background-color: rgba(0, 140, 142, 0.1);
+    background-color: rgba(0, 0, 0, 0.7);
     text-align: center;
 
     padding-top: 35px;
@@ -285,17 +288,13 @@ body:before
 
 #gameLorePanelsTitle 
 {
-    background-color: rgba(0, 140, 142, 0.1);
+    background-color: rgba(0, 0, 0, 0.85);
     font-size: xx-large;
     font-weight: bold;
 
     color: rgba(255, 255, 255, 0.7);
     text-align: center;
     padding-top: 30px;
-
-    -webkit-box-shadow: 0px 0px 1px 1px rgba(206, 255, 251,0.95);
-    -moz-box-shadow: 0px 0px 1px 1px rgba(206, 255, 251,0.95);
-    box-shadow: 0px 0px 1px 1px rgba(206, 255, 251,0.95);
 }
 
 .gameLorePanelTitle
@@ -635,3 +634,48 @@ body:before
     height: 60px;
     color: rgba(255, 255, 255, 0.7);
 }
+
+.forumThreadOrderByPanel .gap
+{
+    height: 40px;
+}
+
+.forumThreadOrderByOption 
+{
+    float: left;
+    width: 33%;
+    height: 30px;
+    line-height: 30px;
+    
+    font-size: 0.6em;
+    text-align: center;
+
+    color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(66, 244, 224, 0.5);
+
+    -webkit-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+     box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+}
+
+.forumThreadOrderByOption:hover 
+{
+    animation-name: forumThreadOrderByOptionAnimation;  
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards; 
+}
+
+@keyframes forumThreadOrderByOptionAnimation 
+{
+    0% 
+    {
+        color: rgba(255, 255, 255, 0.7);
+        background-color: rgba(66, 244, 224, 0.5);
+    }
+    100% 
+    {
+        color: rgba(255, 255, 255, 0.8);
+        background-color: rgba(66, 244, 224, 0.3);
+    }
+}
+

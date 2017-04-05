@@ -1,10 +1,29 @@
 ﻿@model AvaNet.Models.ViewModels.ForumViewModels.ForumThreadsIndexViewModel
 
 <div class="row">
-    <div class="col-md-7">
+    <div class="col-md-6">
         <div id="forumTopicTitle2">@Model.ForumTopicTitle</div>
     </div>
-    <div class="col-md-3"></div>
+    <div class="col-md-4">
+        <div class="forumThreadOrderByPanel">
+            <div class="gap"></div>
+            <a asp-action="Index" asp-controller="ForumThreads" asp-route-id="@Model.ForumTopicID" asp-route-orderBy="mostLikes">
+                <div class="forumThreadOrderByOption">
+                    Most Likes
+                </div>
+            </a>
+            <a asp-action="Index" asp-controller="ForumThreads" asp-route-id="@Model.ForumTopicID" asp-route-orderBy="mostComments">
+                <div class="forumThreadOrderByOption">
+                    Most Comments
+                </div>
+            </a>
+            <a asp-action="Index" asp-controller="ForumThreads" asp-route-id="@Model.ForumTopicID" asp-route-orderBy="newest">
+                <div class="forumThreadOrderByOption">
+                    Newest
+                </div>
+            </a>
+        </div>
+    </div>
     <div class="col-md-2">
         <div id="forumThreadCreateButton">+ New Thread</div>
     </div>
@@ -17,7 +36,7 @@
             <div id="forumThreadFormTitleLabel">Thread Title:</div>
         </div>
         <div class="form-group col-md-8">
-            <input name="Title" class="form-control" maxlength="60"/>
+            <input name="Title" class="form-control" maxlength="60" />
         </div>
     </div>
     <div class="row">
@@ -42,7 +61,11 @@
     </div>
 </form>
 
-<hr/>
+<hr />
+
+
+
+<hr />
 
 @foreach (ForumThread item in Model.ForumThreads)
 {
@@ -83,9 +106,23 @@
     </div>
 }
 
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div id="forumThreadsNavigationPanel">
+            <a asp-action="Navigate" asp-controller="ForumThreads" asp-route-id="@Model.ForumTopicID" asp-route-orderBy="@Model.OrderBy" asp-route-startIndex="@Model.GetPreviousStartIndex()">
+                <div id="forumThreadsNavigationLeft">Left</div>
+            </a>
+            <a asp-action="Navigate" asp-controller="ForumThreads" asp-route-id="@Model.ForumTopicID" asp-route-orderBy="@Model.OrderBy" asp-route-startIndex="@Model.GetNextStartIndex()">
+                <div id="forumThreadsNavigationRight">Right</div>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
-
     $("#forumThreadCreateButton").click(function () {
         $("#forumThreadForm").slideDown();
     });

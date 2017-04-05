@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 using System.Text.Encodings.Web;
 using AvaNet.Services;
 using AvaNet.Models.ViewModels.ForumViewModels;
+using System.Net.Http;
+using System.Net;
+using System.Web.Http;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,7 +21,6 @@ namespace AvaNet.Controllers
 {
     public class ForumThreadsController : Controller
     {
-        private static int NUMBER_OF_THREADS_PER_PAGE = 20;
 
         private readonly IForumThreadRepository forumThreadRepository;
 
@@ -39,6 +41,13 @@ namespace AvaNet.Controllers
             this.htmlSanitizer = htmlSanitizer;
         }
 
+        public IActionResult Navigate(int ID, int startIndex, string orderBy)
+        {
+            ForumTopic forumTopic = forumTopicRepository.Find(ID, true);
+            int updatedStartIndex = ForumThreadsIndexViewModel.GetStartIndex(startIndex, forumTopic.ForumThreads.Count);
+            return Redirect("/ForumThreads/Index/" + ID + "?startIndex=" + updatedStartIndex + "&orderBy=" + orderBy);
+        }
+
         public IActionResult Index(int ID, int startIndex, string orderBy)
         {
             ForumTopic forumTopic = forumTopicRepository.Find(ID, true);
@@ -47,29 +56,50 @@ namespace AvaNet.Controllers
             viewModel.ForumTopicID = forumTopic.ForumTopicID;
             viewModel.ForumTopicTitle = forumTopic.Title;
 
+            //Set URL parameter values
+            viewModel.StartIndex = startIndex;
+            viewModel.OrderBy = orderBy;
+
+            //Check to see if the user has altered the query parameter.
+            if (startIndex % ForumThreadsIndexViewModel.NUMBER_OF_THREADS_PER_PAGE != 0)
+            {
+                return Redirect("/ForumThreads/Index/" + ID + "?startIndex=0&orderBy=newest"); 
+            }
+            if (!ForumThreadsIndexViewModel.IsStartIndexInRange(startIndex, forumTopic.ForumThreads.Count))
+            {
+                return Redirect("/ForumThreads/Index/" + ID + "?startIndex=0&orderBy=newest");
+            }
+            
             //No current user input of how to order threads
             if (orderBy == null)
             {
                 viewModel.ForumThreads = forumTopic.ForumThreads
                     .OrderByDescending(t => t.ForumThreadCreationTime)
-                    .Skip(startIndex)
-                    .Take(NUMBER_OF_THREADS_PER_PAGE);
+                    .Skip(viewModel.StartIndex)
+                    .Take(ForumThreadsIndexViewModel.NUMBER_OF_THREADS_PER_PAGE);
             }
-            else if (orderBy.Equals("likes"))
+            else if (orderBy.Equals("mostLikes"))
             {
                 viewModel.ForumThreads = forumTopic.ForumThreads
                     .OrderByDescending(t => t.ForumLikes.Count)
-                    .Skip(startIndex)
-                    .Take(NUMBER_OF_THREADS_PER_PAGE);
+                    .Skip(viewModel.StartIndex)
+                    .Take(ForumThreadsIndexViewModel.NUMBER_OF_THREADS_PER_PAGE);
             }
-            else if (orderBy.Equals("latest"))
+            else if (orderBy.Equals("mostComments"))
+            {
+                viewModel.ForumThreads = forumTopic.ForumThreads
+                    .OrderByDescending(t => t.ForumComments.Count)
+                    .Skip(viewModel.StartIndex)
+                    .Take(ForumThreadsIndexViewModel.NUMBER_OF_THREADS_PER_PAGE);
+            }
+            else if (orderBy.Equals("newest"))
             {
                 viewModel.ForumThreads = forumTopic.ForumThreads
                     .OrderByDescending(t => t.ForumThreadCreationTime)
-                    .Skip(startIndex)
-                    .Take(NUMBER_OF_THREADS_PER_PAGE);
+                    .Skip(viewModel.StartIndex)
+                    .Take(ForumThreadsIndexViewModel.NUMBER_OF_THREADS_PER_PAGE);
             }
-
+            
             return View(viewModel);
         }
 
