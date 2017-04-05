@@ -1,28 +1,55 @@
 ﻿@model AvaNet.Models.ViewModels.ForumViewModels.ForumThreadsDetailsViewModel
 
-@{
-    ViewData["Title"] = "About";
-}
-
-<h2>@ViewData["Title"].</h2>
-<h3>@ViewData["Message"]</h3>
+<div class="row">
+    <div class="col-md-1">
+        <div>
+            Upvote
+            <form asp-action="Like">
+                <div>
+                    <input type="hidden" name="Weight" value="1" />
+                    <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
+                </div>
+                <input type="submit" value="Like" />
+            </form>
+        </div>
+        <div>
+            Neutral
+            <form asp-action="Like">
+                <div>
+                    <input type="hidden" name="Weight" value="0" />
+                    <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
+                </div>
+                <input type="submit" value="Like" />
+            </form>
+        </div>
+        <div>
+            DownVote
+            <form asp-action="Like">
+                <div>
+                    <input type="hidden" name="Weight" value="-1" />
+                    <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
+                </div>
+                <input type="submit" value="Like" />
+            </form>
+        </div>
+    </div>
+</div>
 
 <div>
     @Html.DisplayFor(modelItem => Model.ForumThread.ApplicationUser.GameUserID)
     @Html.DisplayFor(modelItem => Model.ForumThread.Title)
     @Html.Raw(Model.ForumThread.Content)
     @Html.DisplayFor(modelItem => Model.ForumThread.ForumThreadCreationTime)
-    @Html.DisplayFor(modelItem => Model.ForumThread.ForumLikes.Count)
+    @{
+        int count = 0;
+        foreach (ForumLike forumLike in Model.ForumThread.ForumLikes)
+        {
+            count += forumLike.Weight;
+        }
+        Html.DisplayFor(modelItem => count);
+    }
 </div>
-<div>
-    <form asp-action="Like">
-        <div>
-            <input type="hidden" name="Weight" value="1" />
-            <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
-        </div>
-        <input type="submit" value="Like" />
-    </form>
-</div>
+
 <div>
     @foreach (ForumComment comment in Model.ForumThread.ForumComments)
     {
@@ -30,7 +57,16 @@
             @Html.DisplayFor(modelItem => comment.ApplicationUser.GameUserID)
             @Html.DisplayFor(modelItem => comment.Content)
             @Html.DisplayFor(modelItem => comment.ForumLikes.Count)
-            <a asp-action="Like" asp-route-forumThreadID="@Model.ForumThread.ForumThreadID" asp-route-weight="1">Like</a>
+            <form asp-controller="ForumComments" asp-action="Like">
+                <div>
+                    <input type="hidden" name="Weight" value="1" />
+                    <input type="hidden" name="ForumCommentID" value="@comment.ForumCommentID" />
+                    <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
+                    <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
+                    <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
+                </div>
+                <input type="submit" value="Like" />
+            </form>
         </div>
     }
 </div>

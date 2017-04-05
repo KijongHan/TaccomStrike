@@ -29,7 +29,9 @@ namespace AvaNet.DataAccessLayer
             if (eager)
             {
                 ForumComment forumComment = context.ForumComments
-                    .Include(t => t.ApplicationUser).FirstOrDefault(t => t.ForumCommentID == id);
+                    .Include(t => t.ApplicationUser)
+                    .Include(t => t.ForumLikes)
+                    .FirstOrDefault(t => t.ForumCommentID == id);
                 return forumComment;
             }
 

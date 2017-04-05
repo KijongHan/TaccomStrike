@@ -22,5 +22,11 @@ namespace AvaNet.DataAccessLayer
             context.ForumLikes.Add(like);
             context.SaveChanges();
         }
+
+        public void Update(ForumLike like)
+        {
+            context.ForumLikes.Update(like);
+            context.SaveChanges();
+        }
     }
 }

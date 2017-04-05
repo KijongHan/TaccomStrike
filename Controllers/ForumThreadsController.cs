@@ -120,6 +120,7 @@ namespace AvaNet.Controllers
 
             ForumThreadsDetailsViewModel viewModel = new ForumThreadsDetailsViewModel();
             viewModel.ForumThread = forumThread;
+            viewModel.StartIndex = startIndex;
             viewModel.OrderBy = orderBy;
 
             if (orderBy == null)
@@ -159,8 +160,12 @@ namespace AvaNet.Controllers
         //Method called when the user has presedd a like/dislike/neutral button
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Like([Bind("ForumThreadID, Weight")] ForumLike forumLike)
+        public async Task<IActionResult> Like(IFormCollection formData)
         {
+            int formDataWeight = Convert.ToInt32(formData.First(t => t.Key.Equals("Weight")).Value);
+            int forumThreadID = Convert.ToInt32(formData.First(t => t.Key.Equals("ForumThreadID")).Value);
+            ForumLike forumLike = new ForumLike { Weight = formDataWeight };
+            
             //Not in the boundary of like weightings
             if (forumLike.Weight < -1 && forumLike.Weight > 1)
             {
@@ -169,23 +174,41 @@ namespace AvaNet.Controllers
 
             // Generate the token and send it
             ApplicationUser user = await GetCurrentUserAsync();
-            ForumThread forumThread = forumThreadRepository.Find(forumLike.ForumThreadID, true);
+            forumLike.ApplicationUser = user;
+            ForumThread forumThread = forumThreadRepository.Find(forumThreadID, true);
             
             //Check if user hasnt already pressed a like for this, and if it is different from one specified
             foreach (ForumLike fl in forumThread.ForumLikes)
             {
                 if (fl.ApplicationUser.Id.Equals(user.Id))
                 {
-                    if (forumLike.Weight == fl.Weight)
+                    if (fl.Weight == formDataWeight)
                     {
-                        return RedirectToAction("Details/" + forumLike.ForumThreadID);
+                        return RedirectToAction("Details/" + forumThreadID);
+                    }
+
+                    //Different like weight for the user, update the like
+                    else
+                    {
+                        if (formDataWeight == 0)
+                        {
+                            forumThread.ForumLikes.Remove(fl);
+                        }
+
+                        else
+                        {
+                            fl.Weight = formDataWeight;
+                        }
+                        
+                        forumThreadRepository.Update(forumThread);
+                        return Redirect("/ForumThreads/Details/" + forumThreadID);
                     }
                 }
             }
-
-            forumLike.ApplicationUser = user;
-            forumLikeRepository.Add(forumLike);
-            return RedirectToAction("Details/" + forumLike.ForumThreadID);
+            
+            forumThread.ForumLikes.Add(forumLike);
+            forumThreadRepository.Update(forumThread);
+            return RedirectToAction("Details/" + forumThreadID);
         }
 
         [HttpPost]

@@ -9,5 +9,7 @@ namespace AvaNet.DataAccessLayer
     public interface IForumLikeRepository
     {
         void Add(ForumLike like);
+
+        void Update(ForumLike like);
     }
 }

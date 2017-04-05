@@ -15,7 +15,5 @@ namespace AvaNet.Models
 
         public ApplicationUser ApplicationUser { get; set; }
 
-        public int ForumThreadID { get; set; }
-        public ForumThread ForumThread { get; set; }
     }
 }
