@@ -114,10 +114,10 @@
     <div class="col-md-3"></div>
     <div class="col-md-6">
         <div id="forumThreadsNavigationPanel">
-            <a asp-action="Navigate" asp-controller="ForumThreads" asp-route-id="@Model.ForumTopicID" asp-route-orderBy="@Model.OrderBy" asp-route-startIndex="@Model.GetPreviousStartIndex()">
+            <a asp-action="NavigateThreads" asp-controller="ForumThreads" asp-route-id="@Model.ForumTopicID" asp-route-orderBy="@Model.OrderBy" asp-route-startIndex="@Model.GetPreviousStartIndex()">
                 <div id="forumThreadsNavigationLeft" class="forumThreadsNavigation"></div>
             </a>
-            <a asp-action="Navigate" asp-controller="ForumThreads" asp-route-id="@Model.ForumTopicID" asp-route-orderBy="@Model.OrderBy" asp-route-startIndex="@Model.GetNextStartIndex()">
+            <a asp-action="NavigateThreads" asp-controller="ForumThreads" asp-route-id="@Model.ForumTopicID" asp-route-orderBy="@Model.OrderBy" asp-route-startIndex="@Model.GetNextStartIndex()">
                 <div id="forumThreadsNavigationRight" class="forumThreadsNavigation"></div>
             </a>
         </div>

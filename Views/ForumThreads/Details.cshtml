@@ -1,4 +1,5 @@
 ﻿@model AvaNet.Models.ViewModels.ForumViewModels.ForumThreadsDetailsViewModel
+@using AvaNet.Models.ViewModels.ForumViewModels
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -26,6 +27,14 @@
         <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
         <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
     </div>
+</form>
+
+<form id="forumCommentLikeForm" asp-action="Create" asp-controller="ForumLikes">
+    <input id="forumCommentLikeWeight" type="hidden" name="Weight" />
+    <input id="forumCommentLikeFormCommentID" type="hidden" name="ForumCommentID" />
+    <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
+    <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
+    <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
 </form>
 
 <div id="forumThreadDetailsDivider">
@@ -82,26 +91,27 @@
     <div class="col-xs-12 col-sm-9">
         <div id="forumThreadTitlePanel">
             <div id="forumThreadTitle">@Html.DisplayFor(modelItem => Model.ForumThread.Title)</div>
-            <div class="forumThreadLabel">@Html.DisplayFor(modelItem => Model.ForumThread.ApplicationUser.GameUserID)</div>
-            <div class="forumThreadLabel">@Html.DisplayFor(modelItem => Model.ForumThread.ForumThreadCreationTime)</div>
-            <div class="forumThreadLabel">
-            @{
-                int positiveCount = 0;
-                int negativeCount = 0;
-                foreach (ForumLike forumLike in Model.ForumThread.ForumLikes)
-                {
-                    if (forumLike.Weight > 0)
-                    {
-                        positiveCount++;
+            <div class="forumThreadLabelPanel">
+                <div class="forumThreadLabelTag">Posted By: </div><div class="forumThreadLabel">@Html.DisplayFor(modelItem => Model.ForumThread.ApplicationUser.GameUserID)</div>
+                <div class="forumThreadLabelTag">Created At: </div><div class="forumThreadLabel">@Html.DisplayFor(modelItem => Model.ForumThread.ForumThreadCreationTime)</div>
+                <div class="forumThreadLabelTag">Upvotes: </div><div class="forumThreadLabel">
+                    @{
+                        int positiveCount = 0;
+                        int negativeCount = 0;
+                        foreach (ForumLike forumLike in Model.ForumThread.ForumLikes)
+                        {
+                            if (forumLike.Weight > 0)
+                            {
+                                positiveCount++;
+                            }
+                            else if (forumLike.Weight < 0)
+                            {
+                                negativeCount++;
+                            }
+                        }
                     }
-                    else if (forumLike.Weight < 0)
-                    {
-                        negativeCount++;
-                    }
-                }
-            }
-            
-            <p style="color:green; float:left;">@positiveCount</p><p style="color:red; float:left; padding-left:8px;">@negativeCount</p>
+                    <p style="color:green; float:left;">@positiveCount</p><p style="color:red; float:left; padding-left:8px;">@negativeCount</p>
+                </div>
             </div>
         </div>
     </div>
@@ -163,10 +173,12 @@
 </form>
 
 <div>
-    @foreach (ForumComment comment in Model.ForumThread.ForumComments)
+    @for (int i = 0; i < Model.ForumThread.ForumComments.Count; i++)
     {
+        ForumComment comment = Model.ForumThread.ForumComments.ElementAt(i);
+
         <div class="row">
-            <div class="col-md-1">
+            <div class="col-xs-offset-2 col-xs-3 col-sm-offset-0 col-sm-1 col-md-1">
                 @{
                     if (SignInManager.IsSignedIn(User))
                     {
@@ -176,17 +188,17 @@
                         {
                             if (like.Weight == 1)
                             {
-                                <div class="forumCommentUpvote voteActive">
+                                <div class="@comment.ForumCommentID forumCommentUpvote voteActive">
                                 </div>
-                                <div class="forumCommentDownvote">
+                                <div class="@comment.ForumCommentID forumCommentDownvote">
                                 </div>
                                 voted = true;
                             }
                             if (like.Weight == -1)
                             {
-                                <div class="forumCommentUpvote">
+                                <div class="@comment.ForumCommentID forumCommentUpvote">
                                 </div>
-                                <div class="forumCommentDownvote voteActive">
+                                <div class="@comment.ForumCommentID forumCommentDownvote voteActive">
                                 </div>
                                 voted = true;
                             }
@@ -194,43 +206,72 @@
 
                         if (!voted)
                         {
-                            <div class="forumCommentUpvote">
+                            <div class="@comment.ForumCommentID forumCommentUpvote">
                             </div>
-                            <div class="forumCommentDownvote">
+                            <div class="@comment.ForumCommentID forumCommentDownvote">
                             </div>
                         }
                     }
                     else
                     {
-                        <div class="forumCommentUpvote">
+                        <div class="@comment.ForumCommentID forumCommentUpvote">
                         </div>
-                        <div class="forumCommentDownvote">
+                        <div class="@comment.ForumCommentID forumCommentDownvote">
                         </div>
                     }
                 }
             </div>
-            <div class="col-md-2">
+            <div class="col-xs-5 col-sm-2 col-md-2">
                 <img class="forumCommentPanelAvatarImage" src="@comment.ApplicationUser.AvatarImageURL"/>
+                <div class="forumCommentPanelInformation">
+                    <div>@Html.DisplayFor(modelItem => comment.ApplicationUser.GameUserID)</div>
+                    <div>@Html.DisplayFor(modelItem => comment.ForumCommentCreationTime)</div>
+                    <div>
+                        @{
+                            int commentPositiveCount = 0;
+                            int commentNegativeCount = 0;
+                            foreach (ForumLike forumLike in comment.ForumLikes)
+                            {
+                                if (forumLike.Weight > 0)
+                                {
+                                    commentPositiveCount++;
+                                }
+                                else if (forumLike.Weight < 0)
+                                {
+                                    commentNegativeCount++;
+                                }
+                            }
+                        }
+                        <p style="color:green; float:left;">@commentPositiveCount</p><p style="color:red; float:left; padding-left:8px;">@commentNegativeCount</p>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-xs-12 col-sm-8 col-md-8">
                 <div class="forumCommentPanel">
-                    @Html.DisplayFor(modelItem => comment.ApplicationUser.GameUserID)
                     @Html.DisplayFor(modelItem => comment.Content)
-                    @Html.DisplayFor(modelItem => comment.ForumLikes.Count)
-                    <form asp-controller="ForumComments" asp-action="Like">
-                        <div>
-                            <input type="hidden" name="Weight" value="1" />
-                            <input type="hidden" name="ForumCommentID" value="@comment.ForumCommentID" />
-                            <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
-                            <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
-                            <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
-                        </div>
-                        <input type="submit" value="Like" />
-                    </form>
                 </div>
             </div>
         </div>
     }
+</div>
+
+<div id="forumThreadsNavigationDivider">
+    <div class="gap"></div>
+</div>
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div id="forumThreadsNavigationPanel">
+            <a asp-action="NavigateComments" asp-controller="ForumThreads" asp-route-id="@Model.ForumThread.ForumThreadID" asp-route-orderBy="@Model.OrderBy" asp-route-startIndex="@Model.GetPreviousStartIndex()">
+                <div id="forumThreadsNavigationLeft" class="forumThreadsNavigation"></div>
+            </a>
+            <a asp-action="NavigateComments" asp-controller="ForumThreads" asp-route-id="@Model.ForumThread.ForumThreadID" asp-route-orderBy="@Model.OrderBy" asp-route-startIndex="@Model.GetNextStartIndex()">
+                <div id="forumThreadsNavigationRight" class="forumThreadsNavigation"></div>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
 </div>
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -260,6 +301,35 @@
         else
         {
             $("#forumThreadDownvoteForm").submit();
+        }
+    });
+
+    $(".forumCommentUpvote").click(function () {
+        if ($(this).hasClass("voteActive"))
+        {
+            $("#forumCommentLikeForm #forumCommentLikeFormCommentID").val($(this).attr('class').split(' ')[0])
+            $("#forumCommentLikeForm #forumCommentLikeWeight").val('0')
+            $("#forumCommentLikeForm").submit();
+        }
+        else
+        {
+            $("#forumCommentLikeForm #forumCommentLikeFormCommentID").val($(this).attr('class').split(' ')[0])
+            $("#forumCommentLikeForm #forumCommentLikeWeight").val('1')
+            $("#forumCommentLikeForm").submit();
+        }
+    });
+    $(".forumCommentDownvote").click(function () {
+        if ($(this).hasClass("voteActive"))
+        {
+            $("#forumCommentLikeForm #forumCommentLikeFormCommentID").val($(this).attr('class').split(' ')[0])
+            $("#forumCommentLikeForm #forumCommentLikeWeight").val('0')
+            $("#forumCommentLikeForm").submit();
+        }
+        else
+        {
+            $("#forumCommentLikeForm #forumCommentLikeFormCommentID").val($(this).attr('class').split(' ')[0])
+            $("#forumCommentLikeForm #forumCommentLikeWeight").val('-1')
+            $("#forumCommentLikeForm").submit();
         }
     });
 </script>

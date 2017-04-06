@@ -8,13 +8,23 @@ namespace AvaNet.Models.ViewModels.ForumViewModels
     public class ForumThreadsDetailsViewModel
     {
 
-        public static int NUMBER_OF_COMMENTS_PER_PAGE = 20;
+        public static int NUMBER_OF_COMMENTS_PER_PAGE = 15;
 
         public int StartIndex { get; set; }
 
         public string OrderBy { get; set; }
 
         public ForumThread ForumThread { get; set; }
+
+        public int GetNextStartIndex()
+        {
+            return NUMBER_OF_COMMENTS_PER_PAGE + StartIndex;
+        }
+
+        public int GetPreviousStartIndex()
+        {
+            return StartIndex - NUMBER_OF_COMMENTS_PER_PAGE;
+        }
 
         public static bool IsStartIndexInRange(int startIndex, int forumCommentsCount)
         {

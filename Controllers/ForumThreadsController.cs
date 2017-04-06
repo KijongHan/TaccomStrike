@@ -41,11 +41,18 @@ namespace AvaNet.Controllers
             this.htmlSanitizer = htmlSanitizer;
         }
 
-        public IActionResult Navigate(int ID, int startIndex, string orderBy)
+        public IActionResult NavigateThreads(int ID, int startIndex, string orderBy)
         {
             ForumTopic forumTopic = forumTopicRepository.Find(ID, true);
             int updatedStartIndex = ForumThreadsIndexViewModel.GetStartIndex(startIndex, forumTopic.ForumThreads.Count);
             return Redirect("/ForumThreads/Index/" + ID + "?startIndex=" + updatedStartIndex + "&orderBy=" + orderBy);
+        }
+
+        public IActionResult NavigateComments(int ID, int startIndex, string orderBy)
+        {
+            ForumThread forumThread = forumThreadRepository.Find(ID, true);
+            int updatedStartIndex = ForumThreadsIndexViewModel.GetStartIndex(startIndex, forumThread.ForumComments.Count);
+            return Redirect("/ForumThreads/Details/" + ID + "?startIndex=" + updatedStartIndex + "&orderBy=" + orderBy);
         }
 
         public IActionResult Index(int ID, int startIndex, string orderBy)
