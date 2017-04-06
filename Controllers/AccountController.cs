@@ -120,7 +120,7 @@ namespace AvaNet.Controllers
                     return View(model);
                 }
 
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, AvatarImageURL = "/images/avatarimages/defaultavatar.png" };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
