@@ -742,3 +742,270 @@ body:before
     }
 }
 
+/*Styling for forum therads details page*/
+#forumThreadUpvote 
+{
+    background-image: url("../images/symbols/upArrow.png");
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: rgba(66, 244, 224, 0.3);
+    height: 75px;
+    width: 80%;
+
+    -webkit-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+     box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+}
+
+#forumThreadDownvote
+{
+    background-image: url("../images/symbols/downArrow.png");
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: rgba(66, 244, 224, 0.3);
+    height: 75px;
+    width: 80%;
+
+    -webkit-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+     box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+}
+
+#forumThreadUpvote.voteActive 
+{
+    background-color: rgba(66, 244, 224, 0.7);
+}
+
+#forumThreadDownvote.voteActive 
+{
+    background-color: rgba(66, 244, 224, 0.7);
+}
+
+#forumThreadDownvote:hover 
+{
+    cursor: pointer;
+
+    animation-duration: 0.5s;
+    animation-name: forumThreadVoteAnimation;
+    animation-fill-mode: forwards;
+}
+
+#forumThreadUpvote:hover 
+{
+    cursor: pointer;
+
+    animation-duration: 0.5s;
+    animation-name: forumThreadVoteAnimation;
+    animation-fill-mode: forwards;
+}
+
+#forumThreadDetailsDivider .gap 
+{
+    height: 40px;
+}
+
+#forumThreadTitlePanel
+{
+    height: 150px;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+#forumThreadTitle 
+{
+    font-size: 1.5em;
+    color: rgba(206, 255, 251,0.95);
+}
+
+.forumThreadLabel 
+{
+    font-size: 0.8em;
+    color: rgba(206, 255, 251,0.8);
+}
+
+#forumThreadContent 
+{
+    padding: 20px 20px 20px 20px;
+    color: rgba(0, 0, 0, 1);
+    background-color: rgba(255, 255, 255, 0.5);
+
+    -webkit-box-shadow: 0px 0px 1px 2px rgba(66, 244, 224, 0.8);
+    -moz-box-shadow: 0px 0px 1px 2px rgba(66, 244, 224, 0.8);
+     box-shadow: 0px 0px 1px 2px rgba(66, 244, 224, 0.8);
+}
+
+#forumCommentCreateButton 
+{
+    color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(15, 151, 255, 0.9);
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+}
+
+#forumCommentCreateButton:hover 
+{
+    animation-name: forumCommentCreateButtonAnimation;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    cursor: pointer;
+}
+
+.forumCommentOrderByOption 
+{
+    float: left;
+    width: 50%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+
+    color: rgba(255, 255, 255, 1);
+    background-color: rgba(66, 244, 224, 0.5);
+
+    -webkit-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+     box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+}
+
+.forumCommentOrderByOption:hover 
+{
+    animation-name: forumCommentOrderByOptionAnimation;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    cursor: pointer;
+}
+
+#forumCommentForm 
+{
+    display: none;
+}
+
+#forumCommentForm input,textarea
+{
+    min-width: 100%;
+}
+
+#forumCommentFormContentInput 
+{
+    height: 200px;
+}
+
+#forumCommentFormSubmit,#forumCommentCloseButton
+{
+    text-align: center;
+    line-height: 60px;
+    height: 60px;
+
+    font-size: medium;
+    color: rgba(255,255,255,0.7);
+}
+
+#forumCommentFormSubmit 
+{
+    background-color: rgba(3, 211, 0, 0.7);
+}
+
+#forumCommentCloseButton 
+{
+    background-color: rgba(210, 31, 0, 0.7);
+}
+
+#forumCommentFormSubmit:hover
+{
+    background-color: rgba(3, 211, 0, 0.5);
+}
+
+#forumCommentCloseButton:hover 
+{
+    cursor: pointer;
+    background-color: rgba(210, 31, 0, 0.5);
+}
+
+.forumCommentUpvote
+{
+    background-image: url("../images/symbols/upArrow.png");
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: rgba(66, 244, 224, 0.3);
+    height: 80px;
+    width: 80%;
+
+    -webkit-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+     box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+}
+
+.forumCommentDownvote
+{
+    background-image: url("../images/symbols/downArrow.png");
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: rgba(66, 244, 224, 0.3);
+    height: 80px;
+    width: 80%;
+
+    -webkit-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+     box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+}
+
+.forumCommentUpvote.voteActive 
+{
+    background-color: rgba(66, 244, 224, 0.7);
+}
+
+.forumCommentDownvote.voteActive 
+{
+    background-color: rgba(66, 244, 224, 0.7);
+}
+
+.forumCommentDownvote:hover 
+{
+    cursor: pointer;
+
+    animation-duration: 0.5s;
+    animation-name: forumThreadVoteAnimation;
+    animation-fill-mode: forwards;
+}
+
+.forumCommentUpvote:hover 
+{
+    cursor: pointer;
+
+    animation-duration: 0.5s;
+    animation-name: forumThreadVoteAnimation;
+    animation-fill-mode: forwards;
+}
+
+@keyframes forumCommentCreateButtonAnimation 
+{
+    0% {
+        background-color: rgba(15, 151, 255, 0.9);
+    }
+    100% {
+        background-color: rgba(15, 151, 255, 0.5);
+    }
+}
+
+@keyframes forumCommentOrderByOptionAnimation 
+{
+    0% {
+        background-color: rgba(66, 244, 224, 0.5);
+    }
+    100% {
+        background-color: rgba(66, 244, 224, 0.2);
+    }
+}
+
+@keyframes forumThreadVoteAnimation 
+{
+    0% {
+        background-color: rgba(66, 244, 224, 0.3);
+    }
+    100% {
+        background-color: rgba(66, 244, 224, 0.7);
+    }
+}

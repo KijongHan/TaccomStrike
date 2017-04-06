@@ -1,86 +1,264 @@
 ﻿@model AvaNet.Models.ViewModels.ForumViewModels.ForumThreadsDetailsViewModel
 
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<form id="forumThreadUpvoteForm" asp-action="Create" asp-controller="ForumLikes">
+    <div>
+        <input type="hidden" name="Weight" value="1" />
+        <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
+        <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
+        <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
+    </div>
+</form>
+<form id="forumThreadDownvoteForm" asp-action="Create" asp-controller="ForumLikes">
+    <div>
+        <input type="hidden" name="Weight" value="-1" />
+        <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
+        <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
+        <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
+    </div>
+</form>
+<form id="forumThreadNeutralForm" asp-action="Create" asp-controller="ForumLikes">
+    <div>
+        <input type="hidden" name="Weight" value="0" />
+        <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
+        <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
+        <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
+    </div>
+</form>
+
+<div id="forumThreadDetailsDivider">
+    <div class="gap"></div>
+</div>
+
 <div class="row">
-    <div class="col-md-1">
-        <div>
-            Upvote
-            <form asp-action="Create" asp-controller="ForumLikes">
-                <div>
-                    <input type="hidden" name="Weight" value="1" />
-                    <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
-                    <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
-                    <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
+    <div class="col-xs-2 col-md-1">
+        @{
+            if (SignInManager.IsSignedIn(User))
+            {
+                bool voted = false;
+
+                foreach (ForumLike like in Model.ForumThread.ForumLikes)
+                {
+                    if (like.Weight == 1)
+                    {
+                        <div id="forumThreadUpvote" class="voteActive">
+                        </div>
+                        <div id="forumThreadDownvote">
+                        </div>
+                        voted = true;
+                    }
+                    if (like.Weight == -1)
+                    {
+                        <div id="forumThreadUpvote">
+                        </div>
+                        <div id="forumThreadDownvote" class="voteActive">
+                        </div>
+                        voted = true;
+                    }
+                }
+
+                if (!voted)
+                {
+                    <div id="forumThreadUpvote">
+                    </div>
+                    <div id="forumThreadDownvote">
+                    </div>
+                }
+            }
+            else
+            {
+                <div id="forumThreadUpvote">
                 </div>
-                <input type="submit" value="Like" />
-            </form>
-        </div>
-        <div>
-            Neutral
-            <form asp-action="Create" asp-controller="ForumLikes">
-                <div>
-                    <input type="hidden" name="Weight" value="0" />
-                    <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
-                    <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
-                    <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
+                <div id="forumThreadDownvote">
                 </div>
-                <input type="submit" value="Like" />
-            </form>
-        </div>
-        <div>
-            DownVote
-            <form asp-action="Create" asp-controller="ForumLikes">
-                <div>
-                    <input type="hidden" name="Weight" value="-1" />
-                    <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
-                    <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
-                    <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
-                </div>
-                <input type="submit" value="Like" />
-            </form>
+            }
+        }
+    </div>
+    <div class="col-xs-10 col-md-8">
+        <div id="forumThreadTitlePanel">
+            <div id="forumThreadTitle">@Html.DisplayFor(modelItem => Model.ForumThread.Title)</div>
+            <div class="forumThreadLabel">@Html.DisplayFor(modelItem => Model.ForumThread.ApplicationUser.GameUserID)</div>
+            <div class="forumThreadLabel">@Html.DisplayFor(modelItem => Model.ForumThread.ForumThreadCreationTime)</div>
+            <div class="forumThreadLabel">
+            @{
+                int positiveCount = 0;
+                int negativeCount = 0;
+                foreach (ForumLike forumLike in Model.ForumThread.ForumLikes)
+                {
+                    if (forumLike.Weight > 0)
+                    {
+                        positiveCount++;
+                    }
+                    else if (forumLike.Weight < 0)
+                    {
+                        negativeCount++;
+                    }
+                }
+            }
+            
+            <p style="color:green; float:left;">@positiveCount</p><p style="color:red; float:left; padding-left:8px;">@negativeCount</p>
+            </div>
         </div>
     </div>
 </div>
 
-<div>
-    @Html.DisplayFor(modelItem => Model.ForumThread.ApplicationUser.GameUserID)
-    @Html.DisplayFor(modelItem => Model.ForumThread.Title)
+<hr/>
+
+<div id="forumThreadContent">
     @Html.Raw(Model.ForumThread.Content)
-    @Html.DisplayFor(modelItem => Model.ForumThread.ForumThreadCreationTime)
-    @{
-        int count = 0;
-        foreach (ForumLike forumLike in Model.ForumThread.ForumLikes)
-        {
-            count += forumLike.Weight;
-        }
-        Html.DisplayFor(modelItem => count);
-    }
 </div>
+
+<div id="forumThreadDetailsDivider">
+    <div class="gap"></div>
+</div>
+
+<div class="row">
+    <div class="col-xs-2 col-sm-1"></div>
+    <div class="col-xs-12 col-sm-4">
+        <div id="forumCommentCreateButton">
+            + Comment
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <a asp-action="Details" asp-route-id="@Model.ForumThread.ForumThreadID" asp-route-startIndex="0" asp-route-orderBy="newestComments">
+            <div class="forumCommentOrderByOption">
+                Newest Comments
+            </div>
+        </a>
+        <a asp-action="Details" asp-route-id="@Model.ForumThread.ForumThreadID" asp-route-startIndex="0" asp-route-orderBy="oldestComments">
+            <div class="forumCommentOrderByOption">
+                Oldest Comments
+            </div>
+        </a>
+    </div>
+    <div class="col-xs-2 col-sm-1"></div>
+</div>
+
+<hr />
+
+<form class="form-group" id="forumCommentForm" asp-action="Create" asp-controller="ForumComments">
+    <div class="row">
+        <div class="form-group col-md-3">
+            <div id="forumCommentFormContentLabel">Comment Content:</div>
+        </div>
+        <div class="form-group col-md-8">
+            <textarea id="forumCommentFormContentInput" name="Content" class="form-control"></textarea>
+        </div>
+    </div>
+    <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID">
+    <div class="row">
+        <div class="form-group col-md-3"></div>
+        <div class="form-group col-md-3">
+            <input id="forumCommentFormSubmit" type="submit" value="Submit Comment" />
+        </div>
+        <div class="form-group col-md-1"></div>
+        <div class="form-group col-md-3">
+            <div id="forumCommentCloseButton">Close</div>
+        </div>
+        <div class="form-group col-md-2"></div>
+    </div>
+</form>
 
 <div>
     @foreach (ForumComment comment in Model.ForumThread.ForumComments)
     {
-        <div>
-            @Html.DisplayFor(modelItem => comment.ApplicationUser.GameUserID)
-            @Html.DisplayFor(modelItem => comment.Content)
-            @Html.DisplayFor(modelItem => comment.ForumLikes.Count)
-            <form asp-controller="ForumComments" asp-action="Like">
-                <div>
-                    <input type="hidden" name="Weight" value="1" />
-                    <input type="hidden" name="ForumCommentID" value="@comment.ForumCommentID" />
-                    <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
-                    <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
-                    <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
+        <div class="row">
+            <div class="col-md-1">
+                @{
+                    if (SignInManager.IsSignedIn(User))
+                    {
+                        bool voted = false;
+
+                        foreach (ForumLike like in comment.ForumLikes)
+                        {
+                            if (like.Weight == 1)
+                            {
+                                <div class="forumCommentUpvote voteActive">
+                                </div>
+                                <div class="forumCommentDownvote">
+                                </div>
+                                voted = true;
+                            }
+                            if (like.Weight == -1)
+                            {
+                                <div class="forumCommentUpvote">
+                                </div>
+                                <div class="forumCommentDownvote voteActive">
+                                </div>
+                                voted = true;
+                            }
+                        }
+
+                        if (!voted)
+                        {
+                            <div class="forumCommentUpvote">
+                            </div>
+                            <div class="forumCommentDownvote">
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="forumCommentUpvote">
+                        </div>
+                        <div class="forumCommentDownvote">
+                        </div>
+                    }
+                }
+            </div>
+            <div class="col-md-1">
+                <img class="forumCommentPanelImage" src="@comment.ApplicationUser.AvatarImageURL"/>
+            </div>
+            <div class="col-md-5">
+                <div class="forumCommentPanel">
+                    @Html.DisplayFor(modelItem => comment.ApplicationUser.GameUserID)
+                    @Html.DisplayFor(modelItem => comment.Content)
+                    @Html.DisplayFor(modelItem => comment.ForumLikes.Count)
+                    <form asp-controller="ForumComments" asp-action="Like">
+                        <div>
+                            <input type="hidden" name="Weight" value="1" />
+                            <input type="hidden" name="ForumCommentID" value="@comment.ForumCommentID" />
+                            <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID" />
+                            <input type="hidden" name="StartIndex" value="@Model.StartIndex" />
+                            <input type="hidden" name="OrderBy" value="@Model.OrderBy" />
+                        </div>
+                        <input type="submit" value="Like" />
+                    </form>
                 </div>
-                <input type="submit" value="Like" />
-            </form>
+            </div>
         </div>
     }
 </div>
 
-<form asp-action="Create" asp-controller="ForumComments">
-    <div>
-        <input name="Content" />
-        <input type="hidden" name="ForumThreadID" value="@Model.ForumThread.ForumThreadID"/>
-    </div>
-    <input type="submit" value="Submit Comment" />
-</form>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $("#forumCommentCreateButton").click(function () {
+        $("#forumCommentForm").slideDown();
+    });
+    $("#forumCommentCloseButton").click(function () {
+        $("#forumCommentForm").slideUp();
+    });
+
+    $("#forumThreadUpvote").click(function () {
+        if ($("#forumThreadUpvote").hasClass("voteActive"))
+        {
+            $("#forumThreadNeutralForm").submit();
+        }
+        else
+        {
+            $("#forumThreadUpvoteForm").submit();
+        }
+    });
+    $("#forumThreadDownvote").click(function () {
+        if ($("#forumThreadDownvote").hasClass("voteActive"))
+        {
+            $("#forumThreadNeutralForm").submit();
+        }
+        else
+        {
+            $("#forumThreadDownvoteForm").submit();
+        }
+    });
+</script>

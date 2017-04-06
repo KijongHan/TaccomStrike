@@ -15,6 +15,8 @@ namespace AvaNet.Models
         public string GameUserID { get; set; }
         public GameUser GameUser { get; set; }
 
+        public string AvatarImageURL { get; set; }
+
         public ICollection<ForumThread> ForumThreads { get; set; }
         public ICollection<ForumComment> ForumComments { get; set; }
 
