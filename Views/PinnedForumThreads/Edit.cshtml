@@ -1,0 +1,33 @@
+﻿@model AvaNet.Models.ViewModels.ForumViewModels.PinnedForumThreadsEditViewModel
+
+@foreach (ForumThread pinnedforumThread in Model.PinnedForumThreads.ForumThreads)
+{
+    <div>@pinnedforumThread.Title</div>
+}
+
+<div id="pinnedForumThreadAdd">Add</div>
+<hr/>
+
+@foreach (ForumThread forumThread in Model.ForumTopic.ForumThreads)
+{
+    <div>@forumThread.ForumThreadID  @forumThread.Title</div>
+}
+
+<form id="pinnedForumThreadsForm" asp-action="Edit">
+    <div><div class="removePinnedForumThread">Remove</div><input name="forumThreads" /></div>
+    <div><div class="removePinnedForumThread">Remove</div><input name="forumThreads" /></div>
+    <div><div class="removePinnedForumThread">Remove</div><input name="forumThreads" /></div>
+    <input type="submit" />
+</form>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $("#pinnedForumThreadAdd").click(function () {
+        var input = '<div><div class="removePinnedForumThread">Remove</div><input name="forumThreads" /></div>'
+        $("#pinnedForumThreadsForm").prepend(input)
+    });
+
+    $(".removePinnedForumThread").click(function () {
+        $(this).parent().remove();
+    });
+</script>

@@ -33,6 +33,12 @@ namespace AvaNet.Controllers
             this.userManager = userManager;
         }
 
+        //Called when the user is not logged in
+        public IActionResult Create()
+        {
+            return Redirect("/");
+        }
+
         //Method called when the user has presedd a like/dislike/neutral button
         [Authorize]
         [HttpPost]

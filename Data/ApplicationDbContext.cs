@@ -23,6 +23,8 @@ namespace AvaNet.Data
         public DbSet<ForumComment> ForumComments { get; set; }
         public DbSet<ForumThread> ForumThreads { get; set; }
         public DbSet<ForumTopic> ForumTopics { get; set; }
+
+        public DbSet<PinnedForumThreads> PinnedForumThreads { get; set; }
         
         public DbSet<GameUser> GameUsers { get; set; }
         public DbSet<GameLore> GameLores { get; set; }

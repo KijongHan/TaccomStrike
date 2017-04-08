@@ -1,5 +1,6 @@
 ﻿using AvaNet.DataAccessLayer;
 using AvaNet.Models;
+using AvaNet.Models.ViewModels.ForumViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
@@ -12,7 +13,11 @@ namespace AvaNet.Data
 {
     public class DbInitializer
     {
-        public static async void Initialize(IForumTopicRepository forumTopicRepository, IGameLoreRepository gameLoreRepository, RoleManager<IdentityRole> roleManager)
+        public static async void Initialize(
+            IPinnedForumThreadsRepository pinnedForumThreadsRepository, 
+            IForumTopicRepository forumTopicRepository, 
+            IGameLoreRepository gameLoreRepository, 
+            RoleManager<IdentityRole> roleManager)
         {
             var topics = new ForumTopic[]
             {
@@ -39,7 +44,7 @@ namespace AvaNet.Data
             foreach (ForumTopic topic in topics)
             {
                 //There is currently no topic with the specified title, so create forum topic
-                if (forumTopicRepository.Find(topic.Title) == null)
+                if (forumTopicRepository.Find(topic.Title, false) == null)
                 {
                     forumTopicRepository.Add(topic);
                 }
@@ -61,6 +66,8 @@ namespace AvaNet.Data
                     await roleManager.CreateAsync(new IdentityRole(role));
                 }
             }
+
+            pinnedForumThreadsRepository.Add(new PinnedForumThreads());
         }
     }
 }

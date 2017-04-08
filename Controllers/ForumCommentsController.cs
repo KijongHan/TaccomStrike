@@ -94,6 +94,12 @@ namespace AvaNet.Controllers
             return Redirect("/ForumThreads/Details/" + formDataThreadID + "?startIndex=" + formStartIndex + "&orderBy=" + formOrderBy);
         }
 
+        //Called when after logging in when the user was formerly not logged in while commenting
+        public IActionResult Create()
+        {
+            return Redirect("/");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]

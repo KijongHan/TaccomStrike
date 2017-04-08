@@ -39,8 +39,7 @@ namespace AvaNet.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Moderator")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Moderator")]
         public IActionResult Edit([Bind ("Title, ImageURL, Content")] GameLore gameLore)
         {
             gameLoreRepository.Update(gameLore);

@@ -28,12 +28,15 @@ namespace AvaNet.Controllers
 
         private readonly IForumLikeRepository forumLikeRepository;
 
+        private readonly IPinnedForumThreadsRepository pinnedForumThreadsRepository;
+
         private readonly UserManager<ApplicationUser> userManager;
 
         private readonly HtmlSanitizer htmlSanitizer;
 
-        public ForumThreadsController(HtmlSanitizer htmlSanitizer, IForumLikeRepository forumLikeRepository, IForumTopicRepository forumTopicRepository, IForumThreadRepository forumThreadRepository, UserManager<ApplicationUser> userManager)
+        public ForumThreadsController(HtmlSanitizer htmlSanitizer, IPinnedForumThreadsRepository pinnedForumThreadsRepository, IForumLikeRepository forumLikeRepository, IForumTopicRepository forumTopicRepository, IForumThreadRepository forumThreadRepository, UserManager<ApplicationUser> userManager)
         {
+            this.pinnedForumThreadsRepository = pinnedForumThreadsRepository;
             this.forumThreadRepository = forumThreadRepository;
             this.forumTopicRepository = forumTopicRepository;
             this.forumLikeRepository = forumLikeRepository;
@@ -58,10 +61,12 @@ namespace AvaNet.Controllers
         public IActionResult Index(int ID, int startIndex, string orderBy)
         {
             ForumTopic forumTopic = forumTopicRepository.Find(ID, true);
+            PinnedForumThreads pinnedForumThreads = pinnedForumThreadsRepository.Find();
 
             ForumThreadsIndexViewModel viewModel = new ForumThreadsIndexViewModel();
             viewModel.ForumTopicID = forumTopic.ForumTopicID;
             viewModel.ForumTopicTitle = forumTopic.Title;
+            viewModel.PinnedForumThreads = pinnedForumThreads;
 
             //Set URL parameter values
             viewModel.StartIndex = startIndex;

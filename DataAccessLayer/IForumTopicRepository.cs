@@ -14,7 +14,7 @@ namespace AvaNet.DataAccessLayer
 
         ForumTopic Find(int id, bool eager);
 
-        ForumTopic Find(string title);
+        ForumTopic Find(string title, bool eager);
 
         void Remove(int id);
 

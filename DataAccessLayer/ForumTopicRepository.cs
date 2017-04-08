@@ -37,8 +37,15 @@ namespace AvaNet.DataAccessLayer
             return context.ForumTopics.FirstOrDefault(e => e.ForumTopicID == id);
         }
 
-        public ForumTopic Find(string title)
+        public ForumTopic Find(string title, bool eager)
         {
+            if (eager)
+            {
+                return context.ForumTopics
+                    .Include(t => t.ForumThreads)
+                    .FirstOrDefault(t => t.Title == title);
+            }
+
             return context.ForumTopics.FirstOrDefault(t => t.Title == title);
         }
 

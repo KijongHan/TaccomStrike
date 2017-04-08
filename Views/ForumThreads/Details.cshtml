@@ -176,35 +176,43 @@
     @for (int i = 0; i < Model.ForumThread.ForumComments.Count; i++)
     {
         ForumComment comment = Model.ForumThread.ForumComments.ElementAt(i);
-
-        <div class="row">
-            <div class="col-xs-offset-2 col-xs-3 col-sm-offset-0 col-sm-1 col-md-1">
-                @{
-                    if (SignInManager.IsSignedIn(User))
-                    {
-                        bool voted = false;
-
-                        foreach (ForumLike like in comment.ForumLikes)
+        <div class="forumCommentPanel">
+            <div class="row">
+                <div class="col-xs-offset-2 col-xs-3 col-sm-offset-0 col-sm-1 col-md-1">
+                    @{
+                        if (SignInManager.IsSignedIn(User))
                         {
-                            if (like.Weight == 1)
+                            bool voted = false;
+
+                            foreach (ForumLike like in comment.ForumLikes)
                             {
-                                <div class="@comment.ForumCommentID forumCommentUpvote voteActive">
-                                </div>
-                                <div class="@comment.ForumCommentID forumCommentDownvote">
-                                </div>
-                                voted = true;
+                                if (like.Weight == 1)
+                                {
+                                    <div class="@comment.ForumCommentID forumCommentUpvote voteActive">
+                                    </div>
+                                    <div class="@comment.ForumCommentID forumCommentDownvote">
+                                    </div>
+                                    voted = true;
+                                }
+                                if (like.Weight == -1)
+                                {
+                                    <div class="@comment.ForumCommentID forumCommentUpvote">
+                                    </div>
+                                    <div class="@comment.ForumCommentID forumCommentDownvote voteActive">
+                                    </div>
+                                    voted = true;
+                                }
                             }
-                            if (like.Weight == -1)
+
+                            if (!voted)
                             {
                                 <div class="@comment.ForumCommentID forumCommentUpvote">
                                 </div>
-                                <div class="@comment.ForumCommentID forumCommentDownvote voteActive">
+                                <div class="@comment.ForumCommentID forumCommentDownvote">
                                 </div>
-                                voted = true;
                             }
                         }
-
-                        if (!voted)
+                        else
                         {
                             <div class="@comment.ForumCommentID forumCommentUpvote">
                             </div>
@@ -212,46 +220,41 @@
                             </div>
                         }
                     }
-                    else
-                    {
-                        <div class="@comment.ForumCommentID forumCommentUpvote">
-                        </div>
-                        <div class="@comment.ForumCommentID forumCommentDownvote">
-                        </div>
-                    }
-                }
-            </div>
-            <div class="col-xs-5 col-sm-2 col-md-2">
-                <img class="forumCommentPanelAvatarImage" src="@comment.ApplicationUser.AvatarImageURL"/>
-                <div class="forumCommentPanelInformation">
-                    <div>@Html.DisplayFor(modelItem => comment.ApplicationUser.GameUserID)</div>
-                    <div>@Html.DisplayFor(modelItem => comment.ForumCommentCreationTime)</div>
-                    <div>
-                        @{
-                            int commentPositiveCount = 0;
-                            int commentNegativeCount = 0;
-                            foreach (ForumLike forumLike in comment.ForumLikes)
-                            {
-                                if (forumLike.Weight > 0)
+                </div>
+                <div class="col-xs-5 col-sm-2 col-md-2">
+                    <img class="forumCommentPanelAvatarImage" src="@comment.ApplicationUser.AvatarImageURL" />
+                    <div class="forumCommentPanelInformation">
+                        <div>@Html.DisplayFor(modelItem => comment.ApplicationUser.GameUserID)</div>
+                        <div>@Html.DisplayFor(modelItem => comment.ForumCommentCreationTime)</div>
+                        <div>
+                            @{
+                                int commentPositiveCount = 0;
+                                int commentNegativeCount = 0;
+                                foreach (ForumLike forumLike in comment.ForumLikes)
                                 {
-                                    commentPositiveCount++;
-                                }
-                                else if (forumLike.Weight < 0)
-                                {
-                                    commentNegativeCount++;
+                                    if (forumLike.Weight > 0)
+                                    {
+                                        commentPositiveCount++;
+                                    }
+                                    else if (forumLike.Weight < 0)
+                                    {
+                                        commentNegativeCount++;
+                                    }
                                 }
                             }
-                        }
-                        <p style="color:green; float:left;">@commentPositiveCount</p><p style="color:red; float:left; padding-left:8px;">@commentNegativeCount</p>
+                            <p style="color:green; float:left;">@commentPositiveCount</p><p style="color:red; float:left; padding-left:8px;">@commentNegativeCount</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8">
+                    <div class="forumCommentContentPanel">
+                        @Html.DisplayFor(modelItem => comment.Content)
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-8 col-md-8">
-                <div class="forumCommentPanel">
-                    @Html.DisplayFor(modelItem => comment.Content)
-                </div>
-            </div>
+            <hr />
         </div>
+       
     }
 </div>
 

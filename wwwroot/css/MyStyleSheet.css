@@ -848,6 +848,10 @@ body:before
 #forumThreadContent 
 {
     padding: 20px 20px 20px 20px;
+    width: 80%;
+    margin-left: 10%;
+    font-size: larger;
+
     color: rgba(255, 255, 255, 0.7);
     background-color: rgba(0, 0, 0, 0.6);
 
@@ -949,7 +953,7 @@ body:before
     background-size: 80%;
     background-repeat: no-repeat;
     background-position: center;
-    background-color: rgba(66, 244, 224, 0.3);
+    background-color: rgba(0, 45, 45, 0.6);
     height: 80px;
     margin-top: 30px; 
     width: 80%;
@@ -965,7 +969,7 @@ body:before
     background-size: 80%;
     background-repeat: no-repeat;
     background-position: center;
-    background-color: rgba(66, 244, 224, 0.3);
+    background-color: rgba(0, 45, 45, 0.6);
     height: 80px;
     width: 80%;
 
@@ -1015,13 +1019,25 @@ body:before
     padding: 10px 10px 10px 10px;
 }
 
-.forumCommentPanel 
+.forumCommentContentPanel 
 {
+    border-left: thin solid rgba(255, 255, 255, 0.4);
     padding: 10px 10px 10px 30px;
     min-height: 150px;
     margin-top: 30px;
-    color: rgba(206, 255, 251,0.95);
-    background-color: rgba(66, 244, 224, 0.2);
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+}
+
+.forumCommentPanel 
+{
+    background-color: rgba(0, 60, 60, 0.3);
+}
+
+.forumCommentPanel hr 
+{
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 @keyframes forumCommentCreateButtonAnimation 
