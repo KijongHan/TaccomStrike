@@ -30,8 +30,9 @@ namespace AvaNet.DataAccessLayer
                 ForumThread forumThread = context.ForumThreads
                     .Include(t => t.ForumComments).ThenInclude(c => c.ApplicationUser)
                     .Include(t => t.ForumComments).ThenInclude(c => c.ForumLikes)
+                    .Include(t => t.ForumComments).ThenInclude(c => c.ForumLikes).ThenInclude(e => e.ApplicationUser)
                     .Include(t => t.ForumTopic)
-                    .Include(t => t.ForumLikes)
+                    .Include(t => t.ForumLikes).ThenInclude(c => c.ApplicationUser)
                     .Include(t => t.ApplicationUser).ThenInclude(c => c.GameUser)
                     .FirstOrDefault(t => t.ForumThreadID == id);
                 return forumThread;
