@@ -22,13 +22,18 @@ namespace AvaNet.Controllers
         {
             List<GameLore> mainGameLores = new List<GameLore>();
             mainGameLores.Add(gameLoreRepository.Find("NetSEC"));
-            mainGameLores.Add(gameLoreRepository.Find("Nationalist Frontier"));
+            mainGameLores.Add(gameLoreRepository.Find("Liberty Frontier"));
             mainGameLores.Add(gameLoreRepository.Find("Unified Republic"));
 
             return View(mainGameLores);
         }
 
         public IActionResult About()
+        {
+            return View();
+        }
+
+        public IActionResult Download()
         {
             return View();
         }

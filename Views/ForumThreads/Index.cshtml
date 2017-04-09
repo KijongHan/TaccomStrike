@@ -134,6 +134,7 @@
 
 @foreach (ForumThread item in Model.ForumThreads)
 {
+    string date = item.ForumThreadCreationTime.Day + "/" + item.ForumThreadCreationTime.Month + "/" + item.ForumThreadCreationTime.Year;
     int likeCount = 0;
 
     foreach (ForumLike fl in item.ForumLikes)
@@ -149,9 +150,14 @@
                         <div class="col-sm-7">
                             <div class="forumThreadPanelTitle">@Html.DisplayFor(modelItem => item.Title)</div>
                         </div>
-                        <div class="col-sm-5">
+                        <div class="col-sm-3">
                             <div class="forumThreadPanelLabel">
                                 Posted by: @Html.DisplayFor(modelItem => item.ApplicationUser.GameUserID)
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="forumThreadPanelLabel">
+                                @date
                             </div>
                         </div>
                     </div>

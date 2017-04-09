@@ -1145,3 +1145,13 @@ body:before
     padding-left: 5%;
     padding-top: 15px;
 }
+
+/*
+    CSS styling for download page
+*/
+#downloadPageTitle 
+{
+    font-size: 3em;
+    text-align: center;
+    color: rgba(255, 255, 255, 1);
+}

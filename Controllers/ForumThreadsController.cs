@@ -93,7 +93,7 @@ namespace AvaNet.Controllers
             else if (orderBy.Equals("mostLikes"))
             {
                 viewModel.ForumThreads = forumTopic.ForumThreads
-                    .OrderByDescending(t => t.ForumLikes.Count)
+                    .OrderByDescending(t => t.ForumLikes.Sum(e => e.Weight))
                     .Skip(viewModel.StartIndex)
                     .Take(ForumThreadsIndexViewModel.NUMBER_OF_THREADS_PER_PAGE);
             }

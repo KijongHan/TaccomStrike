@@ -72,7 +72,7 @@
 <div class="row">
     <div class="col-md-6">
         <div class="col-md-12">
-            <a asp-action="Index">
+            <a asp-action="Download">
                 <div id="downloadPanel">
                     <div class="panelTitle">Play Now</div>
                     <div id="downloadPanelImage"></div>
@@ -103,7 +103,7 @@
             @foreach (GameLore gameLore in Model)
             {
                 <div class="col-xs-offset-1 col-xs-10">
-                    <a asp-action="Index">
+                    <a asp-action="Details" asp-controller="GameLores" asp-route-id="@gameLore.GameLoreID">
                         <div class="gameLorePanel">
                             <div class="gameLorePanelTitle">@gameLore.Title</div>
                             <img src="@gameLore.ImageURL" style="" />

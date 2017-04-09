@@ -31,7 +31,7 @@ namespace AvaNet.Data
             var gameLores = new GameLore[]
             {
                 new GameLore { Title="NetSEC", ImageURL="/images/gamelores/netsec.jpg", Content="write here." },
-                new GameLore { Title="Nationalist Frontier", ImageURL="/images/gamelores/nationalistfrontier.jpg", Content="write here." },
+                new GameLore { Title="Liberty Frontier", ImageURL="/images/gamelores/nationalistfrontier.jpg", Content="write here." },
                 new GameLore { Title="Unified Republic", ImageURL="/images/gamelores/unifiedrepublic.jpg", Content="write here." },
             };
 
