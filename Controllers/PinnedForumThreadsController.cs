@@ -33,7 +33,7 @@ namespace AvaNet.Controllers
         public IActionResult Edit()
         {
             ForumTopic forumTopic = forumTopicRepository.Find("Game News and Updates", true);
-            PinnedForumThreads pinnedForumThreads = pinnedForumThreadsRepository.Find();
+            PinnedForumThreads pinnedForumThreads = pinnedForumThreadsRepository.Find(false);
             PinnedForumThreadsEditViewModel viewModel = new PinnedForumThreadsEditViewModel { ForumTopic=forumTopic, PinnedForumThreads=pinnedForumThreads };
 
             return View(viewModel);
@@ -43,7 +43,8 @@ namespace AvaNet.Controllers
         [Authorize(Roles = "Administrator,Moderator")]
         public IActionResult Edit(IFormCollection formData)
         {
-            PinnedForumThreads pinnedForumThreads = pinnedForumThreadsRepository.Find();
+            PinnedForumThreads pinnedForumThreads = pinnedForumThreadsRepository.Find(false);
+            pinnedForumThreads.ForumThreads.Clear();
 
             List<string> selectedForumThreadsIDs = formData.Where(t => t.Key == "forumThreads")
                 .ElementAt(0)

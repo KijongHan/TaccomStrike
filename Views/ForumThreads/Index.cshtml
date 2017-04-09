@@ -1,4 +1,8 @@
 ﻿@model AvaNet.Models.ViewModels.ForumViewModels.ForumThreadsIndexViewModel
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 <div class="row">
     <div class="col-md-6">
@@ -24,9 +28,24 @@
             </a>
         </div>
     </div>
-    <div class="col-md-2">
-        <div id="forumThreadCreateButton">+ New Thread</div>
-    </div>
+    @if (Model.ForumTopicTitle.Equals("Game News and Updates"))
+    {
+        @if (SignInManager.IsSignedIn(User))
+        {
+            if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+            {
+                <div class="col-md-2">
+                    <div id="forumThreadCreateButton">+ New Thread</div>
+                </div>
+            }
+        }
+    }
+    else
+    {
+        <div class="col-md-2">
+            <div id="forumThreadCreateButton">+ New Thread</div>
+        </div>
+    }
 </div>
 <div class="gapFour"></div>
 
@@ -63,9 +82,55 @@
 
 <hr />
 
+@foreach (ForumThread pinnedForumThread in Model.PinnedForumThreads.ForumThreads)
+{
+    string date = pinnedForumThread.ForumThreadCreationTime.Day + "/" + pinnedForumThread.ForumThreadCreationTime.Month + "/" + pinnedForumThread.ForumThreadCreationTime.Year;
+    int likeCount = 0;
 
+    foreach (ForumLike fl in pinnedForumThread.ForumLikes)
+    {
+        likeCount += fl.Weight;
+    }
 
-<hr />
+    <div class="row">
+        <div class="col-md-12">
+            <a asp-action="Details" asp-route-id="@pinnedForumThread.ForumThreadID" asp-controller="ForumThreads">
+                <div class="forumThreadPanel admin">
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <div class="forumThreadPanelTitle">@Html.DisplayFor(modelItem => pinnedForumThread.Title)</div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="forumThreadPanelLabel">
+                                Posted by: @Html.DisplayFor(modelItem => pinnedForumThread.ApplicationUser.GameUserID)
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="forumThreadPanelLabel">
+                                @date
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 col-sm-4 col-md-2">
+                            <div class="forumThreadPanelLikeImage"></div>
+                            <div class="forumThreadPanelLikeLabel">@likeCount</div>
+                        </div>
+                        <div class="col-xs-5 col-sm-4 col-md-2">
+                            <div class="forumThreadPanelCommentsImage"></div>
+                            <div class="forumThreadPanelCommentsLabel">@pinnedForumThread.ForumComments.Count</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+}
+
+<div id="forumThreadsNavigationDivider">
+    <div class="gap"></div>
+    <div class="gap"></div>
+</div>
 
 @foreach (ForumThread item in Model.ForumThreads)
 {

@@ -28,10 +28,8 @@ namespace AvaNet.Controllers
             return View(mainGameLores);
         }
 
-        public IActionResult Contact()
+        public IActionResult About()
         {
-            ViewData["Message"] = "Your contact page.";
-
             return View();
         }
 

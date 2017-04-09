@@ -24,11 +24,27 @@ namespace AvaNet.DataAccessLayer
             context.SaveChanges();
         }
 
-        public PinnedForumThreads Find()
+        public PinnedForumThreads Find(bool eager)
         {
+            if(eager)
+            {
+                return context.PinnedForumThreads
+                .Include(t => t.ForumThreads).ThenInclude(c => c.ApplicationUser)
+                .Include(t => t.ForumThreads).ThenInclude(c => c.ForumComments)
+                .Include(t => t.ForumThreads).ThenInclude(c => c.ForumLikes)
+                .FirstOrDefault();
+            }
+
             return context.PinnedForumThreads
                 .Include(t => t.ForumThreads)
                 .FirstOrDefault();
+        }
+
+        public void Remove()
+        {
+            PinnedForumThreads pinnedForumThread = context.PinnedForumThreads.FirstOrDefault();
+            context.PinnedForumThreads.Remove(pinnedForumThread);
+            context.SaveChanges();
         }
 
         public void Update(PinnedForumThreads pinnedForumThreads)

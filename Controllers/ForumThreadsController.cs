@@ -61,7 +61,7 @@ namespace AvaNet.Controllers
         public IActionResult Index(int ID, int startIndex, string orderBy)
         {
             ForumTopic forumTopic = forumTopicRepository.Find(ID, true);
-            PinnedForumThreads pinnedForumThreads = pinnedForumThreadsRepository.Find();
+            PinnedForumThreads pinnedForumThreads = pinnedForumThreadsRepository.Find(true);
 
             ForumThreadsIndexViewModel viewModel = new ForumThreadsIndexViewModel();
             viewModel.ForumTopicID = forumTopic.ForumTopicID;
@@ -181,7 +181,7 @@ namespace AvaNet.Controllers
             forumThread.Content = htmlSanitizer.RemoveUnwantedTags(forumThread.Content);
             // Generate the token and send it
             ApplicationUser user = await GetCurrentUserAsync();
-
+            
             //Set creator of forum thread
             forumThread.ApplicationUser = user;
             forumThread.ForumThreadCreationTime = DateTime.UtcNow;

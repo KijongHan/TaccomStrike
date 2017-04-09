@@ -21,7 +21,7 @@ namespace AvaNet.Models.ViewModels.ForumViewModels
         public PinnedForumThreads PinnedForumThreads { get; set; }
 
         public IEnumerable<ForumThread> ForumThreads { get; set; }
-
+        
         public int GetNextStartIndex()
         {
             return NUMBER_OF_THREADS_PER_PAGE + StartIndex;

@@ -16,6 +16,8 @@ namespace AvaNet.DataAccessLayer
 
         void Update(PinnedForumThreads pinnedForumThreads);
 
-        PinnedForumThreads Find();
+        void Remove();
+
+        PinnedForumThreads Find(bool eager);
     }
 }

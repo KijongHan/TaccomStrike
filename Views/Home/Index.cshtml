@@ -82,9 +82,9 @@
     </div>
     <div class="col-md-6">
         <div class="col-md-12">
-            <a asp-action="Index">
+            <a asp-action="About">
                 <div id="gameGuidePanel">
-                    <div class="panelTitle">Game Guide</div>
+                    <div class="panelTitle">About/FAQ</div>
                     <div id="gameGuidePanelImage"></div>
                 </div>
             </a>
@@ -95,30 +95,23 @@
 <div class="gapOne"></div>
 
 <div class="row">
-    <div class="col-md-12">
-        <div id="aboutPanel">
-            <div class="panelTitle">About this Game</div>
+    <div id="gameLoresContent">
+        <div class="col-md-12">
+            <div id="gameLorePanelsTitle">AvaNet  Universe</div>
         </div>
-    </div>
-</div>
-
-<div class="gapOne"></div>
-
-<div class="row">
-    <div class="col-md-12">
-        <div id="gameLorePanelsTitle">AvaNet  Universe</div>
-    </div>
-</div>
-<div class="row">
-    @foreach (GameLore gameLore in Model)
-    {
-        <div class="col-md-4">
-            <a asp-action="Index">
-                <div class="gameLorePanel">
-                    <div class="gameLorePanelTitle">@gameLore.Title</div>
-                    <img src="@gameLore.ImageURL" style="" />
+        <div class="row">
+            @foreach (GameLore gameLore in Model)
+            {
+                <div class="col-xs-offset-1 col-xs-10">
+                    <a asp-action="Index">
+                        <div class="gameLorePanel">
+                            <div class="gameLorePanelTitle">@gameLore.Title</div>
+                            <img src="@gameLore.ImageURL" style="" />
+                        </div>
+                    </a>
                 </div>
-            </a>
+            }
         </div>
-    }
+    </div>
 </div>
+

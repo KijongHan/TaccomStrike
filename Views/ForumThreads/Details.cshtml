@@ -50,7 +50,7 @@
 
                 foreach (ForumLike like in Model.ForumThread.ForumLikes)
                 {
-                    if (like.Weight == 1)
+                    if (like.Weight == 1 && like.ApplicationUser.UserName == User.Identity.Name)
                     {
                         <div id="forumThreadUpvote" class="voteActive">
                         </div>
@@ -58,7 +58,7 @@
                         </div>
                         voted = true;
                     }
-                    if (like.Weight == -1)
+                    if (like.Weight == -1 && like.ApplicationUser.UserName == User.Identity.Name)
                     {
                         <div id="forumThreadUpvote">
                         </div>
@@ -186,7 +186,7 @@
 
                             foreach (ForumLike like in comment.ForumLikes)
                             {
-                                if (like.Weight == 1)
+                                if (like.Weight == 1 && like.ApplicationUser.UserName==User.Identity.Name)
                                 {
                                     <div class="@comment.ForumCommentID forumCommentUpvote voteActive">
                                     </div>
@@ -194,7 +194,7 @@
                                     </div>
                                     voted = true;
                                 }
-                                if (like.Weight == -1)
+                                if (like.Weight == -1 && like.ApplicationUser.UserName == User.Identity.Name)
                                 {
                                     <div class="@comment.ForumCommentID forumCommentUpvote">
                                     </div>

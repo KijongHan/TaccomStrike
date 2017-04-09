@@ -30,7 +30,7 @@ namespace AvaNet.DataAccessLayer
             {
                 ForumComment forumComment = context.ForumComments
                     .Include(t => t.ApplicationUser)
-                    .Include(t => t.ForumLikes)
+                    .Include(t => t.ForumLikes).ThenInclude(c => c.ApplicationUser)
                     .FirstOrDefault(t => t.ForumCommentID == id);
                 return forumComment;
             }

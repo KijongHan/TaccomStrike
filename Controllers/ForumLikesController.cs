@@ -63,15 +63,15 @@ namespace AvaNet.Controllers
             string formOrderBy = formData.First(t => t.Key.Equals("OrderBy")).Value;
             string returnURL = "/ForumThreads/Details/" + formDataThreadID + "?startIndex=" + formStartIndex + "&orderBy=" + formOrderBy;
 
-            if (formData.ContainsKey("ForumThreadID"))
-            {
-                ProcessForumThreadLike(formData, forumLike);
-            }
             if (formData.ContainsKey("ForumCommentID"))
             {
                 ProcessForumCommentLike(formData, forumLike);
             }
-
+            else
+            { 
+                ProcessForumThreadLike(formData, forumLike);
+            }
+            
             return Redirect(returnURL);
         }
 
