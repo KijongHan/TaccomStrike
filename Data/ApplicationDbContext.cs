@@ -41,8 +41,8 @@ namespace AvaNet.Data
                 .Ignore(c => c.ApplicationUser);
             builder.Entity<ForumThread>()
                 .Ignore(c => c.ForumTopic);
-            builder.Entity<ForumComment>()
-                .Ignore(c => c.ForumThread);
+            builder.Entity<ForumThread>()
+                .Ignore(c => c.ForumLikes);
 
             builder.Entity<ForumLike>()
                 .HasOne(c => c.ApplicationUser)
@@ -53,17 +53,18 @@ namespace AvaNet.Data
                 .HasOne(c => c.ApplicationUser)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ForumThread>()
+                .HasMany(c => c.ForumLikes)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<ApplicationUser>()
                 .HasMany(c => c.ForumThreads)
                 .WithOne();
 
             builder.Entity<ForumThread>()
                 .HasOne(c => c.ForumTopic)
-                .WithMany()
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<ForumComment>()
-                .HasOne(c => c.ForumThread)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
         }

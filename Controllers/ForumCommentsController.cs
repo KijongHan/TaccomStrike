@@ -103,17 +103,18 @@ namespace AvaNet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Content, ForumThreadID")] ForumComment forumComment)
+        public async Task<IActionResult> Create(IFormCollection formData)
         {
             // Generate the token and send it
             ApplicationUser user = await GetCurrentUserAsync();
 
             //Set comment creator
+            ForumComment forumComment = new ForumComment { Content = formData.First(t => t.Key == "Content").Value };
             forumComment.ApplicationUser = user;
             forumComment.ForumCommentCreationTime = DateTime.UtcNow; 
             forumCommentRepository.Add(forumComment);
 
-            return Redirect("/ForumThreads/Details/" + forumComment.ForumThreadID);
+            return Redirect("/ForumThreads/Details/" + formData.First(t => t.Key=="ForumThreadID").Value);
         }
 
         [Authorize]

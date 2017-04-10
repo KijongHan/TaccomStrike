@@ -12,9 +12,6 @@ namespace AvaNet.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ForumCommentID { get; set; }
 
-        public int ForumThreadID { get; set; }
-        public ForumThread ForumThread { get; set; }
-
         [Required]
         [StringLength(1500, ErrorMessage = "Comment content cannot be longer than 1500 characters.")]
         public string Content { get; set; }
