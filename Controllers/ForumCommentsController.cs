@@ -116,6 +116,36 @@ namespace AvaNet.Controllers
             return Redirect("/ForumThreads/Details/" + forumComment.ForumThreadID);
         }
 
+        [Authorize]
+        public async Task<IActionResult> Delete(int ID, int forumThreadID)
+        {
+            // Generate the token and send it
+            ApplicationUser user = await GetCurrentUserAsync();
+            ForumComment forumComment = forumCommentRepository.Find(ID, true);
+
+            //In case mal-intended delete request got through
+            if(!user.Id.Equals(forumComment.ApplicationUser.Id))
+            {
+                return null;
+            }
+
+            forumComment.Content = "|Deleted by User|";
+            forumCommentRepository.Update(forumComment);
+            return Redirect("/ForumThreads/Details/" + forumThreadID);
+        }
+
+        [Authorize(Roles = "Administrator,Moderator")]
+        public async Task<IActionResult> Ban(int ID, int forumThreadID)
+        {
+            // Generate the token and send it
+            ApplicationUser user = await GetCurrentUserAsync();
+            ForumComment forumComment = forumCommentRepository.Find(ID, true);
+            
+            forumComment.Content = "|Comment Banned by Moderator|";
+            forumCommentRepository.Update(forumComment);
+            return Redirect("/ForumThreads/Details/" + forumThreadID);
+        }
+
         private async Task<ApplicationUser> GetCurrentUserAsync()
         {
             return await userManager.GetUserAsync(HttpContext.User);

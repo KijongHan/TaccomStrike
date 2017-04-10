@@ -105,8 +105,16 @@ namespace AvaNet.Controllers
                 return Redirect("/Manage/Index");
             }
 
-            ProfileViewModel viewModel = new ProfileViewModel { GameUserID = user.GameUserID, AvatarImageURL = user.AvatarImageURL };
+            ProfileViewModel viewModel = new ProfileViewModel { UserID=user.Id, Privileges=_userManager.GetRolesAsync(user).Result, GameUserID = user.GameUserID, AvatarImageURL = user.AvatarImageURL };
             return View(viewModel);
+        }
+
+        [Authorize(Roles="Administrator")]
+        public async Task<IActionResult> Ban(string ID)
+        {
+            var user = await _userManager.FindByIdAsync(Convert.ToString(ID));
+            await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
+            return Redirect("/");
         }
 
         //

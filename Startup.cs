@@ -126,6 +126,9 @@ namespace AvaNet
 
             app.UseIdentity();
 
+            //Custom middleware
+            app.UseMiddleware<BanUserMiddleware>();
+
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>
@@ -136,6 +139,7 @@ namespace AvaNet
             });
 
             DbInitializer.Initialize(pinnedForumThreadsRepository, forumTopicRepository, gameLoreRepository, roleManager);
+
         }
     }
 }

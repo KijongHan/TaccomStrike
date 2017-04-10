@@ -193,6 +193,7 @@
 <div>
     @for (int i = 0; i < Model.ForumThread.ForumComments.Count; i++)
     {
+        ApplicationUser currentUser = UserManager.GetUserAsync(User).Result;
         ForumComment comment = Model.ForumThread.ForumComments.ElementAt(i);
         <div class="forumCommentPanel">
             <div class="row">
@@ -289,7 +290,11 @@
                             {
                                 <br/>
                                 <br />
-                                <a asp-action="Delete" asp-controller="ForumComments" asp-route-id="@comment.ForumCommentID">[Delete Comment]</a>
+                                <a asp-action="Delete" asp-controller="ForumComments" asp-route-id="@comment.ForumCommentID" asp-route-forumThreadID="@Model.ForumThread.ForumThreadID">[Delete Comment]</a>
+                            }
+                            if (UserManager.IsInRoleAsync(currentUser, "Administrator").Result || UserManager.IsInRoleAsync(currentUser, "Moderator").Result)
+                            {
+                                <a asp-action="Ban" asp-controller="ForumComments" asp-route-id="@comment.ForumCommentID" asp-route-forumThreadID="@Model.ForumThread.ForumThreadID">[Ban Comment]</a>
                             }
                         }
                     </div>
