@@ -13,6 +13,7 @@ using AvaNet.Models.AccountViewModels;
 using AvaNet.Services;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using AvaNet.DataAccessLayer;
+using AvaNet.Models.ViewModels.AccountViewModels;
 
 namespace AvaNet.Controllers
 {
@@ -90,6 +91,22 @@ namespace AvaNet.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Profile(string ID)
+        {
+            var user = await _userManager.FindByIdAsync(Convert.ToString(ID));
+            var currentUser = await GetCurrentUserAsync();
+
+            //Compare the requested user profile with the current user.
+            if(currentUser.UserName.Equals(user.UserName))
+            {
+                return Redirect("/Manage/Index");
+            }
+
+            ProfileViewModel viewModel = new ProfileViewModel { GameUserID = user.GameUserID, AvatarImageURL = user.AvatarImageURL };
+            return View(viewModel);
         }
 
         //
@@ -460,7 +477,6 @@ namespace AvaNet.Controllers
                 return View(model);
             }
         }
-
         #region Helpers
 
         private void AddErrors(IdentityResult result)

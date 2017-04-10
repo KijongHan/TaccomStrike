@@ -1,0 +1,22 @@
+﻿@using AvaNet.Models.ViewModels.AccountViewModels
+
+@model ProfileViewModel
+
+<div>
+    <div id="profilePageTitle">Profile Summary</div>
+    <hr />
+    <div class="profilePageAttributesPanel">
+        <div class="row">
+            <div class="col-xs-12 col-sm-3">
+                <div class="profilePageAttributeLabels">
+                    Game User Id:
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <div class="profilePageAttributes">
+                    @Model.GameUserID
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

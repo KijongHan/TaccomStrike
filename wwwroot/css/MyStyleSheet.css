@@ -615,6 +615,11 @@ body:before
     color: rgba(255, 255, 255, 0.5);
 }
 
+.forumThreadPanelLabel.admin
+{
+    color: rgb(61, 255, 74);
+}
+
 .forumThreadPanelLikeImage 
 {
     float: left;
@@ -855,6 +860,11 @@ body:before
     color: rgba(206, 255, 251,0.8);
 }
 
+.forumThreadLabel.admin
+{
+    color: rgb(61, 255, 74);
+}
+
 .forumThreadLabelPanel
 {
     padding-top: 20px;
@@ -1045,6 +1055,11 @@ body:before
     color: rgba(255, 255, 255, 1);
 }
 
+.forumCommentContentPanel a:hover 
+{
+    cursor: pointer;
+}
+
 .forumCommentPanel 
 {
     background-color: rgba(0, 60, 60, 0.3);
@@ -1154,4 +1169,30 @@ body:before
     font-size: 3em;
     text-align: center;
     color: rgba(255, 255, 255, 1);
+}
+
+/*CSS styling for profile page*/
+#profilePageTitle 
+{
+    padding-top: 50px;
+    font-size: 2.8em;
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.profilePageAttributesPanel 
+{
+    margin-top: 30px;
+}
+
+.profilePageAttributes 
+{
+    font-size: 1.2em;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.profilePageAttributeLabels 
+{
+    font-size: 1.2em;
+    color: rgba(206, 255, 251, 1);
 }

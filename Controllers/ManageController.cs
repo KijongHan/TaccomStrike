@@ -56,6 +56,7 @@ namespace AvaNet.Controllers
             }
             var model = new IndexViewModel
             {
+                User = user,
                 HasPassword = await _userManager.HasPasswordAsync(user),
                 PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
                 TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
