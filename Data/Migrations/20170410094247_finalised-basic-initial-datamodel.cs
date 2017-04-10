@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace AvaNet.Data.Migrations
 {
-    public partial class adddatamodelwithignoreduplicates : Migration
+    public partial class finalisedbasicinitialdatamodel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,6 +50,21 @@ namespace AvaNet.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GameLores",
+                columns: table => new
+                {
+                    GameLoreID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Content = table.Column<string>(nullable: false),
+                    ImageURL = table.Column<string>(nullable: false),
+                    Title = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GameLores", x => x.GameLoreID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "GameUsers",
                 columns: table => new
                 {
@@ -58,6 +73,18 @@ namespace AvaNet.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GameUsers", x => x.GameUserID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PinnedForumThreads",
+                columns: table => new
+                {
+                    PinnedForumThreadsID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PinnedForumThreads", x => x.PinnedForumThreadsID);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,7 +99,9 @@ namespace AvaNet.Data.Migrations
                     ForumThreadCreationTime = table.Column<DateTime>(nullable: false),
                     ForumTopicID = table.Column<int>(nullable: false),
                     ForumTopicID1 = table.Column<int>(nullable: true),
-                    Title = table.Column<string>(maxLength: 300, nullable: false)
+                    IsBanned = table.Column<bool>(nullable: false),
+                    PinnedForumThreadsID = table.Column<int>(nullable: true),
+                    Title = table.Column<string>(maxLength: 60, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -101,6 +130,12 @@ namespace AvaNet.Data.Migrations
                         principalTable: "ForumTopics",
                         principalColumn: "ForumTopicID",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ForumThreads_PinnedForumThreads_PinnedForumThreadsID",
+                        column: x => x.PinnedForumThreadsID,
+                        principalTable: "PinnedForumThreads",
+                        principalColumn: "PinnedForumThreadsID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,8 +147,9 @@ namespace AvaNet.Data.Migrations
                     ApplicationUserId = table.Column<string>(nullable: true),
                     Content = table.Column<string>(maxLength: 1500, nullable: false),
                     ForumCommentCreationTime = table.Column<DateTime>(nullable: false),
-                    ForumThreadID = table.Column<int>(nullable: false),
-                    ForumThreadID1 = table.Column<int>(nullable: true)
+                    ForumThreadID = table.Column<int>(nullable: true),
+                    IsBanned = table.Column<bool>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -129,12 +165,6 @@ namespace AvaNet.Data.Migrations
                         column: x => x.ForumThreadID,
                         principalTable: "ForumThreads",
                         principalColumn: "ForumThreadID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ForumComments_ForumThreads_ForumThreadID1",
-                        column: x => x.ForumThreadID1,
-                        principalTable: "ForumThreads",
-                        principalColumn: "ForumThreadID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -146,7 +176,7 @@ namespace AvaNet.Data.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ApplicationUserId = table.Column<string>(nullable: true),
                     ForumCommentID = table.Column<int>(nullable: true),
-                    ForumThreadID = table.Column<int>(nullable: false),
+                    ForumThreadID = table.Column<int>(nullable: true),
                     Weight = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -171,6 +201,11 @@ namespace AvaNet.Data.Migrations
                         principalColumn: "ForumThreadID",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.AddColumn<string>(
+                name: "AvatarImageURL",
+                table: "AspNetUsers",
+                nullable: true);
 
             migrationBuilder.AddColumn<string>(
                 name: "GameUserID",
@@ -203,11 +238,6 @@ namespace AvaNet.Data.Migrations
                 name: "IX_ForumComments_ForumThreadID",
                 table: "ForumComments",
                 column: "ForumThreadID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ForumComments_ForumThreadID1",
-                table: "ForumComments",
-                column: "ForumThreadID1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ForumLikes_ApplicationUserId",
@@ -244,6 +274,11 @@ namespace AvaNet.Data.Migrations
                 table: "ForumThreads",
                 column: "ForumTopicID1");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumThreads_PinnedForumThreadsID",
+                table: "ForumThreads",
+                column: "PinnedForumThreadsID");
+
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUsers_GameUsers_GameUserID",
                 table: "AspNetUsers",
@@ -264,6 +299,10 @@ namespace AvaNet.Data.Migrations
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
+                name: "AvatarImageURL",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
                 name: "GameUserID",
                 table: "AspNetUsers");
 
@@ -272,6 +311,9 @@ namespace AvaNet.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "ForumLikes");
+
+            migrationBuilder.DropTable(
+                name: "GameLores");
 
             migrationBuilder.DropTable(
                 name: "GameUsers");
@@ -284,6 +326,9 @@ namespace AvaNet.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "ForumTopics");
+
+            migrationBuilder.DropTable(
+                name: "PinnedForumThreads");
         }
     }
 }

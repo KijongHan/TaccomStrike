@@ -208,7 +208,7 @@ namespace AvaNet.Controllers
             // Generate the token and send it
             ApplicationUser user = await GetCurrentUserAsync();
             forumThreadRepository.Remove(ID);
-            return Redirect("/ForumThreads/Index/");
+            return Redirect("/");
         }
 
         private async Task<ApplicationUser> GetCurrentUserAsync()

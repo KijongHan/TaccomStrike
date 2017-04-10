@@ -8,8 +8,8 @@ using AvaNet.Data;
 namespace AvaNet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170410084448_added-banned-and-deleted-comment-attributes")]
-    partial class addedbannedanddeletedcommentattributes
+    [Migration("20170410094247_finalised-basic-initial-datamodel")]
+    partial class finalisedbasicinitialdatamodel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -105,9 +105,7 @@ namespace AvaNet.Data.Migrations
 
                     b.Property<DateTime>("ForumCommentCreationTime");
 
-                    b.Property<int>("ForumThreadID");
-
-                    b.Property<int?>("ForumThreadID1");
+                    b.Property<int?>("ForumThreadID");
 
                     b.Property<bool>("IsBanned");
 
@@ -118,8 +116,6 @@ namespace AvaNet.Data.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("ForumThreadID");
-
-                    b.HasIndex("ForumThreadID1");
 
                     b.ToTable("ForumComments");
                 });
@@ -166,6 +162,8 @@ namespace AvaNet.Data.Migrations
                     b.Property<int>("ForumTopicID");
 
                     b.Property<int?>("ForumTopicID1");
+
+                    b.Property<bool>("IsBanned");
 
                     b.Property<int?>("PinnedForumThreadsID");
 
@@ -374,12 +372,7 @@ namespace AvaNet.Data.Migrations
 
                     b.HasOne("AvaNet.Models.ForumThread")
                         .WithMany("ForumComments")
-                        .HasForeignKey("ForumThreadID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("AvaNet.Models.ForumThread", "ForumThread")
-                        .WithMany()
-                        .HasForeignKey("ForumThreadID1");
+                        .HasForeignKey("ForumThreadID");
                 });
 
             modelBuilder.Entity("AvaNet.Models.ForumLike", b =>
@@ -394,7 +387,8 @@ namespace AvaNet.Data.Migrations
 
                     b.HasOne("AvaNet.Models.ForumThread")
                         .WithMany("ForumLikes")
-                        .HasForeignKey("ForumThreadID");
+                        .HasForeignKey("ForumThreadID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("AvaNet.Models.ForumThread", b =>

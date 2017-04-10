@@ -371,7 +371,8 @@ namespace AvaNet.Data.Migrations
 
                     b.HasOne("AvaNet.Models.ForumThread")
                         .WithMany("ForumComments")
-                        .HasForeignKey("ForumThreadID");
+                        .HasForeignKey("ForumThreadID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("AvaNet.Models.ForumLike", b =>

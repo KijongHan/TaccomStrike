@@ -22,10 +22,13 @@ namespace AvaNet.Controllers
 
         private readonly IForumLikeRepository forumLikeRepository;
 
-        public ForumCommentsController(UserManager<ApplicationUser> userManager, IForumCommentRepository forumCommentRepository, IForumLikeRepository forumLikeRepository)
+        private readonly IForumThreadRepository forumThreadRepository;
+
+        public ForumCommentsController(UserManager<ApplicationUser> userManager, IForumThreadRepository forumThreadRepository, IForumCommentRepository forumCommentRepository, IForumLikeRepository forumLikeRepository)
         {
             this.userManager = userManager;
             this.forumCommentRepository = forumCommentRepository;
+            this.forumThreadRepository = forumThreadRepository;
             this.forumLikeRepository = forumLikeRepository;
         }
 
@@ -105,16 +108,20 @@ namespace AvaNet.Controllers
         [Authorize]
         public async Task<IActionResult> Create(IFormCollection formData)
         {
+            //retrieve form values
+            int forumThreadID = Convert.ToInt32(formData.First(t => t.Key == "ForumThreadID").Value);
+            string commentContent = formData.First(t => t.Key == "Content").Value;
+
             // Generate the token and send it
             ApplicationUser user = await GetCurrentUserAsync();
 
             //Set comment creator
-            ForumComment forumComment = new ForumComment { Content = formData.First(t => t.Key == "Content").Value };
-            forumComment.ApplicationUser = user;
-            forumComment.ForumCommentCreationTime = DateTime.UtcNow; 
-            forumCommentRepository.Add(forumComment);
+            ForumComment forumComment = new ForumComment { ApplicationUser=user, Content=commentContent, ForumCommentCreationTime= DateTime.UtcNow };
+            ForumThread forumThread = forumThreadRepository.Find(forumThreadID, true);
+            forumThread.ForumComments.Add(forumComment);
+            forumThreadRepository.Update(forumThread);
 
-            return Redirect("/ForumThreads/Details/" + formData.First(t => t.Key=="ForumThreadID").Value);
+            return Redirect("/ForumThreads/Details/" + forumThreadID);
         }
 
         [Authorize]

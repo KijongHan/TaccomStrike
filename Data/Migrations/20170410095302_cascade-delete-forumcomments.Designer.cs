@@ -8,8 +8,8 @@ using AvaNet.Data;
 namespace AvaNet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170405101249_removed-forum-thread-id-from-forumlikes")]
-    partial class removedforumthreadidfromforumlikes
+    [Migration("20170410095302_cascade-delete-forumcomments")]
+    partial class cascadedeleteforumcomments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,6 +22,8 @@ namespace AvaNet.Data.Migrations
                     b.Property<string>("Id");
 
                     b.Property<int>("AccessFailedCount");
+
+                    b.Property<string>("AvatarImageURL");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -103,17 +105,17 @@ namespace AvaNet.Data.Migrations
 
                     b.Property<DateTime>("ForumCommentCreationTime");
 
-                    b.Property<int>("ForumThreadID");
+                    b.Property<int?>("ForumThreadID");
 
-                    b.Property<int?>("ForumThreadID1");
+                    b.Property<bool>("IsBanned");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.HasKey("ForumCommentID");
 
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("ForumThreadID");
-
-                    b.HasIndex("ForumThreadID1");
 
                     b.ToTable("ForumComments");
                 });
@@ -161,6 +163,10 @@ namespace AvaNet.Data.Migrations
 
                     b.Property<int?>("ForumTopicID1");
 
+                    b.Property<bool>("IsBanned");
+
+                    b.Property<int?>("PinnedForumThreadsID");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 60);
@@ -174,6 +180,8 @@ namespace AvaNet.Data.Migrations
                     b.HasIndex("ForumTopicID");
 
                     b.HasIndex("ForumTopicID1");
+
+                    b.HasIndex("PinnedForumThreadsID");
 
                     b.ToTable("ForumThreads");
                 });
@@ -219,6 +227,16 @@ namespace AvaNet.Data.Migrations
                     b.HasKey("GameUserID");
 
                     b.ToTable("GameUsers");
+                });
+
+            modelBuilder.Entity("AvaNet.Models.PinnedForumThreads", b =>
+                {
+                    b.Property<int>("PinnedForumThreadsID")
+                        .ValueGeneratedOnAdd();
+
+                    b.HasKey("PinnedForumThreadsID");
+
+                    b.ToTable("PinnedForumThreads");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -356,10 +374,6 @@ namespace AvaNet.Data.Migrations
                         .WithMany("ForumComments")
                         .HasForeignKey("ForumThreadID")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("AvaNet.Models.ForumThread", "ForumThread")
-                        .WithMany()
-                        .HasForeignKey("ForumThreadID1");
                 });
 
             modelBuilder.Entity("AvaNet.Models.ForumLike", b =>
@@ -374,7 +388,8 @@ namespace AvaNet.Data.Migrations
 
                     b.HasOne("AvaNet.Models.ForumThread")
                         .WithMany("ForumLikes")
-                        .HasForeignKey("ForumThreadID");
+                        .HasForeignKey("ForumThreadID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("AvaNet.Models.ForumThread", b =>
@@ -395,6 +410,10 @@ namespace AvaNet.Data.Migrations
                     b.HasOne("AvaNet.Models.ForumTopic", "ForumTopic")
                         .WithMany()
                         .HasForeignKey("ForumTopicID1");
+
+                    b.HasOne("AvaNet.Models.PinnedForumThreads")
+                        .WithMany("ForumThreads")
+                        .HasForeignKey("PinnedForumThreadsID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
