@@ -71,6 +71,7 @@ namespace AvaNet
             services.AddScoped<IGameUserRepository, GameUserRepository>();
             services.AddScoped<IGameLoreRepository, GameLoreRepository>();
             services.AddScoped<HtmlSanitizer>();
+            services.AddScoped<DateFormatter>();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();

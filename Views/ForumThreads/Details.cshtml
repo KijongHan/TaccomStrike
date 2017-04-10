@@ -1,6 +1,8 @@
 ﻿@model AvaNet.Models.ViewModels.ForumViewModels.ForumThreadsDetailsViewModel
 @using AvaNet.Models.ViewModels.ForumViewModels
+@using AvaNet.Services
 
+@inject DateFormatter DateFormatter
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -93,7 +95,7 @@
             <div id="forumThreadTitle">@Html.DisplayFor(modelItem => Model.ForumThread.Title)</div>
             <div class="forumThreadLabelPanel">
                 <div class="forumThreadLabelTag">Posted By: </div><div class="forumThreadLabel">@Html.DisplayFor(modelItem => Model.ForumThread.ApplicationUser.GameUserID)</div>
-                <div class="forumThreadLabelTag">Created At: </div><div class="forumThreadLabel">@Html.DisplayFor(modelItem => Model.ForumThread.ForumThreadCreationTime)</div>
+                <div class="forumThreadLabelTag">Created: </div><div class="forumThreadLabel">@DateFormatter.GetTimeAgo(Model.ForumThread.ForumThreadCreationTime)</div>
                 <div class="forumThreadLabelTag">Upvotes: </div><div class="forumThreadLabel">
                     @{
                         int positiveCount = 0;
@@ -225,7 +227,7 @@
                     <img class="forumCommentPanelAvatarImage" src="@comment.ApplicationUser.AvatarImageURL" />
                     <div class="forumCommentPanelInformation">
                         <div>@Html.DisplayFor(modelItem => comment.ApplicationUser.GameUserID)</div>
-                        <div>@Html.DisplayFor(modelItem => comment.ForumCommentCreationTime)</div>
+                        <div>@DateFormatter.GetTimeAgo(comment.ForumCommentCreationTime)</div>
                         <div>
                             @{
                                 int commentPositiveCount = 0;

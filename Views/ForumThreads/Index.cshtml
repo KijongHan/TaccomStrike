@@ -1,6 +1,8 @@
 ﻿@model AvaNet.Models.ViewModels.ForumViewModels.ForumThreadsIndexViewModel
 @using Microsoft.AspNetCore.Identity
+@using AvaNet.Services
 
+@inject DateFormatter DateFormatter
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -84,7 +86,6 @@
 
 @foreach (ForumThread pinnedForumThread in Model.PinnedForumThreads.ForumThreads)
 {
-    string date = pinnedForumThread.ForumThreadCreationTime.Day + "/" + pinnedForumThread.ForumThreadCreationTime.Month + "/" + pinnedForumThread.ForumThreadCreationTime.Year;
     int likeCount = 0;
 
     foreach (ForumLike fl in pinnedForumThread.ForumLikes)
@@ -107,7 +108,7 @@
                         </div>
                         <div class="col-sm-2">
                             <div class="forumThreadPanelLabel">
-                                @date
+                                @DateFormatter.GetTimeAgo(pinnedForumThread.ForumThreadCreationTime)
                             </div>
                         </div>
                     </div>
@@ -134,7 +135,6 @@
 
 @foreach (ForumThread item in Model.ForumThreads)
 {
-    string date = item.ForumThreadCreationTime.Day + "/" + item.ForumThreadCreationTime.Month + "/" + item.ForumThreadCreationTime.Year;
     int likeCount = 0;
 
     foreach (ForumLike fl in item.ForumLikes)
@@ -157,7 +157,7 @@
                         </div>
                         <div class="col-sm-2">
                             <div class="forumThreadPanelLabel">
-                                @date
+                                @DateFormatter.GetTimeAgo(item.ForumThreadCreationTime)
                             </div>
                         </div>
                     </div>
