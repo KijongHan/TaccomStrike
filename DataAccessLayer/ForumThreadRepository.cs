@@ -38,7 +38,9 @@ namespace AvaNet.DataAccessLayer
                 return forumThread;
             }
 
-            return context.ForumThreads.FirstOrDefault(t => t.ForumThreadID == id);
+            return context.ForumThreads
+                .Include(t => t.ApplicationUser)
+                .FirstOrDefault(t => t.ForumThreadID == id);
         }
 
         public IEnumerable<ForumThread> GetAll()

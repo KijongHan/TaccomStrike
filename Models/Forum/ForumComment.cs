@@ -24,5 +24,9 @@ namespace AvaNet.Models
         public ApplicationUser ApplicationUser { get; set; }
 
         public ICollection<ForumLike> ForumLikes { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public bool IsBanned { get; set; }
     }
 }

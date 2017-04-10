@@ -8,9 +8,10 @@ using AvaNet.Data;
 namespace AvaNet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170410084448_added-banned-and-deleted-comment-attributes")]
+    partial class addedbannedanddeletedcommentattributes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -165,8 +166,6 @@ namespace AvaNet.Data.Migrations
                     b.Property<int>("ForumTopicID");
 
                     b.Property<int?>("ForumTopicID1");
-
-                    b.Property<bool>("IsBanned");
 
                     b.Property<int?>("PinnedForumThreadsID");
 

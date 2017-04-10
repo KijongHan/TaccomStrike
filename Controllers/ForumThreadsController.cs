@@ -190,6 +190,27 @@ namespace AvaNet.Controllers
             return RedirectToAction("Details/" + forumThread.ForumThreadID);
         }
 
+        [Authorize(Roles = "Administrator,Moderator")]
+        public async Task<IActionResult> Ban(int ID)
+        {
+            // Generate the token and send it
+            ApplicationUser user = await GetCurrentUserAsync();
+            ForumThread forumThread = forumThreadRepository.Find(ID, false);
+
+            forumThread.IsBanned = true;
+            forumThreadRepository.Update(forumThread);
+            return Redirect("/ForumThreads/Index/");
+        }
+
+        [Authorize(Roles = "Administrator,Moderator")]
+        public async Task<IActionResult> Remove(int ID)
+        {
+            // Generate the token and send it
+            ApplicationUser user = await GetCurrentUserAsync();
+            forumThreadRepository.Remove(ID);
+            return Redirect("/ForumThreads/Index/");
+        }
+
         private async Task<ApplicationUser> GetCurrentUserAsync()
         {
             return await userManager.GetUserAsync(HttpContext.User);

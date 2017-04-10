@@ -129,7 +129,7 @@ namespace AvaNet.Controllers
                 return null;
             }
 
-            forumComment.Content = "|Deleted by User|";
+            forumComment.IsDeleted = true;
             forumCommentRepository.Update(forumComment);
             return Redirect("/ForumThreads/Details/" + forumThreadID);
         }
@@ -140,8 +140,8 @@ namespace AvaNet.Controllers
             // Generate the token and send it
             ApplicationUser user = await GetCurrentUserAsync();
             ForumComment forumComment = forumCommentRepository.Find(ID, true);
-            
-            forumComment.Content = "|Comment Banned by Moderator|";
+
+            forumComment.IsBanned = true;
             forumCommentRepository.Update(forumComment);
             return Redirect("/ForumThreads/Details/" + forumThreadID);
         }

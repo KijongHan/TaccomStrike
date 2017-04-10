@@ -241,6 +241,23 @@
                     }
                 </div>
                 <div class="col-xs-5 col-sm-2 col-md-2">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        if (User.Identity.Name.Equals(comment.ApplicationUser.UserName))
+                        {
+                            if (!comment.IsDeleted && !comment.IsBanned)
+                            {
+                                <a asp-action="Delete" asp-controller="ForumComments" asp-route-id="@comment.ForumCommentID" asp-route-forumThreadID="@Model.ForumThread.ForumThreadID">[Delete Comment]</a>
+                            }
+                        }
+                        if (UserManager.IsInRoleAsync(currentUser, "Administrator").Result || UserManager.IsInRoleAsync(currentUser, "Moderator").Result)
+                        {
+                            if (!comment.IsDeleted && !comment.IsBanned)
+                            {
+                                <a asp-action="Ban" asp-controller="ForumComments" asp-route-id="@comment.ForumCommentID" asp-route-forumThreadID="@Model.ForumThread.ForumThreadID">[Ban Comment]</a>
+                            }
+                        }
+                    }
                     <img class="forumCommentPanelAvatarImage" src="@comment.ApplicationUser.AvatarImageURL" />
                     <div class="forumCommentPanelInformation">
                         @if (UserManager.IsInRoleAsync(comment.ApplicationUser, "Administrator").Result || UserManager.IsInRoleAsync(comment.ApplicationUser, "Moderator").Result)
@@ -276,26 +293,23 @@
                                     }
                                 }
                             }
-                            <p style="color:green; float:left;">@commentPositiveCount</p><p style="color:red; float:left; padding-left:8px;">@commentNegativeCount</p>
+                            <div style="color:green; float:left;">@commentPositiveCount</div><div style="color:red; float:left; padding-left:8px;">@commentNegativeCount</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-8 col-md-8">
                     <div class="forumCommentContentPanel">
-                        @Html.DisplayFor(modelItem => comment.Content)
-
-                        @if(SignInManager.IsSignedIn(User))
+                        @if(comment.IsBanned)
                         {
-                            if(User.Identity.Name.Equals(comment.ApplicationUser.UserName))
-                            {
-                                <br/>
-                                <br />
-                                <a asp-action="Delete" asp-controller="ForumComments" asp-route-id="@comment.ForumCommentID" asp-route-forumThreadID="@Model.ForumThread.ForumThreadID">[Delete Comment]</a>
-                            }
-                            if (UserManager.IsInRoleAsync(currentUser, "Administrator").Result || UserManager.IsInRoleAsync(currentUser, "Moderator").Result)
-                            {
-                                <a asp-action="Ban" asp-controller="ForumComments" asp-route-id="@comment.ForumCommentID" asp-route-forumThreadID="@Model.ForumThread.ForumThreadID">[Ban Comment]</a>
-                            }
+                            <p>|This comment has been banned by the moderators|</p>
+                        }
+                        @if (comment.IsDeleted)
+                        {
+                            <p>|This comment has been deleted by the user|</p>
+                        }
+                        @if(!comment.IsBanned && !comment.IsDeleted)
+                        {
+                            @Html.DisplayFor(modelItem => comment.Content)
                         }
                     </div>
                 </div>
