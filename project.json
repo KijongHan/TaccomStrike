@@ -48,7 +48,8 @@
     "Microsoft.EntityFrameworkCore.InMemory": "1.0.1",
     "HtmlAgilityPack.NetCore": "1.5.0.1",
     "Microsoft.AspNetCore.Rewrite": "1.0.1",
-    "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.0.1"
+    "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.0.1",
+    "Npgsql.EntityFrameworkCore.PostgreSQL": "1.0.0"
   },
 
   "tools": {
