@@ -23,6 +23,8 @@ namespace AvaNet
 {
     public class Startup
     {
+        private IHostingEnvironment CurrentHostingEnvironment { get; set; }
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -38,6 +40,8 @@ namespace AvaNet
                 // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
+
+            CurrentHostingEnvironment = env;
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -60,7 +64,7 @@ namespace AvaNet
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
-
+            
             //Service beans
             services.AddScoped<IForumTopicRepository, ForumTopicRepository>();
             services.AddScoped<IForumThreadRepository, ForumThreadRepository>();
@@ -73,6 +77,7 @@ namespace AvaNet
             services.AddScoped<IGameLoreRepository, GameLoreRepository>();
             services.AddScoped<HtmlSanitizer>();
             services.AddScoped<DateFormatter>();
+            services.AddScoped<ResourcePathResolverService>();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -100,7 +105,15 @@ namespace AvaNet
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IPinnedForumThreadsRepository pinnedForumThreadsRepository, IForumTopicRepository forumTopicRepository, IGameLoreRepository gameLoreRepository, RoleManager<IdentityRole> roleManager)
+        public void Configure(
+            IApplicationBuilder app, 
+            ResourcePathResolverService resourcePathResolverService, 
+            IHostingEnvironment env, 
+            ILoggerFactory loggerFactory, 
+            IPinnedForumThreadsRepository pinnedForumThreadsRepository, 
+            IForumTopicRepository forumTopicRepository, 
+            IGameLoreRepository gameLoreRepository, 
+            RoleManager<IdentityRole> roleManager)
         {
             var options = new RewriteOptions()
                 .AddRedirectToHttps();
@@ -138,6 +151,9 @@ namespace AvaNet
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //Set property for the resource path resolver service
+            resourcePathResolverService.WebRootPath = CurrentHostingEnvironment.WebRootPath;
 
             DbInitializer.Initialize(pinnedForumThreadsRepository, forumTopicRepository, gameLoreRepository, roleManager);
 
