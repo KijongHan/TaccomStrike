@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace AvaNet.Data.Migrations
 {
-    public partial class finalisedbasicinitialdatamodel : Migration
+    public partial class migratetopsql : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +13,7 @@ namespace AvaNet.Data.Migrations
                 columns: table => new
                 {
                     ApplicationUsersFriendshipID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGeneratedOnAdd", true),
                     ApplicationUserFriendId = table.Column<string>(nullable: true),
                     ApplicationUserId = table.Column<string>(nullable: true)
                 },
@@ -40,7 +39,7 @@ namespace AvaNet.Data.Migrations
                 columns: table => new
                 {
                     ForumTopicID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGeneratedOnAdd", true),
                     Description = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true)
                 },
@@ -54,7 +53,7 @@ namespace AvaNet.Data.Migrations
                 columns: table => new
                 {
                     GameLoreID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGeneratedOnAdd", true),
                     Content = table.Column<string>(nullable: false),
                     ImageURL = table.Column<string>(nullable: false),
                     Title = table.Column<string>(nullable: false)
@@ -80,7 +79,7 @@ namespace AvaNet.Data.Migrations
                 columns: table => new
                 {
                     PinnedForumThreadsID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                        .Annotation("Npgsql:ValueGeneratedOnAdd", true)
                 },
                 constraints: table =>
                 {
@@ -92,7 +91,7 @@ namespace AvaNet.Data.Migrations
                 columns: table => new
                 {
                     ForumThreadID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGeneratedOnAdd", true),
                     ApplicationUserId = table.Column<string>(nullable: true),
                     ApplicationUserId1 = table.Column<string>(nullable: true),
                     Content = table.Column<string>(maxLength: 1500, nullable: false),
@@ -143,7 +142,7 @@ namespace AvaNet.Data.Migrations
                 columns: table => new
                 {
                     ForumCommentID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGeneratedOnAdd", true),
                     ApplicationUserId = table.Column<string>(nullable: true),
                     Content = table.Column<string>(maxLength: 1500, nullable: false),
                     ForumCommentCreationTime = table.Column<DateTime>(nullable: false),
@@ -165,7 +164,7 @@ namespace AvaNet.Data.Migrations
                         column: x => x.ForumThreadID,
                         principalTable: "ForumThreads",
                         principalColumn: "ForumThreadID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,7 +172,7 @@ namespace AvaNet.Data.Migrations
                 columns: table => new
                 {
                     ForumLikeID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGeneratedOnAdd", true),
                     ApplicationUserId = table.Column<string>(nullable: true),
                     ForumCommentID = table.Column<int>(nullable: true),
                     ForumThreadID = table.Column<int>(nullable: true),

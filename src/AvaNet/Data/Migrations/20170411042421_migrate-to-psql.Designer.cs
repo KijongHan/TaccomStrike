@@ -8,14 +8,13 @@ using AvaNet.Data;
 namespace AvaNet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170410094247_finalised-basic-initial-datamodel")]
-    partial class finalisedbasicinitialdatamodel
+    [Migration("20170411042421_migrate-to-psql")]
+    partial class migratetopsql
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.1")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "1.0.1");
 
             modelBuilder.Entity("AvaNet.Models.ApplicationUser", b =>
                 {
@@ -372,7 +371,8 @@ namespace AvaNet.Data.Migrations
 
                     b.HasOne("AvaNet.Models.ForumThread")
                         .WithMany("ForumComments")
-                        .HasForeignKey("ForumThreadID");
+                        .HasForeignKey("ForumThreadID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("AvaNet.Models.ForumLike", b =>
