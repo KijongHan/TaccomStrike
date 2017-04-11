@@ -192,16 +192,19 @@
                     </div>
                 </div>
             </a>
-            @if (UserManager.IsInRoleAsync(currentUser, "Administrator").Result || UserManager.IsInRoleAsync(currentUser, "Moderator").Result)
+            @if (SignInManager.IsSignedIn(User))
             {
-                <div class="row">
-                    <div class="col-md-6">
-                        <a asp-action="Ban" asp-controller="ForumThreads" asp-route-id="@item.ForumThreadID">Ban Thread</a>
+                if (UserManager.IsInRoleAsync(currentUser, "Administrator").Result || UserManager.IsInRoleAsync(currentUser, "Moderator").Result)
+                {
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a asp-action="Ban" asp-controller="ForumThreads" asp-route-id="@item.ForumThreadID">Ban Thread</a>
+                        </div>
+                        <div class="col-md-6">
+                            <a asp-action="Remove" asp-controller="ForumThreads" asp-route-id="@item.ForumThreadID">Delete Thread</a>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <a asp-action="Remove" asp-controller="ForumThreads" asp-route-id="@item.ForumThreadID">Delete Thread</a>
-                    </div>
-                </div>
+                }
             }
         </div>
     </div>
