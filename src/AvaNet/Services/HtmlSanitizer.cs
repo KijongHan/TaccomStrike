@@ -15,7 +15,7 @@ namespace AvaNet.Services
             var document = new HtmlDocument();
             document.LoadHtml(data);
 
-            var acceptableTags = new String[] { "strong", "em", "u", "br" };
+            var acceptableTags = new String[] { "strong", "em", "u", "br", "h2", "h1", "h3" };
 
             var nodes = new Queue<HtmlNode>(document.DocumentNode.SelectNodes("./*|./text()"));
             while (nodes.Count > 0)
