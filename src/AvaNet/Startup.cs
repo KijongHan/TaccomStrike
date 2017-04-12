@@ -124,6 +124,7 @@ namespace AvaNet
             if(CurrentHostingEnvironment.IsProduction())
             {
                 var options = new RewriteOptions().AddRedirectToHttps();
+                app.UseRewriter(options);
             }
 
             app.UseApplicationInsightsRequestTelemetry();
