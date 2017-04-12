@@ -120,13 +120,6 @@ namespace AvaNet
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            //Only redirect to SSL in production environments
-            if(CurrentHostingEnvironment.IsProduction())
-            {
-                var options = new RewriteOptions().AddRedirectToHttps();
-                app.UseRewriter(options);
-            }
-
             app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
@@ -157,6 +150,13 @@ namespace AvaNet
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //Only redirect to SSL in production environments
+            if (CurrentHostingEnvironment.IsProduction())
+            {
+                var options = new RewriteOptions().AddRedirectToHttpsPermanent();
+                app.UseRewriter(options);
+            }
 
             //Set property for the resource path resolver service
             resourcePathResolverService.WebRootPath = CurrentHostingEnvironment.WebRootPath;
