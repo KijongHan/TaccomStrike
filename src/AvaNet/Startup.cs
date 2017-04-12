@@ -82,9 +82,10 @@ namespace AvaNet
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
-
+            
             services.Configure<IdentityOptions>(options =>
             {
+
                 //Password Settings
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
@@ -115,11 +116,15 @@ namespace AvaNet
             IGameLoreRepository gameLoreRepository, 
             RoleManager<IdentityRole> roleManager)
         {
-            var options = new RewriteOptions()
-                .AddRedirectToHttps();
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            //Only redirect to SSL in production environments
+            if(env.IsProduction())
+            {
+                var options = new RewriteOptions().AddRedirectToHttps();
+            }
 
             app.UseApplicationInsightsRequestTelemetry();
 
