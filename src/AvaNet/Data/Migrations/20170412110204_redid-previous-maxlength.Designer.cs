@@ -8,9 +8,10 @@ using AvaNet.Data;
 namespace AvaNet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170412110204_redid-previous-maxlength")]
+    partial class redidpreviousmaxlength
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1");
@@ -98,7 +99,8 @@ namespace AvaNet.Data.Migrations
                     b.Property<string>("ApplicationUserId");
 
                     b.Property<string>("Content")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 1800);
 
                     b.Property<DateTime>("ForumCommentCreationTime");
 
@@ -151,7 +153,8 @@ namespace AvaNet.Data.Migrations
                     b.Property<string>("ApplicationUserId1");
 
                     b.Property<string>("Content")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 1800);
 
                     b.Property<DateTime>("ForumThreadCreationTime");
 

@@ -846,6 +846,9 @@ body:before
 
 #forumThreadTitle 
 {
+    word-wrap: break-word;      /* IE 5.5-7 */
+    white-space: pre-wrap;      /* current browsers */
+
     font-size: 1.8em;
     color: rgba(255, 255, 255, 0.9);
     background-color: rgba(0, 0, 0, 0.85);
@@ -878,6 +881,9 @@ body:before
 
 #forumThreadContent 
 {
+    word-wrap: break-word;      /* IE 5.5-7 */
+    white-space: pre-wrap;      /* current browsers */
+
     padding: 20px 20px 20px 20px;
     width: 90%;
     margin-left: 5%;
@@ -1057,6 +1063,9 @@ body:before
 
 .forumCommentContentPanel 
 {
+    word-wrap: break-word;      /* IE 5.5-7 */
+    white-space: pre-wrap;      /* current browsers */
+
     border-left: thin solid rgba(255, 255, 255, 0.4);
     padding: 10px 10px 10px 30px;
     min-height: 150px;

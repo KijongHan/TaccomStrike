@@ -17,7 +17,6 @@ namespace AvaNet.Models
         public string Title { get; set; }
 
         [Required]
-        [StringLength(1500, ErrorMessage = "Thread content cannot be longer than 1500 characters.")]
         public string Content { get; set; }
 
         public DateTime ForumThreadCreationTime { get; set; }
