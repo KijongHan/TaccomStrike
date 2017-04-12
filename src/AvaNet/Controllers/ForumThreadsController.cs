@@ -187,7 +187,7 @@ namespace AvaNet.Controllers
             forumThread.ForumThreadCreationTime = DateTime.UtcNow;
             forumThreadRepository.Add(forumThread);
 
-            return RedirectToAction("Details/" + forumThread.ForumThreadID);
+            return Redirect("/ForumThreads/Details/" + forumThread.ForumThreadID);
         }
 
         [Authorize(Roles = "Administrator,Moderator")]
