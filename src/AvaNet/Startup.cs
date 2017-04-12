@@ -120,6 +120,12 @@ namespace AvaNet
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            //Only redirect to SSL in production environments
+            if(CurrentHostingEnvironment.IsProduction())
+            {
+                var options = new RewriteOptions().AddRedirectToHttps();
+            }
+
             app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
