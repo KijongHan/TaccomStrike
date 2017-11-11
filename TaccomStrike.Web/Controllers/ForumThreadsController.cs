@@ -13,7 +13,6 @@ using AvaNet.Services;
 using AvaNet.Models.ViewModels.ForumViewModels;
 using System.Net.Http;
 using System.Net;
-using System.Web.Http;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 

@@ -35,7 +35,7 @@ namespace AvaNet
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
+                //builder.AddUserSecrets();
 
                 // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
                 builder.AddApplicationInsightsSettings(developerMode: true);
@@ -95,10 +95,10 @@ namespace AvaNet
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;
 
-                //Cookie Settings
-                options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
-                options.Cookies.ApplicationCookie.LoginPath = "/Account/LogIn";
-                options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOff";
+                //Cookie Settings: These have been deprecated
+                //options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
+                //options.Cookies.ApplicationCookie.LoginPath = "/Account/LogIn";
+                //options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOff";
 
                 //User Settings
                 options.User.RequireUniqueEmail = true;
@@ -120,8 +120,6 @@ namespace AvaNet
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseApplicationInsightsRequestTelemetry();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -133,11 +131,9 @@ namespace AvaNet
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseApplicationInsightsExceptionTelemetry();
-
             app.UseStaticFiles();
 
-            app.UseIdentity();
+            //app.UseIdentity();
 
             //Custom middleware
             app.UseMiddleware<BanUserMiddleware>();
