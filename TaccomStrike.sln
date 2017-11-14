@@ -10,6 +10,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaccomStrike.Library.Data",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaccomStrike.Web.API", "TaccomStrike.Web.API\TaccomStrike.Web.API.csproj", "{9472A06F-9AAB-49BC-8107-F3E7311A29E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaccomStrike.Web.API.Authentication", "TaccomStrike.Web.API.Authentication\TaccomStrike.Web.API.Authentication.csproj", "{DDDDA29A-A3E9-4050-8CED-872968D10224}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,18 @@ Global
 		{9472A06F-9AAB-49BC-8107-F3E7311A29E3}.Release|x64.Build.0 = Release|Any CPU
 		{9472A06F-9AAB-49BC-8107-F3E7311A29E3}.Release|x86.ActiveCfg = Release|Any CPU
 		{9472A06F-9AAB-49BC-8107-F3E7311A29E3}.Release|x86.Build.0 = Release|Any CPU
+		{DDDDA29A-A3E9-4050-8CED-872968D10224}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDDDA29A-A3E9-4050-8CED-872968D10224}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDDDA29A-A3E9-4050-8CED-872968D10224}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DDDDA29A-A3E9-4050-8CED-872968D10224}.Debug|x64.Build.0 = Debug|Any CPU
+		{DDDDA29A-A3E9-4050-8CED-872968D10224}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DDDDA29A-A3E9-4050-8CED-872968D10224}.Debug|x86.Build.0 = Debug|Any CPU
+		{DDDDA29A-A3E9-4050-8CED-872968D10224}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDDDA29A-A3E9-4050-8CED-872968D10224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDDDA29A-A3E9-4050-8CED-872968D10224}.Release|x64.ActiveCfg = Release|Any CPU
+		{DDDDA29A-A3E9-4050-8CED-872968D10224}.Release|x64.Build.0 = Release|Any CPU
+		{DDDDA29A-A3E9-4050-8CED-872968D10224}.Release|x86.ActiveCfg = Release|Any CPU
+		{DDDDA29A-A3E9-4050-8CED-872968D10224}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
