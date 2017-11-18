@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TaccomStrike.Web.API.Authentication.Controllers
 {
@@ -22,7 +23,7 @@ namespace TaccomStrike.Web.API.Authentication.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public string Get(int id)
         {
             return "value";
