@@ -11,10 +11,10 @@ namespace TaccomStrike.Library.Utility.Security
         public static IServiceCollection AddTaccomStrikeAuthentication(this IServiceCollection service, ITicketStore sessionStore)
         {
             service
-                .AddAuthentication(TaccomStrikeSecurity.AuthenticationScheme)
-                .AddCookie(TaccomStrikeSecurity.AuthenticationScheme, options => 
+                .AddAuthentication(Security.AuthenticationScheme)
+                .AddCookie(Security.AuthenticationScheme, options => 
                 {
-                    options.Cookie.Name = TaccomStrikeSecurity.CookieName;
+                    options.Cookie.Name = Security.CookieName;
                     options.SessionStore = sessionStore;
                 });
             return service;

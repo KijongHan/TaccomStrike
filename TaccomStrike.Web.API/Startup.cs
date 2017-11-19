@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using library.data.Model;
 using library.data.DAL;
+using TaccomStrike.Web.API.Authentication;
+using TaccomStrike.Library.Utility.Security;
 
 namespace TaccomStrike.Web.API
 {
@@ -25,11 +27,17 @@ namespace TaccomStrike.Web.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+
             //Data layer service configurations
             services.AddDbContext<TaccomStrikeContext>();
             services.AddScoped<ForumThreadRepository>();
+            services.AddScoped<ForumCommentRepository>();
+            
+            var sessionStore = new SessionStore();
+            services.AddSingleton<SessionStore>(sessionStore);
 
-            services.AddMvc();
+            services.AddTaccomStrikeAuthentication(sessionStore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +48,7 @@ namespace TaccomStrike.Web.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
             app.UseMvc();
         }
     }
