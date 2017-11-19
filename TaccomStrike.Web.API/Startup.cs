@@ -12,6 +12,10 @@ using library.data.Model;
 using library.data.DAL;
 using TaccomStrike.Web.API.Authentication;
 using TaccomStrike.Library.Utility.Security;
+using TaccomStrike.Library.Data.DAL;
+using TaccomStrike.Library.Data.Services;
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 namespace TaccomStrike.Web.API
 {
@@ -30,10 +34,17 @@ namespace TaccomStrike.Web.API
             services.AddMvc();
 
             //Data layer service configurations
-            services.AddDbContext<TaccomStrikeContext>();
+            services.AddDbContext<TaccomStrikeContext>((options) => 
+            {
+                options.UseSqlServer(ConfigurationManager.ConnectionStrings["Development"].ConnectionString);
+            });
             services.AddScoped<ForumThreadRepository>();
             services.AddScoped<ForumCommentRepository>();
-            
+            services.AddScoped<TaccomStrikeUserRepository>();
+
+            //Service layer configurations
+            services.AddScoped<AuthenticationService>();
+
             var sessionStore = new SessionStore();
             services.AddSingleton<SessionStore>(sessionStore);
 
