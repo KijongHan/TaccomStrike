@@ -1,8 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "database", "database\Database.sqlproj", "{8878F18B-8DE2-4793-AEE2-8B4C045E1817}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "database\Database.sqlproj", "{8878F18B-8DE2-4793-AEE2-8B4C045E1817}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaccomStrike.Web", "TaccomStrike.Web\TaccomStrike.Web.csproj", "{24442EA1-413A-4291-A1FC-92C0C909D89C}"
 EndProject
@@ -12,9 +12,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaccomStrike.Web.API", "Tac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaccomStrike.Web.API.Authentication", "TaccomStrike.Web.API.Authentication\TaccomStrike.Web.API.Authentication.csproj", "{DDDDA29A-A3E9-4050-8CED-872968D10224}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaccomStrike.Library.Utility", "TaccomStrike.Library.Utility\TaccomStrike.Library.Utility.csproj", "{4C379C59-145E-4958-A4A4-AFD231AC77DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaccomStrike.Library.Utility", "TaccomStrike.Library.Utility\TaccomStrike.Library.Utility.csproj", "{4C379C59-145E-4958-A4A4-AFD231AC77DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaccomStrike.Library.Utility.Tests", "TaccomStrike.Library.Utility.Tests\TaccomStrike.Library.Utility.Tests.csproj", "{0EE59340-E5EF-4723-AACA-9A61F167AFC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaccomStrike.Library.Utility.Tests", "TaccomStrike.Library.Utility.Tests\TaccomStrike.Library.Utility.Tests.csproj", "{0EE59340-E5EF-4723-AACA-9A61F167AFC5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaccomStrike.Web.Main", "TaccomStrike.Web.Main\TaccomStrike.Web.Main.csproj", "{8E827E23-9FD7-4F91-9983-CAB841688C33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -116,6 +118,18 @@ Global
 		{0EE59340-E5EF-4723-AACA-9A61F167AFC5}.Release|x64.Build.0 = Release|Any CPU
 		{0EE59340-E5EF-4723-AACA-9A61F167AFC5}.Release|x86.ActiveCfg = Release|Any CPU
 		{0EE59340-E5EF-4723-AACA-9A61F167AFC5}.Release|x86.Build.0 = Release|Any CPU
+		{8E827E23-9FD7-4F91-9983-CAB841688C33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E827E23-9FD7-4F91-9983-CAB841688C33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E827E23-9FD7-4F91-9983-CAB841688C33}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8E827E23-9FD7-4F91-9983-CAB841688C33}.Debug|x64.Build.0 = Debug|Any CPU
+		{8E827E23-9FD7-4F91-9983-CAB841688C33}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8E827E23-9FD7-4F91-9983-CAB841688C33}.Debug|x86.Build.0 = Debug|Any CPU
+		{8E827E23-9FD7-4F91-9983-CAB841688C33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E827E23-9FD7-4F91-9983-CAB841688C33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E827E23-9FD7-4F91-9983-CAB841688C33}.Release|x64.ActiveCfg = Release|Any CPU
+		{8E827E23-9FD7-4F91-9983-CAB841688C33}.Release|x64.Build.0 = Release|Any CPU
+		{8E827E23-9FD7-4F91-9983-CAB841688C33}.Release|x86.ActiveCfg = Release|Any CPU
+		{8E827E23-9FD7-4F91-9983-CAB841688C33}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
