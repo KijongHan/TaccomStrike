@@ -14,18 +14,18 @@ namespace TaccomStrike.Web.API.Controllers
     public class AuthenticationController : Controller
     {
 
-        private Library.Data.Services.AuthenticationService authenticationService;
+        private UserAuthenticationService authenticationService;
 
-        public AuthenticationController(Library.Data.Services.AuthenticationService authenticationService)
+        public AuthenticationController(UserAuthenticationService authenticationService)
         {
             this.authenticationService = authenticationService;
         }
 
-        [Route("create")]
+        [Route("")]
         [HttpPost]
         public async Task<IActionResult> CreateAsync(CreateUserLogin userEntity)
         {
-            if(authenticationService.CreateLogin(userEntity) == null)
+            if(await authenticationService.CreateLoginAsync(userEntity) == null)
             {
                 return NotFound();
             }
@@ -37,7 +37,7 @@ namespace TaccomStrike.Web.API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAsync(PostUserLogin loginEntity)
         {
-            var claimsPrincipal = authenticationService.AuthenticateLogin(loginEntity);
+            var claimsPrincipal = await authenticationService.AuthenticateLoginAsync(loginEntity);
 
             if(claimsPrincipal == null)
             {

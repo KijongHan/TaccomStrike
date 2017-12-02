@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,18 @@ namespace TaccomStrike.Library.Data.DAL
             dbContext.ForumUser.Add(user);
             dbContext.SaveChanges();
             return user.ForumUserID;
+        }
+
+        public Task<int> CreateForumUserAsync()
+        {
+            return Task.Run(() => 
+            {
+                ForumUser user = new ForumUser();
+                user.WhenCreated = DateTime.Now;
+                dbContext.ForumUser.Add(user);
+                dbContext.SaveChanges();
+                return user.ForumUserID;
+            });
         }
     }
 }

@@ -43,7 +43,7 @@ namespace TaccomStrike.Web.API
             services.AddScoped<UserLoginRepository>();
 
             //Service layer configurations
-            services.AddScoped<AuthenticationService>();
+            services.AddScoped<UserAuthenticationService>();
 
             var sessionStore = new SessionStore();
             services.AddSingleton<SessionStore>(sessionStore);
