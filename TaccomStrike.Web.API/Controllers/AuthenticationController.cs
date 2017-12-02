@@ -23,7 +23,7 @@ namespace TaccomStrike.Web.API.Controllers
 
         [Route("create")]
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(CreateTaccomStrikeUser userEntity)
+        public async Task<IActionResult> CreateAsync(CreateUserLogin userEntity)
         {
             if(authenticationService.CreateLogin(userEntity) == null)
             {
@@ -35,7 +35,7 @@ namespace TaccomStrike.Web.API.Controllers
 
         [Route("login")]
         [HttpPost]
-        public async Task<IActionResult> PostAsync(LoginTaccomStrikeUser loginEntity)
+        public async Task<IActionResult> PostAsync(PostUserLogin loginEntity)
         {
             var claimsPrincipal = authenticationService.AuthenticateLogin(loginEntity);
 

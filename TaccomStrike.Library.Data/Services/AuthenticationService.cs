@@ -10,16 +10,18 @@ namespace TaccomStrike.Library.Data.Services
 {
     public class AuthenticationService
     {
-        private readonly TaccomStrikeUserRepository userRepository;
+        private readonly UserLoginRepository userRepository;
+        private readonly ForumUserRepository forumUserRepository;
 
-        public AuthenticationService(TaccomStrikeUserRepository userRepository)
+        public AuthenticationService(UserLoginRepository userRepository, ForumUserRepository forumUserRepository)
         {
             this.userRepository = userRepository;
+            this.forumUserRepository = forumUserRepository;
         }
 
-        public CreateTaccomStrikeUser CreateLogin(CreateTaccomStrikeUser userEntity)
+        public CreateUserLogin CreateLogin(CreateUserLogin userEntity)
         {
-            if(userRepository.GetTaccomStrikeUser(userEntity.Username) != null)
+            if(userRepository.GetUserLogin(userEntity.Username) != null)
             {
                 return null;
             }
@@ -27,13 +29,14 @@ namespace TaccomStrike.Library.Data.Services
             string passwordSalt = Authentication.GenerateSalt();
             string hashPassword = Authentication.HashPassword(userEntity.Password, passwordSalt);
 
-            userRepository.CreateTaccomStrikeUser(userEntity, passwordSalt, hashPassword);
+            var forumUserID = forumUserRepository.CreateForumUser();
+            userRepository.CreateUserLogin(userEntity, passwordSalt, hashPassword, forumUserID);
             return userEntity;
         }
 
-        public ClaimsPrincipal AuthenticateLogin(LoginTaccomStrikeUser loginEntity)
+        public ClaimsPrincipal AuthenticateLogin(PostUserLogin loginEntity)
         {
-            var user = userRepository.GetTaccomStrikeUser(loginEntity.Username);
+            var user = userRepository.GetUserLogin(loginEntity.Username);
 
             if(user == null)
             {

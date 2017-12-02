@@ -8,11 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using library.data.Model;
-using library.data.DAL;
+using TaccomStrike.Library.Data.DAL;
+using TaccomStrike.Library.Data.Model;
 using TaccomStrike.Web.API.Authentication;
 using TaccomStrike.Library.Utility.Security;
-using TaccomStrike.Library.Data.DAL;
 using TaccomStrike.Library.Data.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
@@ -40,7 +39,8 @@ namespace TaccomStrike.Web.API
             });
             services.AddScoped<ForumThreadRepository>();
             services.AddScoped<ForumCommentRepository>();
-            services.AddScoped<TaccomStrikeUserRepository>();
+            services.AddScoped<ForumUserRepository>();
+            services.AddScoped<UserLoginRepository>();
 
             //Service layer configurations
             services.AddScoped<AuthenticationService>();

@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace library.data.Model
+namespace TaccomStrike.Library.Data.Model
 {
-    public partial class ForumTopic
+    [Table("ForumTopic", Schema="forum")]
+    public class ForumTopic
     {
-        public ForumTopic()
-        {
-            ForumThread = new HashSet<ForumThread>();
-        }
-
-        public int ForumTopicId { get; set; }
+        [Key, Column("ForumTopicID")]
+        public int ForumTopicID { get; set; }
+        
+        [Column("Title")]
         public string Title { get; set; }
+        
+        [Column("Description")]
         public string Description { get; set; }
+        
+        [Column("WhenCreated")]
         public DateTime? WhenCreated { get; set; }
-        public DateTime? WhenDeleted { get; set; }
 
-        public ICollection<ForumThread> ForumThread { get; set; }
+        [Column("WhenDeleted")]
+        public DateTime? WhenDeleted { get; set; }
     }
 }

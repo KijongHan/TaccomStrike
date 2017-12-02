@@ -1,27 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace library.data.Model
+namespace TaccomStrike.Library.Data.Model
 {
-    public partial class ForumThread
+    [Table("ForumThread", Schema="forum")]
+    public class ForumThread
     {
-        public ForumThread()
-        {
-            ForumComment = new HashSet<ForumComment>();
-            ForumLike = new HashSet<ForumLike>();
-        }
-
-        public int ForumThreadId { get; set; }
+        [Key, Column("ForumThreadID")]
+        public int ForumThreadID { get; set; }
+        
+        [Column("Title")]
         public string Title { get; set; }
+        
+        [Column("Content")]
         public string Content { get; set; }
+        
+        [Column("WhenCreated")]
         public DateTime? WhenCreated { get; set; }
+        
+        [Column("WhenDeleted")]
         public DateTime? WhenDeleted { get; set; }
-        public int? TaccomStrikeUserId { get; set; }
-        public int? ForumTopicId { get; set; }
-
-        public ForumTopic ForumTopic { get; set; }
-        public TaccomStrikeUser TaccomStrikeUser { get; set; }
-        public ICollection<ForumComment> ForumComment { get; set; }
-        public ICollection<ForumLike> ForumLike { get; set; }
+        
+        [Column("ForumUserID")]
+        public int? ForumUserID { get; set; }
+        
+        [Column("ForumTopicID")]
+        public int? ForumTopicID { get; set; }
+        
     }
 }

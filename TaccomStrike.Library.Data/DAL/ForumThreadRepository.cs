@@ -1,11 +1,11 @@
-﻿using library.data.Model;
+﻿using TaccomStrike.Library.Data.Model;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using TaccomStrike.Library.Data.ViewModel;
 
-namespace library.data.DAL
+namespace TaccomStrike.Library.Data.DAL
 {
     public class ForumThreadRepository
     {
@@ -22,13 +22,13 @@ namespace library.data.DAL
                 .Where((item) => item.WhenDeleted == null)
                 .Select((item) => new GetForumThread()
                 {
-                    ForumThreadId = item.ForumThreadId,
+                    ForumThreadId = item.ForumThreadID,
                     Title = item.Title,
                     Content = item.Content,
                     WhenCreated = item.WhenCreated,
                     WhenDeleted = item.WhenDeleted,
-                    TaccomStrikeUserId = item.TaccomStrikeUserId,
-                    ForumTopicId = item.ForumTopicId
+                    TaccomStrikeUserId = item.ForumUserID,
+                    ForumTopicId = item.ForumTopicID
                 })
                 .ToList();
             return forumThreads;

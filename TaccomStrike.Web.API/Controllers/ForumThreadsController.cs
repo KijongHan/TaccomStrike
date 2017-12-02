@@ -1,10 +1,10 @@
-﻿using library.data.DAL;
+﻿using TaccomStrike.Library.Data.DAL;
+using TaccomStrike.Library.Data.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TaccomStrike.Library.Data.ViewModel;
 
 namespace TaccomStrike.Web.API.Controllers
 {
