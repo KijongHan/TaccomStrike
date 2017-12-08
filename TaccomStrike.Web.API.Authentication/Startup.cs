@@ -47,7 +47,8 @@ namespace TaccomStrike.Web.API.Authentication
             var sessionStore = new SessionStore();
             services.AddSingleton<SessionStore>(sessionStore);
 
-            services.AddTaccomStrikeAuthentication(sessionStore);
+            var sessionProtector = new SessionProtector();
+            services.AddTaccomStrikeAuthentication(sessionStore, sessionProtector);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -3,12 +3,14 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace TaccomStrike.Library.Utility.Security
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddTaccomStrikeAuthentication(this IServiceCollection service, ITicketStore sessionStore)
+        public static IServiceCollection AddTaccomStrikeAuthentication(this IServiceCollection service, ITicketStore sessionStore, SessionProtector sessionProtector)
         {
             service
                 .AddAuthentication(Security.AuthenticationScheme)
@@ -16,6 +18,7 @@ namespace TaccomStrike.Library.Utility.Security
                 {
                     options.Cookie.Name = Security.CookieName;
                     options.SessionStore = sessionStore;
+                    options.TicketDataFormat = sessionProtector.GetTicketDataFormat();
                 });
             return service;
         }

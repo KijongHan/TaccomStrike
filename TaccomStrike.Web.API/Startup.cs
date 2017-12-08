@@ -48,7 +48,8 @@ namespace TaccomStrike.Web.API
             var sessionClient = new SessionClient();
             services.AddSingleton<SessionClient>(sessionClient);
 
-            services.AddTaccomStrikeAuthentication(sessionClient);
+            var sessionProtector = new SessionProtector();
+            services.AddTaccomStrikeAuthentication(sessionClient, sessionProtector);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

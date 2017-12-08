@@ -18,6 +18,7 @@ public class GameLogicController {
     public delegate void BeginCombatPhase();
 	public BeginCombatPhase OnBeginCombatPhase;
 	
+    
     public delegate void EndCombatPhase();
 	public EndCombatPhase OnEndCombatPhase;
 	
