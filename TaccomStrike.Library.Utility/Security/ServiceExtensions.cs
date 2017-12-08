@@ -19,5 +19,14 @@ namespace TaccomStrike.Library.Utility.Security
                 });
             return service;
         }
+
+        public static IServiceCollection AddTaccomStrikeAuthorization(this IServiceCollection service) 
+        {
+            service.AddAuthorization(options => 
+            {
+                options.AddPolicy("AdminOnly", policy => policy.RequireClaim("IsAdmin"));
+            });
+            return service;
+        }
     }
 }
