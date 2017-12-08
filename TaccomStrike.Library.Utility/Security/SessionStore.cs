@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 
-namespace TaccomStrike.Web.API.Authentication
+namespace TaccomStrike.Library.Utility.Security
 {
     public class SessionStore : ITicketStore
     {

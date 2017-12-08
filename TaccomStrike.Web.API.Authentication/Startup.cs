@@ -8,7 +8,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.DataProtection;
+using TaccomStrike.Library.Data.DAL;
+using TaccomStrike.Library.Data.Model;
+using TaccomStrike.Web.API.Authentication;
+using TaccomStrike.Library.Utility.Security;
+using TaccomStrike.Library.Data.Services;
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 namespace TaccomStrike.Web.API.Authentication
 {
@@ -26,23 +32,27 @@ namespace TaccomStrike.Web.API.Authentication
         {
             services.AddMvc();
 
+            //Data layer service configurations
+            services.AddDbContext<TaccomStrikeContext>((options) => 
+            {
+                options.UseSqlServer(ConfigurationManager.ConnectionStrings["Development"].ConnectionString);
+            });
+
+            services.AddScoped<ForumUserRepository>();
+            services.AddScoped<UserLoginRepository>();
+
+            //Service layer configurations
+            services.AddScoped<UserAuthenticationService>();
+
             var sessionStore = new SessionStore();
             services.AddSingleton<SessionStore>(sessionStore);
 
-            services
-                .AddAuthentication("MyAuthentication")
-                .AddCookie("MyAuthentication", options => 
-                {
-                    options.Cookie.Name = "MyCookie";
-                    options.SessionStore = sessionStore;
-                });
+            services.AddTaccomStrikeAuthentication(sessionStore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            Console.WriteLine(env.IsDevelopment() + " " + env.IsProduction());
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
