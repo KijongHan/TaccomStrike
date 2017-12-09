@@ -54,10 +54,22 @@ namespace TaccomStrike.Library.Data.DAL
                 .Select((item) =>
                 new GetUserLogin()
                 {
+                    UserLoginID = item.UserLoginID,
                     Username = item.Username,
                     PasswordSalt = item.PasswordSalt,
                     PasswordHash = item.PasswordHash
                 })
+                .FirstOrDefault();
+                return user;
+            });
+        }
+
+        public Task<UserLogin> GetUserLoginAsync(int id)
+        {
+            return Task.Run(() => 
+            {
+                var user = dbContext.UserLogin
+                .Where((item) => item.UserLoginID == id)
                 .FirstOrDefault();
                 return user;
             });

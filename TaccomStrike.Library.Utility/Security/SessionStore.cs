@@ -40,8 +40,16 @@ namespace TaccomStrike.Library.Utility.Security
         {
             return Task.Run(() => 
             {
-                users.Add("one", ticket);
-                return "one";
+                users.Add("Plat", ticket);
+                return "Plat";
+            });
+        }
+
+        public Task<AuthenticationTicket> GetAuthenticationTicket(string sessionID, SessionProtector sessionProtector) {
+            return Task.Run(() => 
+            {
+                var key = sessionProtector.Unprotect(sessionID);
+                return users[key];
             });
         }
     }

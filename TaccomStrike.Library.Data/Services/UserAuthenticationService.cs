@@ -83,7 +83,23 @@ namespace TaccomStrike.Library.Data.Services
                 return null;
             }
 
-            var claims = new List<Claim>() { new Claim(ClaimTypes.Name, user.Username) };
+            return await GetClaimsPrincipalAsync(user.UserLoginID);
+        }
+
+        public async Task<ClaimsPrincipal> GetClaimsPrincipalAsync(int id) 
+        {
+            var user = await userRepository.GetUserLoginAsync(id);
+
+            if(user == null)
+            {
+                return null;
+            }
+
+            var claims = new List<Claim>() 
+            { 
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.NameIdentifier, user.UserLoginID.ToString())
+            };
             var claimsIdentity = new ClaimsIdentity(claims);
             return new ClaimsPrincipal(claimsIdentity);
         }

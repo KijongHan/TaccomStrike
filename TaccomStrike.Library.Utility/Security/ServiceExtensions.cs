@@ -10,7 +10,7 @@ namespace TaccomStrike.Library.Utility.Security
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddTaccomStrikeAuthentication(this IServiceCollection service, ITicketStore sessionStore, SessionProtector sessionProtector)
+        public static IServiceCollection AddTaccomStrikeAuthentication(this IServiceCollection service, ITicketStore sessionStore)
         {
             service
                 .AddAuthentication(Security.AuthenticationScheme)
@@ -18,7 +18,6 @@ namespace TaccomStrike.Library.Utility.Security
                 {
                     options.Cookie.Name = Security.CookieName;
                     options.SessionStore = sessionStore;
-                    options.TicketDataFormat = sessionProtector.GetTicketDataFormat();
                 });
             return service;
         }

@@ -49,6 +49,7 @@ namespace TaccomStrike.Web.API
             services.AddSingleton<SessionClient>(sessionClient);
 
             var sessionProtector = new SessionProtector();
+            services.AddSingleton<SessionClient>(sessionClient);
             services.AddTaccomStrikeAuthentication(sessionClient, sessionProtector);
         }
 

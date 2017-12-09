@@ -22,15 +22,15 @@ namespace TaccomStrike.Library.Utility.Security
         }
 
         public string Unprotect(string protectedData) {
-            var protectedDataBytes = UnicodeEncoding.ASCII.GetBytes(protectedData);
+            var protectedDataBytes = Convert.FromBase64String(protectedData);
             var unprotectedData = dataProtectionProvider.Unprotect(protectedDataBytes);
-            return UnicodeEncoding.ASCII.GetString(unprotectedData);
+            return Convert.ToBase64String(unprotectedData);
         }
 
         public string Protect(string unprotectedData) {
-            var unprotectedDataBytes = UnicodeEncoding.ASCII.GetBytes(unprotectedData);
+            var unprotectedDataBytes = Convert.FromBase64String(unprotectedData);
             var protectedData = dataProtectionProvider.Protect(unprotectedDataBytes);
-            return UnicodeEncoding.ASCII.GetString(protectedData);
+            return Convert.ToBase64String(protectedData);
         }
     }
 }

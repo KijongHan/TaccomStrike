@@ -12,16 +12,18 @@ using TaccomStrike.Library.Data.ViewModel;
 public class SessionStoreController {
 
     private SessionStore sessionStore;
+    private SessionProtector sessionProtector;
 
-    public SessionStoreController(SessionStore sessionStore)
+    public SessionStoreController(SessionStore sessionStore, SessionProtector sessionProtector)
     {
         this.sessionStore = sessionStore;
+        this.sessionProtector = sessionProtector;
     }
 
     [Route("")]
     [HttpGet]
     public async Task<AuthenticationTicket> GetTicketAsync(string sessionID) {
-        var ticket = await sessionStore.RetrieveAsync(sessionID);
+        var ticket = await sessionStore.GetAuthenticationTicket(sessionID, sessionProtector);
         return ticket;
     }
 
