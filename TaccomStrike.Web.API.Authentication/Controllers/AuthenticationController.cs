@@ -7,6 +7,7 @@ using TaccomStrike.Library.Data.Services;
 using Microsoft.AspNetCore.Authentication;
 using TaccomStrike.Library.Utility.Security;
 using TaccomStrike.Library.Data.ViewModel;
+
 [Route("api/authentication")]
     public class AuthenticationController : Controller
     {

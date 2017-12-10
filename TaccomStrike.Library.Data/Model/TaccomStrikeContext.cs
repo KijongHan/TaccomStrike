@@ -16,8 +16,6 @@ namespace TaccomStrike.Library.Data.Model
         public virtual DbSet<UserLogin> UserLogin {get;set;}
         public virtual DbSet<UserRole> UserRole {get;set;}
         
-        public virtual DbSet<Session> Session {get;set;}
-
         public TaccomStrikeContext(DbContextOptions<TaccomStrikeContext> options)
             : base(options)
         {

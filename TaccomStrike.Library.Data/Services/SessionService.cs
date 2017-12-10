@@ -48,6 +48,7 @@ namespace TaccomStrike.Library.Data.Services
             {
                 var userID = ticket.Principal.GetUserID();
                 var salt = Authentication.GenerateSalt();
+                Console.WriteLine(userID + "" + salt);
                 sessionRepository.StoreSession(new Session {UnprotectedSessionID=salt, UserLoginID=userID});
                 return salt;
             });

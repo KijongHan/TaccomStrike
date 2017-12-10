@@ -11,7 +11,7 @@ namespace TaccomStrike.Library.Data.Model
         [Key, Column("SessionID")]
         public int SessionID {get;set;}
 
-        [Column("UseLoginID")]
+        [Column("UserLoginID")]
         public int UserLoginID {get;set;}
 
         [Column("ProtectedSessionID")]
@@ -21,10 +21,10 @@ namespace TaccomStrike.Library.Data.Model
         public string UnprotectedSessionID {get;set;}
 
         [Column("WhenCreated")]
-        public DateTime WhenCreated {get;set;}
+        public DateTime? WhenCreated {get;set;}
 
         [Column("WhenBanned")]
-        public DateTime WhenBanned {get;set;}
+        public DateTime? WhenBanned {get;set;}
 
     }
 }

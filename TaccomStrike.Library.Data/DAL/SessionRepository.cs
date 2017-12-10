@@ -10,9 +10,9 @@ namespace TaccomStrike.Library.Data.DAL
 {
     public class SessionRepository {
 
-        private TaccomStrikeContext dbContext;
+        private CacheDbContext dbContext;
 
-        public SessionRepository(TaccomStrikeContext dbContext) {
+        public SessionRepository(CacheDbContext dbContext) {
             this.dbContext = dbContext;
         }
 
@@ -23,13 +23,12 @@ namespace TaccomStrike.Library.Data.DAL
             return session;
         }
 
-        public Task<int> StoreSession(Session session) {
-            return Task.Run(() => 
-            {
-                dbContext.Session.Add(session);
-                dbContext.SaveChanges();
-                return session.SessionID;
-            });
+        public int StoreSession(Session session) {
+            session.WhenCreated = DateTime.Now;
+            dbContext.Session.Add(session);
+            dbContext.SaveChanges();
+            Console.WriteLine(session.SessionID);
+            return session.SessionID;
         }
 
     }

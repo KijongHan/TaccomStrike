@@ -40,14 +40,29 @@ namespace TaccomStrike.Web.API.Authentication
 
             services.AddScoped<ForumUserRepository>();
             services.AddScoped<UserLoginRepository>();
+            services.AddScoped<SessionRepository>();
 
             //Service layer configurations
             services.AddScoped<UserAuthenticationService>();
+            services.AddScoped<SessionService>();
 
-            var sessionStore = new SessionService();
-            services.AddSingleton<SessionService>(sessionStore);
+            var cacheDbContext = new CacheDbContext
+            (
+                new DbContextOptionsBuilder<CacheDbContext>()
+                .UseSqlServer(ConfigurationManager.ConnectionStrings["Development"].ConnectionString)
+                .Options
+            );
+            services.AddSingleton<CacheDbContext>(cacheDbContext);
 
-            services.AddTaccomStrikeAuthentication(sessionStore);
+            var scopeFactory = services
+                    .BuildServiceProvider()
+                    .GetRequiredService<IServiceScopeFactory>();
+
+                using (var scope = scopeFactory.CreateScope())
+                {
+                    var provider = scope.ServiceProvider;
+                    services.AddTaccomStrikeAuthentication(provider.GetRequiredService<SessionService>());
+                }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
