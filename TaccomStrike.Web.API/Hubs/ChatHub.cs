@@ -2,27 +2,55 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using TaccomStrike.Library.Data.Services;
+using TaccomStrike.Library.Utility.Security;
 
 namespace TaccomStrike.Web.API.Hubs {
 
     public class ChatHub : Hub {
 
-        private GameUserConnectionService gameUserConnectionService;
+        private ChatRoomService chatRoomService;
+        private UserConnectionService userConnectionService;
 
-        public ChatHub(GameUserConnectionService gameUserConnectionService) {
-            this.gameUserConnectionService = gameUserConnectionService;
+        public ChatHub(UserConnectionService userConnectionService, ChatRoomService chatRoomService) {
+            this.userConnectionService = userConnectionService;
+            this.chatRoomService = chatRoomService;
+        }
+
+        public Task Send(string message, string chatRoomName) {
+            return Task.Run(() => 
+            {
+                var chatRoom = chatRoomService.GetChatRoom(chatRoomName);
+                if(chatRoom.HasParticipant(Context.User)) {
+                    foreach(var participant in chatRoom.GetParticipants()) {
+                        var connections = userConnectionService.GetConnections(participant.GetUserLoginID());
+                        foreach(var connection in connections) {
+                            Clients.Client(connection).InvokeAsync("Send", new object[] {message, Context.User});
+                        }
+                    }
+                }
+            });
         }
 
         public override Task OnConnectedAsync() {
-            int userID = Context.User.GetUserID();
-            gameUserConnectionService.Add(userID, Context.ConnectionId);
-            return base.OnConnectedAsync();
+            return Task.Run(() => 
+            {
+                int userID = Context.User.GetUserLoginID();
+                userConnectionService.Add(userID, Context.ConnectionId);
+                chatRoomService.GetGeneralChatRoom().AddParticipant(Context.User);
+                return base.OnConnectedAsync();
+            });
         }
 
         public override Task OnDisconnectedAsync(Exception exception) {
-            int userID = Context.User.GetUserID();
-            gameUserConnectionService.Remove(userID, Context.ConnectionId);
-            return base.OnDisconnectedAsync(exception);
+            return Task.Run(() => 
+            {
+                int userID = Context.User.GetUserLoginID();
+                userConnectionService.Remove(userID, Context.ConnectionId);
+                foreach(var chatRoom in chatRoomService.GetChatRooms()) {
+                    chatRoom.RemoveParticipant(Context.User);
+                }
+                return base.OnDisconnectedAsync(exception);
+            });
         }
     }
 }

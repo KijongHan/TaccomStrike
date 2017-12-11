@@ -12,6 +12,8 @@ namespace TaccomStrike.Library.Data.ViewModel
 
         public ForumUser ForumUser {get;set;}
 
+        public GameUser GameUser {get;set;}
+
         public UserEntity() 
         {
             UserRoles = new List<UserRole>();

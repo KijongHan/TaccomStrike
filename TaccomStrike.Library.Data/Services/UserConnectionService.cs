@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 
-public class GameUserConnectionService {
+public class UserConnectionService {
     private readonly Dictionary<int, HashSet<string>> UserConnections;
 
-    public GameUserConnectionService() {
+    public UserConnectionService() {
         UserConnections = new Dictionary<int, HashSet<string>>();
     }
 

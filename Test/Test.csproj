@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-alpha1-final" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TaccomStrike.Library.Data\TaccomStrike.Library.Data.csproj" />
     <ProjectReference Include="..\TaccomStrike.Library.Utility\TaccomStrike.Library.Utility.csproj" />
   </ItemGroup>

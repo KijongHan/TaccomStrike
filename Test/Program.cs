@@ -1,5 +1,6 @@
 ﻿using System;
 using TaccomStrike.Library.Utility.Security;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Test
 {
@@ -7,12 +8,24 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            SessionProtector p = new SessionProtector();
-            string output = p.Protect("Plat");
-            Console.WriteLine(output);
-            string o2 = p.Unprotect(output);
-            Console.WriteLine(o2);
+            var connection = new HubConnectionBuilder()
+                .WithUrl("http://localhost:50249/chat")
+                .WithConsoleLogger()
+                .Build();
+
+            connection.On<string>("Send", data =>
+            {
+                Console.WriteLine($"Received: {data}");
+            });
+
+            Test(connection);
+            Console.ReadLine();
+        }
+
+        static async void Test(HubConnection connection) {
+            await connection.StartAsync();
+
+            await connection.InvokeAsync("Send", "Hello");
         }
     }
 }

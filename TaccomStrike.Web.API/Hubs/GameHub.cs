@@ -5,23 +5,23 @@ using TaccomStrike.Library.Data.Services;
 
 namespace TaccomStrike.Web.API.Hubs {
 
-    public class ConnectionHub : Hub {
+    public class GameHub : Hub {
 
-        private GameUserConnectionService gameUserConnectionService;
+        private UserConnectionService userConnectionService;
 
-        public ConnectionHub(GameUserConnectionService gameUserConnectionService) {
-            this.gameUserConnectionService = gameUserConnectionService;
+        public GameHub(UserConnectionService userConnectionService) {
+            this.userConnectionService = userConnectionService;
         }
 
         public override Task OnConnectedAsync() {
             int userID = Context.User.GetUserID();
-            gameUserConnectionService.Add(userID, Context.ConnectionId);
+            userConnectionService.Add(userID, Context.ConnectionId);
             return base.OnConnectedAsync();
         }
 
         public override Task OnDisconnectedAsync(Exception exception) {
             int userID = Context.User.GetUserID();
-            gameUserConnectionService.Remove(userID, Context.ConnectionId);
+            userConnectionService.Remove(userID, Context.ConnectionId);
             return base.OnDisconnectedAsync(exception);
         }
     }

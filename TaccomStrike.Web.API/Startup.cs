@@ -48,6 +48,8 @@ namespace TaccomStrike.Web.API
 
             var sessionService = new SessionService();
             services.AddSingleton<SessionService>(sessionService);
+            services.AddSingleton<UserConnectionService>();
+            services.AddSingleton<ChatRoomService>();
 
             services.AddTaccomStrikeAuthentication(sessionService);
         }
@@ -64,7 +66,8 @@ namespace TaccomStrike.Web.API
             app.UseMvc();
             app.UseSignalR(routes =>
             {
-                routes.MapHub<ConnectionHub>("connection");
+                routes.MapHub<ChatHub>("chat");
+                routes.MapHub<GameHub>("game");
             });
         }
     }
