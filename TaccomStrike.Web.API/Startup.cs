@@ -10,9 +10,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TaccomStrike.Library.Data.DAL;
 using TaccomStrike.Library.Data.Model;
-using TaccomStrike.Web.API.Authentication;
 using TaccomStrike.Library.Utility.Security;
 using TaccomStrike.Library.Data.Services;
+using TaccomStrike.Web.API.Hubs;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 
@@ -31,6 +31,7 @@ namespace TaccomStrike.Web.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSignalR();
 
             //Data layer service configurations
             services.AddDbContext<TaccomStrikeContext>((options) => 
@@ -45,12 +46,10 @@ namespace TaccomStrike.Web.API
             //Service layer configurations
             services.AddScoped<UserAuthenticationService>();
 
-            var sessionClient = new SessionClient();
-            services.AddSingleton<SessionClient>(sessionClient);
+            var sessionService = new SessionService();
+            services.AddSingleton<SessionService>(sessionService);
 
-            var sessionProtector = new SessionProtector();
-            services.AddSingleton<SessionProtector>(sessionProtector);
-            services.AddTaccomStrikeAuthentication(sessionClient, sessionProtector);
+            services.AddTaccomStrikeAuthentication(sessionService);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +62,10 @@ namespace TaccomStrike.Web.API
             
             app.UseAuthentication();
             app.UseMvc();
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ConnectionHub>("connection");
+            });
         }
     }
 }

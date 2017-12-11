@@ -11,11 +11,8 @@ namespace TaccomStrike.Library.Data.Model
         [Key, Column("SessionID")]
         public int SessionID {get;set;}
 
-        [Column("UserLoginID")]
-        public int UserLoginID {get;set;}
-
-        [Column("ProtectedSessionID")]
-        public string ProtectedSessionID {get;set;}
+        [Column("AuthenticationTicket")]
+        public string AuthenticationTicket {get;set;}
 
         [Column("UnprotectedSessionID")]
         public string UnprotectedSessionID {get;set;}

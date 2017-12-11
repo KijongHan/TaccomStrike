@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 
 public class GameUserConnectionService {
-    private readonly Dictionary<string, HashSet<string>> UserConnections;
+    private readonly Dictionary<int, HashSet<string>> UserConnections;
 
     public GameUserConnectionService() {
-        UserConnections = new Dictionary<string, HashSet<string>>();
+        UserConnections = new Dictionary<int, HashSet<string>>();
     }
 
     public int Count {
@@ -13,7 +13,7 @@ public class GameUserConnectionService {
         }
     }
 
-    public void Add(string key, string connectionId) {
+    public void Add(int key, string connectionId) {
         lock (UserConnections) {
             HashSet<string> connections;
             if(!UserConnections.TryGetValue(key, out connections)) {
@@ -27,7 +27,7 @@ public class GameUserConnectionService {
         }
     }
 
-    public IEnumerable<string> GetConnections(string key) {
+    public IEnumerable<string> GetConnections(int key) {
         HashSet<string> connections;
         if(UserConnections.TryGetValue(key, out connections)) {
             return connections;
@@ -36,7 +36,7 @@ public class GameUserConnectionService {
         return null;
     }
 
-    public void Remove(string key, string connectionId) {
+    public void Remove(int key, string connectionId) {
         lock (UserConnections) {
             HashSet<string> connections;
             if(!UserConnections.TryGetValue(key, out connections)) {

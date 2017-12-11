@@ -14,31 +14,38 @@ namespace TaccomStrike.Library.Data.Services
 {
     public class SessionService : ITicketStore {
 
-        private readonly UserAuthenticationService userAuthenticationService;
-        private readonly SessionRepository sessionRepository;
+        private readonly Dictionary<string, AuthenticationTicket> userSessions;
 
-        public SessionService(SessionRepository sessionRepository, UserAuthenticationService userAuthenticationService) {
-            this.sessionRepository = sessionRepository;
-            this.userAuthenticationService = userAuthenticationService;
+        public SessionService() {
+            userSessions = new Dictionary<string, AuthenticationTicket>();
         }
 
         public Task RemoveAsync(string key)
         {
-            throw new NotImplementedException();
+            return Task.Run(() => 
+            {
+                userSessions.Remove(key);
+            });
         }
 
         public Task RenewAsync(string key, AuthenticationTicket ticket)
         {
-            throw new NotImplementedException();
+            return Task.Run(() => 
+            {
+                if(userSessions.ContainsKey(key)) {
+                    userSessions[key] = ticket;
+                }
+            });        
         }
 
         public Task<AuthenticationTicket> RetrieveAsync(string key)
         {
             return Task.Run(() => 
             {
-                var session = sessionRepository.GetSession(key);
-                var claimsPrincipal = userAuthenticationService.GetClaimsPrincipalAsync(session.UserLoginID).Result;
-                return new AuthenticationTicket(claimsPrincipal, Security.AuthenticationScheme);
+                if(userSessions.ContainsKey(key)) {
+                    return userSessions[key];
+                }
+                return null;
             });
         }
 
@@ -46,10 +53,8 @@ namespace TaccomStrike.Library.Data.Services
         {
             return Task.Run(() => 
             {
-                var userID = ticket.Principal.GetUserID();
                 var salt = Authentication.GenerateSalt();
-                Console.WriteLine(userID + "" + salt);
-                sessionRepository.StoreSession(new Session {UnprotectedSessionID=salt, UserLoginID=userID});
+                userSessions.Add(salt, ticket);
                 return salt;
             });
         }

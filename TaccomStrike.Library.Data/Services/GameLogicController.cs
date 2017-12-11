@@ -18,7 +18,6 @@ public class GameLogicController {
     public delegate void BeginCombatPhase();
 	public BeginCombatPhase OnBeginCombatPhase;
 	
-    
     public delegate void EndCombatPhase();
 	public EndCombatPhase OnEndCombatPhase;
 	
@@ -41,7 +40,6 @@ public class GameLogicController {
         if(gameUser.GameUserName != GameHost.GameUserName) {
             return false;
         }
-
         return true;
     }
 }

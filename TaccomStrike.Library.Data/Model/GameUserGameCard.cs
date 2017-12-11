@@ -5,14 +5,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TaccomStrike.Library.Data.Model {
 
-    [Table("GameUser", Schema="game")]
-    public class GameUser {
+    [Table("GameUserGameCard", Schema="game")]
+    public class GameUserGameCard {
 
-        [Key, Column("GameUserID")]
+        [Column("GameUserID")]
         public int GameUserID { get; set; }
 
-        [Column("GameUserName")]
-        public string GameUserName { get; set; }
+        [Column("GameCardID")]
+        public int GameCardID { get; set; }
 
         [Column("WhenCreated")]
         public DateTime? WhenCreated {get;set;}
