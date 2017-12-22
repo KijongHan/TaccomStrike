@@ -10,8 +10,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaccomStrike.Library.Data",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaccomStrike.Web.API", "TaccomStrike.Web.API\TaccomStrike.Web.API.csproj", "{9472A06F-9AAB-49BC-8107-F3E7311A29E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaccomStrike.Web.API.Authentication", "TaccomStrike.Web.API.Authentication\TaccomStrike.Web.API.Authentication.csproj", "{DDDDA29A-A3E9-4050-8CED-872968D10224}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaccomStrike.Library.Utility", "TaccomStrike.Library.Utility\TaccomStrike.Library.Utility.csproj", "{4C379C59-145E-4958-A4A4-AFD231AC77DD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaccomStrike.Library.Utility.Tests", "TaccomStrike.Library.Utility.Tests\TaccomStrike.Library.Utility.Tests.csproj", "{0EE59340-E5EF-4723-AACA-9A61F167AFC5}"

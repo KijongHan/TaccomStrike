@@ -1,0 +1,91 @@
+<body>
+    <input id="username"></input>
+    <input id="password"></input>
+    <button id="login" onclick="onLoginButtonClick()">login</button>
+
+    <input id="message"></input>
+    <button id="sendMessage" onclick="sendMessage()">Send Message</button>
+    <button id="connectToMessage" onclick="connectToChat()">Connect to Chat</button>
+
+    <button id="testCookie" onclick="testCookie()"></button>
+</body>
+
+<script src="~/js/signalr-client-1.0.0-alpha2-final.min.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+<script>
+    var token = null;
+    var chatHub = new signalR.HttpConnection(`http://localhost:50249/chat`);
+    var connection = new signalR.HubConnection(chatHub);
+
+    function onLoginButtonClick() {
+        postLogin();
+    }
+
+    function postLogin() {
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+        var loginForm = { 
+            'username': username,
+            'password': password
+            };
+
+        fetch("http://localhost:50249/api/authentication/login", {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            username: loginForm.username,
+            password: loginForm.password,
+          }),
+        }).then(res => {
+          console.log(res.headers.get('set-cookie')); // undefined
+          console.log(document.cookie); // nope
+          return res.json();
+        }).then(json => {
+          if (json.success) {
+            this.setState({ error: '' });
+            this.context.router.push(json.redirect);
+          }
+          else {
+            this.setState({ error: json.error });
+          }
+        });
+    }
+
+    function connectToChat() {
+        connection.on('send', message, user => {
+            alert(message);
+        });
+        connection.start();
+    }
+
+    function sendMessage() {
+        var message = document.getElementById('message').value;
+        connection.invoke("send", message, 'General Chat');
+    }
+
+    function testCookie() {
+        fetch("http://localhost:50249/api/test/authorized", {
+          method: 'GET',
+          credentials: 'include'
+        }).then(res => {
+          console.log(res.headers.get('set-cookie')); // undefined
+          console.log(document.cookie); // nope
+          return res.json();
+        }).then(json => {
+          if (json.success) {
+            this.setState({ error: '' });
+            this.context.router.push(json.redirect);
+          }
+          else {
+            this.setState({ error: json.error });
+          }
+        });
+    }
+</script>

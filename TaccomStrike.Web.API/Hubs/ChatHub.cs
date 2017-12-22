@@ -34,7 +34,9 @@ namespace TaccomStrike.Web.API.Hubs {
         public override Task OnConnectedAsync() {
             return Task.Run(() => 
             {
+                Console.WriteLine("From ChatHub" + Context.Connection.GetHttpContext().Request.Cookies.Count);
                 int userID = Context.User.GetUserLoginID();
+                Console.WriteLine("From ChatHub" + Context.User.GetUserName());
                 userConnectionService.Add(userID, Context.ConnectionId);
                 chatRoomService.GetGeneralChatRoom().AddParticipant(Context.User);
                 return base.OnConnectedAsync();

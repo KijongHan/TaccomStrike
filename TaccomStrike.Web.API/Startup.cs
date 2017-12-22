@@ -30,6 +30,15 @@ namespace TaccomStrike.Web.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder
+                    .WithOrigins(new string[] {"http://localhost:60239"})
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials());
+            });
+
             services.AddMvc();
             services.AddSignalR();
 
@@ -51,7 +60,7 @@ namespace TaccomStrike.Web.API
             services.AddSingleton<UserConnectionService>();
             services.AddSingleton<ChatRoomService>();
 
-            services.AddTaccomStrikeAuthentication(sessionService);
+            services.AddCustomCookieAuthentication(sessionService);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +71,10 @@ namespace TaccomStrike.Web.API
                 app.UseDeveloperExceptionPage();
             }
             
+            app.UseCors("AllowSpecificOrigin");
+            
             app.UseAuthentication();
+
             app.UseMvc();
             app.UseSignalR(routes =>
             {
