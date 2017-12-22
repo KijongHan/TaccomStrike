@@ -1,24 +1,85 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="~/css/app.css"></link>
+    <script src="~/lib/signalr-client-1.0.0-alpha2-final.min.js"></script>
+    <script src="~/lib/knockout-3.4.2.js"></script>
+</head>
 <body>
     <input id="username"></input>
     <input id="password"></input>
     <button id="login" onclick="onLoginButtonClick()">login</button>
 
     <input id="message"></input>
-    <button id="sendMessage" onclick="sendMessage()">Send Message</button>
-    <button id="connectToMessage" onclick="connectToChat()">Connect to Chat</button>
+    <button id="sendMessage" data-bind="click: sendMessage">Send Message</button>
+    <button id="connectToMessage" data-bind="click: connectToChat">Connect to Chat</button>
 
     <button id="testCookie" onclick="testCookie()"></button>
+
+    <div id="chatRoom" data-bind="foreach: chatMessages">
+        <div data-bind="text: userName"></div>
+        <div data-bind="text: userID"></div>
+        <div data-bind="text: messageContent"></div>
+        <div data-bind="text: whenCreated"></div>
+    </div>
+
+    <div data-bind="foreach: users">
+        <div data-bind="text: userName"></div>
+    </div>
 </body>
 
-<script src="~/js/signalr-client-1.0.0-alpha2-final.min.js"></script>
-<script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
 <script>
     var token = null;
     var chatHub = new signalR.HttpConnection(`http://localhost:50249/chat`);
     var connection = new signalR.HubConnection(chatHub);
+    ko.applyBindings(new ChatViewModel());
+
+    function ChatMessage(data) {
+        this.userName = data.UserName;
+        this.userID = data.UserID;
+        this.messageContent = data.MessageContent;
+        this.whenCreated = data.WhenCreated;
+        console.log(this);
+    }
+
+    function User(data) {
+        this.userName = data.UserName;
+    }
+
+    function ChatViewModel() {
+        var self = this;
+
+        self.chatMessages = ko.observableArray();
+        self.users = ko.observableArray();
+
+        self.connectToChat = function() {
+            connection.on('ChatSendMessage', function(chatMessage, isSender) {
+                console.log(chatMessage + isSender);
+                self.chatMessages.push(new ChatMessage(chatMessage));
+            });
+            connection.on('ChatUserDisconnected', function(username) {
+                console.log(username + " has disconnected");
+            });
+            connection.on('ChatRoomJoin', function(newUser, users, isNewChatUser) {
+                console.log(newUser.UserName + " has entered chatroom");
+
+                if(isNewChatUser) {
+                    for(var i = 0; i < users.length; i++) {
+                        console.log(users[i])
+                        self.users.push(new User(users[i]));
+                    }
+                }
+                else {
+                    self.users.push(new User(newUser));
+                }
+            });
+            
+            connection.start().then(() => connection.invoke('ChatRoomJoin', 'General Chat'));;
+        }
+
+        self.sendMessage = function() {
+            var message = document.getElementById('message').value;
+            connection.invoke("chatSendMessage", message, 'General Chat');
+        }
+    }
 
     function onLoginButtonClick() {
         postLogin();
@@ -56,18 +117,6 @@
             this.setState({ error: json.error });
           }
         });
-    }
-
-    function connectToChat() {
-        connection.on('send', message, user => {
-            alert(message);
-        });
-        connection.start();
-    }
-
-    function sendMessage() {
-        var message = document.getElementById('message').value;
-        connection.invoke("send", message, 'General Chat');
     }
 
     function testCookie() {

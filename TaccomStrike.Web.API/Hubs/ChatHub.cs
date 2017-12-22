@@ -1,8 +1,11 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using TaccomStrike.Library.Data.Services;
 using TaccomStrike.Library.Utility.Security;
+using TaccomStrike.Library.Data.ViewModel;
 
 namespace TaccomStrike.Web.API.Hubs {
 
@@ -16,18 +19,77 @@ namespace TaccomStrike.Web.API.Hubs {
             this.chatRoomService = chatRoomService;
         }
 
-        public Task Send(string message, string chatRoomName) {
+        public Task ChatSendMessage(string message, string chatRoomName) {
             return Task.Run(() => 
             {
                 var chatRoom = chatRoomService.GetChatRoom(chatRoomName);
                 if(chatRoom.HasParticipant(Context.User)) {
+                    Console.WriteLine(message);
+                    ChatMessage chatMessage = new ChatMessage {
+                        UserID = Context.User.GetUserLoginID(),
+                        UserName = Context.User.GetUserName(),
+                        MessageContent = message,
+                        WhenCreated = DateTime.Now
+                    };
+
+                    chatRoom.AddChatMessage(message, Context.User);
+
                     foreach(var participant in chatRoom.GetParticipants()) {
-                        var connections = userConnectionService.GetConnections(participant.GetUserLoginID());
+                        var isSender = false;
+                        if(participant.GetUserLoginID() == Context.User.GetUserLoginID()) {
+                            isSender = true;
+                        }
+
+                        var connections = userConnectionService.GetConnections(participant);
                         foreach(var connection in connections) {
-                            Clients.Client(connection).InvokeAsync("Send", new object[] {message, Context.User});
+                            Console.WriteLine("Im sending");
+                            Clients.Client(connection).InvokeAsync(
+                                "ChatSendMessage", 
+                                new object[] {
+                                    chatMessage,
+                                    isSender
+                                });
                         }
                     }
                 }
+            });
+        }
+
+        public Task ChatRoomJoin(string chatRoomName) {
+            return Task.Run(() => 
+            {
+                var chatRoom = chatRoomService.GetChatRoom(chatRoomName);
+                if(chatRoom == null) {
+                    return;
+                }
+
+                if(chatRoom.RoomType == ChatRoom.Type.Public) {
+                    chatRoom.AddParticipant(Context.User);
+                    var participants = chatRoom.GetParticipants();
+
+                    foreach(var participant in participants) {
+                        var isNewChatUser = false;
+
+                        if(participant.GetUserLoginID() == Context.User.GetUserLoginID()) {
+                            isNewChatUser = true;
+                        }
+
+                        var connections = userConnectionService.GetConnections(participant);
+                        foreach(var connection in connections) {
+                            Clients.Client(connection).InvokeAsync(
+                                "ChatRoomJoin", 
+                                new object[] {
+                                    new {
+                                        UserName = Context.User.GetUserName()
+                                    },
+                                    participants.Select(item => new { 
+                                        UserName = item.GetUserName()
+                                    }),
+                                    isNewChatUser
+                                });
+                        }
+                    }
+                }       
             });
         }
 
@@ -35,9 +97,8 @@ namespace TaccomStrike.Web.API.Hubs {
             return Task.Run(() => 
             {
                 Console.WriteLine("From ChatHub" + Context.Connection.GetHttpContext().Request.Cookies.Count);
-                int userID = Context.User.GetUserLoginID();
                 Console.WriteLine("From ChatHub" + Context.User.GetUserName());
-                userConnectionService.Add(userID, Context.ConnectionId);
+                userConnectionService.Add(Context.User, Context.ConnectionId);
                 chatRoomService.GetGeneralChatRoom().AddParticipant(Context.User);
                 return base.OnConnectedAsync();
             });
@@ -46,10 +107,27 @@ namespace TaccomStrike.Web.API.Hubs {
         public override Task OnDisconnectedAsync(Exception exception) {
             return Task.Run(() => 
             {
-                int userID = Context.User.GetUserLoginID();
-                userConnectionService.Remove(userID, Context.ConnectionId);
+                userConnectionService.Remove(Context.User, Context.ConnectionId);
                 foreach(var chatRoom in chatRoomService.GetChatRooms()) {
-                    chatRoom.RemoveParticipant(Context.User);
+                    if(chatRoom.HasParticipant(Context.User)) {
+                        chatRoom.RemoveParticipant(Context.User);
+
+                        foreach(var participant in chatRoom.GetParticipants()) {
+                            var connections = userConnectionService.GetConnections(participant);
+                            foreach(var connection in connections) {
+                                Console.WriteLine("Im sending");
+                                Clients.Client(connection).InvokeAsync
+                                (
+                                    "ChatUserDisconnected", 
+                                    new object[] { 
+                                        new { 
+                                            UserName = Context.User.GetUserName() 
+                                        } 
+                                    }
+                                );
+                            }
+                        }
+                    }
                 }
                 return base.OnDisconnectedAsync(exception);
             });

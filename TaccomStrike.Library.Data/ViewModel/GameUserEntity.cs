@@ -4,7 +4,9 @@ using TaccomStrike.Library.Data.Model;
 namespace TaccomStrike.Library.Data.ViewModel {
     public class GameUserEntity {
 
-        public GameUser GameUser {get;set;}
+        public int UserID {get;set;}
+
+        public string UserTag {get;set;}
 
         public GameUserState GameUserState {get;set;}
 

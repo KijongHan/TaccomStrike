@@ -31,15 +31,9 @@ public class GameLogicController {
 	public CleanupPhase OnCleanupPhase;
 
     public GameState CurrentGameState {get;set;}
-    public GameUser CurrentGameUserTurn {get;set;}
-    public GameUser GameHost {get;set;}
+    public GameUserEntity CurrentGameUserTurn {get;set;}
+    public GameUserEntity GameHost {get;set;}
 
-    public List<GameUser> GameUsers {get;set;}
-
-    public bool StartGame(GameUser gameUser) {
-        if(gameUser.GameUserName != GameHost.GameUserName) {
-            return false;
-        }
-        return true;
-    }
+    public List<GameUserEntity> GameUsers {get;set;}
+    
 }
