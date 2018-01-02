@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using TaccomStrike.Library.Data.ViewModel;
 
 namespace TaccomStrike.Library.Data.Services {

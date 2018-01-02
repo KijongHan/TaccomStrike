@@ -59,6 +59,7 @@ namespace TaccomStrike.Web.API
             services.AddSingleton<SessionService>(sessionService);
             services.AddSingleton<UserConnectionService>();
             services.AddSingleton<ChatRoomService>();
+            services.AddSingleton<GameLobbyService>();
 
             services.AddCustomCookieAuthentication(sessionService);
         }

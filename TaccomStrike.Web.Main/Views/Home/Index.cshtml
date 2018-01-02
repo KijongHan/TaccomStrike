@@ -8,21 +8,38 @@
     <input id="password"></input>
     <button id="login" onclick="onLoginButtonClick()">login</button>
 
-    <input id="message"></input>
-    <button id="sendMessage" data-bind="click: sendMessage">Send Message</button>
-    <button id="connectToMessage" data-bind="click: connectToChat">Connect to Chat</button>
+    <div id="chatRoom">
+        <input id="message"></input>
+        <button id="sendMessage" data-bind="click: sendMessage">Send Message</button>
+        <button id="connectToMessage" data-bind="click: connectToChat">Connect to Chat</button>
 
-    <button id="testCookie" onclick="testCookie()"></button>
+        <button id="testCookie" onclick="testCookie()"></button>
+        <button id="1" data-bind="click: getChatRooms">Get Chat Rooms</button>
 
-    <div id="chatRoom" data-bind="foreach: chatMessages">
-        <div data-bind="text: userName"></div>
-        <div data-bind="text: userID"></div>
-        <div data-bind="text: messageContent"></div>
-        <div data-bind="text: whenCreated"></div>
+        <div data-bind="foreach: chatMessages">
+            <div data-bind="text: userName"></div>
+            <div data-bind="text: userID"></div>
+            <div data-bind="text: messageContent"></div>
+            <div data-bind="text: whenCreated"></div>
+        </div>
+
+        <div data-bind="foreach: users">
+            <div data-bind="text: userName"></div>
+        </div>
+
+        <div data-bind="foreach: chatRooms">
+            
+        </div>
+    </div>
+    
+    <div id="gameLobbies">
+        <button id="2" data-bind="click: getGameLobbies">Get Game Lobbies</button>
     </div>
 
-    <div data-bind="foreach: users">
-        <div data-bind="text: userName"></div>
+    <div id="gameLobby">
+        <input data-bind="value: gameLobbyName"></input>
+        <input data-bind="value: maxRoomLimit"></input>
+        <button data-bind="click: createGameLobby">Create Game Lobby</button>
     </div>
 </body>
 
@@ -30,7 +47,9 @@
     var token = null;
     var chatHub = new signalR.HttpConnection(`http://localhost:50249/chat`);
     var connection = new signalR.HubConnection(chatHub);
-    ko.applyBindings(new ChatViewModel());
+    ko.applyBindings(new ChatViewModel(), document.getElementById("chatRoom"));
+    ko.applyBindings(new GameLobbiesViewModel(), document.getElementById("gameLobbies"));
+    ko.applyBindings(new GameLobbyViewModel(), document.getElementById("gameLobby"));
 
     function ChatMessage(data) {
         this.userName = data.UserName;
@@ -48,6 +67,7 @@
         var self = this;
 
         self.chatMessages = ko.observableArray();
+        self.chatRooms = ko.observableArray();
         self.users = ko.observableArray();
 
         self.connectToChat = function() {
@@ -55,8 +75,15 @@
                 console.log(chatMessage + isSender);
                 self.chatMessages.push(new ChatMessage(chatMessage));
             });
-            connection.on('ChatUserDisconnected', function(username) {
-                console.log(username + " has disconnected");
+            connection.on('ChatUserDisconnected', function(disconnectedUser) {
+                console.log(disconnectedUser.UserName + " has disconnected a");
+                for(var i = 0; i < self.users().length; i++) {
+                    var user = self.users()[i];
+                    console.log(user.userName);
+                    if(user.userName == disconnectedUser.UserName) {
+                        self.users.remove(user);
+                    }
+                }
             });
             connection.on('ChatRoomJoin', function(newUser, users, isNewChatUser) {
                 console.log(newUser.UserName + " has entered chatroom");
@@ -72,12 +99,64 @@
                 }
             });
             
-            connection.start().then(() => connection.invoke('ChatRoomJoin', 'General Chat'));;
+            connection.start().then(() => connection.invoke('ChatRoomJoin', 'General Chat'));
         }
 
         self.sendMessage = function() {
             var message = document.getElementById('message').value;
             connection.invoke("chatSendMessage", message, 'General Chat');
+        }
+
+        self.joinChatRoom = function() {
+
+        }
+
+        self.getChatRooms = function() {
+            fetch("http://localhost:50249/api/chatrooms", {
+                method: 'GET',
+                credentials: 'include'
+            }).then(response => {
+                response.json().then(function(data) {
+                    console.log(data);
+                });
+            })
+        }
+    }
+
+    function GameLobbiesViewModel() {
+        var self = this;
+
+        self.getGameLobbies = function() {
+            fetch("http://localhost:50249/api/gamelobbies", {
+                method: 'GET',
+                credentials: 'include'
+            }).then(response => {
+                response.json().then(function(data) {
+                    console.log(data);
+                });
+            })
+        }
+    }
+    
+    function GameLobbyViewModel() {
+        var self = this;
+        
+        self.gameLobbyName = ko.observable("test");
+        self.maxRoomLimit = ko.observable(8);
+
+        self.createGameLobby = function() {
+            fetch("http://localhost:50249/api/gamelobbies", {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    gameLobbyName: self.gameLobbyName(),
+                    maxRoomLimit: self.maxRoomLimit(),
+                }),
+            })
         }
     }
 
