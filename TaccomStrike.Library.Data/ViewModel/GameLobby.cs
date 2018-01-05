@@ -32,10 +32,7 @@ namespace TaccomStrike.Library.Data.ViewModel {
         }
 
         public List<ClaimsPrincipal> GetUsers() {
-            List<ClaimsPrincipal> users = new List<ClaimsPrincipal>();
-            users.Concat(Hosts);
-            users.Concat(Players);
-            return users;
+            return Players;
         }
 
         public int GetUsersCount() {

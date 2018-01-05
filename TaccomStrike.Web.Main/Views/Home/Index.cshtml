@@ -7,8 +7,8 @@
     <script src="~/js/models/GameLobby.js"></script>
     <script src="~/js/viewmodels/ChatRoomViewModel.js"></script>
     <script src="~/js/viewmodels/ChatRoomsViewModel.js"></script>
-    <script src="~/js/viewmodels/GameLobbiesViewModel.js"></script>
     <script src="~/js/viewmodels/GameLobbyViewModel.js"></script>
+    <script src="~/js/viewmodels/GameLobbiesViewModel.js"></script>
     <script src="~/js/viewmodels/LoginViewModel.js"></script>
 </head>
 <body>
@@ -17,6 +17,8 @@
         <input id="password" data-bind="value: password"></input>
         <button data-bind="click: login">login</button>
     </div>
+
+    <button onclick="setConnections()">Set Connections</button>
 
     <div id="chatRooms">
         <button data-bind="click: getChatRooms">Refresh Chat Rooms</button>
@@ -45,7 +47,7 @@
             <div data-bind="text: gameLobbyName"></div>
             <div data-bind="text: gameLobbyID"></div>
             <div data-bind="text: hostUserName"></div>
-            <button data-bind="click: joinGameLobby"></button>
+            <button data-bind="click: joinGameLobby">Join Game Lobby</button>
         </div>
 
         <button data-bind="click: getGameLobbies">Get Game Lobbies</button>
@@ -54,6 +56,7 @@
     <div id="currentGameLobby">
         <div data-bind="text: gameLobbyName"></div>
         <div data-bind="text: host.userName"></div>
+        <div data-bind="text: gameLobbyID"></div>
 
         <div data-bind="foreach: players">
             <div data-bind="text: userName"></div>
@@ -84,9 +87,6 @@
     var chatConnection = new signalR.HubConnection(chatHub);
     var gameLobbyConnection = new signalR.HubConnection(gameLobbyHub);
 
-    setChatConnections(chatConnection);
-    setGameLobbyConnections(gameLobbyConnection);
-
     var chatRoomsViewModel = new ChatRoomsViewModel(chatConnection);
     var gameLobbiesViewModel = new GameLobbiesViewModel(gameLobbyConnection);
     var currentGameLobby = new GameLobbyViewModel(gameLobbyConnection, null);
@@ -97,8 +97,9 @@
     ko.applyBindings(new GameLobbyViewModel(gameLobbyConnection, null), document.getElementById("gameLobby"));
     ko.applyBindings(currentGameLobby, document.getElementById("currentGameLobby"));
 
-    window.onload = function () { 
-
+    function setConnections() {
+        setChatConnections(chatConnection);
+        setGameLobbyConnections(gameLobbyConnection);
     }
 
     function setChatConnections(connection) {
@@ -147,15 +148,22 @@
     }
 
     function setGameLobbyConnections(connection) {
-        connection.on('GameLobbyJoin', function(success, host, players, newUser, isNewUser) {
-            console.log(success + " " + host + " " + players + " " + newUser + " " + isNewUser);
+        connection.on('GameLobbyJoin', function(success, host, players, newUser, isNewUser, gameLobbyID) {
+            console.log(success + " " + host + " " + players + " " + newUser + " " + isNewUser + gameLobbyID);
             if(success) {
                 console.log("new user joined game lobby: " + newUser);
+                console.log(newUser.userName);
                 currentGameLobby.host(host);
                 currentGameLobby.players(players);
+                currentGameLobby.gameLobbyID(gameLobbyID);
             }
         });
         
+        connection.on('GameLobbySendMessage', function(chatMessage, isSender) {
+            var message = new ChatMessage(chatMessage);
+            currentGameLobby.gameLobbyMessages.push(message);
+        });
+
         connection.start();
     }
 

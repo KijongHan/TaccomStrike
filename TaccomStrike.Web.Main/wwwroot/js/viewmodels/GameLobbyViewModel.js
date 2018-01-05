@@ -10,12 +10,14 @@ function GameLobbyViewModel(connection, data) {
     self.host = ko.observable(null);
     self.players = ko.observableArray();
     self.gameLobbyMessages = ko.observableArray();
+    console.log(data);
 
     if(data != null) {
         self.gameLobbyID(data.gameLobbyID);
         self.gameLobbyName(data.gameLobbyName);
         self.hostUserName(data.hostUserName);
         self.maxRoomLimit(data.maxRoomLimit);
+        console.log("From game lobby viewmodel" + data.gameLobbyID + data.gameLobbyName);
     }
 
     self.startGame = function() {

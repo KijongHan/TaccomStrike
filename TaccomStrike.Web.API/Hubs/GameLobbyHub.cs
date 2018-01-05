@@ -42,7 +42,7 @@ namespace TaccomStrike.Web.API.Hubs {
                     if(gameLobby.GetUsersCount()==gameLobby.MaxRoomLimit) {
                         foreach(var userConnection in userConnections) {
                             Console.WriteLine("Lobby Full");
-                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false});
+                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, ""});
                         }
                     }
                     else {
@@ -56,6 +56,7 @@ namespace TaccomStrike.Web.API.Hubs {
                         .ToList();
 
                         foreach(var user in gameLobby.GetUsers()) {
+                            Console.WriteLine(user.GetUserName());
                             bool isNewUser = false;
                             if(user.GetUserName() == Context.User.GetUserName()) {
                                 isNewUser = true;
@@ -67,7 +68,7 @@ namespace TaccomStrike.Web.API.Hubs {
                                 Clients.Client(connection).InvokeAsync(
                                     "GameLobbyJoin", 
                                     new object[] {
-                                        true, host, players, newUser, isNewUser
+                                        true, host, players, newUser, isNewUser, gameLobbyID
                                     });
                             }
                         }
