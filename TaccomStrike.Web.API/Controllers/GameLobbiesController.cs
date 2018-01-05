@@ -30,8 +30,9 @@ namespace TaccomStrike.Web.API.Controllers {
                 MaxRoomLimit = gameLobbyViewModel.MaxRoomLimit
             };
             
-            gameLobbyService.AddGameLobby(gameLobby, HttpContext.User);
-            return Ok();
+            Console.WriteLine(HttpContext.User.GetUserName());
+            string gameLobbyID = gameLobbyService.AddGameLobby(gameLobby, HttpContext.User);
+            return Ok(new {gameLobbyID = gameLobbyID});
         }
 
         [Route("")]
@@ -41,7 +42,8 @@ namespace TaccomStrike.Web.API.Controllers {
             .GetGameLobbies()
             .Select((item) => new {
                 GameLobbyID = item.GameLobbyID,
-                HostUserName = item.Host.GetUserName(),
+                GameLobbyName = item.GameLobbyName,
+                HostUserName = item.Hosts[0].GetUserName(),
                 UserCount = item.GetUsersCount(),
                 MaxRoomLimit = item.MaxRoomLimit
             })

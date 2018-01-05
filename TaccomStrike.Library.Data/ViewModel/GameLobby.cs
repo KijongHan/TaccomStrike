@@ -18,9 +18,8 @@ namespace TaccomStrike.Library.Data.ViewModel {
         public string GameLobbyID {get;set;}
         public string GameLobbyPassword {get;set;}
 
-        public ClaimsPrincipal Host {get;set;}
+        public List<ClaimsPrincipal> Hosts {get;set;}
         public List<ClaimsPrincipal> Players {get;set;}
-        public List<ClaimsPrincipal> Spectators {get;set;}
 
         public GameLobby.LobbyType GameLobbyType {get;set;}
         public GameLobby.GameType GameLobbyGameType {get;set;}
@@ -28,36 +27,29 @@ namespace TaccomStrike.Library.Data.ViewModel {
         public int MaxRoomLimit {get;set;}
 
         public GameLobby() {
+            Hosts = new List<ClaimsPrincipal>();
             Players = new List<ClaimsPrincipal>();
-            Spectators = new List<ClaimsPrincipal>();
         }
 
         public List<ClaimsPrincipal> GetUsers() {
             List<ClaimsPrincipal> users = new List<ClaimsPrincipal>();
-            users.Add(Host);
+            users.Concat(Hosts);
             users.Concat(Players);
-            users.Concat(Spectators);
             return users;
         }
 
         public int GetUsersCount() {
             int count = 0;
-            if(Host != null) {
-                count += 1;
-            }
-
+            
             count += Players.Count;
-            count += Spectators.Count;
             return count;
         }
 
         public void AddUser(ClaimsPrincipal user) {
-            if(Players.Count < 2) {
-                Players.Add(user);
+            if(Hosts.Count == 0) {
+                Hosts.Add(user);
             }
-            else {
-                Spectators.Add(user);
-            }
+            Players.Add(user);
         }
 
         public bool HasUser(ClaimsPrincipal user) {

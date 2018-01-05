@@ -20,6 +20,7 @@ namespace TaccomStrike.Web.API
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseUrls("http://localhost:50249")
                 .Build();
     }
 }

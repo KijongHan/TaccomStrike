@@ -19,7 +19,7 @@ namespace TaccomStrike.Web.API.Hubs {
             this.userConnectionService = userConnectionService;
         }
 
-        public Task GameLobbyStartGame() {
+        public Task GameLobbyStartGame(string gameLobbyID) {
             return Task.Run(() => {
                 
             });
@@ -31,36 +31,80 @@ namespace TaccomStrike.Web.API.Hubs {
             });
         }
 
-        public Task GameLobbyJoin(string gameLobbyID, string gameLobbyPassword) {
+        public Task GameLobbyJoin(string gameLobbyID) {
             return Task.Run(() => {
+                Console.WriteLine("here" + gameLobbyID);
                 var userConnections = userConnectionService.GetConnections(Context.User);
                 var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
+                var newUser = new { userName = Context.User.GetUserName()};
 
                 if(gameLobby.GameLobbyType==GameLobby.LobbyType.Public) {
                     if(gameLobby.GetUsersCount()==gameLobby.MaxRoomLimit) {
                         foreach(var userConnection in userConnections) {
-                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, null});
+                            Console.WriteLine("Lobby Full");
+                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false});
                         }
                     }
                     else {
-                        gameLobby.AddUser(Context.User);
-                        var host = new { UserName = gameLobby.Host.GetUserName()};
+                        if(!gameLobby.HasUser(Context.User)) {
+                            gameLobby.AddUser(Context.User);    
+                        }
+                        
+                        var host = new { userName = gameLobby.Hosts[0].GetUserName()};
                         var players = gameLobby.Players
-                        .Select((item) => new {UserName = item.GetUserName()})
-                        .ToList();
-                        var spectators = gameLobby.Spectators
-                        .Select((item) => new {UserName = item.GetUserName()})
+                        .Select((item) => new {userName = item.GetUserName()})
                         .ToList();
 
                         foreach(var user in gameLobby.GetUsers()) {
+                            bool isNewUser = false;
+                            if(user.GetUserName() == Context.User.GetUserName()) {
+                                isNewUser = true;
+                            }
+
                             var connections = userConnectionService.GetConnections(user);
                             foreach(var connection in connections) {
+                                Console.WriteLine("Lobby Joined");
                                 Clients.Client(connection).InvokeAsync(
                                     "GameLobbyJoin", 
                                     new object[] {
-                                        true, host, players, spectators
+                                        true, host, players, newUser, isNewUser
                                     });
                             }
+                        }
+                    }
+                }
+            });
+        }
+
+        public Task GameLobbySendMessage(string message, string gameLobbyID) {
+            return Task.Run(() => 
+            {
+                var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
+                Console.WriteLine(gameLobbyID);
+                if(gameLobby.HasUser(Context.User)) {
+                    Console.WriteLine(message);
+                    ChatMessage chatMessage = new ChatMessage {
+                        UserID = Context.User.GetUserLoginID(),
+                        UserName = Context.User.GetUserName(),
+                        MessageContent = message,
+                        WhenCreated = DateTime.Now
+                    };
+
+                    foreach(var participant in gameLobby.GetUsers()) {
+                        var isSender = false;
+                        if(participant.GetUserLoginID() == Context.User.GetUserLoginID()) {
+                            isSender = true;
+                        }
+
+                        var connections = userConnectionService.GetConnections(participant);
+                        foreach(var connection in connections) {
+                            Console.WriteLine("Im sending");
+                            Clients.Client(connection).InvokeAsync(
+                                "GameLobbySendMessage", 
+                                new object[] {
+                                    chatMessage,
+                                    isSender
+                                });
                         }
                     }
                 }

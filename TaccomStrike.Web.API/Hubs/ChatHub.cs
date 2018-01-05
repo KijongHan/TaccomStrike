@@ -22,6 +22,7 @@ namespace TaccomStrike.Web.API.Hubs {
         public Task ChatSendMessage(string message, string chatRoomName) {
             return Task.Run(() => 
             {
+                Console.WriteLine(Context.User.GetUserName());
                 var chatRoom = chatRoomService.GetChatRoom(chatRoomName);
                 if(chatRoom.HasParticipant(Context.User)) {
                     Console.WriteLine(message);
@@ -44,10 +45,11 @@ namespace TaccomStrike.Web.API.Hubs {
                         foreach(var connection in connections) {
                             Console.WriteLine("Im sending");
                             Clients.Client(connection).InvokeAsync(
-                                "ChatSendMessage", 
+                                "ChatSendMessage",
                                 new object[] {
                                     chatMessage,
-                                    isSender
+                                    isSender,
+                                    chatRoomName
                                 });
                         }
                     }
@@ -85,7 +87,8 @@ namespace TaccomStrike.Web.API.Hubs {
                                     participants.Select(item => new { 
                                         UserName = item.GetUserName()
                                     }),
-                                    isNewChatUser
+                                    isNewChatUser,
+                                    chatRoomName
                                 });
                         }
                     }
@@ -122,7 +125,8 @@ namespace TaccomStrike.Web.API.Hubs {
                                     new object[] { 
                                         new { 
                                             UserName = Context.User.GetUserName() 
-                                        } 
+                                        },
+                                        chatRoom.ChatRoomName
                                     }
                                 );
                             }

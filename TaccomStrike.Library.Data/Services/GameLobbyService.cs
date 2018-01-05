@@ -8,24 +8,18 @@ namespace TaccomStrike.Library.Data.Services {
     public class GameLobbyService {
 
         private List<GameLobby> gameLobbies;
-        private List<ClaimsPrincipal> competitiveQueue;
 
         public GameLobbyService() {
             gameLobbies = new List<GameLobby>();
-            competitiveQueue = new List<ClaimsPrincipal>();
         }
 
-        public List<GameLobby> CompetitiveGameLobbies() {
-            return gameLobbies
-            .Where((item) => item.GameLobbyType==GameLobby.LobbyType.Competitive)
-            .ToList();
-        }
-
-        public void AddGameLobby(GameLobby gameLobby, ClaimsPrincipal creator) {
+        public string AddGameLobby(GameLobby gameLobby, ClaimsPrincipal creator) {
             var salt = Authentication.GenerateSalt();
             gameLobby.GameLobbyID = salt;
-            gameLobby.Host = creator;
+            gameLobby.GameLobbyType = GameLobby.LobbyType.Public;
+            gameLobby.AddUser(creator);
             gameLobbies.Add(gameLobby);
+            return salt;
         }
 
         public GameLobby GetGameLobby(string gameLobbyID) {
