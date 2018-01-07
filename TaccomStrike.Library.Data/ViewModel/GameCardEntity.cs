@@ -1,36 +1,22 @@
-public class GameCardEntity 
-{
-    public GameCardEntity CardOwner {get;set;}
+namespace TaccomStrike.Library.Data.ViewModel {
+	public class GameCardEntity {
 
-    public string CardName { get; set; }
-	public string CardEffectDescription { get; set; }
-	public string CardLoreDescription { get; set; }
-	public string CardType { get; set; }
+		public static string[] Suits = new string[] {
+			"Heart", "Diamond", "Clover", "Spade"
+		};
 
-	public int CardHealth { get; set; }
-	public int CardManaCost { get; set; }
-	public int CardDamage { get; set; }
+		public static string[] Ranks = new string[] {
+			"2", "3", "4", "5", "6", "7", "8", "9", "Jack", "Queen", "King", "Ace"
+		};
 
-	public GameCardEntity ()
-	{
+		public string Suit {get;set;}
 
-	}
+		public string Rank {get;set;}
 
-	public CardUntapPhase CardUntapPhaseHandler;
-	public delegate void CardUntapPhase();
+		public GameCardEntity(string rank, string suit) {
+			Suit = suit;
+			Rank = rank;
+		}
 
-	public CardDrawPhase CardDrawPhaseHandler;
-	public delegate void CardDrawPhase();
-
-	public delegate void HandleFirstMainPhase();
-
-	public delegate void HandleBeginCombatPhase();
-
-	public void HandleUntapPhase() {
-		CardUntapPhaseHandler ();
-	}
-
-	public void HandleDrawPhase() {
-		CardDrawPhaseHandler ();
 	}
 }

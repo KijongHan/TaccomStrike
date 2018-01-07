@@ -24,12 +24,24 @@ namespace TaccomStrike.Library.Data.ViewModel {
         public GameLobby.LobbyType GameLobbyType {get;set;}
         public GameLobby.GameType GameLobbyGameType {get;set;}
 
+        public GameLogicController GameLogicController {get;set;}
+
         public int MaxRoomLimit {get;set;}
 
         public GameLobby() {
             Hosts = new List<ClaimsPrincipal>();
             Players = new List<ClaimsPrincipal>();
         }
+
+        public bool StartGame() {
+            if(Players.Count < 2) {
+                return false;
+            }
+
+            GameLogicController = new GameLogicController();
+            GameLogicController.StartGame(Players);
+            return true;
+         }
 
         public List<ClaimsPrincipal> GetUsers() {
             return Players;

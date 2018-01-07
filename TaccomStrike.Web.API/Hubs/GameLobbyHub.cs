@@ -19,9 +19,51 @@ namespace TaccomStrike.Web.API.Hubs {
             this.userConnectionService = userConnectionService;
         }
 
+        public Task GameState(string gameLobbyID) {
+            return Task.Run(() => {
+                var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
+
+                if(gameLobby.HasUser(Context.User)) {
+                    GameState gameState = gameLobby.GameLogicController.GetGameState(Context.User);
+
+                    var connections = userConnectionService.GetConnections(Context.User);
+                    foreach(var connection in connections) {
+                                Clients.Client(connection).InvokeAsync(
+                                    "GameState", 
+                                    new object[] {
+                                        gameState
+                                    });
+                            }
+                }            
+            });
+        }
+
         public Task GameLobbyStartGame(string gameLobbyID) {
             return Task.Run(() => {
-                
+                var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
+                if(gameLobby.HasUser(Context.User)) {
+                    gameLobby.StartGame();
+
+                    foreach(var user in gameLobby.Players) {
+                        GameUserEntity gameUser = gameLobby.GameLogicController.GetPlayer(user);
+                    
+                        var connections = userConnectionService.GetConnections(user);
+                            foreach(var connection in connections) {
+                                Console.WriteLine("Lobby Joined");
+                                bool currentTurn = false;
+
+                                if(gameLobby.GameLogicController.CurrentTurn(gameUser)) {
+                                    currentTurn = true;
+                                }
+
+                                Clients.Client(connection).InvokeAsync(
+                                    "GameLobbyStartGame", 
+                                    new object[] {
+                                        currentTurn
+                                    });
+                            }
+                    }
+                }
             });
         }
 

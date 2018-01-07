@@ -20,6 +20,10 @@ function GameLobbyViewModel(connection, data) {
         console.log("From game lobby viewmodel" + data.gameLobbyID + data.gameLobbyName);
     }
 
+    self.gameState = function() {
+        self.connection.invoke("GameState", self.gameLobbyID());
+    }
+
     self.startGame = function() {
         self.connection.invoke("GameLobbyStartGame", self.gameLobbyID());
     }

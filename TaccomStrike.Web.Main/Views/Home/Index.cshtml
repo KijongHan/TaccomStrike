@@ -164,6 +164,15 @@
             currentGameLobby.gameLobbyMessages.push(message);
         });
 
+        connection.on('GameLobbyStartGame', function(turn) {
+            console.log(turn);
+            currentGameLobby.gameState();
+        });
+
+        connection.on('GameState', function(gameState) {
+            console.log(gameState);
+        });
+
         connection.start();
     }
 
