@@ -25,6 +25,8 @@ namespace TaccomStrike.Web.API.Hubs {
 
                 if(gameLobby.HasUser(Context.User)) {
                     if(!gameLobby.GameLogicController.IsCurrentTurn(Context.User)) {
+                        var cheatCallerUserName = Context.User.GetUserName();
+                        var lastClaimUserName = gameLobby.GameLogicController.CurrentClaims.Last().ClaimUserName;
                         var preCheatClaims = gameLobby.GameLogicController.CurrentClaims;
                         var cheatCallSuccess = gameLobby.GameLogicController.CallCheat(Context.User);
 
@@ -37,6 +39,8 @@ namespace TaccomStrike.Web.API.Hubs {
                                         "GameCallCheat",
                                         new object[] {
                                             gameState,
+                                            cheatCallerUserName,
+                                            lastClaimUserName,
                                             preCheatClaims,
                                             cheatCallSuccess
                                         });
@@ -166,11 +170,19 @@ namespace TaccomStrike.Web.API.Hubs {
                 var newUser = new { userName = Context.User.GetUserName()};
 
                 if(gameLobby.GameLobbyType==GameLobby.LobbyType.Public) {
-                    if(gameLobby.GetUsersCount()==gameLobby.MaxRoomLimit) {
+                    if(gameLobby.GetUsersCount()>=gameLobby.MaxRoomLimit) {
                         foreach(var userConnection in userConnections) {
                             Console.WriteLine("Lobby Full");
                             Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, ""});
                         }
+                        return;
+                    }
+                    if(gameLobby.InGame()) {
+                        foreach(var userConnection in userConnections) {
+                            Console.WriteLine("Game in progress");
+                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, ""});
+                        }
+                        return;
                     }
                     else {
                         if(!gameLobby.HasUser(Context.User)) {

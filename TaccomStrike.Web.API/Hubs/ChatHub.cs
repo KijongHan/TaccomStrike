@@ -133,7 +133,6 @@ namespace TaccomStrike.Web.API.Hubs {
                 Console.WriteLine("From ChatHub" + Context.Connection.GetHttpContext().Request.Cookies.Count);
                 Console.WriteLine("From ChatHub" + Context.User.GetUserName());
                 userConnectionService.Add(Context.User, Context.ConnectionId);
-                chatRoomService.GetGeneralChatRoom().AddParticipant(Context.User);
                 return base.OnConnectedAsync();
             });
         }

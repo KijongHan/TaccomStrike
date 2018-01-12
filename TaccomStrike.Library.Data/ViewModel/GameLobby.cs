@@ -33,6 +33,13 @@ namespace TaccomStrike.Library.Data.ViewModel {
             Players = new List<ClaimsPrincipal>();
         }
 
+        public bool InGame() {
+            if(GameLogicController==null) {
+                return false;
+            }
+            return true;
+        }
+
         public bool StartGame() {
             if(Players.Count < 2) {
                 return false;

@@ -31,6 +31,10 @@ function GameLobbyViewModel(connection, data) {
         self.connection.invoke("GameLobbyStartGame", self.gameLobbyID());
     }
 
+    self.gameCallCheat = function() {
+        self.connection.invoke("GameCallCheat", self.gameLobbyID());
+    }
+
     self.gameEndTurn = function() {
         self.connection.invoke("GameEndTurn", self.gameLobbyID());
     }

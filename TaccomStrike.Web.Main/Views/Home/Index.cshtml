@@ -11,12 +11,18 @@
     <script src="~/js/viewmodels/GameLobbyViewModel.js"></script>
     <script src="~/js/viewmodels/GameLobbiesViewModel.js"></script>
     <script src="~/js/viewmodels/LoginViewModel.js"></script>
+    <script src="~/js/viewmodels/RegisterViewModel.js"></script>
 </head>
 <body>
     <div id="login">
         <input id="username" data-bind="value: username"></input>
         <input id="password" data-bind="value: password"></input>
         <button data-bind="click: login">login</button>
+    </div>
+    <div id="register">
+        <input id="username" data-bind="value: username"></input>
+        <input id="password" data-bind="value: password"></input>
+        <button data-bind="click: register">register</button>
     </div>
 
     <button onclick="setConnections()">Set Connections</button>
@@ -79,6 +85,7 @@
             <input type="checkbox" data-bind="checked: selected"/>
         </div>
         <input data-bind="value: rankClaim"/>
+        <button data-bind="click: gameCallCheat">Call Cheat</button>
         <button data-bind="click: gameClaim">Game Claim</button>
         <button data-bind="click: gameEndTurn">End Turn</button>
     </div>
@@ -104,6 +111,7 @@
     var gameLobbiesViewModel = new GameLobbiesViewModel(gameLobbyConnection);
     var currentGameLobby = new GameLobbyViewModel(gameLobbyConnection, null);
 
+    ko.applyBindings(new RegisterViewModel(), document.getElementById("register"));
     ko.applyBindings(new LoginViewModel(), document.getElementById("login"));
     ko.applyBindings(chatRoomsViewModel, document.getElementById("chatRooms"));
     ko.applyBindings(gameLobbiesViewModel, document.getElementById("gameLobbies"));
@@ -200,6 +208,18 @@
 
         connection.on('GameEndTurn', function(gameState) {
             console.log(gameState);
+            currentGameLobby.hand.removeAll();
+            for(var i = 0; i < gameState.Hand.length; i++) {
+                currentGameLobby.hand.push(new GameCardViewModel(gameState.Hand[i]));
+            }
+        });
+
+        connection.on('GameCallCheat', function(gameState, cheatCallerUserName, lastClaimUserName, preCheatClaims, cheatCallSuccess) {
+            console.log(gameState);
+            console.log(cheatCallerUserName);
+            console.log(lastClaimUserName);
+            console.log(preCheatClaims);
+            console.log(cheatCallSuccess);
             currentGameLobby.hand.removeAll();
             for(var i = 0; i < gameState.Hand.length; i++) {
                 currentGameLobby.hand.push(new GameCardViewModel(gameState.Hand[i]));

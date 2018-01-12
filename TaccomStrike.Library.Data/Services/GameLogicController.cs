@@ -72,10 +72,28 @@ public class GameLogicController {
         }
 
         if(CurrentClaims.Count > 0) {
+            if(CurrentClaims.Last().ClaimUserName==user.GetUserName()) {
+                return false;
+            }
+        }
+
+        if(CurrentClaims.Count > 0) {
             var referenceCardIndex = GameCardEntity.Ranks.FindIndex((item) => { return item==referenceCard.Rank; });
             var recentClaimIndex = GameCardEntity.Ranks.FindIndex((item) => { return item==CurrentClaims.Last().Claims[0].Rank; });
 
-            if(referenceCardIndex>recentClaimIndex+1 || referenceCardIndex<recentClaimIndex-1) {
+            var lowerBound = recentClaimIndex-1;
+            if(lowerBound<0) {
+                lowerBound=GameCardEntity.Ranks.Count-1;
+            }
+            var upperBound = recentClaimIndex+1;
+            if(upperBound>=GameCardEntity.Ranks.Count) {
+                upperBound=0;
+            }
+            if(
+                referenceCard.Rank!=GameCardEntity.Ranks[lowerBound] && 
+                referenceCard.Rank!=GameCardEntity.Ranks[recentClaimIndex] && 
+                referenceCard.Rank!= GameCardEntity.Ranks[upperBound]) 
+            {
                 return false;
             }
         }

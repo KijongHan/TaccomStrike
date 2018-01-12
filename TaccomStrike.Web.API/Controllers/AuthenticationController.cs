@@ -25,7 +25,7 @@ namespace TaccomStrike.Web.API.Controllers
 
         [Route("")]
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(CreateUserLogin userEntity)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateUserLogin userEntity)
         {
             if(await authenticationService.CreateLoginAsync(userEntity) == null)
             {
@@ -51,35 +51,6 @@ namespace TaccomStrike.Web.API.Controllers
                     Security.AuthenticationScheme, claimsPrincipal
                 );
                 
-            foreach(var i in HttpContext.Response.Headers) {
-                Console.WriteLine(i.Key + ":" + i.Value);
-            }
-            return Ok();
-        }
-
-        [Route("tlogin")]
-        [HttpPost]
-        public async Task<IActionResult> PostAsyncs([FromBody] PostUserLogin loginEntity)
-        {
-            Console.WriteLine("A:" + loginEntity.Username);
-
-            var claimsPrincipal = await authenticationService.AuthenticateLoginAsync(loginEntity);
-
-            if(claimsPrincipal == null)
-            {
-                return NotFound();
-            }
-
-            await HttpContext.SignInAsync
-                (
-                    Security.AuthenticationScheme, claimsPrincipal
-                );
-            
-            HttpContext.Response.Headers.Remove("Access-Control-Allow-Origin");
-            HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-            HttpContext.Response.Headers.Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
-            HttpContext.Response.Headers.Add("Access-Control-Allow-Headers", "Set-Cookie");
-            HttpContext.Response.Headers.Add("Test", "Test");
             foreach(var i in HttpContext.Response.Headers) {
                 Console.WriteLine(i.Key + ":" + i.Value);
             }
