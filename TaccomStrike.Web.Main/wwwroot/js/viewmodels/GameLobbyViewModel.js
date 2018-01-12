@@ -10,6 +10,9 @@ function GameLobbyViewModel(connection, data) {
     self.host = ko.observable(null);
     self.players = ko.observableArray();
     self.gameLobbyMessages = ko.observableArray();
+
+    self.hand = ko.observableArray();
+    self.rankClaim = ko.observable();
     console.log(data);
 
     if(data != null) {
@@ -26,6 +29,29 @@ function GameLobbyViewModel(connection, data) {
 
     self.startGame = function() {
         self.connection.invoke("GameLobbyStartGame", self.gameLobbyID());
+    }
+
+    self.gameEndTurn = function() {
+        self.connection.invoke("GameEndTurn", self.gameLobbyID());
+    }
+
+    self.gameClaim = function() {
+        var selectedCards = [];
+        for(var i = 0; i < self.hand().length; i++) {
+            if(self.hand()[i].selected()) {
+                var card = { 
+                    "Rank": self.hand()[i].rank(),
+                    "Suit": self.hand()[i].suit()
+                };
+                selectedCards.push(card);
+            }
+        }
+        var claims = [];
+        for(var j = 0; j < selectedCards.length; j++) {
+            var claim = { "Rank": self.rankClaim() };
+            claims.push(claim);
+        }
+        self.connection.invoke("GameClaim", self.gameLobbyID(), claims, selectedCards);
     }
 
     self.leaveGameLobby = function() {

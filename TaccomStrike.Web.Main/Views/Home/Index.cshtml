@@ -5,6 +5,7 @@
     <script src="~/js/models/ChatMessage.js"></script>
     <script src="~/js/models/User.js"></script>
     <script src="~/js/models/GameLobby.js"></script>
+    <script src="~/js/viewmodels/GameCardViewModel.js"></script>
     <script src="~/js/viewmodels/ChatRoomViewModel.js"></script>
     <script src="~/js/viewmodels/ChatRoomsViewModel.js"></script>
     <script src="~/js/viewmodels/GameLobbyViewModel.js"></script>
@@ -69,6 +70,17 @@
         <button data-bind="click: startGame">Start Game</button>
         <button data-bind="click: leaveGameLobby">Leave Game Lobby</button>
         <button data-bind="click: sendMessageGameLobby">Send Message</button>
+
+        <div style="{height: 100px}"></div>
+        
+        <div data-bind="foreach: hand">
+            <div data-bind="text: rank"></div>
+            <div data-bind="text: suit"></div>
+            <input type="checkbox" data-bind="checked: selected"/>
+        </div>
+        <input data-bind="value: rankClaim"/>
+        <button data-bind="click: gameClaim">Game Claim</button>
+        <button data-bind="click: gameEndTurn">End Turn</button>
     </div>
 
     <div id="gameLobby">
@@ -77,7 +89,8 @@
         <button data-bind="click: createGameLobby">Create Game Lobby</button>
     </div>
 
-    <button onclick="testSend()">Test</button>
+    <button>Test</button>
+
 </body>
 
 <script>
@@ -171,31 +184,28 @@
 
         connection.on('GameState', function(gameState) {
             console.log(gameState);
+            currentGameLobby.hand.removeAll();
+            for(var i = 0; i < gameState.Hand.length; i++) {
+                currentGameLobby.hand.push(new GameCardViewModel(gameState.Hand[i]));
+            }
+        });
+
+        connection.on('GameClaim', function(gameState) {
+            console.log(gameState);
+            currentGameLobby.hand.removeAll();
+            for(var i = 0; i < gameState.Hand.length; i++) {
+                currentGameLobby.hand.push(new GameCardViewModel(gameState.Hand[i]));
+            }
+        });
+
+        connection.on('GameEndTurn', function(gameState) {
+            console.log(gameState);
+            currentGameLobby.hand.removeAll();
+            for(var i = 0; i < gameState.Hand.length; i++) {
+                currentGameLobby.hand.push(new GameCardViewModel(gameState.Hand[i]));
+            }
         });
 
         connection.start();
-    }
-
-    function testSend() {
-        chatConnection.invoke("ChatSendMessage", "Test", "General Chat");
-    }
-
-    function testCookie() {
-        fetch("http://localhost:50249/api/test/authorized", {
-          method: 'GET',
-          credentials: 'include'
-        }).then(res => {
-          console.log(res.headers.get('set-cookie')); // undefined
-          console.log(document.cookie); // nope
-          return res.json();
-        }).then(json => {
-          if (json.success) {
-            this.setState({ error: '' });
-            this.context.router.push(json.redirect);
-          }
-          else {
-            this.setState({ error: json.error });
-          }
-        });
     }
 </script>

@@ -19,6 +19,37 @@ namespace TaccomStrike.Web.API.Hubs {
             this.chatRoomService = chatRoomService;
         }
 
+        public Task ChatUserSendMessage(string message, int recipientUserID) {
+            return Task.Run(() => {
+                ChatMessage chatMessage = new ChatMessage {
+                        UserID = Context.User.GetUserLoginID(),
+                        UserName = Context.User.GetUserName(),
+                        MessageContent = message,
+                        WhenCreated = DateTime.Now
+                    };
+                
+                var connections = userConnectionService.GetConnections(recipientUserID);
+                        foreach(var connection in connections) {
+                            Console.WriteLine("Im sending");
+                            Clients.Client(connection).InvokeAsync(
+                                "ChatUserSendMessage",
+                                new object[] {
+                                    chatMessage
+                                });
+                        }
+                
+                connections = userConnectionService.GetConnections(Context.User);
+                        foreach(var connection in connections) {
+                            Console.WriteLine("Im sending");
+                            Clients.Client(connection).InvokeAsync(
+                                "ChatUserSendMessage",
+                                new object[] {
+                                    chatMessage
+                                });
+                        }
+            });
+        }
+
         public Task ChatSendMessage(string message, string chatRoomName) {
             return Task.Run(() => 
             {

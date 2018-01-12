@@ -19,6 +19,91 @@ namespace TaccomStrike.Web.API.Hubs {
             this.userConnectionService = userConnectionService;
         }
 
+        public Task GameCallCheat(string gameLobbyID) {
+            return Task.Run(() => {
+                var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
+
+                if(gameLobby.HasUser(Context.User)) {
+                    if(!gameLobby.GameLogicController.IsCurrentTurn(Context.User)) {
+                        var preCheatClaims = gameLobby.GameLogicController.CurrentClaims;
+                        var cheatCallSuccess = gameLobby.GameLogicController.CallCheat(Context.User);
+
+                        foreach(var gameUser in gameLobby.Players) {
+                            var gameState = gameLobby.GameLogicController.GetGameState(gameUser);
+                            var connections = userConnectionService.GetConnections(gameUser);
+
+                            foreach(var connection in connections) {
+                                Clients.Client(connection).InvokeAsync(
+                                        "GameCallCheat",
+                                        new object[] {
+                                            gameState,
+                                            preCheatClaims,
+                                            cheatCallSuccess
+                                        });
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        public Task GameClaim(string gameLobbyID, List<GameCardEntity> claims, List<GameCardEntity> actual) {
+            return Task.Run(() => {
+                var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
+
+                if(gameLobby.HasUser(Context.User)) {
+                    if(gameLobby.GameLogicController.IsCurrentTurn(Context.User)) {
+                        var successful = gameLobby.GameLogicController.SubmitClaim(Context.User, claims, actual);
+
+                        if(successful) {
+                            foreach(var gameUser in gameLobby.Players) {
+                                var gameState = gameLobby.GameLogicController.GetGameState(gameUser);
+                                var connections = userConnectionService.GetConnections(gameUser);
+
+                                foreach(var connection in connections) {
+                                        Clients.Client(connection).InvokeAsync(
+                                            "GameClaim",
+                                            new object[] {
+                                                gameState
+                                            });
+                                    }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        public Task GameEndTurn(string gameLobbyID) {
+            return Task.Run(() => {
+                var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
+
+                if(gameLobby.HasUser(Context.User)) {
+                    if(gameLobby.GameLogicController.IsCurrentTurn(Context.User)) {
+                        if(gameLobby.GameLogicController.IsVictory()) {
+                            Console.WriteLine("Victory!");
+                        }
+                        else {
+                            gameLobby.GameLogicController.EndTurn();
+
+                            foreach(var user in gameLobby.Players) {
+                                var connections = userConnectionService.GetConnections(user);
+                                var gameState = gameLobby.GameLogicController.GetGameState(user);
+
+                                foreach(var connection in connections) {
+                                    Clients.Client(connection).InvokeAsync(
+                                        "GameEndTurn", 
+                                        new object[] {
+                                            gameState
+                                        });
+                                }
+                            }
+                        }                        
+                    }
+                }
+            });
+        }
+
         public Task GameState(string gameLobbyID) {
             return Task.Run(() => {
                 var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
