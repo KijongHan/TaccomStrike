@@ -1,0 +1,259 @@
+.button1 {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.button1:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.card {
+    height: 400px;
+}
+
+.cardBack {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    border-style: solid;
+    border-width: 4px;
+    border-color: rgb(238, 43, 29);
+    transform: rotateY(180deg);
+}
+
+.cardFront {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.card.loading .cardBack {
+    display: inline;
+}
+
+.card.loading .cardFront {
+    display: none;
+}
+
+#loginRegisterRow .cardFront {
+    background-color: black;
+}
+
+#loginRegisterRow .card.activate .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#loginRegisterRow .card.activate .cardFront {
+    transform: rotateY(90deg);
+    animation-name: activateAnimationPart2;
+    animation-delay: 1s;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#loginRegisterRow .subTitle {
+    color: white;
+    font-size: 2.2em;
+}
+
+#loginRegisterRow .item {
+    width: 90%;
+    margin: auto;
+    margin-top: 10px;
+}
+
+#loginRegisterRow .item label {
+    width: 40%;
+    padding-left: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#loginRegisterRow .item input {
+    width: 60%;
+}
+
+#loginRegisterRow .item2 {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+
+#loginRegisterRow .item2 .button1 {
+    width: 50%;
+    height: 50px;
+    line-height: 50px;
+    margin-left: 25%;
+    margin-bottom: 10px;
+}
+
+.gap1 {
+    margin-top: 50px;
+}
+
+#loginForm .gap1 {
+    margin-top: 30px;
+}
+
+#titleRow .card {
+    height: 150px;
+}
+
+#titleRow .cardBack {
+    -webkit-box-shadow: 5px 5px 1px 0px rgba(0,0,0,0.9);
+    -moz-box-shadow: 5px 5px 1px 0px rgba(0,0,0,0.9);
+    box-shadow: 5px 5px 1px 0px rgba(0,0,0,0.9);
+}
+
+#titleRow .cardFront {
+    font-size: 7em;
+    text-align: center;
+    color: black;
+    -webkit-box-shadow: -5px 5px 1px 0px rgba(0,0,0,0.9);
+    -moz-box-shadow: -5px 5px 1px 0px rgba(0,0,0,0.9);
+    box-shadow: -5px 5px 1px 0px rgba(0,0,0,0.9);
+}
+
+@media (max-width: 500px){
+    #titleRow .cardFront {
+        font-size: 50px;
+        line-height: 150px;
+    }
+}
+
+#title1 .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title1 .cardFront {
+    transform: rotateY(90deg);
+    animation-name: activateAnimationPart2;
+    animation-delay: 0.4s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title2 .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-delay: 0.4s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title2 .cardFront {
+    transform: rotateY(90deg);
+    animation-name: activateAnimationPart2;
+    animation-delay: 0.8s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title3 .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-delay: 0.8s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title3 .cardFront {
+    transform: rotateY(90deg);
+    animation-name: activateAnimationPart2;
+    animation-delay: 1.2s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title4 .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-delay: 1.2s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title4 .cardFront {
+    transform: rotateY(90deg);
+    animation-name: activateAnimationPart2;
+    animation-delay: 1.6s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title5 .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-delay: 1.6s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title5 .cardFront {
+    transform: rotateY(90deg);
+    animation-name: activateAnimationPart2;
+    animation-delay: 2s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title6 .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-delay: 2s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title6 .cardFront {
+    transform: rotateY(90deg);
+    animation-name: activateAnimationPart2;
+    animation-delay: 2.4s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title7 .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-delay: 2.4s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title7 .cardFront {
+    transform: rotateY(90deg);
+    animation-name: activateAnimationPart2;
+    animation-delay: 2.8s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title8 .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-delay: 2.8s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title8 .cardFront {
+    transform: rotateY(90deg);
+    animation-name: activateAnimationPart2;
+    animation-delay: 3.2s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title9 .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-delay: 3.2s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+#title9 .cardFront {
+    transform: rotateY(90deg);
+    animation-name: activateAnimationPart2;
+    animation-delay: 3.6s;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}

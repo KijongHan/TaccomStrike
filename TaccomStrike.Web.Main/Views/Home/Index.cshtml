@@ -1,5 +1,9 @@
 <head>
+    <link rel="stylesheet" type="text/css" href="~/lib/bootstrap.min.css"></link>
     <link rel="stylesheet" type="text/css" href="~/css/app.css"></link>
+    <link rel="stylesheet" type="text/css" href="~/css/animation.css"></link>
+    <script src="~/lib/jquery.min.js"></script>
+    <script src="~/lib/bootstrap.min.js"></script>
     <script src="~/lib/signalr-client-1.0.0-alpha2-final.min.js"></script>
     <script src="~/lib/knockout-3.4.2.js"></script>
     <script src="~/js/models/ChatMessage.js"></script>
@@ -14,15 +18,138 @@
     <script src="~/js/viewmodels/RegisterViewModel.js"></script>
 </head>
 <body>
-    <div id="login">
-        <input id="username" data-bind="value: username"></input>
-        <input id="password" data-bind="value: password"></input>
-        <button data-bind="click: login">login</button>
+    <div class="container-fluid" id="loginScreen">
+        <div class="gap1"></div>
+        <div class="row" id="titleRow">
+            <div class="col-xs-3 col-sm-2 col-sm-offset-2 col-md-1 col-md-offset-1">
+               <div class="card" id="title1">
+                    <div class="cardFront">C</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-2 col-md-1">
+               <div class="card" id="title2">
+                    <div class="cardFront">A</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-2 col-md-1">
+               <div class="card" id="title3">
+                    <div class="cardFront">L</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-2 col-md-1">
+               <div class="card" id="title4">
+                    <div class="cardFront">L</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-2 col-xs-offset-1 col-md-1 col-md-offset-1">
+               <div class="card" id="title5">
+                    <div class="cardFront">C</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2 col-md-1">
+               <div class="card" id="title6">
+                    <div class="cardFront">H</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2 col-md-1">
+               <div class="card" id="title7">
+                    <div class="cardFront">E</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2 col-md-1">
+               <div class="card" id="title8">
+                    <div class="cardFront">A</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2 col-md-1">
+               <div class="card" id="title9">
+                    <div class="cardFront">T</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gap1"></div>
+
+        <div class="row" id="loginRegisterRow">
+            <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-2">
+                <div class="card loading" id="loginForm">
+                    <div class="cardBack"></div>
+                    <div class="cardFront">
+                        <div class="subTitle">LOGIN USER</div>
+                        <div class="gap1"></div>
+                        <div class="item">
+                            <label>Username</label><input data-bind="value: username"></input>
+                        </div>
+                        <div class="item">
+                            <label>Password</label><input type="password" data-bind="value: password"></input>
+                        </div>
+                        <div class="item2">
+                            <div class="button1" data-bind="click: login">Login</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-2">
+                <div class="card loading" id="registrationForm">
+                    <div class="cardFront">
+                        <div class="subTitle">REGISTER</div>
+                        <div class="gap1"></div>
+                        <div class="item">
+                            <label>Username</label><input data-bind="value: username"></input>
+                        </div>
+                        <div class="item">
+                            <label>Email</label><input data-bind="value: email"></input>
+                        </div>
+                        <div class="item">
+                            <label>Password</label><input type="password" data-bind="value: password"></input>
+                        </div>
+                        <div class="item2">
+                            <div class="button1" data-bind="click: register">Register</div>
+                        </div>
+                    </div>
+                    <div class="cardBack"></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon">Username</span>
+                <input data-bind="value: username"></input>
+            </div>
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon">Password</span>
+                <input type="password" data-bind="value: password"></input>
+            </div>
+            <div class="input-group input-group-lg">
+                <button class="btn btn-default" data-bind="click: login">Login</button>    
+            </div>
+        </div>
     </div>
-    <div id="register">
-        <input id="username" data-bind="value: username"></input>
-        <input id="password" data-bind="value: password"></input>
-        <button data-bind="click: register">register</button>
+    <div class="container-fluid" id="lobbyScreen">
+
+    </div>
+
+    <div id="titlePanel" class="panel">
+        <h1>I Call Cheat</h1>
     </div>
 
     <button onclick="setConnections()">Set Connections</button>
@@ -101,21 +228,24 @@
 </body>
 
 <script>
-    var token = null;
+    var loggedInUser = null;
+
     var chatHub = new signalR.HttpConnection(`http://localhost:50249/chat`);
     var gameLobbyHub = new signalR.HttpConnection(`http://localhost:50249/gamelobby`);
+    
     var chatConnection = new signalR.HubConnection(chatHub);
     var gameLobbyConnection = new signalR.HubConnection(gameLobbyHub);
 
     var chatRoomsViewModel = new ChatRoomsViewModel(chatConnection);
     var gameLobbiesViewModel = new GameLobbiesViewModel(gameLobbyConnection);
     var currentGameLobby = new GameLobbyViewModel(gameLobbyConnection, null);
+    var createGameLobby = new GameLobbyViewModel(gameLobbyConnection, null); 
 
-    ko.applyBindings(new RegisterViewModel(), document.getElementById("register"));
-    ko.applyBindings(new LoginViewModel(), document.getElementById("login"));
+    ko.applyBindings(new RegisterViewModel(), document.getElementById("registrationForm"));
+    ko.applyBindings(new LoginViewModel(), document.getElementById("loginForm"));
     ko.applyBindings(chatRoomsViewModel, document.getElementById("chatRooms"));
     ko.applyBindings(gameLobbiesViewModel, document.getElementById("gameLobbies"));
-    ko.applyBindings(new GameLobbyViewModel(gameLobbyConnection, null), document.getElementById("gameLobby"));
+    ko.applyBindings(createGameLobby, document.getElementById("gameLobby"));
     ko.applyBindings(currentGameLobby, document.getElementById("currentGameLobby"));
 
     function setConnections() {
@@ -227,5 +357,15 @@
         });
 
         connection.start();
+    }
+
+    window.onload = function() {
+        var ele1 = document.getElementById("loginForm");
+        ele1.classList.remove("loading");
+        ele1.classList.add("activate");
+
+        ele1 = document.getElementById("registrationForm");
+        ele1.classList.remove("loading");
+        ele1.classList.add("activate");
     }
 </script>
