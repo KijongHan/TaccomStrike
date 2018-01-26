@@ -156,9 +156,34 @@ namespace TaccomStrike.Web.API.Hubs {
             });
         }
 
-        public Task GameLobbyLeave() {
+        public Task GameLobbyLeave(string gameLobbyID) {
             return Task.Run(() => {
-                
+                var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
+
+                var playerLeaving = new { userName = Context.User.GetUserName() };
+                var host = new { userName = gameLobby.Hosts[0].GetUserName()};
+                var players = gameLobby.Players
+                .Select((item) => new {userName = item.GetUserName()})
+                .ToList();
+
+                if(gameLobby.HasUser(Context.User)) {
+                    foreach(var user in gameLobby.GetUsers()) {
+                        var connections = userConnectionService.GetConnections(user);
+                            foreach(var connection in connections) {
+                                Clients.Client(connection).InvokeAsync(
+                                    "GameLobbyLeave", 
+                                    new object[] {
+                                        true, 
+                                        playerLeaving, 
+                                        host,
+                                        players});
+                            }
+                    }
+                    gameLobby.RemoveUser(Context.User);
+                    if(gameLobby.GetUsers().Count<=0) {
+                        gameLobbyService.RemoveGameLobby(gameLobbyID);
+                    }
+                }
             });
         }
 
@@ -173,14 +198,14 @@ namespace TaccomStrike.Web.API.Hubs {
                     if(gameLobby.GetUsersCount()>=gameLobby.MaxRoomLimit) {
                         foreach(var userConnection in userConnections) {
                             Console.WriteLine("Lobby Full");
-                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, ""});
+                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, "", ""});
                         }
                         return;
                     }
                     if(gameLobby.InGame()) {
                         foreach(var userConnection in userConnections) {
                             Console.WriteLine("Game in progress");
-                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, ""});
+                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, "", ""});
                         }
                         return;
                     }
@@ -207,7 +232,7 @@ namespace TaccomStrike.Web.API.Hubs {
                                 Clients.Client(connection).InvokeAsync(
                                     "GameLobbyJoin", 
                                     new object[] {
-                                        true, host, players, newUser, isNewUser, gameLobbyID
+                                        true, host, players, newUser, isNewUser, gameLobbyID, gameLobby.GameLobbyName
                                     });
                             }
                         }

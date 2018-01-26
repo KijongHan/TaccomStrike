@@ -15,11 +15,14 @@ function LoginViewModel() {
             body: JSON.stringify({
                 username: self.username(),
                 password: self.password(),
-            }),
+            })
         }).then(response => {
-            response.json().then(function(data) {
-                console.log(data);
-            });
+            if(response.ok) {
+                loginSuccessful();
+            }
+            else {
+
+            }
         });
     }
 }

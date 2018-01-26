@@ -5,6 +5,7 @@ function GameLobbiesViewModel(connection) {
     self.gameLobbies = ko.observableArray();
 
     self.getGameLobbies = function() {
+        self.gameLobbies.removeAll();
         fetch("http://localhost:50249/api/gamelobbies", {
             method: 'GET',
             credentials: 'include'

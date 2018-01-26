@@ -1,0 +1,129 @@
+#mainScreen {
+    display: none;
+}
+
+#mainPanel {
+    height: 90%;
+}
+
+#mainPanel .card {
+    height: 90%;
+}
+
+#mainPanel > .cardFront {
+    background-color: rgba(0, 0, 0, 0.35);
+    display: inline;
+}
+
+#mainPanel > .cardBack {
+    background-color: rgba(0, 0, 0, 0.65);
+}
+
+#mainPanel.card.activate > .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#mainPanel.card.activate > .cardFront {
+    transform: rotateY(90deg);
+    animation-name: activateAnimationPart2;
+    animation-delay: 1s;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#socialRow .cardFront {
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 12px 12px 12px 12px;
+}
+
+#socialRow .card.activate > .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+
+#socialRow .card.activate > .cardFront {
+    transform: rotateY(90deg);
+    animation-name: activateAnimationPart2;
+    animation-delay: 0.7s;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+
+#mainPanel .item2 {
+    display: inline-block;
+    width: 100%;
+    height: 50px;
+}
+
+#mainPanel .item2 .button1 {
+    width: 50%;
+    height: 100%;
+    float: left;
+    line-height: 50px;
+    font-size: 2em;
+}
+
+@media (max-width: 600px) {
+    #mainPanel .item2 .button1 {
+        font-size: 1em;
+    }
+}
+
+#gameLobbies {
+    display: none;
+}
+
+#gameLobbies .item {
+    width: 100%;
+    display: inline-block;
+}
+
+#gameLobbies .item .button1 {
+    height: 50px;
+    float: left;
+    line-height: 50px;
+    margin-left: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+@media (max-width: 600px) {
+    #gameLobbies .item .button1 {
+        font-size: 0.8em;
+    }
+}
+
+#gameLobbiesPanel {
+    height: 90%;
+    padding-left: 7px;
+    overflow-y: scroll;
+}
+
+#gameLobbiesPanel .item {
+    display: inline-block;
+    height: 50px;
+    line-height: 60px;
+    width: 100%;
+    padding-left: 15px;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0, 0, 0, 0.1);
+}
+
+#gameLobbiesPanel .item:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.55);
+}
+
+#gameLobbiesPanel .item div {
+    float: left;
+    margin-right: 10px;
+}
+
+#currentGameLobby {
+    display: none;
+}

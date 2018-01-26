@@ -22,6 +22,13 @@ namespace TaccomStrike.Library.Data.Services {
             return salt;
         }
 
+        public void RemoveGameLobby(string gameLobbyID) {
+            var gameLobby = gameLobbies
+            .Where((item) => item.GameLobbyID==gameLobbyID)
+            .FirstOrDefault();
+            gameLobbies.Remove(gameLobby);
+        }
+
         public GameLobby GetGameLobby(string gameLobbyID) {
             return gameLobbies
             .Where((item) => item.GameLobbyID==gameLobbyID)

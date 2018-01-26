@@ -62,10 +62,30 @@ namespace TaccomStrike.Library.Data.ViewModel {
         }
 
         public void AddUser(ClaimsPrincipal user) {
+            if(HasUser(user)) {
+                return;
+            }
+
             if(Hosts.Count == 0) {
                 Hosts.Add(user);
             }
             Players.Add(user);
+        }
+
+        public void RemoveUser(ClaimsPrincipal user) {
+            if(!HasUser(user)) {
+                return;
+            }
+
+            var removeUser = Players
+            .Where((item) => item.GetUserLoginID() == user.GetUserLoginID())
+            .FirstOrDefault();
+
+            Players.Remove(removeUser);
+            Hosts.Remove(removeUser);
+            if(Hosts.Count==0 && Players.Count>0) {
+                Hosts.Add(Players[0]);
+            }
         }
 
         public bool HasUser(ClaimsPrincipal user) {

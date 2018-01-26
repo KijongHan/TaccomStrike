@@ -10,15 +10,25 @@ function GameLobbyViewModel(connection, data) {
     self.host = ko.observable(null);
     self.players = ko.observableArray();
     self.gameLobbyMessages = ko.observableArray();
+    self.userCount = ko.observable(null);
 
     self.hand = ko.observableArray();
     self.rankClaim = ko.observable();
     console.log(data);
 
+    self.userCountLimitFraction = ko.computed(function() {
+        return self.userCount() + "/" + self.maxRoomLimit();
+    });
+
+    self.hostInfo = ko.computed(function() {
+        return "Created By: " + self.hostUserName();
+    });
+
     if(data != null) {
         self.gameLobbyID(data.gameLobbyID);
         self.gameLobbyName(data.gameLobbyName);
         self.hostUserName(data.hostUserName);
+        self.userCount(data.userCount);
         self.maxRoomLimit(data.maxRoomLimit);
         console.log("From game lobby viewmodel" + data.gameLobbyID + data.gameLobbyName);
     }

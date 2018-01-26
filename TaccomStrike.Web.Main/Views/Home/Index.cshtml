@@ -1,6 +1,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="~/lib/bootstrap.min.css"></link>
     <link rel="stylesheet" type="text/css" href="~/css/app.css"></link>
+    <link rel="stylesheet" type="text/css" href="~/css/mainScreen.css"></link>
     <link rel="stylesheet" type="text/css" href="~/css/animation.css"></link>
     <script src="~/lib/jquery.min.js"></script>
     <script src="~/lib/bootstrap.min.js"></script>
@@ -130,62 +131,92 @@
                 </div>
             </div>
         </div>
-        <div>
-            <div class="input-group input-group-lg">
-                <span class="input-group-addon">Username</span>
-                <input data-bind="value: username"></input>
-            </div>
-            <div class="input-group input-group-lg">
-                <span class="input-group-addon">Password</span>
-                <input type="password" data-bind="value: password"></input>
-            </div>
-            <div class="input-group input-group-lg">
-                <button class="btn btn-default" data-bind="click: login">Login</button>    
-            </div>
+    </div>
+
+    <div class="container-fluid" id="mainScreen">
+        <div class="row">
+            <div class="col-xs-12 col-md-10 col-md-offset-1">
+                <div class="card" id="mainPanel">
+                    <div class="cardFront">
+                        <div class="item2">
+                            <div class="button1 active" id="socialButton" onclick="socialButtonClick()">SOCIAL</div>
+                            <div class="button1" id="gameLobbiesButton" onclick="gameLobbiesButtonClick()">GAME</div>
+                        </div>
+                        <div class="row" id="socialRow">
+                            <div class="col-xs-12 col-md-8">
+                                <div class="card">
+                                    <div class="cardBack"></div>
+                                    <div class="cardFront">
+                                        <div>
+                                            <div id="gameLobbies">
+                                                <div class="item">
+                                                    <div data-bind="click: getGameLobbies" class="button1">REFRESH</div>
+                                                    <div onclick="createNewGameClick()" class="button1">CREATE NEW GAME</div>
+                                                </div>
+                                                <div id="gameLobbiesPanel" data-bind="foreach: gameLobbies">
+                                                    <div class="item" data-bind="click: joinGameLobby">
+                                                        <div data-bind="text: gameLobbyName"></div>
+                                                        <div data-bind="text: userCountLimitFraction"></div>
+                                                        <div data-bind="text: hostInfo"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="currentGameLobby">
+                                                <input data-bind="value: gameLobbyName"></input>
+                                                <div data-bind="text: gameLobbyName"></div>
+                                                <div data-bind="text: host.userName"></div>
+                                                <div data-bind="text: gameLobbyID"></div>
+
+                                                <div data-bind="foreach: players">
+                                                    <div data-bind="text: userName"></div>
+                                                </div>
+                                                <div data-bind="foreach: gameLobbyMessages">
+                                                    <div data-bind="text: messageContent"></div>
+                                                </div>
+
+                                                <input data-bind="value: gameLobbyMessage"></input>
+                                                <button data-bind="click: startGame">Start Game</button>
+                                                <button data-bind="click: leaveGameLobby">Leave Game Lobby</button>
+                                                <button data-bind="click: sendMessageGameLobby">Send Message</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-3 col-md-offset-1 hidden-sm hidden-xs">
+                                <div class="card">
+                                    <div class="cardFront"></div>
+                                    <div class="cardBack"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>   
         </div>
     </div>
-    <div class="container-fluid" id="lobbyScreen">
-
-    </div>
-
-    <div id="titlePanel" class="panel">
-        <h1>I Call Cheat</h1>
-    </div>
-
-    <button onclick="setConnections()">Set Connections</button>
 
     <div id="chatRooms">
-        <button data-bind="click: getChatRooms">Refresh Chat Rooms</button>
-        <div data-bind="foreach: chatRooms">
-            <div data-bind="text: chatRoomName"></div>
+                            <button data-bind="click: getChatRooms">Refresh Chat Rooms</button>
+                            <div data-bind="foreach: chatRooms">
+                                <div data-bind="text: chatRoomName"></div>
 
-            <div data-bind="foreach: chatMessages">
-                <div data-bind="text: userName"></div>
-                <div data-bind="text: userID"></div>
-                <div data-bind="text: messageContent"></div>
-                <div data-bind="text: whenCreated"></div>
-            </div>
+                                <div data-bind="foreach: chatMessages">
+                                    <div data-bind="text: userName"></div>
+                                    <div data-bind="text: userID"></div>
+                                    <div data-bind="text: messageContent"></div>
+                                    <div data-bind="text: whenCreated"></div>
+                                </div>
 
-            <div data-bind="foreach: users">
-                <div data-bind="text: userName"></div>
-            </div>
+                                <div data-bind="foreach: users">
+                                    <div data-bind="text: userName"></div>
+                                </div>
 
-            <input data-bind="value: chatMessageInput"></input>
-            <button data-bind="click: joinChatRoom">Join Chat Room</button>
-            <button data-bind="click: sendMessage">Send Message</button>
-        </div>
-    </div>
-    
-    <div id="gameLobbies">
-        <div data-bind="foreach: gameLobbies">
-            <div data-bind="text: gameLobbyName"></div>
-            <div data-bind="text: gameLobbyID"></div>
-            <div data-bind="text: hostUserName"></div>
-            <button data-bind="click: joinGameLobby">Join Game Lobby</button>
-        </div>
-
-        <button data-bind="click: getGameLobbies">Get Game Lobbies</button>
-    </div>
+                                <input data-bind="value: chatMessageInput"></input>
+                                <button data-bind="click: joinChatRoom">Join Chat Room</button>
+                                <button data-bind="click: sendMessage">Send Message</button>
+                            </div>
+                        </div>
 
     <div id="currentGameLobby">
         <div data-bind="text: gameLobbyName"></div>
@@ -236,13 +267,14 @@
     var chatConnection = new signalR.HubConnection(chatHub);
     var gameLobbyConnection = new signalR.HubConnection(gameLobbyHub);
 
+    var loginViewModel = new LoginViewModel();
     var chatRoomsViewModel = new ChatRoomsViewModel(chatConnection);
     var gameLobbiesViewModel = new GameLobbiesViewModel(gameLobbyConnection);
     var currentGameLobby = new GameLobbyViewModel(gameLobbyConnection, null);
     var createGameLobby = new GameLobbyViewModel(gameLobbyConnection, null); 
 
     ko.applyBindings(new RegisterViewModel(), document.getElementById("registrationForm"));
-    ko.applyBindings(new LoginViewModel(), document.getElementById("loginForm"));
+    ko.applyBindings(loginViewModel, document.getElementById("loginForm"));
     ko.applyBindings(chatRoomsViewModel, document.getElementById("chatRooms"));
     ko.applyBindings(gameLobbiesViewModel, document.getElementById("gameLobbies"));
     ko.applyBindings(createGameLobby, document.getElementById("gameLobby"));
@@ -299,14 +331,16 @@
     }
 
     function setGameLobbyConnections(connection) {
-        connection.on('GameLobbyJoin', function(success, host, players, newUser, isNewUser, gameLobbyID) {
+        connection.on('GameLobbyJoin', function(success, host, players, newUser, isNewUser, gameLobbyID, gameLobbyName) {
             console.log(success + " " + host + " " + players + " " + newUser + " " + isNewUser + gameLobbyID);
             if(success) {
                 console.log("new user joined game lobby: " + newUser);
                 console.log(newUser.userName);
+                currentGameLobby.gameLobbyName(gameLobbyName);
                 currentGameLobby.host(host);
                 currentGameLobby.players(players);
                 currentGameLobby.gameLobbyID(gameLobbyID);
+                createNewGameClick();
             }
         });
         
@@ -318,6 +352,20 @@
         connection.on('GameLobbyStartGame', function(turn) {
             console.log(turn);
             currentGameLobby.gameState();
+        });
+
+        connection.on('GameLobbyLeave', function(success, playerLeaving, host, players) {
+            console.log("logging.." + playerLeaving.userName);
+            if(success) {
+                currentGameLobby.hostUserName(host.userName);
+                currentGameLobby.gameLobbyMessages.push({"messageContent": playerLeaving.userName + " has left the game"});
+                currentGameLobby.players.removeAll();
+                currentGameLobby.players(players);
+
+                if(loginViewModel.username()==playerLeaving.userName) {
+                    leaveGameLobbyClick();
+                }
+            }
         });
 
         connection.on('GameState', function(gameState) {
@@ -357,6 +405,76 @@
         });
 
         connection.start();
+    }
+
+    function loginSuccessful() {
+        setConnections();
+        var loginScreen = document.getElementById("loginScreen");
+        loginScreen.style.display = "none";
+        var mainScreen = document.getElementById("mainScreen");
+        mainScreen.style.display = "inline";
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+        var ele = document.getElementById("mainPanel");
+        ele = document.getElementById("socialRow");
+        var cardElements = ele.getElementsByClassName("card");
+        for (var i = 0; i < cardElements.length; i++) {
+            cardElements[i].classList.add("activate");
+        } 
+    }
+
+    function refreshSocialRowCards() {
+        var ele = document.getElementById("socialRow");
+        var cardElements = ele.getElementsByClassName("card");
+        for (var i = 0; i < cardElements.length; i++) {
+            cardElements[i].classList.remove("activate");
+            void cardElements[i].offsetWidth;
+            cardElements[i].classList.add("activate");
+        }
+    }
+
+    function socialButtonClick() {
+        refreshSocialRowCards();
+        var ele = document.getElementById("gameLobbies");
+        ele.style.display = "none";
+        ele = document.getElementById("currentGameLobby");
+        ele.style.display = "none";
+    }
+
+    function gameLobbiesButtonClick() {
+        refreshSocialRowCards();
+        if(currentGameLobby.gameLobbyName() == null) {
+            gameLobbiesViewModel.getGameLobbies();
+            var ele = document.getElementById("gameLobbies");
+            ele.style.display = "inline";
+            ele = document.getElementById("currentGameLobby");
+            ele.style.display = "none";
+        }
+        else {
+            var ele = document.getElementById("currentGameLobby");
+            ele.style.display = "inline";
+            ele = document.getElementById("gameLobbies");
+            ele.style.display = "none";
+        }
+    }
+
+    function createNewGameClick() {
+        refreshSocialRowCards();
+        var ele = document.getElementById("gameLobbies");
+        ele.style.display = "none";
+        ele = document.getElementById("currentGameLobby");
+        ele.style.display = "inline";
+    }
+
+    function leaveGameLobbyClick() {
+        refreshSocialRowCards();
+        currentGameLobby.gameLobbyName(null);
+        currentGameLobby.gameLobbyID(null);
+        currentGameLobby.gameLobbyMessages.removeAll();
+        var ele = document.getElementById("gameLobbies");
+        ele.style.display = "inline";
+        ele = document.getElementById("currentGameLobby");
+        ele.style.display = "none";
     }
 
     window.onload = function() {

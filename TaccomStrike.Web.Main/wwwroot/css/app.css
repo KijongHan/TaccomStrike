@@ -9,13 +9,16 @@
 }
 
 .card {
+    width: 100%;
     height: 400px;
 }
 
 .cardBack {
     position: absolute;
-    height: 100%;
-    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 15;
+    right: 15;
     background-color: black;
     border-style: solid;
     border-width: 4px;
@@ -25,8 +28,10 @@
 
 .cardFront {
     position: absolute;
-    height: 100%;
-    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 15;
+    right: 15;
 }
 
 .card.loading .cardBack {
@@ -43,15 +48,15 @@
 
 #loginRegisterRow .card.activate .cardBack {
     animation-name: activateAnimationPart1;
-    animation-duration: 1s;
+    animation-duration: 0.7s;
     animation-fill-mode: forwards;
 }
 
 #loginRegisterRow .card.activate .cardFront {
     transform: rotateY(90deg);
     animation-name: activateAnimationPart2;
-    animation-delay: 1s;
-    animation-duration: 1s;
+    animation-delay: 0.7s;
+    animation-duration: 0.7s;
     animation-fill-mode: forwards;
 }
 
@@ -103,18 +108,18 @@
 }
 
 #titleRow .cardBack {
-    -webkit-box-shadow: 5px 5px 1px 0px rgba(0,0,0,0.9);
-    -moz-box-shadow: 5px 5px 1px 0px rgba(0,0,0,0.9);
-    box-shadow: 5px 5px 1px 0px rgba(0,0,0,0.9);
+    -webkit-box-shadow: 5px 5px 1px 0px rgba(0,0,0,0.6);
+    -moz-box-shadow: 5px 5px 1px 0px rgba(0,0,0,0.6);
+    box-shadow: 5px 5px 1px 0px rgba(0,0,0,0.6);
 }
 
 #titleRow .cardFront {
     font-size: 7em;
     text-align: center;
     color: black;
-    -webkit-box-shadow: -5px 5px 1px 0px rgba(0,0,0,0.9);
-    -moz-box-shadow: -5px 5px 1px 0px rgba(0,0,0,0.9);
-    box-shadow: -5px 5px 1px 0px rgba(0,0,0,0.9);
+    -webkit-box-shadow: -5px 5px 1px 0px rgba(0,0,0,0.6);
+    -moz-box-shadow: -5px 5px 1px 0px rgba(0,0,0,0.6);
+    box-shadow: -5px 5px 1px 0px rgba(0,0,0,0.6);
 }
 
 @media (max-width: 500px){
