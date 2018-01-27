@@ -85,9 +85,23 @@
     height: 50px;
     float: left;
     line-height: 50px;
-    margin-left: 5px;
+    margin-left: 3px;
     padding-left: 8px;
     padding-right: 8px;
+}
+
+#gameLobbies .item .subTitle {
+    height: 50px;
+    float: left;
+    line-height: 50px;
+    margin-left: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 @media (max-width: 600px) {
@@ -96,10 +110,17 @@
     }
 }
 
+@media (max-width: 600px) {
+    #gameLobbies .item .subTitle {
+        font-size: 0.8em;
+        margin-right: 0px;
+    }
+}
+
 #gameLobbiesPanel {
-    height: 90%;
-    padding-left: 7px;
+    height: 80%;
     overflow-y: scroll;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 #gameLobbiesPanel .item {
@@ -116,7 +137,7 @@
 
 #gameLobbiesPanel .item:hover {
     cursor: pointer;
-    background-color: rgba(255, 255, 255, 0.55);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 #gameLobbiesPanel .item div {
@@ -126,4 +147,69 @@
 
 #currentGameLobby {
     display: none;
+}
+
+#createGameLobby {
+    display: none;
+}
+
+#createGameLobby .item {
+    width: 100%;
+    display: inline-block;
+}
+
+#createGameLobby .subTitle {
+    height: 50px;
+    line-height: 50px;
+    margin-left: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    float: left;
+    color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+#createGameLobby .panel {
+    background-color: rgba(0, 0, 0, 0);
+    height: 70%;
+    overflow-y: scroll;
+}
+
+#createGameLobby .panel .itemLabel {
+    width: 40%;
+    padding-left: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#createGameLobby .panel input {
+    width: 80%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 1);
+}
+
+#createGameLobby .panel .gap1 {
+    margin-top: 50px;
+}
+
+#createGameLobby .item2 {
+    margin-top: 10px;
+}
+
+#createGameLobby .item3 {
+    width: 100%;
+    display: inline-block;
+}
+
+#createGameLobby .item3 .button1 {
+    height: 50px;
+    float: left;
+    line-height: 50px;
+    margin-left: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
 }

@@ -22,7 +22,7 @@
     background-color: black;
     border-style: solid;
     border-width: 4px;
-    border-color: rgb(238, 43, 29);
+    border-color: rgba(126, 0, 0, 0.65);
     transform: rotateY(180deg);
 }
 
@@ -71,14 +71,18 @@
     margin-top: 10px;
 }
 
-#loginRegisterRow .item label {
+#loginRegisterRow .item div {
     width: 40%;
     padding-left: 5px;
     background-color: rgba(255, 255, 255, 0.8);
 }
 
 #loginRegisterRow .item input {
-    width: 60%;
+    width: 80%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 1);
 }
 
 #loginRegisterRow .item2 {

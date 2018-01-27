@@ -78,6 +78,7 @@ function GameLobbyViewModel(connection, data) {
 
     self.sendMessageGameLobby = function() {
         self.connection.invoke("GameLobbySendMessage", self.gameLobbyMessage(), self.gameLobbyID());
+        self.gameLobbyMessage(null);
     }
 
     self.createGameLobby = function() {

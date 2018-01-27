@@ -15,5 +15,7 @@ namespace TaccomStrike.Library.Utility.Security
         public static string GameUserNameClaim = "GameUserNameClaim";
         public static string UserNameClaim = "UserNameClaim";
 
+        public static string CurrentGameLobbyIDClaim = "CurrentGameLobbyIDClaim";
+
     }
 }

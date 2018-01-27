@@ -182,6 +182,7 @@ namespace TaccomStrike.Web.API.Hubs {
                     gameLobby.RemoveUser(Context.User);
                     if(gameLobby.GetUsers().Count<=0) {
                         gameLobbyService.RemoveGameLobby(gameLobbyID);
+                        Context.User.SetCurrentGameLobbyID("");
                     }
                 }
             });
@@ -213,6 +214,7 @@ namespace TaccomStrike.Web.API.Hubs {
                         if(!gameLobby.HasUser(Context.User)) {
                             gameLobby.AddUser(Context.User);    
                         }
+                        Context.User.SetCurrentGameLobbyID(gameLobbyID);
                         
                         var host = new { userName = gameLobby.Hosts[0].GetUserName()};
                         var players = gameLobby.Players
@@ -282,6 +284,37 @@ namespace TaccomStrike.Web.API.Hubs {
         }
 
         public override Task OnDisconnectedAsync(Exception exception) {
+            var currentGameLobbyID = Context.User.GetCurrentGameLobbyID();
+            
+            if(currentGameLobbyID!=null && currentGameLobbyID!="") {
+                var gameLobby = gameLobbyService.GetGameLobby(currentGameLobbyID);
+
+                var playerLeaving = new { userName = Context.User.GetUserName() };
+                var host = new { userName = gameLobby.Hosts[0].GetUserName()};
+                var players = gameLobby.Players
+                .Select((item) => new {userName = item.GetUserName()})
+                .ToList();
+
+                if(gameLobby.HasUser(Context.User)) {
+                    foreach(var user in gameLobby.GetUsers()) {
+                        var connections = userConnectionService.GetConnections(user);
+                            foreach(var connection in connections) {
+                                Clients.Client(connection).InvokeAsync(
+                                    "GameLobbyLeave", 
+                                    new object[] {
+                                        true, 
+                                        playerLeaving, 
+                                        host,
+                                        players});
+                            }
+                    }
+                    gameLobby.RemoveUser(Context.User);
+                    if(gameLobby.GetUsers().Count<=0) {
+                        gameLobbyService.RemoveGameLobby(currentGameLobbyID);
+                    }
+                }
+            }
+
             userConnectionService.Remove(Context.User, Context.ConnectionId);
             return base.OnDisconnectedAsync(exception);
         }

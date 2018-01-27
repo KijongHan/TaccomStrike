@@ -98,10 +98,10 @@
                         <div class="subTitle">LOGIN USER</div>
                         <div class="gap1"></div>
                         <div class="item">
-                            <label>Username</label><input data-bind="value: username"></input>
+                            <div>Username</div><input data-bind="value: username"></input>
                         </div>
                         <div class="item">
-                            <label>Password</label><input type="password" data-bind="value: password"></input>
+                            <div>Password</div><input type="password" data-bind="value: password"></input>
                         </div>
                         <div class="item2">
                             <div class="button1" data-bind="click: login">Login</div>
@@ -115,13 +115,13 @@
                         <div class="subTitle">REGISTER</div>
                         <div class="gap1"></div>
                         <div class="item">
-                            <label>Username</label><input data-bind="value: username"></input>
+                            <div>Username</div><input data-bind="value: username"></input>
                         </div>
                         <div class="item">
-                            <label>Email</label><input data-bind="value: email"></input>
+                            <div>Email</div><input data-bind="value: email"></input>
                         </div>
                         <div class="item">
-                            <label>Password</label><input type="password" data-bind="value: password"></input>
+                            <div>Password</div><input type="password" data-bind="value: password"></input>
                         </div>
                         <div class="item2">
                             <div class="button1" data-bind="click: register">Register</div>
@@ -150,8 +150,9 @@
                                         <div>
                                             <div id="gameLobbies">
                                                 <div class="item">
+                                                    <div class="subTitle">GAME LOBBIES</div>
                                                     <div data-bind="click: getGameLobbies" class="button1">REFRESH</div>
-                                                    <div onclick="createNewGameClick()" class="button1">CREATE NEW GAME</div>
+                                                    <div onclick="createNewGameClick()" class="button1">NEW GAME</div>
                                                 </div>
                                                 <div id="gameLobbiesPanel" data-bind="foreach: gameLobbies">
                                                     <div class="item" data-bind="click: joinGameLobby">
@@ -162,7 +163,6 @@
                                                 </div>
                                             </div>
                                             <div id="currentGameLobby">
-                                                <input data-bind="value: gameLobbyName"></input>
                                                 <div data-bind="text: gameLobbyName"></div>
                                                 <div data-bind="text: host.userName"></div>
                                                 <div data-bind="text: gameLobbyID"></div>
@@ -179,11 +179,31 @@
                                                 <button data-bind="click: leaveGameLobby">Leave Game Lobby</button>
                                                 <button data-bind="click: sendMessageGameLobby">Send Message</button>
                                             </div>
+                                            <div id="createGameLobby">
+                                                <div class="item">
+                                                    <div class="subTitle">CREATE NEW GAME</div>
+                                                </div>
+                                                <div class="panel">
+                                                    <div class="gap1"></div>
+                                                    <div class="item2">
+                                                        <div class="itemLabel">Game Lobby Name</div>
+                                                        <input data-bind="value: gameLobbyName"></input>
+                                                    </div>
+                                                    <div class="item2">
+                                                        <div class="itemLabel">Number Of Players</div>
+                                                        <input data-bind="value: maxRoomLimit"></input>
+                                                    </div>
+                                                </div>
+                                                <div class="item3">
+                                                    <div class="button1" data-bind="click: createGameLobby">Create</div>
+                                                    <div class="button1">Back</div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-md-3 col-md-offset-1 hidden-sm hidden-xs">
+                            <div class="col-xs-12 col-md-4 hidden-sm hidden-xs">
                                 <div class="card">
                                     <div class="cardFront"></div>
                                     <div class="cardBack"></div>
@@ -277,7 +297,7 @@
     ko.applyBindings(loginViewModel, document.getElementById("loginForm"));
     ko.applyBindings(chatRoomsViewModel, document.getElementById("chatRooms"));
     ko.applyBindings(gameLobbiesViewModel, document.getElementById("gameLobbies"));
-    ko.applyBindings(createGameLobby, document.getElementById("gameLobby"));
+    ko.applyBindings(createGameLobby, document.getElementById("createGameLobby"));
     ko.applyBindings(currentGameLobby, document.getElementById("currentGameLobby"));
 
     function setConnections() {
@@ -340,7 +360,7 @@
                 currentGameLobby.host(host);
                 currentGameLobby.players(players);
                 currentGameLobby.gameLobbyID(gameLobbyID);
-                createNewGameClick();
+                joinGameLobby();
             }
         });
         
@@ -439,6 +459,8 @@
         ele.style.display = "none";
         ele = document.getElementById("currentGameLobby");
         ele.style.display = "none";
+        ele = document.getElementById("createGameLobby");
+        ele.style.display = "none";
     }
 
     function gameLobbiesButtonClick() {
@@ -449,20 +471,34 @@
             ele.style.display = "inline";
             ele = document.getElementById("currentGameLobby");
             ele.style.display = "none";
+            ele = document.getElementById("createGameLobby");
+            ele.style.display = "none";
         }
         else {
             var ele = document.getElementById("currentGameLobby");
             ele.style.display = "inline";
             ele = document.getElementById("gameLobbies");
             ele.style.display = "none";
+            ele = document.getElementById("createGameLobby");
+            ele.style.display = "none";
         }
+    }
+
+    function joinGameLobby() {
+        refreshSocialRowCards();
+        var ele = document.getElementById("gameLobbies");
+        ele.style.display = "none";
+        ele = document.getElementById("currentGameLobby");
+        ele.style.display = "inline";
+        ele = document.getElementById("createGameLobby");
+        ele.style.display = "none";
     }
 
     function createNewGameClick() {
         refreshSocialRowCards();
         var ele = document.getElementById("gameLobbies");
         ele.style.display = "none";
-        ele = document.getElementById("currentGameLobby");
+        ele = document.getElementById("createGameLobby");
         ele.style.display = "inline";
     }
 
