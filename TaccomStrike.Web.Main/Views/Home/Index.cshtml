@@ -142,15 +142,21 @@
                     <div id="socialLobby">
                         <div class="item3">
                             <div class="subTitle">SOCIAL</div>
+                            <div class="subTitle" data-bind="text: onlineUsersCount"></div>
+                            <div class="button1" data-bind="click: getChatRooms">REFRESH</div>
                         </div>
                         <div class="item">
                             <div id="chatRoomsPanel" class="item2" data-bind="foreach: chatRooms">
                                 <div class="item" data-bind="click: joinChatRoom">
                                     <div data-bind="text: chatRoomName"></div>
-                                    <div data-bind="text: users.length"></div>
+                                    <div data-bind="text: usersCount"></div>
                                 </div>
                             </div>
-                            <div id="onlinePlayersPanel" class="item2"></div>
+                            <div id="onlinePlayersPanel" class="item2" data-bind="foreach: onlineUsers">
+                                <div class="item">
+                                    <div data-bind="text: userName"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -331,7 +337,7 @@
             chatRoom.chatMessages.push(new ChatMessage(chatMessage));
         });
 
-        connection.on('ChatUserDisconnected', function(disconnectedUser, chatRoomName) {
+        connection.on('ChatRoomLeave', function(disconnectedUser, chatRoomName) {
             console.log(disconnectedUser.UserName + " has disconnected "  + chatRoomName);
 
             var chatRoom = chatRoomsViewModel.chatRooms().find(function(element) {
@@ -346,26 +352,38 @@
                 }
             }
         });
+        connection.on('ChatUserDisconnected', function(disconnectedUser) {
+            chatRoomsViewModel.onlineUsers().forEach(function(element) {
+                console.log("Chat User Disconnected " + element);
+                if(element.userName==disconnectedUser.userName) {
+                    chatRoomsViewModel.onlineUsers.remove(element);
+                }
+            });
+        }); 
         connection.on('ChatRoomJoin', function(newUser, users, isNewChatUser, chatRoomName) {
             console.log(newUser.UserName + " has entered chatroom " + chatRoomName);
-
-            var chatRoom = chatRoomsViewModel.chatRooms().find(function(element) {
-                return element.chatRoomName() == chatRoomName;
-            });
-
-            if(isNewChatUser) {
-                for(var i = 0; i < users.length; i++) {
-                    console.log(users[i])
-                    chatRoom.users.push(new User(users[i]));
-                    currentChatRoomsViewModel.chatRooms.push(chatRoom);
-                    console.log(currentChatRoomsViewModel.chatRooms().length);
-                }
+            if(newUser.userName==loginViewModel.username()) {
+                var chatRoom = new ChatRoomViewModel(chatConnection, {"chatRoomName": chatRoomName, "participants":users});
+                currentChatRoomsViewModel.chatRooms.push(chatRoom);
             }
             else {
-                chatRoom.users.push(new User(newUser));
+                currentChatRoomsViewModel.chatRooms().forEach(function(element) {
+                    if(element.chatRoomName==chatRoomName) {
+                        element.users.push(newUser);
+                    }
+                });
             }
         });
-
+        connection.on('ChatUserConnected', function(newUser, onlineUsers) {
+            if(newUser.userName==loginViewModel.username()) {
+                onlineUsers.forEach(function(element) {
+                    chatRoomsViewModel.onlineUsers.push(element);
+                });
+            }
+            else {
+                chatRoomsViewModel.onlineUsers.push(newUser);
+            }
+        });
         connection.start();
     }
 

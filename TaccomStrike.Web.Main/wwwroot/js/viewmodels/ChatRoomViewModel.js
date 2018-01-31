@@ -5,7 +5,12 @@ function ChatRoomViewModel(connection, data) {
     self.chatRoomName = ko.observable();
     self.chatMessageInput = ko.observable();
     self.chatMessages = ko.observableArray();
-    self.users = ko.observableArray();
+    self.users = ko.observableArray(data.participants);
+    self.inChat = ko.observable(false);
+
+    self.usersCount = ko.computed(function() {
+        return self.users().length + " Users";
+    });
 
     self.chatRoomName(data.chatRoomName);
     console.log(self.chatRoomName() + " " + data);

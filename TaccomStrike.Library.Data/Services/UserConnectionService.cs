@@ -3,9 +3,12 @@ using System.Security.Claims;
 using TaccomStrike.Library.Utility.Security;
 
 public class UserConnectionService {
+
     private readonly Dictionary<int, HashSet<string>> UserConnections;
+    private readonly Dictionary<int, ClaimsPrincipal> Users;
 
     public UserConnectionService() {
+        Users = new Dictionary<int, ClaimsPrincipal>();
         UserConnections = new Dictionary<int, HashSet<string>>();
     }
 
@@ -35,12 +38,35 @@ public class UserConnectionService {
             if(!UserConnections.TryGetValue(user.GetUserLoginID(), out connections)) {
                 connections = new HashSet<string>();
                 UserConnections.Add(user.GetUserLoginID(), connections);
+                Users.Add(user.GetUserLoginID(), user);
             }
 
             lock(connections) {
                 connections.Add(connectionId);
             }
         }
+    }
+
+    public List<ClaimsPrincipal> GetUsers() {
+        lock(Users) {
+            var list = new List<ClaimsPrincipal>();
+            foreach(var user in Users.Values) {
+                list.Add(user);
+            }
+            return list;
+        }
+    }
+
+    public List<string> GetConnections() {
+        var list = new List<string>();
+        lock(UserConnections) {
+            foreach(var valuesCollection in UserConnections.Values) {
+                foreach(var value in valuesCollection) {
+                    list.Add(value);
+                }
+            }
+        }
+        return list;
     }
 
     public IEnumerable<string> GetConnections(int key) {
@@ -90,6 +116,7 @@ public class UserConnectionService {
 
                 if (connections.Count == 0) {
                     UserConnections.Remove(user.GetUserLoginID());
+                    Users.Remove(user.GetUserLoginID());
                 }
             }
         }

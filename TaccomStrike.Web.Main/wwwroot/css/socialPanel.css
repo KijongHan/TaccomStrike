@@ -22,16 +22,41 @@
     width: 100%;
 }
 
+@media (max-width: 600px) {
+    #socialPanel .item3 .subTitle {
+        font-size: 1.3em;
+    }
+
+    #socialPanel .item3 .button1 {
+        margin-left: 0px;
+    }
+}
+
 #socialPanel .item3 .subTitle {
     float: left;
     height: 50px;
     line-height: 50px;
     padding-left: 10px;
     padding-right: 10px;
+    margin-right: 3px;
     font-size: 1.5em;
     font-weight: bold;
     color: rgba(255, 255, 255, 0.95);
     background-color: rgba(0, 0, 0, 0.8);
+}
+
+#socialPanel .item3 .button1 {
+    height: 50px;
+    float: left;
+    line-height: 50px;
+    margin-left: 27px;
+    padding-left: 8px;
+    padding-right: 8px;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+#socialPanel .item3 .button1:hover {
+    background-color: rgba(255, 255, 255, 0.6);
 }
 
 #socialPanel .cardBack {
@@ -101,6 +126,7 @@
     bottom: 0px;
     width: 100%;
     display: inline-block;
+
 }
 
 #chatsNavbar .item  {

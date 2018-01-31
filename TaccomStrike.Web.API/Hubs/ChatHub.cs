@@ -96,6 +96,10 @@ namespace TaccomStrike.Web.API.Hubs {
                     return;
                 }
 
+                if(chatRoom.HasParticipant(Context.User)) {
+                    return;
+                }
+
                 if(chatRoom.RoomType == ChatRoom.Type.Public) {
                     chatRoom.AddParticipant(Context.User);
                     var participants = chatRoom.GetParticipants();
@@ -113,10 +117,10 @@ namespace TaccomStrike.Web.API.Hubs {
                                 "ChatRoomJoin", 
                                 new object[] {
                                     new {
-                                        UserName = Context.User.GetUserName()
+                                        userName = Context.User.GetUserName()
                                     },
                                     participants.Select(item => new { 
-                                        UserName = item.GetUserName()
+                                        userName = item.GetUserName()
                                     }),
                                     isNewChatUser,
                                     chatRoomName
@@ -130,9 +134,16 @@ namespace TaccomStrike.Web.API.Hubs {
         public override Task OnConnectedAsync() {
             return Task.Run(() => 
             {
-                Console.WriteLine("From ChatHub" + Context.Connection.GetHttpContext().Request.Cookies.Count);
-                Console.WriteLine("From ChatHub" + Context.User.GetUserName());
                 userConnectionService.Add(Context.User, Context.ConnectionId);
+                foreach(var connection in userConnectionService.GetConnections()) {
+                    Clients.Client(connection).InvokeAsync(
+                        "ChatUserConnected",
+                        new object[] {
+                            new { userName = Context.User.GetUserName() },
+                            userConnectionService.GetUsers()
+                            .Select(item => new { userName = item.GetUserName()})
+                            });
+                }
                 return base.OnConnectedAsync();
             });
         }
@@ -151,7 +162,7 @@ namespace TaccomStrike.Web.API.Hubs {
                                 Console.WriteLine("Im sending");
                                 Clients.Client(connection).InvokeAsync
                                 (
-                                    "ChatUserDisconnected", 
+                                    "ChatRoomLeave", 
                                     new object[] { 
                                         new { 
                                             UserName = Context.User.GetUserName() 
@@ -162,6 +173,14 @@ namespace TaccomStrike.Web.API.Hubs {
                             }
                         }
                     }
+                }
+
+                foreach(var connection in userConnectionService.GetConnections()) {
+                    Clients.Client(connection).InvokeAsync(
+                        "ChatUserDisconnected",
+                        new object[] {
+                            new { userName = Context.User.GetUserName() }
+                            });
                 }
                 return base.OnDisconnectedAsync(exception);
             });
