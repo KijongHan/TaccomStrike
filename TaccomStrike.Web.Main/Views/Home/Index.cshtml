@@ -3,6 +3,7 @@
     <link rel="stylesheet" type="text/css" href="~/css/app.css"></link>
     <link rel="stylesheet" type="text/css" href="~/css/mainScreen.css"></link>
     <link rel="stylesheet" type="text/css" href="~/css/animation.css"></link>
+    <link rel="stylesheet" type="text/css" href="~/css/socialPanel.css"></link>
     <script src="~/lib/jquery.min.js"></script>
     <script src="~/lib/bootstrap.min.js"></script>
     <script src="~/lib/signalr-client-1.0.0-alpha2-final.min.js"></script>
@@ -95,7 +96,7 @@
                 <div class="card loading" id="loginForm">
                     <div class="cardBack"></div>
                     <div class="cardFront">
-                        <div class="subTitle">LOGIN USER</div>
+                        <div class="subTitle">LOGIN</div>
                         <div class="gap1"></div>
                         <div class="item">
                             <div>Username</div><input data-bind="value: username"></input>
@@ -133,87 +134,80 @@
         </div>
     </div>
 
-    <div class="container-fluid" id="mainScreen">
-        <div class="row">
-            <div class="col-xs-12 col-md-10 col-md-offset-1">
-                <div class="card" id="mainPanel">
+    <div id="mainScreen">
+        <div id="socialPanel">
+            <div class="cardBack"></div>
+            <div class="cardFront">
+                
+            </div>
+        </div>
+
+            <div id="gamePanel">
+                <div class="card">
+                    <div class="cardBack"></div>
                     <div class="cardFront">
-                        <div class="item2">
-                            <div class="button1 active" id="socialButton" onclick="socialButtonClick()">SOCIAL</div>
-                            <div class="button1" id="gameLobbiesButton" onclick="gameLobbiesButtonClick()">GAME</div>
-                        </div>
-                        <div class="row" id="socialRow">
-                            <div class="col-xs-12 col-md-8">
-                                <div class="card">
-                                    <div class="cardBack"></div>
-                                    <div class="cardFront">
-                                        <div>
-                                            <div id="gameLobbies">
-                                                <div class="item">
-                                                    <div class="subTitle">GAME LOBBIES</div>
-                                                    <div data-bind="click: getGameLobbies" class="button1">REFRESH</div>
-                                                    <div onclick="createNewGameClick()" class="button1">NEW GAME</div>
-                                                </div>
-                                                <div id="gameLobbiesPanel" data-bind="foreach: gameLobbies">
-                                                    <div class="item" data-bind="click: joinGameLobby">
-                                                        <div data-bind="text: gameLobbyName"></div>
-                                                        <div data-bind="text: userCountLimitFraction"></div>
-                                                        <div data-bind="text: hostInfo"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div id="currentGameLobby">
-                                                <div data-bind="text: gameLobbyName"></div>
-                                                <div data-bind="text: host.userName"></div>
-                                                <div data-bind="text: gameLobbyID"></div>
-
-                                                <div data-bind="foreach: players">
-                                                    <div data-bind="text: userName"></div>
-                                                </div>
-                                                <div data-bind="foreach: gameLobbyMessages">
-                                                    <div data-bind="text: messageContent"></div>
-                                                </div>
-
-                                                <input data-bind="value: gameLobbyMessage"></input>
-                                                <button data-bind="click: startGame">Start Game</button>
-                                                <button data-bind="click: leaveGameLobby">Leave Game Lobby</button>
-                                                <button data-bind="click: sendMessageGameLobby">Send Message</button>
-                                            </div>
-                                            <div id="createGameLobby">
-                                                <div class="item">
-                                                    <div class="subTitle">CREATE NEW GAME</div>
-                                                </div>
-                                                <div class="panel">
-                                                    <div class="gap1"></div>
-                                                    <div class="item2">
-                                                        <div class="itemLabel">Game Lobby Name</div>
-                                                        <input data-bind="value: gameLobbyName"></input>
-                                                    </div>
-                                                    <div class="item2">
-                                                        <div class="itemLabel">Number Of Players</div>
-                                                        <input data-bind="value: maxRoomLimit"></input>
-                                                    </div>
-                                                </div>
-                                                <div class="item3">
-                                                    <div class="button1" data-bind="click: createGameLobby">Create</div>
-                                                    <div class="button1">Back</div>
-                                                </div>
-                                            </div>
-                                        </div>
+                        <div>
+                            <div id="gameLobbies">
+                                <div class="item">
+                                    <div class="subTitle">GAME LOBBIES</div>
+                                    <div data-bind="click: getGameLobbies" class="button1">REFRESH</div>
+                                    <div onclick="createNewGameClick()" class="button1">NEW GAME</div>
+                                </div>
+                                <div id="gameLobbiesPanel" data-bind="foreach: gameLobbies">
+                                    <div class="item" data-bind="click: joinGameLobby">
+                                        <div data-bind="text: gameLobbyName"></div>
+                                        <div data-bind="text: userCountLimitFraction"></div>
+                                        <div data-bind="text: hostInfo"></div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-md-4 hidden-sm hidden-xs">
-                                <div class="card">
-                                    <div class="cardFront"></div>
-                                    <div class="cardBack"></div>
+                            <div id="currentGameLobby">
+                                <div class="item">
+                                    <div class="subTitle">GAME LOBBY</div>
+                                    <div class="subTitle" data-bind="text: gameLobbyName"></div>
+                                    <div class="subTitle" data-bind="text: userCountLimitFraction"></div>
                                 </div>
+                                <div class="item3">
+                                    <div id="gameLobbyMessagesPanel">
+                                        <div data-bind="foreach: gameLobbyMessages">                                                <div data-bind="text: messageContent"></div>
+                                    </div>
+                                </div>
+                                <div id="playersPanel">
+                                    <div data-bind="foreach: players">
+                                        <div data-bind="text: userName"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item2">
+                                <div class="button1" data-bind="click: startGame">Start Game</div>
+                                <div class="button1" data-bind="click: leaveGameLobby">Leave Game</div>
+                                <input data-bind="value: gameLobbyMessage"></input>
+                                <div class="button1" data-bind="click: sendMessageGameLobby">Send</div>                                             
+                            </div>
+                        </div>
+                        <div id="createGameLobby">
+                            <div class="item">
+                                <div class="subTitle">CREATE NEW GAME</div>
+                            </div>
+                            <div class="panel">
+                                <div class="gap1"></div>
+                                <div class="item2">
+                                    <div class="itemLabel">Game Lobby Name</div>
+                                    <input data-bind="value: gameLobbyName" maxlength="10"></input>
+                                </div>
+                                <div class="item2">
+                                    <div class="itemLabel">Number Of Players</div>
+                                    <select data-bind="options: maxRoomLimitOptions, value: maxRoomLimit"></select>
+                                </div>
+                            </div>
+                            <div class="item3">
+                                <div class="button1" data-bind="click: createGameLobby">Create</div>
+                                <div class="button1">Back</div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>   
-        </div>
+            </div>
     </div>
 
     <div id="chatRooms">
@@ -351,7 +345,7 @@
     }
 
     function setGameLobbyConnections(connection) {
-        connection.on('GameLobbyJoin', function(success, host, players, newUser, isNewUser, gameLobbyID, gameLobbyName) {
+        connection.on('GameLobbyJoin', function(success, host, players, newUser, isNewUser, gameLobbyID, gameLobbyName, gameLobbyMaxRoomLimit) {
             console.log(success + " " + host + " " + players + " " + newUser + " " + isNewUser + gameLobbyID);
             if(success) {
                 console.log("new user joined game lobby: " + newUser);
@@ -360,11 +354,14 @@
                 currentGameLobby.host(host);
                 currentGameLobby.players(players);
                 currentGameLobby.gameLobbyID(gameLobbyID);
+                currentGameLobby.maxRoomLimit(gameLobbyMaxRoomLimit);
+                currentGameLobby.userCount(players.length);
                 joinGameLobby();
             }
         });
         
         connection.on('GameLobbySendMessage', function(chatMessage, isSender) {
+            console.log("herrrrrrrrrrre");
             var message = new ChatMessage(chatMessage);
             currentGameLobby.gameLobbyMessages.push(message);
         });
@@ -436,15 +433,15 @@
         document.body.scrollTop = document.documentElement.scrollTop = 0;
 
         var ele = document.getElementById("mainPanel");
-        ele = document.getElementById("socialRow");
+        ele = document.getElementById("gamePanel");
         var cardElements = ele.getElementsByClassName("card");
         for (var i = 0; i < cardElements.length; i++) {
             cardElements[i].classList.add("activate");
         } 
     }
 
-    function refreshSocialRowCards() {
-        var ele = document.getElementById("socialRow");
+    function refreshGamePanelCards() {
+        var ele = document.getElementById("gamePanel");
         var cardElements = ele.getElementsByClassName("card");
         for (var i = 0; i < cardElements.length; i++) {
             cardElements[i].classList.remove("activate");
@@ -454,7 +451,7 @@
     }
 
     function socialButtonClick() {
-        refreshSocialRowCards();
+        refreshGamePanelCards();
         var ele = document.getElementById("gameLobbies");
         ele.style.display = "none";
         ele = document.getElementById("currentGameLobby");
@@ -464,7 +461,7 @@
     }
 
     function gameLobbiesButtonClick() {
-        refreshSocialRowCards();
+        refreshGamePanelCards();
         if(currentGameLobby.gameLobbyName() == null) {
             gameLobbiesViewModel.getGameLobbies();
             var ele = document.getElementById("gameLobbies");
@@ -485,7 +482,7 @@
     }
 
     function joinGameLobby() {
-        refreshSocialRowCards();
+        refreshGamePanelCards();
         var ele = document.getElementById("gameLobbies");
         ele.style.display = "none";
         ele = document.getElementById("currentGameLobby");
@@ -495,7 +492,7 @@
     }
 
     function createNewGameClick() {
-        refreshSocialRowCards();
+        refreshGamePanelCards();
         var ele = document.getElementById("gameLobbies");
         ele.style.display = "none";
         ele = document.getElementById("createGameLobby");
@@ -503,10 +500,11 @@
     }
 
     function leaveGameLobbyClick() {
-        refreshSocialRowCards();
+        refreshGamePanelCards();
         currentGameLobby.gameLobbyName(null);
         currentGameLobby.gameLobbyID(null);
         currentGameLobby.gameLobbyMessages.removeAll();
+        gameLobbiesViewModel.getGameLobbies();
         var ele = document.getElementById("gameLobbies");
         ele.style.display = "inline";
         ele = document.getElementById("currentGameLobby");

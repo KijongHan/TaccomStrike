@@ -16,6 +16,8 @@ function GameLobbyViewModel(connection, data) {
     self.rankClaim = ko.observable();
     console.log(data);
 
+    self.maxRoomLimitOptions = ko.observableArray([2, 3, 4, 5, 6, 7, 8]);
+
     self.userCountLimitFraction = ko.computed(function() {
         return self.userCount() + "/" + self.maxRoomLimit();
     });

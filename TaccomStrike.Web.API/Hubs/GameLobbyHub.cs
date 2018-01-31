@@ -160,13 +160,19 @@ namespace TaccomStrike.Web.API.Hubs {
             return Task.Run(() => {
                 var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
 
-                var playerLeaving = new { userName = Context.User.GetUserName() };
-                var host = new { userName = gameLobby.Hosts[0].GetUserName()};
-                var players = gameLobby.Players
-                .Select((item) => new {userName = item.GetUserName()})
-                .ToList();
-
                 if(gameLobby.HasUser(Context.User)) {
+                    gameLobby.RemoveUser(Context.User);
+                    if(gameLobby.GetUsers().Count<=0) {
+                        gameLobbyService.RemoveGameLobby(gameLobbyID);
+                        Context.User.SetCurrentGameLobbyID("");
+                    }
+
+                    var playerLeaving = new { userName = Context.User.GetUserName() };
+                    var host = new { userName = (gameLobby.GetHost()==null ? null : gameLobby.GetHost().GetUserName()) };
+                    var players = gameLobby.GetUsers()
+                    .Select((item) => new {userName = item.GetUserName()})
+                    .ToList();
+
                     foreach(var user in gameLobby.GetUsers()) {
                         var connections = userConnectionService.GetConnections(user);
                             foreach(var connection in connections) {
@@ -179,10 +185,16 @@ namespace TaccomStrike.Web.API.Hubs {
                                         players});
                             }
                     }
-                    gameLobby.RemoveUser(Context.User);
-                    if(gameLobby.GetUsers().Count<=0) {
-                        gameLobbyService.RemoveGameLobby(gameLobbyID);
-                        Context.User.SetCurrentGameLobbyID("");
+
+                    var userConnections = userConnectionService.GetConnections(Context.User);
+                    foreach(var connection in userConnections) {
+                        Clients.Client(connection).InvokeAsync(
+                                    "GameLobbyLeave", 
+                                    new object[] {
+                                        true, 
+                                        playerLeaving, 
+                                        host,
+                                        players});
                     }
                 }
             });
@@ -199,14 +211,14 @@ namespace TaccomStrike.Web.API.Hubs {
                     if(gameLobby.GetUsersCount()>=gameLobby.MaxRoomLimit) {
                         foreach(var userConnection in userConnections) {
                             Console.WriteLine("Lobby Full");
-                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, "", ""});
+                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, "", "", null});
                         }
                         return;
                     }
                     if(gameLobby.InGame()) {
                         foreach(var userConnection in userConnections) {
                             Console.WriteLine("Game in progress");
-                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, "", ""});
+                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, "", "", null});
                         }
                         return;
                     }
@@ -234,7 +246,7 @@ namespace TaccomStrike.Web.API.Hubs {
                                 Clients.Client(connection).InvokeAsync(
                                     "GameLobbyJoin", 
                                     new object[] {
-                                        true, host, players, newUser, isNewUser, gameLobbyID, gameLobby.GameLobbyName
+                                        true, host, players, newUser, isNewUser, gameLobbyID, gameLobby.GameLobbyName, gameLobby.MaxRoomLimit
                                     });
                             }
                         }
@@ -289,29 +301,40 @@ namespace TaccomStrike.Web.API.Hubs {
             if(currentGameLobbyID!=null && currentGameLobbyID!="") {
                 var gameLobby = gameLobbyService.GetGameLobby(currentGameLobbyID);
 
+                gameLobby.RemoveUser(Context.User);
+                if(gameLobby.GetUsers().Count<=0) {
+                    gameLobbyService.RemoveGameLobby(currentGameLobbyID);
+                    Context.User.SetCurrentGameLobbyID("");
+                }
+
                 var playerLeaving = new { userName = Context.User.GetUserName() };
-                var host = new { userName = gameLobby.Hosts[0].GetUserName()};
-                var players = gameLobby.Players
+                var host = new { userName = (gameLobby.GetHost()==null ? null : gameLobby.GetHost().GetUserName()) };
+                var players = gameLobby.GetUsers()
                 .Select((item) => new {userName = item.GetUserName()})
                 .ToList();
 
-                if(gameLobby.HasUser(Context.User)) {
-                    foreach(var user in gameLobby.GetUsers()) {
-                        var connections = userConnectionService.GetConnections(user);
-                            foreach(var connection in connections) {
-                                Clients.Client(connection).InvokeAsync(
-                                    "GameLobbyLeave", 
-                                    new object[] {
-                                        true, 
-                                        playerLeaving, 
-                                        host,
-                                        players});
-                            }
-                    }
-                    gameLobby.RemoveUser(Context.User);
-                    if(gameLobby.GetUsers().Count<=0) {
-                        gameLobbyService.RemoveGameLobby(currentGameLobbyID);
-                    }
+                foreach(var user in gameLobby.GetUsers()) {
+                    var connections = userConnectionService.GetConnections(user);
+                        foreach(var connection in connections) {
+                            Clients.Client(connection).InvokeAsync(
+                                "GameLobbyLeave", 
+                                new object[] {
+                                    true, 
+                                    playerLeaving, 
+                                    host,
+                                    players});
+                        }
+                }
+
+                var userConnections = userConnectionService.GetConnections(Context.User);
+                foreach(var connection in userConnections) {
+                    Clients.Client(connection).InvokeAsync(
+                                "GameLobbyLeave", 
+                                new object[] {
+                                    true, 
+                                    playerLeaving, 
+                                    host,
+                                    players});
                 }
             }
 

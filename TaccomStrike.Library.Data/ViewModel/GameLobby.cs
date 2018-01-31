@@ -50,6 +50,13 @@ namespace TaccomStrike.Library.Data.ViewModel {
             return true;
          }
 
+        public ClaimsPrincipal GetHost() {
+            if(Hosts.Count<=0) {
+                return null;
+            }
+            return Hosts[0];
+        }
+
         public List<ClaimsPrincipal> GetUsers() {
             return Players;
         }
