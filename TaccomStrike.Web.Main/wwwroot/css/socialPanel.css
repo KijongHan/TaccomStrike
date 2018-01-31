@@ -1,17 +1,37 @@
 #socialPanel {
     width: 100%;
     height: 500px;
+    margin-top: 60px;
 }
 
 #socialPanel .card {
     width: 100%;
     height: 500px;
+    position: relative;
 }
 
 #socialPanel .cardFront {
     background-color: rgba(0, 0, 0, 0.15);
     padding: 12px 12px 12px 12px;
     height: 500px;
+    display: none;
+}
+
+#socialPanel .item3 {
+    display: inline-block;
+    width: 100%;
+}
+
+#socialPanel .item3 .subTitle {
+    float: left;
+    height: 50px;
+    line-height: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 #socialPanel .cardBack {
@@ -26,8 +46,64 @@
 
 #socialPanel .card.activate > .cardFront {
     transform: rotateY(90deg);
+    display: inline;
     animation-name: activateAnimationPart2;
     animation-delay: 0.7s;
     animation-duration: 0.7s;
     animation-fill-mode: forwards;
+}
+
+#socialLobby > .item {
+    display: inline-block;
+    width: 100%;
+}
+
+#socialLobby > .item > .item2 {
+    float: left;
+    background-color: rgba(255, 255, 255, 0.8);
+    height: 430px;
+}
+
+#chatRoomsPanel {
+    width: 65%;
+    overflow-y: scroll;
+}
+
+#chatRoomsPanel .item {
+    display: inline-block;
+    height: 50px;
+    line-height: 60px;
+    width: 100%;
+    padding-left: 15px;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+#chatRoomsPanel .item:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+#chatRoomsPanel .item div {
+    float: left;
+    margin-right: 10px;
+}
+
+#onlinePlayersPanel {
+    margin-left: 5%;
+    width: 30%;
+}
+
+#chatsNavbar {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    display: inline-block;
+}
+
+#chatsNavbar .item  {
+    float: left;
+    background-color: rgba(0, 0, 0, 0.5);
 }

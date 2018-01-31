@@ -2,71 +2,23 @@
     display: none;
 }
 
-#mainPanel.card {
-    height: 800px;
-}
-
-#mainPanel > .cardFront {
-    background-color: rgba(0, 0, 0, 0.35);
-    height: 500px;
-    width: 100%;
-    top: 50px;
-    left: 0px;
-    right: 0px;
-}
-
-#mainPanel > .cardBack {
-    background-color: rgba(0, 0, 0, 0.65);
-}
-
-#mainPanel.card.activate > .cardBack {
-    animation-name: activateAnimationPart1;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
-}
-
-#mainPanel.card.activate > .cardFront {
-    transform: rotateY(90deg);
-    animation-name: activateAnimationPart2;
-    animation-delay: 1s;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
-}
-
-#mainPanel .item2 {
-    display: inline-block;
-    width: 100%;
-    height: 50px;
-}
-
-#mainPanel .item2 .button1 {
-    width: 50%;
-    height: 100%;
-    float: left;
-    line-height: 50px;
-    font-size: 2em;
-}
-
-@media (max-width: 600px) {
-    #mainPanel .item2 .button1 {
-        font-size: 1em;
-    }
-}
-
 #gamePanel {
     width: 100%;
     height: 500px;
+    margin-top: 30px;
 }
 
 #gamePanel .card {
     width: 100%;
     height: 500px;
+    position: relative;
 }
 
 #gamePanel .cardFront {
     background-color: rgba(0, 0, 0, 0.15);
     padding: 12px 12px 12px 12px;
     height: 500px;
+    display: none;
 }
 
 #gamePanel .cardBack {
@@ -80,6 +32,7 @@
 }
 
 #gamePanel .card.activate > .cardFront {
+    display: inline;
     transform: rotateY(90deg);
     animation-name: activateAnimationPart2;
     animation-delay: 0.7s;
@@ -110,7 +63,6 @@
     height: 50px;
     float: left;
     line-height: 50px;
-    margin-left: 5px;
     padding-left: 10px;
     padding-right: 10px;
     margin-right: 30px;
@@ -134,7 +86,7 @@
 }
 
 #gameLobbiesPanel {
-    height: 80%;
+    height: 430px;
     overflow-y: scroll;
     background-color: rgba(255, 255, 255, 0.8);
 }
@@ -148,7 +100,7 @@
     background-color: rgba(255, 255, 255, 0.85);
     border-style: solid;
     border-width: 1px;
-    border-color: rgb(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.1);
 }
 
 #gameLobbiesPanel .item:hover {
@@ -177,7 +129,6 @@
 #createGameLobby .subTitle {
     height: 50px;
     line-height: 50px;
-    margin-left: 5px;
     padding-left: 10px;
     padding-right: 10px;
     margin-right: 30px;
@@ -248,7 +199,6 @@
 #currentGameLobby .item .subTitle {
     height: 50px;
     line-height: 50px;
-    margin-left: 5px;
     padding-left: 10px;
     padding-right: 10px;
     margin-right: 10px;
@@ -297,9 +247,6 @@
     padding-left: 20px;
     padding-right: 20px;
     margin: 0 0 0 0;
-    -webkit-box-shadow: 4px 0px 1px 1px rgba(0,0,0,0.15);
-    -moz-box-shadow: 4px 0px 1px 1px rgba(0,0,0,0.15);
-    box-shadow: 4px 0px 1px 1px rgba(0,0,0,0.15);
 }
 
 @media (max-width: 1100px) {

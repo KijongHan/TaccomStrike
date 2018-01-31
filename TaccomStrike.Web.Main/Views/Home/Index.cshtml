@@ -136,78 +136,99 @@
 
     <div id="mainScreen">
         <div id="socialPanel">
-            <div class="cardBack"></div>
-            <div class="cardFront">
-                
-            </div>
-        </div>
-
-            <div id="gamePanel">
-                <div class="card">
-                    <div class="cardBack"></div>
-                    <div class="cardFront">
-                        <div>
-                            <div id="gameLobbies">
-                                <div class="item">
-                                    <div class="subTitle">GAME LOBBIES</div>
-                                    <div data-bind="click: getGameLobbies" class="button1">REFRESH</div>
-                                    <div onclick="createNewGameClick()" class="button1">NEW GAME</div>
-                                </div>
-                                <div id="gameLobbiesPanel" data-bind="foreach: gameLobbies">
-                                    <div class="item" data-bind="click: joinGameLobby">
-                                        <div data-bind="text: gameLobbyName"></div>
-                                        <div data-bind="text: userCountLimitFraction"></div>
-                                        <div data-bind="text: hostInfo"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="currentGameLobby">
-                                <div class="item">
-                                    <div class="subTitle">GAME LOBBY</div>
-                                    <div class="subTitle" data-bind="text: gameLobbyName"></div>
-                                    <div class="subTitle" data-bind="text: userCountLimitFraction"></div>
-                                </div>
-                                <div class="item3">
-                                    <div id="gameLobbyMessagesPanel">
-                                        <div data-bind="foreach: gameLobbyMessages">                                                <div data-bind="text: messageContent"></div>
-                                    </div>
-                                </div>
-                                <div id="playersPanel">
-                                    <div data-bind="foreach: players">
-                                        <div data-bind="text: userName"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item2">
-                                <div class="button1" data-bind="click: startGame">Start Game</div>
-                                <div class="button1" data-bind="click: leaveGameLobby">Leave Game</div>
-                                <input data-bind="value: gameLobbyMessage"></input>
-                                <div class="button1" data-bind="click: sendMessageGameLobby">Send</div>                                             
-                            </div>
+            <div class="card">
+                <div class="cardBack"></div>
+                <div class="cardFront">
+                    <div id="socialLobby">
+                        <div class="item3">
+                            <div class="subTitle">SOCIAL</div>
                         </div>
-                        <div id="createGameLobby">
-                            <div class="item">
-                                <div class="subTitle">CREATE NEW GAME</div>
-                            </div>
-                            <div class="panel">
-                                <div class="gap1"></div>
-                                <div class="item2">
-                                    <div class="itemLabel">Game Lobby Name</div>
-                                    <input data-bind="value: gameLobbyName" maxlength="10"></input>
-                                </div>
-                                <div class="item2">
-                                    <div class="itemLabel">Number Of Players</div>
-                                    <select data-bind="options: maxRoomLimitOptions, value: maxRoomLimit"></select>
+                        <div class="item">
+                            <div id="chatRoomsPanel" class="item2" data-bind="foreach: chatRooms">
+                                <div class="item" data-bind="click: joinChatRoom">
+                                    <div data-bind="text: chatRoomName"></div>
+                                    <div data-bind="text: users.length"></div>
                                 </div>
                             </div>
-                            <div class="item3">
-                                <div class="button1" data-bind="click: createGameLobby">Create</div>
-                                <div class="button1">Back</div>
-                            </div>
+                            <div id="onlinePlayersPanel" class="item2"></div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div id="gamePanel">
+            <div class="card">
+                <div class="cardBack"></div>
+                <div class="cardFront">
+                    <div id="gameLobbies">
+                        <div class="item">
+                            <div class="subTitle">GAME LOBBIES</div>
+                            <div data-bind="click: getGameLobbies" class="button1">REFRESH</div>
+                            <div onclick="createNewGameClick()" class="button1">NEW GAME</div>
+                        </div>
+                        <div id="gameLobbiesPanel" data-bind="foreach: gameLobbies">
+                            <div class="item" data-bind="click: joinGameLobby">
+                                <div data-bind="text: gameLobbyName"></div>
+                                <div data-bind="text: userCountLimitFraction"></div>
+                                <div data-bind="text: hostInfo"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="currentGameLobby">
+                        <div class="item">
+                            <div class="subTitle">GAME LOBBY</div>
+                            <div class="subTitle" data-bind="text: gameLobbyName"></div>
+                            <div class="subTitle" data-bind="text: userCountLimitFraction"></div>
+                        </div>
+                        <div class="item3">
+                            <div id="gameLobbyMessagesPanel">
+                                <div data-bind="foreach: gameLobbyMessages">
+                                    <div data-bind="text: messageContent"></div>
+                                </div>
+                            </div>
+                            <div id="playersPanel">
+                                <div data-bind="foreach: players">
+                                    <div data-bind="text: userName"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item2">
+                            <div class="button1" data-bind="click: startGame">Start Game</div>
+                            <div class="button1" data-bind="click: leaveGameLobby">Leave Game</div>
+                            <input data-bind="value: gameLobbyMessage"/>
+                            <div class="button1" data-bind="click: sendMessageGameLobby">Send</div>                                             
+                        </div>
+                    </div>
+                    <div id="createGameLobby">
+                        <div class="item">
+                            <div class="subTitle">CREATE NEW GAME</div>
+                        </div>
+                        <div class="panel">
+                            <div class="gap1"></div>
+                            <div class="item2">
+                                <div class="itemLabel">Game Lobby Name</div>
+                                <input data-bind="value: gameLobbyName" maxlength="10" />
+                            </div>
+                            <div class="item2">
+                                <div class="itemLabel">Number Of Players</div>
+                                <select data-bind="options: maxRoomLimitOptions, value: maxRoomLimit"></select>
+                            </div>
+                        </div>
+                        <div class="item3">
+                            <div class="button1" data-bind="click: createGameLobby">Create</div>
+                            <div class="button1">Back</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="chatsNavbar" data-bind="foreach: chatRooms">
+            <div class="item">
+                <div></div>
+                <div class="itemLabel" data-bind="text: chatRoomName"></div>
+            </div>
+        </div>
     </div>
 
     <div id="chatRooms">
@@ -283,13 +304,15 @@
 
     var loginViewModel = new LoginViewModel();
     var chatRoomsViewModel = new ChatRoomsViewModel(chatConnection);
+    var currentChatRoomsViewModel = new ChatRoomsViewModel(chatConnection);
     var gameLobbiesViewModel = new GameLobbiesViewModel(gameLobbyConnection);
     var currentGameLobby = new GameLobbyViewModel(gameLobbyConnection, null);
     var createGameLobby = new GameLobbyViewModel(gameLobbyConnection, null); 
 
     ko.applyBindings(new RegisterViewModel(), document.getElementById("registrationForm"));
     ko.applyBindings(loginViewModel, document.getElementById("loginForm"));
-    ko.applyBindings(chatRoomsViewModel, document.getElementById("chatRooms"));
+    ko.applyBindings(chatRoomsViewModel, document.getElementById("socialLobby"));
+    ko.applyBindings(currentChatRoomsViewModel, document.getElementById("chatsNavbar"));
     ko.applyBindings(gameLobbiesViewModel, document.getElementById("gameLobbies"));
     ko.applyBindings(createGameLobby, document.getElementById("createGameLobby"));
     ko.applyBindings(currentGameLobby, document.getElementById("currentGameLobby"));
@@ -334,6 +357,8 @@
                 for(var i = 0; i < users.length; i++) {
                     console.log(users[i])
                     chatRoom.users.push(new User(users[i]));
+                    currentChatRoomsViewModel.chatRooms.push(chatRoom);
+                    console.log(currentChatRoomsViewModel.chatRooms().length);
                 }
             }
             else {
@@ -432,12 +457,36 @@
         mainScreen.style.display = "inline";
         document.body.scrollTop = document.documentElement.scrollTop = 0;
 
-        var ele = document.getElementById("mainPanel");
-        ele = document.getElementById("gamePanel");
-        var cardElements = ele.getElementsByClassName("card");
-        for (var i = 0; i < cardElements.length; i++) {
-            cardElements[i].classList.add("activate");
-        } 
+        gameLobbiesViewModel.getGameLobbies();
+        chatRoomsViewModel.getChatRooms();
+
+        checkPanelsVisible();
+    }
+
+    function checkPanelsVisible() {
+        var panels = [];
+        panels.push(document.getElementById("gamePanel"));
+        panels.push(document.getElementById("socialPanel"));
+
+        for(var i = 0; i < panels.length; i++) {
+            var panel = panels[i];
+
+            var x = panel.offsetLeft, y = panel.offsetTop, w = panel.offsetWidth, h = panel.offsetHeight, r = x + w, //right
+                b = y + h, //bottom
+                visibleX, visibleY, visible;
+
+                visibleX = Math.max(0, Math.min(w, window.pageXOffset + window.innerWidth - x, r - window.pageXOffset));
+                visibleY = Math.max(0, Math.min(h, window.pageYOffset + window.innerHeight - y, b - window.pageYOffset));
+
+                visible = visibleX * visibleY / (w * h);
+
+                if (visible > 0.2) {
+                    var cardElements = panel.getElementsByClassName("card");
+                    for (var i = 0; i < cardElements.length; i++) {
+                        cardElements[i].classList.add("activate");
+                    }
+                }
+            }
     }
 
     function refreshGamePanelCards() {
@@ -520,4 +569,8 @@
         ele1.classList.remove("loading");
         ele1.classList.add("activate");
     }
+
+
+    window.addEventListener('scroll', checkPanelsVisible, false);
+    window.addEventListener('resize', checkPanelsVisible, false);
 </script>
