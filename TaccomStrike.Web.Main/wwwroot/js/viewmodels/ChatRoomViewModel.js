@@ -27,7 +27,6 @@ function ChatRoomViewModel(chatRoomsViewModel, connection, data) {
     }
 
     self.selectChatRoom = function() {
-        console.log("here");
         chatRoomsViewModel.selectChatRoom(self);
     }
 }

@@ -230,10 +230,27 @@
             </div>
         </div>
         <div id="currentChatsPanel">
-            <div class="card" data-bind="selectedChatRoom">
+            <div class="card" data-bind="with: selectedChatRoom">
                 <div class="cardBack"></div>
                 <div class="cardFront">
+                    <div class="panel1">
+                        <div class="subTitle" data-bind="text: chatRoomName"></div>
+                    </div>
+                    <div class="panel2">
+                        <div class="item1" data-bind="foreach: chatMessages">
+                            <div>
+                                <div class="itemLabel1" data-bind="text: userName"></div>
+                                <div class="itemLabel2" data-bind="text: messageContent"></div>
+                            </div>
+                        </div>
+                        <div class="item2" data-bind="foreach: users">
 
+                        </div>
+                    </div>
+                    <div class="panel3">
+                        <input data-bind="value: chatMessageInput"/>
+                        <div class="button1" data-bind="click: sendMessage">Send</div>
+                    </div>
                 </div>
             </div>
             <div id="chatsNavbar" data-bind="foreach: chatRooms">
@@ -337,11 +354,13 @@
 
     function setChatConnections(connection) {
         connection.on('ChatSendMessage', function(chatMessage, isSender, chatRoomName) {
-            console.log(chatMessage + isSender + chatRoomName);
-            var chatRoom = chatRoomsViewModel.chatRooms().find(function(element) {
-                return element.chatRoomName() == chatRoomName;
+            console.log("message received" + chatRoomName);
+            currentChatRoomsViewModel.chatRooms().forEach(function(element) {
+                if(element.chatRoomName()==chatRoomName) {
+                    console.log("chat message received" + chatMessage);
+                    element.chatMessages.push(new ChatMessage(chatMessage));
+                }
             });
-            chatRoom.chatMessages.push(new ChatMessage(chatMessage));
         });
 
         connection.on('ChatRoomLeave', function(disconnectedUser, chatRoomName) {

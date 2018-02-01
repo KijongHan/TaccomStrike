@@ -4,7 +4,7 @@ function ChatRoomsViewModel(connection) {
     self.connection = connection;
     self.chatRooms = ko.observableArray();
     self.onlineUsers = ko.observableArray();
-    self.selectedChatRoom = ko.observable();
+    self.selectedChatRoom = ko.observable(new ChatRoomViewModel(self, connection, {"chatRoomName": "", "participants": []}));
 
     self.onlineUsersCount = ko.computed(function() {
         return self.onlineUsers().length + " Players Online";
@@ -28,7 +28,7 @@ function ChatRoomsViewModel(connection) {
     self.selectChatRoom = function(chatRoom) {
         if(self.selectedChatRoom() == chatRoom) {
             deactivateCurrentChatRoomCard();
-            self.selectedChatRoom(null);
+            self.selectedChatRoom(new ChatRoomViewModel(self, connection, {"chatRoomName": "", "participants": []}));
         }
         else {
             activateCurrentChatRoomCard();
