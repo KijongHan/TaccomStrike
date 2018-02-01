@@ -229,10 +229,17 @@
                 </div>
             </div>
         </div>
-        <div id="chatsNavbar" data-bind="foreach: chatRooms">
-            <div class="item">
-                <div></div>
-                <div class="itemLabel" data-bind="text: chatRoomName"></div>
+        <div id="currentChatsPanel">
+            <div class="card" data-bind="selectedChatRoom">
+                <div class="cardBack"></div>
+                <div class="cardFront">
+
+                </div>
+            </div>
+            <div id="chatsNavbar" data-bind="foreach: chatRooms">
+                <div class="item" data-bind="click: selectChatRoom">
+                    <div class="itemLabel" data-bind="text: chatRoomName"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -318,7 +325,7 @@
     ko.applyBindings(new RegisterViewModel(), document.getElementById("registrationForm"));
     ko.applyBindings(loginViewModel, document.getElementById("loginForm"));
     ko.applyBindings(chatRoomsViewModel, document.getElementById("socialLobby"));
-    ko.applyBindings(currentChatRoomsViewModel, document.getElementById("chatsNavbar"));
+    ko.applyBindings(currentChatRoomsViewModel, document.getElementById("currentChatsPanel"));
     ko.applyBindings(gameLobbiesViewModel, document.getElementById("gameLobbies"));
     ko.applyBindings(createGameLobby, document.getElementById("createGameLobby"));
     ko.applyBindings(currentGameLobby, document.getElementById("currentGameLobby"));
@@ -363,8 +370,9 @@
         connection.on('ChatRoomJoin', function(newUser, users, isNewChatUser, chatRoomName) {
             console.log(newUser.UserName + " has entered chatroom " + chatRoomName);
             if(newUser.userName==loginViewModel.username()) {
-                var chatRoom = new ChatRoomViewModel(chatConnection, {"chatRoomName": chatRoomName, "participants":users});
+                var chatRoom = new ChatRoomViewModel(currentChatRoomsViewModel, chatConnection, {"chatRoomName": chatRoomName, "participants":users});
                 currentChatRoomsViewModel.chatRooms.push(chatRoom);
+                currentChatRoomsViewModel.selectChatRoom(chatRoom);
             }
             else {
                 currentChatRoomsViewModel.chatRooms().forEach(function(element) {
@@ -576,6 +584,28 @@
         ele.style.display = "inline";
         ele = document.getElementById("currentGameLobby");
         ele.style.display = "none";
+    }
+
+    function deactivateCurrentChatRoomCard() {
+        var ele = document.getElementById("currentChatsPanel");
+        var cardElements = ele.getElementsByClassName("card");
+        for (var i = 0; i < cardElements.length; i++) {
+            cardElements[i].classList.remove("activate");
+            cardElements[i].classList.remove("deactivate");
+            void cardElements[i].offsetWidth;
+            cardElements[i].classList.add("deactivate");
+        }
+    }
+
+    function activateCurrentChatRoomCard() {
+        var ele = document.getElementById("currentChatsPanel");
+        var cardElements = ele.getElementsByClassName("card");
+        for (var i = 0; i < cardElements.length; i++) {
+            cardElements[i].classList.remove("activate");
+            cardElements[i].classList.remove("deactivate");
+            void cardElements[i].offsetWidth;
+            cardElements[i].classList.add("activate");
+        }
     }
 
     window.onload = function() {

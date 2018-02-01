@@ -17,6 +17,25 @@
     display: none;
 }
 
+#socialPanel .cardBack {
+    height: 500px;
+}
+
+#socialPanel .card.activate > .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+
+#socialPanel .card.activate > .cardFront {
+    transform: rotateY(90deg);
+    display: inline;
+    animation-name: activateAnimationPart2;
+    animation-delay: 0.7s;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+
 #socialPanel .item3 {
     display: inline-block;
     width: 100%;
@@ -57,25 +76,6 @@
 
 #socialPanel .item3 .button1:hover {
     background-color: rgba(255, 255, 255, 0.6);
-}
-
-#socialPanel .cardBack {
-    height: 500px;
-}
-
-#socialPanel .card.activate > .cardBack {
-    animation-name: activateAnimationPart1;
-    animation-duration: 0.7s;
-    animation-fill-mode: forwards;
-}
-
-#socialPanel .card.activate > .cardFront {
-    transform: rotateY(90deg);
-    display: inline;
-    animation-name: activateAnimationPart2;
-    animation-delay: 0.7s;
-    animation-duration: 0.7s;
-    animation-fill-mode: forwards;
 }
 
 #socialLobby > .item {
@@ -126,10 +126,64 @@
     bottom: 0px;
     width: 100%;
     display: inline-block;
-
+    height: 55px;
+    overflow-x: scroll;
 }
 
 #chatsNavbar .item  {
     float: left;
-    background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    font-size: 1.2em;
+    padding-top: 5px;
+    width: 20%;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 7);
 }
+
+#chatsNavbar .item:hover {
+    cursor: pointer;
+}
+
+#currentChatsPanel .card {
+    width: 40%;
+    position: fixed;
+    bottom: 55px;
+    height: 50%;
+}
+
+#currentChatsPanel .cardFront {
+    background-color: rgba(0, 0, 0, 0.15);
+    padding: 12px 12px 12px 12px;
+    display: none;
+}
+
+#currentChatsPanel .cardBack {
+    display: none;
+}
+
+#currentChatsPanel .card.activate > .cardBack {
+    display: inline;
+    animation-name: activateAnimationPart1;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+
+#currentChatsPanel .card.activate > .cardFront {
+    transform: rotateY(90deg);
+    display: inline;
+    animation-name: activateAnimationPart2;
+    animation-delay: 0.7s;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+
+#currentChatsPanel .card.deactivate > .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+
+#currentChatsPanel .card.deactivate > .cardFront {
+    display: none;
+}
+

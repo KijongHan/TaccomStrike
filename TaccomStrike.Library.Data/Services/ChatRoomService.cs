@@ -12,6 +12,7 @@ namespace TaccomStrike.Library.Data.Services {
         public ChatRoomService() {
             chatRooms = new List<ChatRoom>();
             chatRooms.Add(new ChatRoom("General Chat", ChatRoom.Type.Public));
+            chatRooms.Add(new ChatRoom("Bug Report", ChatRoom.Type.Public));
         }
 
         public ChatRoom GetGeneralChatRoom() {

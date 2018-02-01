@@ -1,7 +1,9 @@
-function ChatRoomViewModel(connection, data) {
+function ChatRoomViewModel(chatRoomsViewModel, connection, data) {
     var self = this;
 
+    self.chatRoomsViewModel = chatRoomsViewModel;
     self.connection = connection;
+    
     self.chatRoomName = ko.observable();
     self.chatMessageInput = ko.observable();
     self.chatMessages = ko.observableArray();
@@ -22,5 +24,10 @@ function ChatRoomViewModel(connection, data) {
 
     self.joinChatRoom = function() {
         self.connection.invoke('ChatRoomJoin', self.chatRoomName());
+    }
+
+    self.selectChatRoom = function() {
+        console.log("here");
+        chatRoomsViewModel.selectChatRoom(self);
     }
 }
