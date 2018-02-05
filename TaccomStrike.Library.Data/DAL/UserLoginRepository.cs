@@ -30,6 +30,13 @@ namespace TaccomStrike.Library.Data.DAL
             return insertUser.ForumUserID;
         }
 
+        public UserLogin GetUserLoginByEmail(string email) {
+            var user = dbContext.UserLogin
+                .Where((item) => item.Email == email)
+                .FirstOrDefault();
+            return user;
+        }
+
         public GetUserLogin GetUserLogin(string username)
         {
             var user = dbContext.UserLogin

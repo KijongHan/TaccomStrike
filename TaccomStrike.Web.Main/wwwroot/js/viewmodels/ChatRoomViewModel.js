@@ -19,6 +19,7 @@ function ChatRoomViewModel(chatRoomsViewModel, connection, data) {
 
     self.sendMessage = function() {
         var message = self.chatMessageInput();
+        self.chatMessageInput("");
         self.connection.invoke("ChatSendMessage", message, self.chatRoomName());
     }
 
@@ -28,5 +29,12 @@ function ChatRoomViewModel(chatRoomsViewModel, connection, data) {
 
     self.selectChatRoom = function() {
         chatRoomsViewModel.selectChatRoom(self);
+    }
+
+    self.onKeyDown = function(d, e) {
+        if(e.keyCode===13) {
+            self.sendMessage();
+        }
+        return true;
     }
 }

@@ -18,6 +18,7 @@
     <script src="~/js/viewmodels/GameLobbiesViewModel.js"></script>
     <script src="~/js/viewmodels/LoginViewModel.js"></script>
     <script src="~/js/viewmodels/RegisterViewModel.js"></script>
+    <script src="~/js/viewmodels/AlertMessageViewModel.js"></script>
 </head>
 <body>
     <div class="container-fluid" id="loginScreen">
@@ -190,7 +191,10 @@
                         <div class="item3">
                             <div id="gameLobbyMessagesPanel">
                                 <div data-bind="foreach: gameLobbyMessages">
-                                    <div data-bind="text: messageContent"></div>
+                                    <div class="item2">
+                                        <div class="itemLabel1" data-bind="text: userNameInfo"></div>
+                                        <div class="itemLabel2" data-bind="text: messageContent"></div>
+                                    </div>
                                 </div>
                             </div>
                             <div id="playersPanel">
@@ -202,7 +206,7 @@
                         <div class="item2">
                             <div class="button1" data-bind="click: startGame">Start Game</div>
                             <div class="button1" data-bind="click: leaveGameLobby">Leave Game</div>
-                            <input data-bind="value: gameLobbyMessage"/>
+                            <input data-bind="textInput: gameLobbyMessage, event: {keypress: onKeyDown}"/>
                             <div class="button1" data-bind="click: sendMessageGameLobby">Send</div>                                             
                         </div>
                     </div>
@@ -229,98 +233,52 @@
                 </div>
             </div>
         </div>
-        <div id="currentChatsPanel">
-            <div class="card" data-bind="with: selectedChatRoom">
-                <div class="cardBack"></div>
-                <div class="cardFront">
-                    <div class="panel1">
-                        <div class="subTitle" data-bind="text: chatRoomName"></div>
-                    </div>
-                    <div class="panel2">
-                        <div class="item1" data-bind="foreach: chatMessages">
-                            <div>
-                                <div class="itemLabel1" data-bind="text: userName"></div>
-                                <div class="itemLabel2" data-bind="text: messageContent"></div>
-                            </div>
-                        </div>
-                        <div class="item2" data-bind="foreach: users">
+    </div>
 
+    <div id="gameScreen">
+
+    </div>
+
+    <div id="currentChatsPanel">
+        <div class="card" data-bind="with: selectedChatRoom">
+            <div class="cardBack"></div>
+            <div class="cardFront">
+                <div class="panel1">
+                    <div class="subTitle" data-bind="text: chatRoomName"></div>
+                </div>
+                <div class="panel2">
+                    <div class="item1" data-bind="foreach: chatMessages">
+                        <div>
+                            <div class="itemLabel1" data-bind="text: userNameInfo"></div>
+                            <div class="itemLabel2" data-bind="text: messageContent"></div>
                         </div>
                     </div>
-                    <div class="panel3">
-                        <input data-bind="value: chatMessageInput"/>
-                        <div class="button1" data-bind="click: sendMessage">Send</div>
+                    <div class="item2" data-bind="foreach: users">
+                        <div data-bind="text: userName"></div>
                     </div>
                 </div>
-            </div>
-            <div id="chatsNavbar" data-bind="foreach: chatRooms">
-                <div class="item" data-bind="click: selectChatRoom">
-                    <div class="itemLabel" data-bind="text: chatRoomName"></div>
+                <div class="panel3">
+                    <input data-bind="textInput: chatMessageInput, event: {keypress: onKeyDown}"/>
+                    <div class="button1" data-bind="click: sendMessage">Send</div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="chatRooms">
-                            <button data-bind="click: getChatRooms">Refresh Chat Rooms</button>
-                            <div data-bind="foreach: chatRooms">
-                                <div data-bind="text: chatRoomName"></div>
-
-                                <div data-bind="foreach: chatMessages">
-                                    <div data-bind="text: userName"></div>
-                                    <div data-bind="text: userID"></div>
-                                    <div data-bind="text: messageContent"></div>
-                                    <div data-bind="text: whenCreated"></div>
-                                </div>
-
-                                <div data-bind="foreach: users">
-                                    <div data-bind="text: userName"></div>
-                                </div>
-
-                                <input data-bind="value: chatMessageInput"></input>
-                                <button data-bind="click: joinChatRoom">Join Chat Room</button>
-                                <button data-bind="click: sendMessage">Send Message</button>
-                            </div>
-                        </div>
-
-    <div id="currentGameLobby">
-        <div data-bind="text: gameLobbyName"></div>
-        <div data-bind="text: host.userName"></div>
-        <div data-bind="text: gameLobbyID"></div>
-
-        <div data-bind="foreach: players">
-            <div data-bind="text: userName"></div>
+        <div id="chatsNavbar" data-bind="foreach: chatRooms, style: { display: hasChat() }">
+            <div class="item" data-bind="click: selectChatRoom">
+                <div class="itemLabel" data-bind="text: chatRoomName"></div>
+            </div>
         </div>
-        <div data-bind="foreach: gameLobbyMessages">
-            <div data-bind="text: messageContent"></div>
-        </div>
-
-        <input data-bind="value: gameLobbyMessage"></input>
-        <button data-bind="click: startGame">Start Game</button>
-        <button data-bind="click: leaveGameLobby">Leave Game Lobby</button>
-        <button data-bind="click: sendMessageGameLobby">Send Message</button>
-
-        <div style="{height: 100px}"></div>
-        
-        <div data-bind="foreach: hand">
-            <div data-bind="text: rank"></div>
-            <div data-bind="text: suit"></div>
-            <input type="checkbox" data-bind="checked: selected"/>
-        </div>
-        <input data-bind="value: rankClaim"/>
-        <button data-bind="click: gameCallCheat">Call Cheat</button>
-        <button data-bind="click: gameClaim">Game Claim</button>
-        <button data-bind="click: gameEndTurn">End Turn</button>
     </div>
-
-    <div id="gameLobby">
-        <input data-bind="value: gameLobbyName"></input>
-        <input data-bind="value: maxRoomLimit"></input>
-        <button data-bind="click: createGameLobby">Create Game Lobby</button>
+    <div id="alertMessagePanel" data-bind="style: { display: cssDisplay() }">
+        <div class="card" data-bind="css: activateCard">
+            <div class="cardBack"></div>
+            <div class="cardFront">
+                <div class="subTitle" data-bind="text: title"></div>
+                <div class="panel" data-bind="text: message"></div>
+                <div class="button1" data-bind="click: confirmMessage">CONFIRM</div>
+            </div>
+        </div>
     </div>
-
-    <button>Test</button>
-
 </body>
 
 <script>
@@ -332,14 +290,18 @@
     var chatConnection = new signalR.HubConnection(chatHub);
     var gameLobbyConnection = new signalR.HubConnection(gameLobbyHub);
 
-    var loginViewModel = new LoginViewModel();
+    var alertMessageViewModel = new AlertMessageViewModel();
+    var loginViewModel = new LoginViewModel(alertMessageViewModel);
+    var registerViewModel = new RegisterViewModel(alertMessageViewModel);
+
     var chatRoomsViewModel = new ChatRoomsViewModel(chatConnection);
     var currentChatRoomsViewModel = new ChatRoomsViewModel(chatConnection);
     var gameLobbiesViewModel = new GameLobbiesViewModel(gameLobbyConnection);
     var currentGameLobby = new GameLobbyViewModel(gameLobbyConnection, null);
-    var createGameLobby = new GameLobbyViewModel(gameLobbyConnection, null); 
+    var createGameLobby = new GameLobbyViewModel(gameLobbyConnection, null);
 
-    ko.applyBindings(new RegisterViewModel(), document.getElementById("registrationForm"));
+    ko.applyBindings(alertMessageViewModel, document.getElementById("alertMessagePanel"));
+    ko.applyBindings(registerViewModel, document.getElementById("registrationForm"));
     ko.applyBindings(loginViewModel, document.getElementById("loginForm"));
     ko.applyBindings(chatRoomsViewModel, document.getElementById("socialLobby"));
     ko.applyBindings(currentChatRoomsViewModel, document.getElementById("currentChatsPanel"));
@@ -362,7 +324,6 @@
                 }
             });
         });
-
         connection.on('ChatRoomLeave', function(disconnectedUser, chatRoomName) {
             console.log(disconnectedUser.UserName + " has disconnected "  + chatRoomName);
 
@@ -445,7 +406,7 @@
             console.log("logging.." + playerLeaving.userName);
             if(success) {
                 currentGameLobby.hostUserName(host.userName);
-                currentGameLobby.gameLobbyMessages.push({"messageContent": playerLeaving.userName + " has left the game"});
+                currentGameLobby.gameLobbyMessages.push({"userNameInfo": "", "messageContent": playerLeaving.userName + " has left the game"});
                 currentGameLobby.players.removeAll();
                 currentGameLobby.players(players);
 
@@ -508,6 +469,11 @@
         checkPanelsVisible();
     }
 
+    function registerSuccessful() {
+        loginViewModel.username(registerViewModel.username());
+        loginViewModel.password(registerViewModel.password());
+    }
+
     function checkPanelsVisible() {
         var panels = [];
         panels.push(document.getElementById("gamePanel"));
@@ -525,7 +491,7 @@
 
                 visible = visibleX * visibleY / (w * h);
 
-                if (visible > 0.2) {
+                if (visible > 0.5) {
                     var cardElements = panel.getElementsByClassName("card");
                     for (var i = 0; i < cardElements.length; i++) {
                         cardElements[i].classList.add("activate");

@@ -12,6 +12,9 @@ public class UserLogin
     [Column("Username")]
     public string Username {get;set;}
 
+    [Column("Email")]
+    public string Email {get;set;}
+
     [Column("PasswordHash")]
     public string PasswordHash {get;set;}
 

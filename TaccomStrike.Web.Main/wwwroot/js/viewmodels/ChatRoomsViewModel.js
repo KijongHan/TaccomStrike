@@ -10,6 +10,15 @@ function ChatRoomsViewModel(connection) {
         return self.onlineUsers().length + " Players Online";
     });
 
+    self.hasChat = ko.computed(function() {
+        if(self.chatRooms().length>0) {
+            return "inline";
+        }
+        else {
+            return "none";
+        }
+    });
+
     self.getChatRooms = function() {
         self.chatRooms.removeAll();
         fetch("http://localhost:50249/api/chatrooms", {

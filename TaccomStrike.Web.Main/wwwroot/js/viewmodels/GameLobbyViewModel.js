@@ -16,7 +16,7 @@ function GameLobbyViewModel(connection, data) {
     self.rankClaim = ko.observable();
     console.log(data);
 
-    self.maxRoomLimitOptions = ko.observableArray([2, 3, 4, 5, 6, 7, 8]);
+    self.maxRoomLimitOptions = ko.observableArray([4, 5, 6, 7, 8]);
 
     self.userCountLimitFraction = ko.computed(function() {
         return self.userCount() + "/" + self.maxRoomLimit();
@@ -41,7 +41,7 @@ function GameLobbyViewModel(connection, data) {
 
     self.startGame = function() {
         self.connection.invoke("GameLobbyStartGame", self.gameLobbyID());
-    }
+    }   
 
     self.gameCallCheat = function() {
         self.connection.invoke("GameCallCheat", self.gameLobbyID());
@@ -101,5 +101,12 @@ function GameLobbyViewModel(connection, data) {
                 self.connection.invoke("GameLobbyJoin", data.gameLobbyID);
             });
         });
+    }
+
+    self.onKeyDown = function(d, e) {
+        if(e.keyCode===13) {
+            self.sendMessageGameLobby();
+        }
+        return true;
     }
 }

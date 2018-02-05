@@ -154,6 +154,7 @@
     position: fixed;
     bottom: 55px;
     height: 50%;
+    display: none;
 }
 
 #currentChatsPanel .cardFront {
@@ -167,6 +168,10 @@
 
 #currentChatsPanel .cardBack {
     display: none;
+}
+
+#currentChatsPanel .card.activate {
+    display: inline;
 }
 
 #currentChatsPanel .card.activate > .cardBack {
@@ -238,6 +243,7 @@
 }
 
 #currentChatsPanel .panel2 .item1 > div .itemLabel2 {
+    padding-left: 6px;
     float: left;
 }
 

@@ -1,10 +1,16 @@
-function LoginViewModel() {
+function LoginViewModel(alertMessageViewModel) {
     var self = this;
 
+    self.alertMessageViewModel = alertMessageViewModel;
     self.username = ko.observable(null);
     self.password = ko.observable(null);
 
     self.login = function() {
+        if(self.username()==null || self.password()==null) {
+            alertMessageViewModel.showLoginMissingInput();
+            return;
+        }
+
         fetch("http://localhost:50249/api/authentication/login", {
             method: 'POST',
             headers: {

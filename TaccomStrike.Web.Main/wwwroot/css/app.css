@@ -266,3 +266,84 @@
     animation-duration: 0.4s;
     animation-fill-mode: forwards;
 }
+
+#alertMessagePanel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+#alertMessagePanel .card {
+    width: 40%;
+    height: 30%;
+    margin: auto;
+    margin-top: 20%;
+}
+
+#alertMessagePanel .cardFront {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 30%;
+    margin: auto;
+    margin-top: 20%;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+#alertMessagePanel .cardBack {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 30%;
+    margin: auto;
+    margin-top: 20%;
+}
+
+#alertMessagePanel .card.activate .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+
+#alertMessagePanel .card.activate .cardFront {
+    transform: rotateY(90deg);
+    animation-name: activateAnimationPart2;
+    animation-delay: 0.7s;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+
+#alertMessagePanel .cardFront .subTitle {
+    height: 20%;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.95);
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#alertMessagePanel .cardFront .panel {
+    height: 60%;
+    margin-bottom: 0px;
+    background-color: rgba(0, 0, 0, 0);
+    padding: 10 10 10 10;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+#alertMessagePanel .cardFront .button1 {
+    background-color: rgba(255, 255, 255, 0.55);
+    padding-top: 1%;
+    height: 20%;
+    color: white;
+    width: 70%;
+    margin-left: 15%;
+}
+
+#alertMessagePanel .cardFront .button1:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}

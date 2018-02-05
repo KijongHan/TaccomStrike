@@ -1,11 +1,17 @@
-function RegisterViewModel() {
+function RegisterViewModel(alertMessageViewModel) {
     var self = this;
 
+    self.alertMessageViewModel = alertMessageViewModel;
     self.username = ko.observable(null);
     self.password = ko.observable(null);
     self.email = ko.observable(null);
 
     self.register = function() {
+        if(self.username()==null || self.username()=="" || self.password()==null || self.password()=="" || self.email() == null) {
+            alertMessageViewModel.showRegisterMissingInput();
+            return;
+        }
+
         fetch("http://localhost:50249/api/authentication", {
             method: 'POST',
             headers: {
@@ -16,11 +22,16 @@ function RegisterViewModel() {
             body: JSON.stringify({
                 username: self.username(),
                 password: self.password(),
+                email: self.email()
             }),
         }).then(response => {
-            response.json().then(function(data) {
-                console.log(data);
-            });
+            if(response.ok) {
+                alertMessageViewModel.showRegisterSuccessful();
+                registerSuccessful();
+            }
+            else {
+                alertMessageViewModel.showRegisterUnsuccessful();
+            }
         });
     }
 }

@@ -60,6 +60,10 @@ namespace TaccomStrike.Library.Data.Services
             {
                 return null;
             }
+            if(userRepository.GetUserLoginByEmail(userEntity.Email) != null)
+            {
+                return null;
+            }
 
             string passwordSalt = await Authentication.GenerateSaltAsync();
             string hashPassword = await Authentication.HashPasswordAsync(userEntity.Password, passwordSalt);
