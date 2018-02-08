@@ -72,6 +72,13 @@ namespace TaccomStrike.Web.API
                 app.UseDeveloperExceptionPage();
             }
             
+            app.Use(async (context, next) =>
+            {
+                foreach(var header in context.Request.Headers) {
+                    Console.WriteLine(header.Key + ":" + header.Value);
+                }
+                await next.Invoke();
+            });
             app.UseCors("AllowSpecificOrigin");
             
             app.UseAuthentication();
