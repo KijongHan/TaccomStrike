@@ -11,7 +11,7 @@ function LoginViewModel(alertMessageViewModel) {
             return;
         }
 
-        fetch("http://localhost:50249/api/authentication/login", {
+        fetch("http://174.138.15.215:81/api/authentication/login", {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

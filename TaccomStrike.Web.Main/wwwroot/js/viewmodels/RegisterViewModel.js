@@ -12,7 +12,7 @@ function RegisterViewModel(alertMessageViewModel) {
             return;
         }
 
-        fetch("http://localhost:50249/api/authentication", {
+        fetch("http://174.138.15.215:81/api/authentication", {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

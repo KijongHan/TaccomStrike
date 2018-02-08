@@ -6,7 +6,7 @@ function GameLobbiesViewModel(connection) {
 
     self.getGameLobbies = function() {
         self.gameLobbies.removeAll();
-        fetch("http://localhost:50249/api/gamelobbies", {
+        fetch("http://174.138.15.215:81/api/gamelobbies", {
             method: 'GET',
             credentials: 'include'
         }).then(response => {
