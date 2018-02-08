@@ -33,7 +33,7 @@ namespace TaccomStrike.Web.API
             services.AddCors(options => {
                 options.AddPolicy("AllowSpecificOrigin",
                     builder => builder
-                    .WithOrigins(new string[] {"http://localhost:60239"})
+                    .WithOrigins(new string[] {"http://localhost:60239", "http://174.138.15.215"})
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials());
