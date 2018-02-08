@@ -295,8 +295,8 @@
 <script>
     var loggedInUser = null;
 
-    var chatHub = new signalR.HttpConnection(`http://localhost:50249/chat`);
-    var gameLobbyHub = new signalR.HttpConnection(`http://localhost:50249/gamelobby`);
+    var chatHub = new signalR.HttpConnection(`http://174.138.15.215:81/chat`);
+    var gameLobbyHub = new signalR.HttpConnection(`http://174.138.15.215:81/gamelobby`);
     
     var chatConnection = new signalR.HubConnection(chatHub);
     var gameLobbyConnection = new signalR.HubConnection(gameLobbyHub);
