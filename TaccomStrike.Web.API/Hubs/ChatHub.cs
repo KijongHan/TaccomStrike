@@ -14,6 +14,7 @@ namespace TaccomStrike.Web.API.Hubs {
         private ChatRoomService chatRoomService;
         private UserConnectionService userConnectionService;
 
+
         public ChatHub(UserConnectionService userConnectionService, ChatRoomService chatRoomService) {
             this.userConnectionService = userConnectionService;
             this.chatRoomService = chatRoomService;
@@ -132,58 +133,66 @@ namespace TaccomStrike.Web.API.Hubs {
         }
 
         public override Task OnConnectedAsync() {
-            return Task.Run(() => 
-            {
-                userConnectionService.Add(Context.User, Context.ConnectionId);
-                foreach(var connection in userConnectionService.GetConnections()) {
-                    Clients.Client(connection).InvokeAsync(
-                        "ChatUserConnected",
-                        new object[] {
-                            new { userName = Context.User.GetUserName() },
-                            userConnectionService.GetUsers()
-                            .Select(item => new { userName = item.GetUserName()})
-                            });
-                }
-                return base.OnConnectedAsync();
-            });
+            lock(UserConnectionService.ConnectionLock) {
+                return Task.Run(() => 
+                {
+                    userConnectionService.Add(Context.User, Context.ConnectionId);
+                    foreach(var connection in userConnectionService.GetConnections()) {
+                        Clients.Client(connection).InvokeAsync(
+                            "ChatUserConnected",
+                            new object[] {
+                                new { userName = Context.User.GetUserName() },
+                                userConnectionService.GetUsers()
+                                .Select(item => new { userName = item.GetUserName()})
+                                });
+                    }
+                    return base.OnConnectedAsync();
+                });
+            }
+            
         }
 
         public override Task OnDisconnectedAsync(Exception exception) {
-            return Task.Run(() => 
-            {
-                userConnectionService.Remove(Context.User, Context.ConnectionId);
-                foreach(var chatRoom in chatRoomService.GetChatRooms()) {
-                    if(chatRoom.HasParticipant(Context.User)) {
-                        chatRoom.RemoveParticipant(Context.User);
+            lock(UserConnectionService.ConnectionLock) {
+                return Task.Run(() => 
+                {
+                    userConnectionService.Remove(Context.User, Context.ConnectionId);
+                    foreach(var chatRoom in chatRoomService.GetChatRooms()) {
+                        if(chatRoom.HasParticipant(Context.User)) {
+                            chatRoom.RemoveParticipant(Context.User);
 
-                        foreach(var participant in chatRoom.GetParticipants()) {
-                            var connections = userConnectionService.GetConnections(participant);
-                            foreach(var connection in connections) {
-                                Console.WriteLine("Im sending");
-                                Clients.Client(connection).InvokeAsync
-                                (
-                                    "ChatRoomLeave", 
-                                    new object[] { 
-                                        new { 
-                                            UserName = Context.User.GetUserName() 
-                                        },
-                                        chatRoom.ChatRoomName
+                            foreach(var participant in chatRoom.GetParticipants()) {
+                                var connections = userConnectionService.GetConnections(participant);
+                                if(connections != null) {
+                                    foreach(var connection in connections) {
+                                        Console.WriteLine("Im sending");
+                                        Clients.Client(connection).InvokeAsync
+                                        (
+                                            "ChatRoomLeave", 
+                                            new object[] { 
+                                                new { 
+                                                    UserName = Context.User.GetUserName() 
+                                                },
+                                                chatRoom.ChatRoomName
+                                            }
+                                        );
                                     }
-                                );
+                                }
+                                
                             }
                         }
                     }
-                }
 
-                foreach(var connection in userConnectionService.GetConnections()) {
-                    Clients.Client(connection).InvokeAsync(
-                        "ChatUserDisconnected",
-                        new object[] {
-                            new { userName = Context.User.GetUserName() }
-                            });
-                }
-                return base.OnDisconnectedAsync(exception);
-            });
+                    foreach(var connection in userConnectionService.GetConnections()) {
+                        Clients.Client(connection).InvokeAsync(
+                            "ChatUserDisconnected",
+                            new object[] {
+                                new { userName = Context.User.GetUserName() }
+                                });
+                    }
+                    return base.OnDisconnectedAsync(exception);
+                });
+            }
         }
     }
 }

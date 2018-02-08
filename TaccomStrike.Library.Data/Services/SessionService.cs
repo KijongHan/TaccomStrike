@@ -22,41 +22,50 @@ namespace TaccomStrike.Library.Data.Services
 
         public Task RemoveAsync(string key)
         {
-            return Task.Run(() => 
-            {
-                userSessions.Remove(key);
-            });
+            lock(userSessions) {
+                return Task.Run(() => 
+                {
+                    userSessions.Remove(key);
+                });
+            }
         }
 
         public Task RenewAsync(string key, AuthenticationTicket ticket)
         {
-            return Task.Run(() => 
-            {
-                if(userSessions.ContainsKey(key)) {
-                    userSessions[key] = ticket;
-                }
-            });        
+            lock(userSessions) {
+                return Task.Run(() => 
+                {
+                    if(userSessions.ContainsKey(key)) {
+                        userSessions[key] = ticket;
+                    }
+                });  
+            }    
         }
 
         public Task<AuthenticationTicket> RetrieveAsync(string key)
         {
-            return Task.Run(() => 
-            {
-                if(userSessions.ContainsKey(key)) {
-                    return userSessions[key];
-                }
-                return null;
-            });
+            lock(userSessions) {
+                return Task.Run(() => 
+                {
+                    if(userSessions.ContainsKey(key)) {
+                        return userSessions[key];
+                    }
+                    return null;
+                });
+            }
+            
         }
 
         public Task<string> StoreAsync(AuthenticationTicket ticket)
         {
-            return Task.Run(() => 
-            {
-                var salt = Authentication.GenerateSalt();
-                userSessions.Add(salt, ticket);
-                return salt;
-            });
+            lock(userSessions) {
+                return Task.Run(() => 
+                {
+                    var salt = Authentication.GenerateSalt();
+                    userSessions.Add(salt, ticket);
+                    return salt;
+                });
+            }
         }
     }   
 }

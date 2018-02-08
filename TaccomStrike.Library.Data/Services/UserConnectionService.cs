@@ -7,6 +7,8 @@ public class UserConnectionService {
     private readonly Dictionary<int, HashSet<string>> UserConnections;
     private readonly Dictionary<int, ClaimsPrincipal> Users;
 
+    public static object ConnectionLock = new object();
+
     public UserConnectionService() {
         Users = new Dictionary<int, ClaimsPrincipal>();
         UserConnections = new Dictionary<int, HashSet<string>>();

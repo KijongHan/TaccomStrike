@@ -23,6 +23,12 @@ function AlertMessageViewModel() {
         }
     });
 
+    self.showLoginFailed = function() {
+        self.title("Login Error");
+        self.message("Incorrect username and/or password");
+        self.isVisible(true);
+    }
+
     self.showLoginMissingInput = function() {
         self.title("Login Error");
         self.message("Please fill out username and password fields");

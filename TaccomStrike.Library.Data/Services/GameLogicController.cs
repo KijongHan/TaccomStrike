@@ -5,6 +5,7 @@ using System.Security.Claims;
 using TaccomStrike.Library.Data.ViewModel;
 using TaccomStrike.Library.Data.Model;
 using TaccomStrike.Library.Utility.Security;
+using TaccomStrike.Library.Data.Utilty;
 
 public class GameLogicController {
 
@@ -17,7 +18,7 @@ public class GameLogicController {
         GameUserEntity gameUser = GetPlayer(user);
         GameState gameState = new GameState();
         gameState.CurrentTurnUserName = GetCurrentPlayerTurn().UserPrincipal.GetUserName();
-        gameState.Hand = gameUser.Hand;
+        gameState.Hand = gameUser.Hand.OrderByRank().ToList();
         gameState.Claims = CurrentClaims;
 
         foreach(var g in GameUsers) {

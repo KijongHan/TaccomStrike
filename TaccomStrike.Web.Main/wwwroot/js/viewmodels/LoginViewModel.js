@@ -27,7 +27,7 @@ function LoginViewModel(alertMessageViewModel) {
                 loginSuccessful();
             }
             else {
-
+                alertMessageViewModel.showLoginFailed();
             }
         });
     }

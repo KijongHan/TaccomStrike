@@ -4,6 +4,7 @@
     <link rel="stylesheet" type="text/css" href="~/css/mainScreen.css"></link>
     <link rel="stylesheet" type="text/css" href="~/css/animation.css"></link>
     <link rel="stylesheet" type="text/css" href="~/css/socialPanel.css"></link>
+    <link rel="stylesheet" type="text/css" href="~/css/gameScreen.css"></link>
     <script src="~/lib/jquery.min.js"></script>
     <script src="~/lib/bootstrap.min.js"></script>
     <script src="~/lib/signalr-client-1.0.0-alpha2-final.min.js"></script>
@@ -236,7 +237,13 @@
     </div>
 
     <div id="gameScreen">
-
+        <div id="handPanel" data-bind="foreach: hand">
+            <div class="card">
+                <div class="cardFront">
+                    <div data-bind="text: rank"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="currentChatsPanel">
@@ -308,6 +315,7 @@
     ko.applyBindings(gameLobbiesViewModel, document.getElementById("gameLobbies"));
     ko.applyBindings(createGameLobby, document.getElementById("createGameLobby"));
     ko.applyBindings(currentGameLobby, document.getElementById("currentGameLobby"));
+    ko.applyBindings(currentGameLobby, document.getElementById("gameScreen"));
 
     function setConnections() {
         setChatConnections(chatConnection);
@@ -399,6 +407,8 @@
 
         connection.on('GameLobbyStartGame', function(turn) {
             console.log(turn);
+            document.getElementById('mainScreen').style.display = "none";
+            document.getElementById('gameScreen').style.display = "inline";
             currentGameLobby.gameState();
         });
 
