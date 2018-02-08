@@ -20,6 +20,7 @@ namespace TaccomStrike
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseUrls("http://localhost:60239")
                 .UseStartup<Startup>()
                 .Build();
     }

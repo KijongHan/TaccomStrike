@@ -239,10 +239,14 @@
     <div id="gameScreen">
         <div id="handPanel" data-bind="foreach: hand">
             <div class="card">
-                <div class="cardFront">
+                <div class="cardFront" data-bind="click: select, css: cssClass">
                     <div data-bind="text: rank"></div>
                 </div>
             </div>
+        </div>
+        <div id="gameDecisionsPanel">
+            <select></select>
+            <div class="button1">Claim</div>
         </div>
     </div>
 

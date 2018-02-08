@@ -126,7 +126,7 @@
     bottom: 0px;
     width: 100%;
     display: inline-block;
-    height: 55px;
+    height: 8%;
     overflow-x: scroll;
 }
 
@@ -152,7 +152,7 @@
 #currentChatsPanel .card {
     width: 42%;
     position: fixed;
-    bottom: 55px;
+    bottom: 9%;
     height: 50%;
     display: none;
 }

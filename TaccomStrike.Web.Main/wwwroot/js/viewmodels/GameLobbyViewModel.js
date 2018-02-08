@@ -23,7 +23,7 @@ function GameLobbyViewModel(connection, data) {
     });
 
     self.hostInfo = ko.computed(function() {
-        return "Created By: " + self.hostUserName();
+        return "Host: " + self.hostUserName();
     });
 
     if(data != null) {
