@@ -11,14 +11,14 @@ namespace TaccomStrike.Library.Utility.Security
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddCustomCookieAuthentication(this IServiceCollection service, ITicketStore sessionStore)
+        public static IServiceCollection AddCustomCookieAuthentication(this IServiceCollection service, ITicketStore sessionStore, string cookieDomain)
         {
             service
                 .AddAuthentication(Security.AuthenticationScheme)
                 .AddCookie(Security.AuthenticationScheme, options => 
                 {
                     options.Cookie.Name = Security.CookieName;
-                    options.Cookie.Domain = "174.138.15.215";
+                    options.Cookie.Domain = cookieDomain;
                     options.Cookie.Expiration = TimeSpan.FromHours(2);
                     options.SessionStore = sessionStore;
                 });

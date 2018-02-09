@@ -33,7 +33,7 @@ namespace TaccomStrike.Web.API
             services.AddCors(options => {
                 options.AddPolicy("AllowSpecificOrigin",
                     builder => builder
-                    .WithOrigins(new string[] {"http://localhost:60239", "http://174.138.15.215"})
+                    .WithOrigins(new string[] {ConfigurationManager.AppSettings["WebUIIPAddress"]})
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials());
@@ -61,7 +61,7 @@ namespace TaccomStrike.Web.API
             services.AddSingleton<ChatRoomService>();
             services.AddSingleton<GameLobbyService>();
 
-            services.AddCustomCookieAuthentication(sessionService);
+            services.AddCustomCookieAuthentication(sessionService, ConfigurationManager.AppSettings["CookieDomain"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

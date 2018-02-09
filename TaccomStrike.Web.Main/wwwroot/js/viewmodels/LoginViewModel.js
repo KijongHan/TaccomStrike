@@ -11,7 +11,7 @@ function LoginViewModel(alertMessageViewModel) {
             return;
         }
 
-        fetch("http://174.138.15.215:81/api/authentication/login", {
+        fetch(webAPIIPAddress + "/api/authentication/login", {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

@@ -228,7 +228,7 @@
                         </div>
                         <div class="item3">
                             <div class="button1" data-bind="click: createGameLobby">Create</div>
-                            <div class="button1">Back</div>
+                            <div class="button1" data-bind="click: goBack">Back</div>
                         </div>
                     </div>
                 </div>
@@ -294,9 +294,10 @@
 
 <script>
     var loggedInUser = null;
+    var webAPIIPAddress = '@ViewData["WebAPIPIAddress"]';
 
-    var chatHub = new signalR.HttpConnection(`http://174.138.15.215:81/chat`);
-    var gameLobbyHub = new signalR.HttpConnection(`http://174.138.15.215:81/gamelobby`);
+    var chatHub = new signalR.HttpConnection(webAPIIPAddress + "/chat");
+    var gameLobbyHub = new signalR.HttpConnection(webAPIIPAddress + "/gamelobby");
     
     var chatConnection = new signalR.HubConnection(chatHub);
     var gameLobbyConnection = new signalR.HubConnection(gameLobbyHub);
@@ -581,6 +582,20 @@
         gameLobbiesViewModel.getGameLobbies();
         var ele = document.getElementById("gameLobbies");
         ele.style.display = "inline";
+        ele = document.getElementById("currentGameLobby");
+        ele.style.display = "none";
+    }
+
+    function leaveGameCreation() {
+        refreshGamePanelCards();
+        currentGameLobby.gameLobbyName(null);
+        currentGameLobby.gameLobbyID(null);
+        currentGameLobby.gameLobbyMessages.removeAll();
+        gameLobbiesViewModel.getGameLobbies();
+        var ele = document.getElementById("gameLobbies");
+        ele.style.display = "inline";
+        ele = document.getElementById("createGameLobby");
+        ele.style.display = "none";
         ele = document.getElementById("currentGameLobby");
         ele.style.display = "none";
     }

@@ -37,7 +37,7 @@ namespace TaccomStrike.Console.ConfigurationManager
                     using(var streamWriter = new StreamWriter(fileStream)) {
                         streamWriter.WriteLine("<configuration><appSettings>");
                         foreach(var appSettingItem in programAppSettingItems) {
-                            streamWriter.WriteLine($"<add key=\"{appSettingItem.Key}\" value=\"{appSettingItem.Value}\">");
+                            streamWriter.WriteLine($"<add key=\"{appSettingItem.Key}\" value=\"{appSettingItem.Value}\" />");
                         }
                         streamWriter.WriteLine("</appSettings></configuration>");
                     }

@@ -84,7 +84,7 @@ function GameLobbyViewModel(connection, data) {
     }
 
     self.createGameLobby = function() {
-        fetch("http://localhost:50249/api/gamelobbies", {
+        fetch(webAPIIPAddress + "/api/gamelobbies", {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -108,5 +108,9 @@ function GameLobbyViewModel(connection, data) {
             self.sendMessageGameLobby();
         }
         return true;
+    }
+
+    self.goBack = function() {
+        leaveGameCreation();
     }
 }

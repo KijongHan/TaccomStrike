@@ -21,7 +21,7 @@ function ChatRoomsViewModel(connection) {
 
     self.getChatRooms = function() {
         self.chatRooms.removeAll();
-        fetch("http://174.138.15.215:81/api/chatrooms", {
+        fetch(webAPIIPAddress + "/api/chatrooms", {
             method: 'GET',
             credentials: 'include'
         }).then(response => {

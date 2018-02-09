@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Configuration;
 
 namespace TaccomStrike
 {
@@ -20,7 +21,7 @@ namespace TaccomStrike
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseUrls("http://localhost:60239")
+                .UseUrls(ConfigurationManager.AppSettings["WebUIIPAddress"])
                 .UseStartup<Startup>()
                 .Build();
     }
