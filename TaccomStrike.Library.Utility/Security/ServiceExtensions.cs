@@ -18,7 +18,7 @@ namespace TaccomStrike.Library.Utility.Security
                 .AddCookie(Security.AuthenticationScheme, options => 
                 {
                     options.Cookie.Name = Security.CookieName;
-                    options.Cookie.Domain = "http://174.138.15.215";
+                    options.Cookie.Domain = "174.138.15.215";
                     options.Cookie.Expiration = TimeSpan.FromHours(2);
                     options.SessionStore = sessionStore;
                 });
