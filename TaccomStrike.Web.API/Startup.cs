@@ -45,7 +45,7 @@ namespace TaccomStrike.Web.API
             //Data layer service configurations
             services.AddDbContext<TaccomStrikeContext>((options) => 
             {
-                options.UseSqlServer(ConfigurationManager.ConnectionStrings["Development"].ConnectionString);
+                options.UseSqlServer(ConfigurationManager.AppSettings["ConnectionString"]);
             });
             services.AddScoped<ForumThreadRepository>();
             services.AddScoped<ForumCommentRepository>();
