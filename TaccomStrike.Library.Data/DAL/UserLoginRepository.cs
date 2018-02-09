@@ -20,6 +20,7 @@ namespace TaccomStrike.Library.Data.DAL
             UserLogin insertUser = new UserLogin()
             {
                 Username = user.Username,
+                Email = user.Email,
                 PasswordSalt = passwordSalt,
                 PasswordHash = passwordHash,
                 ForumUserID = forumUserID
