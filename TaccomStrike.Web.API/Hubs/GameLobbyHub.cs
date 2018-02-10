@@ -17,7 +17,6 @@ namespace TaccomStrike.Web.API.Hubs {
         public GameLobbyHub(GameLobbyService gameLobbyService, UserConnectionService userConnectionService) {
             this.gameLobbyService = gameLobbyService;
             this.userConnectionService = userConnectionService;
-            Console.WriteLine("New Instance");
         }
 
         public Task GameCallCheat(string gameLobbyID) {

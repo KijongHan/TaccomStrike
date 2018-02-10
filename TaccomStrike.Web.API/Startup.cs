@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TaccomStrike.Library.Data.DAL;
 using TaccomStrike.Library.Data.Model;
+using TaccomStrike.Library.Data.Utilty;
 using TaccomStrike.Library.Utility.Security;
 using TaccomStrike.Library.Data.Services;
 using TaccomStrike.Web.API.Hubs;
@@ -51,6 +52,7 @@ namespace TaccomStrike.Web.API
             services.AddScoped<ForumCommentRepository>();
             services.AddScoped<ForumUserRepository>();
             services.AddScoped<UserLoginRepository>();
+            services.AddScoped<AppExceptionRepository>();
 
             //Service layer configurations
             services.AddScoped<UserAuthenticationService>();
@@ -67,11 +69,8 @@ namespace TaccomStrike.Web.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            
+            app.UseMiddleware<ExceptionLogMiddleware>();
+
             app.UseCors("AllowSpecificOrigin");
             
             app.UseAuthentication();

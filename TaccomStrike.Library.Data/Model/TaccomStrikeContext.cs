@@ -16,6 +16,7 @@ namespace TaccomStrike.Library.Data.Model
         public virtual DbSet<UserLogin> UserLogin {get;set;}
         public virtual DbSet<UserRole> UserRole {get;set;}
 
+        public virtual DbSet<AppException> AppException {get;set;}
         public virtual DbSet<AppSettingProgram> AppSettingProgram {get;set;}
         public virtual DbSet<AppSettingItem> AppSettingItem {get;set;}
         
