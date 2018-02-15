@@ -385,6 +385,9 @@
                 chatRoomsViewModel.onlineUsers.push(newUser);
             }
         });
+        connection.onclose(function() {
+            console.log("closing: time to close");
+        });
         connection.start();
     }
 
@@ -481,7 +484,17 @@
         gameLobbiesViewModel.getGameLobbies();
         chatRoomsViewModel.getChatRooms();
 
-        checkPanelsVisible();
+        var panel = document.getElementById("socialPanel");
+        var cardElements = panel.getElementsByClassName("card");
+        for (var i = 0; i < cardElements.length; i++) {
+            cardElements[i].classList.add("activate");
+        }
+        panel = document.getElementById("gamePanel");
+        cardElements = panel.getElementsByClassName("card");
+        for (var i = 0; i < cardElements.length; i++) {
+            cardElements[i].classList.add("activate");
+        }
+        //checkPanelsVisible();
     }
 
     function registerSuccessful() {

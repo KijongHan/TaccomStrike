@@ -42,8 +42,12 @@
     display: none;
 }
 
+#loginRegisterRow {
+    margin-bottom: 50px;
+}
+
 #loginRegisterRow .cardFront {
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.88);
 }
 
 #loginRegisterRow .card.activate .cardBack {
@@ -58,10 +62,14 @@
     animation-delay: 0.7s;
     animation-duration: 0.7s;
     animation-fill-mode: forwards;
+
+    -webkit-box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
+    -moz-box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
+    box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
 }
 
 #loginRegisterRow .subTitle {
-    color: white;
+    color: rgba(255, 255, 255, 0.75);
     font-size: 2.2em;
 }
 
@@ -74,15 +82,15 @@
 #loginRegisterRow .item div {
     width: 40%;
     padding-left: 5px;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.65);
 }
 
 #loginRegisterRow .item input {
     width: 80%;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.5);
     border-style: solid;
     border-width: 2px;
-    border-color: rgba(255, 255, 255, 1);
+    border-color: rgba(255, 255, 255, 0.65);
 }
 
 #loginRegisterRow .item2 {
@@ -120,10 +128,11 @@
 #titleRow .cardFront {
     font-size: 7em;
     text-align: center;
-    color: black;
+    color: rgba(255, 255, 255, 0.95);
     -webkit-box-shadow: -5px 5px 1px 0px rgba(0,0,0,0.6);
     -moz-box-shadow: -5px 5px 1px 0px rgba(0,0,0,0.6);
     box-shadow: -5px 5px 1px 0px rgba(0,0,0,0.6);
+    background-color: rgba(0, 0, 0, 0.35);
 }
 
 @media (max-width: 500px){

@@ -6,6 +6,7 @@ CREATE TABLE [auth].[UserLogin] (
     [PasswordSalt]       NVARCHAR (500) NOT NULL,
     [WhenCreated]        DATETIME       NULL,
     [WhenDeleted]        DATETIME       NULL,
+    [ForumUserID] INT,
     CONSTRAINT [PK_UserLogin] PRIMARY KEY CLUSTERED ([UserLoginID] ASC)
 );  
 

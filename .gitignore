@@ -11,7 +11,7 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
-Deployment.sh
+Deployment
 
 # Build results
 [Dd]ebug/

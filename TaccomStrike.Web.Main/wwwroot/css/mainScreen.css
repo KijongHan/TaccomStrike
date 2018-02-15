@@ -16,7 +16,7 @@
 }
 
 #gamePanel .cardFront {
-    background-color: rgba(0, 0, 0, 0.15);
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 12px 12px 12px 12px;
     height: 500px;
     display: none;
@@ -53,7 +53,8 @@
     margin-left: 3px;
     padding-left: 8px;
     padding-right: 8px;
-    background-color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 #gameLobbies .item .button1:hover {
@@ -70,7 +71,7 @@
     font-size: 1.5em;
     font-weight: bold;
     color: rgba(255, 255, 255, 0.95);
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 @media (max-width: 600px) {
@@ -89,7 +90,7 @@
 #gameLobbiesPanel {
     height: 430px;
     overflow-y: scroll;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 #gameLobbiesPanel .item {
@@ -98,7 +99,7 @@
     line-height: 60px;
     width: 100%;
     padding-left: 15px;
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.7);
     border-style: solid;
     border-width: 1px;
     border-color: rgba(0, 0, 0, 0.1);
@@ -106,7 +107,7 @@
 
 #gameLobbiesPanel .item:hover {
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 #gameLobbiesPanel .item div {
@@ -137,7 +138,7 @@
     font-weight: bold;
     float: left;
     color: rgba(255, 255, 255, 0.95);
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 #createGameLobby .panel {
@@ -149,15 +150,15 @@
 #createGameLobby .panel .itemLabel {
     width: 40%;
     padding-left: 5px;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.65);
 }
 
 #createGameLobby .panel input {
     width: 80%;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.5);
     border-style: solid;
     border-width: 2px;
-    border-color: rgba(255, 255, 255, 1);
+    border-color: rgba(255, 255, 255, 65);
 }
 
 #createGameLobby .panel .gap1 {
@@ -171,10 +172,10 @@
 
 #createGameLobby .item2 select {
     width: 80%;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.5);
     border-style: solid;
     border-width: 2px;
-    border-color: rgba(255, 255, 255, 1);
+    border-color: rgba(255, 255, 255, 0.65);
 }
 
 #createGameLobby .item3 {

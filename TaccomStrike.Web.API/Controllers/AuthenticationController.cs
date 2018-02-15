@@ -50,10 +50,6 @@ namespace TaccomStrike.Web.API.Controllers
                 (
                     Security.AuthenticationScheme, claimsPrincipal
                 );
-                
-            foreach(var i in HttpContext.Response.Headers) {
-                Console.WriteLine(i.Key + ":" + i.Value);
-            }
             return Ok();
         }
     }
