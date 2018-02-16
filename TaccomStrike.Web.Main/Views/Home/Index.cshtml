@@ -182,7 +182,7 @@
         </div>
 
         <div id="gamePanel">
-            <div class="card">
+            <div id="gamePanelCard1" class="card">
                 <div class="cardBack"></div>
                 <div class="cardFront">
                     <div id="gameLobbies">
@@ -199,6 +199,31 @@
                             </div>
                         </div>
                     </div>
+                    <div id="createGameLobby">
+                        <div class="item">
+                            <div class="subTitle">CREATE NEW GAME</div>
+                        </div>
+                        <div class="panel">
+                            <div class="gap1"></div>
+                            <div class="item2">
+                                <div class="itemLabel">Game Lobby Name</div>
+                                <input data-bind="value: gameLobbyName" maxlength="10" />
+                            </div>
+                            <div class="item2">
+                                <div class="itemLabel">Number Of Players</div>
+                                <select data-bind="options: maxRoomLimitOptions, value: maxRoomLimit"></select>
+                            </div>
+                        </div>
+                        <div class="item3">
+                            <div class="button1" data-bind="click: createGameLobby">Create</div>
+                            <div class="button1" data-bind="click: goBack">Back</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="gamePanelCard2" class="card">
+                <div class="cardBack"></div>
+                <div class="cardFront">
                     <div id="currentGameLobby">
                         <div class="item">
                             <div class="subTitle">GAME LOBBY</div>
@@ -221,30 +246,10 @@
                             </div>
                         </div>
                         <div class="item2">
-                            <div class="button1" data-bind="click: startGame">Start Game</div>
-                            <div class="button1" data-bind="click: leaveGameLobby">Leave Game</div>
+                            <div class="button1" data-bind="click: startGame">Start</div>
+                            <div class="button1" data-bind="click: leaveGameLobby">Leave</div>
                             <input data-bind="textInput: gameLobbyMessage, event: {keypress: onKeyDown}"/>
                             <div class="button1" data-bind="click: sendMessageGameLobby">Send</div>                                             
-                        </div>
-                    </div>
-                    <div id="createGameLobby">
-                        <div class="item">
-                            <div class="subTitle">CREATE NEW GAME</div>
-                        </div>
-                        <div class="panel">
-                            <div class="gap1"></div>
-                            <div class="item2">
-                                <div class="itemLabel">Game Lobby Name</div>
-                                <input data-bind="value: gameLobbyName" maxlength="10" />
-                            </div>
-                            <div class="item2">
-                                <div class="itemLabel">Number Of Players</div>
-                                <select data-bind="options: maxRoomLimitOptions, value: maxRoomLimit"></select>
-                            </div>
-                        </div>
-                        <div class="item3">
-                            <div class="button1" data-bind="click: createGameLobby">Create</div>
-                            <div class="button1" data-bind="click: goBack">Back</div>
                         </div>
                     </div>
                 </div>
@@ -546,59 +551,27 @@
             }
     }
 
-    function refreshGamePanelCards() {
-        var ele = document.getElementById("gamePanel");
-        var cardElements = ele.getElementsByClassName("card");
-        for (var i = 0; i < cardElements.length; i++) {
-            cardElements[i].classList.remove("activate");
-            void cardElements[i].offsetWidth;
-            cardElements[i].classList.add("activate");
-        }
-    }
-
-    function socialButtonClick() {
-        refreshGamePanelCards();
-        var ele = document.getElementById("gameLobbies");
-        ele.style.display = "none";
-        ele = document.getElementById("currentGameLobby");
-        ele.style.display = "none";
-        ele = document.getElementById("createGameLobby");
-        ele.style.display = "none";
-    }
-
-    function gameLobbiesButtonClick() {
-        refreshGamePanelCards();
-        if(currentGameLobby.gameLobbyName() == null) {
-            gameLobbiesViewModel.getGameLobbies();
-            var ele = document.getElementById("gameLobbies");
-            ele.style.display = "inline";
-            ele = document.getElementById("currentGameLobby");
-            ele.style.display = "none";
-            ele = document.getElementById("createGameLobby");
-            ele.style.display = "none";
-        }
-        else {
-            var ele = document.getElementById("currentGameLobby");
-            ele.style.display = "inline";
-            ele = document.getElementById("gameLobbies");
-            ele.style.display = "none";
-            ele = document.getElementById("createGameLobby");
-            ele.style.display = "none";
-        }
+    function refreshGamePanelCards(panelID) {
+        var ele = document.getElementById(panelID);
+        ele.classList.remove("activate");
+        ele.offsetWidth;
+        ele.classList.add("activate");
     }
 
     function joinGameLobby() {
-        refreshGamePanelCards();
-        var ele = document.getElementById("gameLobbies");
-        ele.style.display = "none";
+        refreshGamePanelCards("gamePanelCard1");
+        refreshGamePanelCards("gamePanelCard2");
+        gameLobbiesViewModel.getGameLobbies();
         ele = document.getElementById("currentGameLobby");
         ele.style.display = "inline";
         ele = document.getElementById("createGameLobby");
         ele.style.display = "none";
+        ele = document.getElementById("gameLobbies");
+        ele.style.display = "inline";
     }
 
     function createNewGameClick() {
-        refreshGamePanelCards();
+        refreshGamePanelCards("gamePanelCard1");
         var ele = document.getElementById("gameLobbies");
         ele.style.display = "none";
         ele = document.getElementById("createGameLobby");
@@ -606,7 +579,8 @@
     }
 
     function leaveGameLobbyClick() {
-        refreshGamePanelCards();
+        refreshGamePanelCards("gamePanelCard1");
+        refreshGamePanelCards("gamePanelCard2");
         currentGameLobby.gameLobbyName(null);
         currentGameLobby.gameLobbyID(null);
         currentGameLobby.gameLobbyMessages.removeAll();
@@ -618,7 +592,7 @@
     }
 
     function leaveGameCreation() {
-        refreshGamePanelCards();
+        refreshGamePanelCards("gamePanelCard1");
         currentGameLobby.gameLobbyName(null);
         currentGameLobby.gameLobbyID(null);
         currentGameLobby.gameLobbyMessages.removeAll();
@@ -626,8 +600,6 @@
         var ele = document.getElementById("gameLobbies");
         ele.style.display = "inline";
         ele = document.getElementById("createGameLobby");
-        ele.style.display = "none";
-        ele = document.getElementById("currentGameLobby");
         ele.style.display = "none";
     }
 
