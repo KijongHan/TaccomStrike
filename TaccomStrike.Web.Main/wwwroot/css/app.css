@@ -51,6 +51,11 @@
     margin-bottom: 50px;
 }
 
+#loginRegisterRow .card {
+    -webkit-perspective: 800px; /* Safari 4-8 */
+    perspective: 800px;
+}
+
 #loginRegisterRow .cardFront {
     background-color: rgba(0, 0, 0, 0.88);
 }
@@ -61,11 +66,23 @@
     animation-fill-mode: forwards;
 }
 
-#loginRegisterRow .card.activate .cardFront {
+#loginForm.card.activate .cardFront {
     transform: rotateY(90deg);
-    animation-name: activateAnimationPart2;
+    animation-name: activateAnimationPart3;
     animation-delay: 0.7s;
-    animation-duration: 0.7s;
+    animation-duration: 1.3s;
+    animation-fill-mode: forwards;
+
+    -webkit-box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
+    -moz-box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
+    box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
+}
+
+#registrationForm.card.activate .cardFront {
+    transform: rotateY(90deg);
+    animation-name: activateAnimationPart4;
+    animation-delay: 0.7s;
+    animation-duration: 1.3s;
     animation-fill-mode: forwards;
 
     -webkit-box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);

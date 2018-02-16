@@ -1,70 +1,164 @@
 #socialPanel {
     width: 100%;
-    height: 500px;
-    margin-top: 60px;
+    overflow: auto;
+    padding-top: 60px;
+    padding-bottom: 50px;
 }
 
-#socialPanel .card {
-    width: 100%;
+#socialPanel #chatRoomsCard {
+    float: left;
+    width: 35%;
     height: 500px;
     position: relative;
+    -webkit-perspective: 1000px; /* Safari 4-8 */
+    perspective: 1000px;
 }
 
-#socialPanel .cardFront {
+@media(max-width: 950px) {
+    #socialPanel #chatRoomsCard {
+        width: 60%;
+    }
+}
+
+#socialPanel #chatRoomsCard .cardFront {
     background-color: rgba(0, 0, 0, 0.8);
     padding: 12px 12px 12px 12px;
     height: 500px;
     display: none;
 }
 
-#socialPanel .cardBack {
+#socialPanel #chatRoomsCard .cardBack {
     height: 500px;
 }
 
-#socialPanel .card.activate > .cardBack {
+#socialPanel #chatRoomsCard.activate > .cardBack {
     animation-name: activateAnimationPart1;
     animation-duration: 0.7s;
     animation-fill-mode: forwards;
 }
 
-#socialPanel .card.activate > .cardFront {
+#socialPanel #chatRoomsCard.activate > .cardFront {
     transform: rotateY(90deg);
     display: inline;
-    animation-name: activateAnimationPart2;
+    animation-name: activateAnimationPart3;
     animation-delay: 0.7s;
+    animation-duration: 1.3s;
+    animation-fill-mode: forwards;
+}
+
+#socialPanel #playersCard {
+    width: 25%;
+    height: 500px;
+    position: relative;
+    float: left;
+    -webkit-perspective: 2000px; /* Safari 4-8 */
+    perspective: 2000px;
+}
+
+@media(max-width: 950px) {
+    #socialPanel #playersCard {
+        width: 40%;
+    }
+}
+
+#socialPanel #playersCard .cardFront {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 12px 12px 12px 12px;
+    height: 500px;
+    display: none;
+}
+
+#socialPanel #playersCard .cardBack {
+    height: 500px;
+}
+
+#socialPanel #playersCard.activate > .cardBack {
+    animation-name: activateAnimationPart1;
     animation-duration: 0.7s;
     animation-fill-mode: forwards;
 }
 
-#socialPanel .item3 {
+#socialPanel #playersCard.activate > .cardFront {
+    transform: rotateY(90deg);
+    display: inline;
+    animation-name: activateAnimationPart2;
+    animation-delay: 0.7s;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#socialPanel #profileCard {
+    width: 40%;
+    height: 500px;
+    position: relative;
+    float: left;
+    -webkit-perspective: 1000px; /* Safari 4-8 */
+    perspective: 1000px;
+}
+
+@media(max-width: 950px) {
+    #socialPanel #profileCard {
+        width: 80%;
+        margin-left: 10%;
+        margin-top: 50px;
+    }
+}
+
+#socialPanel #profileCard .cardFront {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 12px 12px 12px 12px;
+    height: 500px;
+    display: none;
+}
+
+#socialPanel #profileCard .cardBack {
+    height: 500px;
+}
+
+#socialPanel #profileCard.activate > .cardBack {
+    animation-name: activateAnimationPart1;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+
+#socialPanel #profileCard.activate > .cardFront {
+    transform: rotateY(90deg);
+    display: inline;
+    animation-name: activateAnimationPart4;
+    animation-delay: 0.7s;
+    animation-duration: 1.3s;
+    animation-fill-mode: forwards;
+}
+
+#socialPanel .panel1 {
     display: inline-block;
     width: 100%;
 }
 
 @media (max-width: 600px) {
-    #socialPanel .item3 .subTitle {
+    #socialPanel .panel1 .subTitle {
         font-size: 1.3em;
     }
 
-    #socialPanel .item3 .button1 {
+    #socialPanel .panel1 .button1 {
         margin-left: 0px;
     }
 }
 
-#socialPanel .item3 .subTitle {
+#socialPanel .panel1 .subTitle {
     float: left;
     height: 50px;
     line-height: 50px;
     padding-left: 10px;
     padding-right: 10px;
     margin-right: 3px;
-    font-size: 1.5em;
+    font-size: 1.3em;
     font-weight: bold;
     color: rgba(255, 255, 255, 0.95);
     background-color: rgba(255, 255, 255, 0.7);
 }
 
-#socialPanel .item3 .button1 {
+#socialPanel .panel1 .button1 {
     height: 50px;
     float: left;
     line-height: 50px;
@@ -75,23 +169,19 @@
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-#socialPanel .item3 .button1:hover {
+#socialPanel .panel1 .button1:hover {
     background-color: rgba(255, 255, 255, 0.6);
 }
 
-#socialLobby > .item {
+#socialPanel .panel2 {
     display: inline-block;
     width: 100%;
 }
 
-#socialLobby > .item > .item2 {
-    float: left;
-    background-color: rgba(255, 255, 255, 0.1);
-    height: 430px;
-}
-
 #chatRoomsPanel {
-    width: 65%;
+    width: 100%;
+    height: 430px;
+    background-color: rgba(255, 255, 255, 0.1);
     overflow-y: scroll;
 }
 
@@ -118,8 +208,13 @@
 }
 
 #onlinePlayersPanel {
-    margin-left: 5%;
-    width: 30%;
+    width: 100%;
+    padding-left: 5px;
+    overflow-y: scroll;
+    height: 430px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1em;
 }
 
 #chatsNavbar {

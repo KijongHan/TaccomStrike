@@ -138,28 +138,44 @@
 
     <div id="mainScreen">
         <div id="socialPanel">
-            <div class="card">
+            <div id="chatRoomsCard" class="card">
                 <div class="cardBack"></div>
                 <div class="cardFront">
-                    <div id="socialLobby">
-                        <div class="item3">
-                            <div class="subTitle">SOCIAL</div>
-                            <div class="subTitle" data-bind="text: onlineUsersCount"></div>
-                            <div class="button1" data-bind="click: getChatRooms">REFRESH</div>
-                        </div>
-                        <div class="item">
-                            <div id="chatRoomsPanel" class="item2" data-bind="foreach: chatRooms">
-                                <div class="item" data-bind="click: joinChatRoom">
-                                    <div data-bind="text: chatRoomName"></div>
-                                    <div data-bind="text: usersCount"></div>
-                                </div>
-                            </div>
-                            <div id="onlinePlayersPanel" class="item2" data-bind="foreach: onlineUsers">
-                                <div class="item">
-                                    <div data-bind="text: userName"></div>
-                                </div>
+                    <div class="panel1">
+                        <div class="subTitle">CHAT ROOMS</div>
+                        <div class="button1" data-bind="click: getChatRooms">REFRESH</div>
+                    </div>
+                    <div class="panel2">
+                        <div id="chatRoomsPanel" data-bind="foreach: chatRooms">
+                            <div class="item" data-bind="click: joinChatRoom">
+                                <div data-bind="text: chatRoomName"></div>
+                                <div data-bind="text: usersCount"></div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div id="playersCard" class="card">
+                <div class="cardBack"></div>
+                <div class="cardFront">
+                    <div class="panel1">
+                        <div class="subTitle" data-bind="text: onlineUsersCount"></div>
+                    </div>
+                    <div class="panel2">
+                        <div id="onlinePlayersPanel" data-bind="foreach: onlineUsers">
+                            <div class="item">
+                                <div data-bind="text: userName"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="profileCard" class="card">
+                <div class="cardBack"></div>
+                <div class="cardFront">
+                    <div class="panel1">
+                        <div class="subTitle">PROFILE</div>
+                        <div class="subTitle" data-bind="text: username"></div>
                     </div>
                 </div>
             </div>
@@ -315,7 +331,9 @@
     ko.applyBindings(alertMessageViewModel, document.getElementById("alertMessagePanel"));
     ko.applyBindings(registerViewModel, document.getElementById("registrationForm"));
     ko.applyBindings(loginViewModel, document.getElementById("loginForm"));
-    ko.applyBindings(chatRoomsViewModel, document.getElementById("socialLobby"));
+    ko.applyBindings(loginViewModel, document.getElementById("profileCard"));
+    ko.applyBindings(chatRoomsViewModel, document.getElementById("chatRoomsCard"));
+    ko.applyBindings(chatRoomsViewModel, document.getElementById("playersCard"));
     ko.applyBindings(currentChatRoomsViewModel, document.getElementById("currentChatsPanel"));
     ko.applyBindings(gameLobbiesViewModel, document.getElementById("gameLobbies"));
     ko.applyBindings(createGameLobby, document.getElementById("createGameLobby"));

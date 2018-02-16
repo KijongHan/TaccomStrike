@@ -7,7 +7,7 @@ function ChatRoomsViewModel(connection) {
     self.selectedChatRoom = ko.observable(new ChatRoomViewModel(self, connection, {"chatRoomName": "", "participants": []}));
 
     self.onlineUsersCount = ko.computed(function() {
-        return self.onlineUsers().length + " Players Online";
+        return self.onlineUsers().length + " Players";
     });
 
     self.hasChat = ko.computed(function() {
