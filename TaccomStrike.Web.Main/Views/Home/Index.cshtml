@@ -94,45 +94,41 @@
 
         <div class="gap1"></div>
 
-        <div class="row" id="loginRegisterRow">
-            <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-2">
-                <div class="card loading" id="loginForm">
-                    <div class="cardBack"></div>
-                    <div class="cardFront">
-                        <div class="subTitle">LOGIN</div>
-                        <div class="gap1"></div>
-                        <div class="item">
-                            <div>Username</div><input data-bind="value: username"></input>
-                        </div>
-                        <div class="item">
-                            <div>Password</div><input type="password" data-bind="value: password"></input>
-                        </div>
-                        <div class="item2">
-                            <div class="button1" data-bind="click: login">Login</div>
-                        </div>
+        <div id="loginRegisterRow">
+            <div class="card loading" id="loginForm">
+                <div class="cardBack"></div>
+                <div class="cardFront">
+                    <div class="subTitle">LOGIN</div>
+                    <div class="gap1"></div>
+                    <div class="item">
+                        <div>Username</div><input data-bind="value: username"></input>
+                    </div>
+                    <div class="item">
+                        <div>Password</div><input type="password" data-bind="value: password"></input>
+                    </div>
+                    <div class="item2">
+                        <div class="button1" data-bind="click: login">Login</div>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-2">
-                <div class="card loading" id="registrationForm">
-                    <div class="cardFront">
-                        <div class="subTitle">REGISTER</div>
-                        <div class="gap1"></div>
-                        <div class="item">
-                            <div>Username</div><input data-bind="value: username"></input>
-                        </div>
-                        <div class="item">
-                            <div>Email</div><input data-bind="value: email"></input>
-                        </div>
-                        <div class="item">
-                            <div>Password</div><input type="password" data-bind="value: password"></input>
-                        </div>
-                        <div class="item2">
-                            <div class="button1" data-bind="click: register">Register</div>
-                        </div>
+            <div class="card loading" id="registrationForm">
+                <div class="cardFront">
+                    <div class="subTitle">REGISTER</div>
+                    <div class="gap1"></div>
+                    <div class="item">
+                        <div>Username</div><input data-bind="value: username"></input>
                     </div>
-                    <div class="cardBack"></div>
+                    <div class="item">
+                        <div>Email</div><input data-bind="value: email"></input>
+                    </div>
+                    <div class="item">
+                        <div>Password</div><input type="password" data-bind="value: password"></input>
+                    </div>
+                    <div class="item2">
+                        <div class="button1" data-bind="click: register">Register</div>
+                    </div>
                 </div>
+                <div class="cardBack"></div>
             </div>
         </div>
     </div>

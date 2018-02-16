@@ -39,24 +39,37 @@
     right: 15;
 }
 
-.card.loading .cardBack {
-    display: inline;
-}
-
-.card.loading .cardFront {
-    display: none;
-}
-
 #loginRegisterRow {
+    width: 100%;
+    display: inline-block;
     margin-bottom: 50px;
 }
 
 #loginRegisterRow .card {
+    float: left;
+    width: 40%;
     -webkit-perspective: 800px; /* Safari 4-8 */
     perspective: 800px;
 }
 
+#loginForm {
+    margin-left: 5%;
+}
+
+#registrationForm {
+    margin-left: 10%;
+}
+
+@media(max-width: 950px) {
+    #loginRegisterRow .card {
+        width: 90%;
+        margin-left: 5%;
+        margin-top: 50px;
+    }
+}
+
 #loginRegisterRow .cardFront {
+    display: none;
     background-color: rgba(0, 0, 0, 0.88);
 }
 
@@ -72,6 +85,7 @@
     animation-delay: 0.7s;
     animation-duration: 1.3s;
     animation-fill-mode: forwards;
+    display: inline;
 
     -webkit-box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
     -moz-box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
@@ -84,6 +98,7 @@
     animation-delay: 0.7s;
     animation-duration: 1.3s;
     animation-fill-mode: forwards;
+    display: inline;
 
     -webkit-box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
     -moz-box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);

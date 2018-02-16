@@ -1,6 +1,6 @@
 #socialPanel {
     width: 100%;
-    overflow: auto;
+    overflow: hidden;
     padding-top: 60px;
     padding-bottom: 50px;
 }
