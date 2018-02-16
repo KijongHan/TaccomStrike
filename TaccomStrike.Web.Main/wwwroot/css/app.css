@@ -191,7 +191,7 @@
         margin-left: 5%;
     }
     #titleRow {
-        margin-bottom: 30px;
+        margin-bottom: 20px;
     }
 }
 
@@ -219,6 +219,12 @@
     -moz-box-shadow: -4px 4px 1px 0px rgba(0,0,0,0.55);
     box-shadow: -4px 4px 1px 0px rgba(0,0,0,0.55);
 
+}
+
+@media(max-width: 950px) {
+    #titleRow .cardFront {
+        font-size: 4.5em;
+    }
 }
 
 #title1 .cardBack {
