@@ -187,7 +187,11 @@
     }
     #titleRow .panel2 {
         width: 90%;
+        margin-top: 15px;
         margin-left: 5%;
+    }
+    #titleRow {
+        margin-bottom: 30px;
     }
 }
 
