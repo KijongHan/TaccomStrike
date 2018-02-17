@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Configuration;
+using System.Net;
 
 namespace TaccomStrike
 {
@@ -21,8 +22,30 @@ namespace TaccomStrike
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseUrls(ConfigurationManager.AppSettings["WebUIIPAddress"])
                 .UseStartup<Startup>()
+                .UseKestrel(options => {
+                    string ipAddress = ConfigurationManager.AppSettings["WebUIIPAddress"];
+                    int networkPort = Convert.ToInt32(ConfigurationManager.AppSettings["WebUINetworkPort"]);
+                    bool useHttps = Convert.ToBoolean(ConfigurationManager.AppSettings["UseHttps"]);
+
+                    string certificateFilename = ConfigurationManager.AppSettings["CertificateFilename"];
+                    string certificatePassword = ConfigurationManager.AppSettings["CertificateFilename"];
+                
+                    if(useHttps) {
+                        options.Listen(
+                            IPAddress.Parse(ipAddress), 
+                            networkPort,
+                            listenOptions => {
+                                listenOptions.UseHttps("testCert.pfx", "159789Qaz");
+                            }
+                        );
+                    } else {
+                        options.Listen(
+                            IPAddress.Parse(ipAddress), 
+                            networkPort
+                        );
+                    }
+                })
                 .Build();
     }
 }
