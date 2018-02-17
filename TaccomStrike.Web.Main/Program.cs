@@ -30,6 +30,7 @@ namespace TaccomStrike
 
                     string certificateFilename = ConfigurationManager.AppSettings["CertificateFilename"];
                     string certificatePassword = ConfigurationManager.AppSettings["CertificateFilename"];
+                    Console.WriteLine(Directory.GetCurrentDirectory());
                 
                     if(useHttps) {
                         options.Listen(
