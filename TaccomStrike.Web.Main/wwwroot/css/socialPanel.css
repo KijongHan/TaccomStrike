@@ -61,7 +61,7 @@
     #socialPanel #playersCard {
         width: 50%;
         margin-top: 230px;
-        margin-left: 2%;
+        margin-left: 3%;
         height: 260px;
         -webkit-perspective: 1000px; /* Safari 4-8 */
         perspective: 1000px;
