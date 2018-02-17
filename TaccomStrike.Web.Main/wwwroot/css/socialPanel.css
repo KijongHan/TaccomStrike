@@ -16,7 +16,9 @@
 
 @media(max-width: 950px) {
     #socialPanel #chatRoomsCard {
-        width: 60%;
+        width: 90%;
+        margin-left: 5%;
+        height: 330px;
     }
 }
 
@@ -57,7 +59,11 @@
 
 @media(max-width: 950px) {
     #socialPanel #playersCard {
-        width: 40%;
+        width: 50%;
+        margin-top: 230px;
+        height: 260px;
+        -webkit-perspective: 1000px; /* Safari 4-8 */
+        perspective: 1000px;
     }
 }
 
@@ -87,6 +93,17 @@
     animation-fill-mode: forwards;
 }
 
+@media(max-width: 950px) {
+    #socialPanel #playersCard.activate > .cardFront {
+        transform: rotateY(90deg);
+        display: inline;
+        animation-name: activateAnimationPart4;
+        animation-delay: 0.7s;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
+    }
+}
+
 #socialPanel #profileCard {
     width: 40%;
     height: 500px;
@@ -98,9 +115,9 @@
 
 @media(max-width: 950px) {
     #socialPanel #profileCard {
-        width: 80%;
-        margin-left: 10%;
-        margin-top: 50px;
+        width: 90%;
+        margin-left: 5%;
+        margin-top: 300px;
     }
 }
 
@@ -128,6 +145,17 @@
     animation-delay: 0.7s;
     animation-duration: 1.3s;
     animation-fill-mode: forwards;
+}
+
+@media(max-width: 950px) {
+    #socialPanel #profileCard.activate > .cardFront {
+        transform: rotateY(90deg);
+        display: inline;
+        animation-name: activateAnimationPart3;
+        animation-delay: 0.7s;
+        animation-duration: 1.3s;
+        animation-fill-mode: forwards;
+    }
 }
 
 #socialPanel .panel1 {
