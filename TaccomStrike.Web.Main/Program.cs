@@ -36,7 +36,7 @@ namespace TaccomStrike
                             IPAddress.Parse(ipAddress), 
                             networkPort,
                             listenOptions => {
-                                listenOptions.UseHttps("testCert.pfx", "159789Qaz");
+                                listenOptions.UseHttps(certificateFilename, certificatePassword);
                             }
                         );
                     } else {
