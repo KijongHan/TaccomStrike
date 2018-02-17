@@ -22,31 +22,8 @@ namespace TaccomStrike
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseUrls(ConfigurationManager.AppSettings["WebUIIPAddress"])
                 .UseStartup<Startup>()
-                .UseKestrel(options => {
-                    string ipAddress = ConfigurationManager.AppSettings["WebUIIPAddress"];
-                    int networkPort = Convert.ToInt32(ConfigurationManager.AppSettings["WebUINetworkPort"]);
-                    bool useHttps = Convert.ToBoolean(ConfigurationManager.AppSettings["UseHttps"]);
-
-                    string certificateFilename = ConfigurationManager.AppSettings["CertificateFilename"];
-                    string certificatePassword = ConfigurationManager.AppSettings["CertificateFilename"];
-                    Console.WriteLine("======================================================================" + Directory.GetCurrentDirectory());
-                
-                    if(useHttps) {
-                        options.Listen(
-                            IPAddress.Parse(ipAddress), 
-                            networkPort,
-                            listenOptions => {
-                                listenOptions.UseHttps(certificateFilename, certificatePassword);
-                            }
-                        );
-                    } else {
-                        options.Listen(
-                            IPAddress.Parse(ipAddress), 
-                            networkPort
-                        );
-                    }
-                })
                 .Build();
     }
 }
