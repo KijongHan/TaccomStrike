@@ -109,11 +109,12 @@
 #loginRegisterRow .subTitle {
     color: rgba(255, 255, 255, 0.75);
     font-size: 2.2em;
+    margin-left: 5%;
 }
 
 #loginRegisterRow .item {
     width: 90%;
-    margin: auto;
+    margin-left: 5%;
     margin-top: 10px;
 }
 
