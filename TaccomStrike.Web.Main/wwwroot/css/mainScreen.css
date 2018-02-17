@@ -27,8 +27,8 @@
 
 @media(max-width: 950px) {
     #gamePanel .card {
-        width: 80%;
-        margin-left: 10%;
+        width: 90%;
+        margin-left: 5%;
     }
 
     #gamePanel #gamePanelCard2 {
@@ -118,7 +118,7 @@
 
 @media (max-width: 600px) {
     #gameLobbies .item .subTitle {
-        font-size: 1.3em;
+        font-size: 1.2em;
         margin-right: 0px;
     }
 }
