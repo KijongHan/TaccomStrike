@@ -2,6 +2,10 @@
     width: 100%;
     overflow: hidden;
     padding-top: 60px;
+    padding-bottom: 100px;
+}
+
+@media(max-width: 950px) {
     padding-bottom: 50px;
 }
 
@@ -26,25 +30,17 @@
     background-color: rgba(0, 0, 0, 0.8);
     padding: 12px 12px 12px 12px;
     height: 500px;
-    display: none;
 }
 
 #socialPanel #chatRoomsCard .cardBack {
     height: 500px;
-}
-
-#socialPanel #chatRoomsCard.activate > .cardBack {
-    animation-name: activateAnimationPart1;
-    animation-duration: 0.7s;
-    animation-fill-mode: forwards;
+    display: none;
 }
 
 #socialPanel #chatRoomsCard.activate > .cardFront {
-    transform: rotateY(90deg);
     display: inline;
-    animation-name: activateAnimationPart3;
-    animation-delay: 0.7s;
-    animation-duration: 1.3s;
+    animation-name: tiltClockwise;
+    animation-duration: 0.5s;
     animation-fill-mode: forwards;
 }
 
@@ -72,35 +68,18 @@
     background-color: rgba(0, 0, 0, 0.8);
     padding: 12px 12px 12px 12px;
     height: 500px;
-    display: none;
 }
 
 #socialPanel #playersCard .cardBack {
     height: 500px;
-}
-
-#socialPanel #playersCard.activate > .cardBack {
-    animation-name: activateAnimationPart1;
-    animation-duration: 0.7s;
-    animation-fill-mode: forwards;
-}
-
-#socialPanel #playersCard.activate > .cardFront {
-    transform: rotateY(90deg);
-    display: inline;
-    animation-name: activateAnimationPart2;
-    animation-delay: 0.7s;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
+    display: none;
 }
 
 @media(max-width: 950px) {
     #socialPanel #playersCard.activate > .cardFront {
-        transform: rotateY(90deg);
         display: inline;
-        animation-name: activateAnimationPart4;
-        animation-delay: 0.7s;
-        animation-duration: 1s;
+        animation-name: tiltAntiClockwise;
+        animation-duration: 0.5s;
         animation-fill-mode: forwards;
     }
 }
@@ -125,36 +104,26 @@
 #socialPanel #profileCard .cardFront {
     background-color: rgba(0, 0, 0, 0.8);
     padding: 12px 12px 12px 12px;
-    height: 500px;
-    display: none;
+    height: 500px;;
 }
 
 #socialPanel #profileCard .cardBack {
     height: 500px;
-}
-
-#socialPanel #profileCard.activate > .cardBack {
-    animation-name: activateAnimationPart1;
-    animation-duration: 0.7s;
-    animation-fill-mode: forwards;
+    display: none
 }
 
 #socialPanel #profileCard.activate > .cardFront {
-    transform: rotateY(90deg);
     display: inline;
-    animation-name: activateAnimationPart4;
-    animation-delay: 0.7s;
-    animation-duration: 1.3s;
+    animation-name: tiltAntiClockwise;
+    animation-duration: 0.5s;
     animation-fill-mode: forwards;
 }
 
 @media(max-width: 950px) {
     #socialPanel #profileCard.activate > .cardFront {
-        transform: rotateY(90deg);
         display: inline;
-        animation-name: activateAnimationPart3;
-        animation-delay: 0.7s;
-        animation-duration: 1.3s;
+        animation-name: tiltClockwise;
+        animation-duration: 0.5s;
         animation-fill-mode: forwards;
     }
 }

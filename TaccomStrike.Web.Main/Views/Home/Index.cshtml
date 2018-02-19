@@ -78,7 +78,7 @@
         <div class="gap1"></div>
 
         <div id="loginRegisterRow">
-            <div class="card loading" id="loginForm">
+            <div class="card" id="loginForm">
                 <div class="cardBack"></div>
                 <div class="cardFront">
                     <div class="subTitle">LOGIN</div>
@@ -94,7 +94,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card loading" id="registrationForm">
+            <div class="card" id="registrationForm">
                 <div class="cardFront">
                     <div class="subTitle">REGISTER</div>
                     <div class="gap1"></div>
@@ -486,18 +486,7 @@
 
         gameLobbiesViewModel.getGameLobbies();
         chatRoomsViewModel.getChatRooms();
-
-        var panel = document.getElementById("socialPanel");
-        var cardElements = panel.getElementsByClassName("card");
-        for (var i = 0; i < cardElements.length; i++) {
-            cardElements[i].classList.add("activate");
-        }
-        panel = document.getElementById("gamePanel");
-        cardElements = panel.getElementsByClassName("card");
-        for (var i = 0; i < cardElements.length; i++) {
-            cardElements[i].classList.add("activate");
-        }
-        //checkPanelsVisible();
+        checkPanelsVisible();
     }
 
     function registerSuccessful() {
@@ -507,28 +496,28 @@
 
     function checkPanelsVisible() {
         var panels = [];
-        panels.push(document.getElementById("gamePanel"));
-        panels.push(document.getElementById("socialPanel"));
+        panels.push(document.getElementById("loginForm"));
+        panels.push(document.getElementById("registrationForm"));
+        panels.push(document.getElementById("chatRoomsCard"));
+        panels.push(document.getElementById("playersCard"));
+        panels.push(document.getElementById("profileCard"));
+        panels.push(document.getElementById("gamePanelCard1"));
+        panels.push(document.getElementById("gamePanelCard2"));
+
+        var pageTop = window.pageYOffset;
+        var pageBottom = window.pageYOffset + window.innerHeight;
 
         for(var i = 0; i < panels.length; i++) {
             var panel = panels[i];
+            
+            var top = panel.offsetTop;
+            var bottom = panel.offsetHeight + top;
+            var middle = (top + bottom) / 2;
 
-            var x = panel.offsetLeft, y = panel.offsetTop, w = panel.offsetWidth, h = panel.offsetHeight, r = x + w, //right
-                b = y + h, //bottom
-                visibleX, visibleY, visible;
-
-                visibleX = Math.max(0, Math.min(w, window.pageXOffset + window.innerWidth - x, r - window.pageXOffset));
-                visibleY = Math.max(0, Math.min(h, window.pageYOffset + window.innerHeight - y, b - window.pageYOffset));
-
-                visible = visibleX * visibleY / (w * h);
-
-                if (visible > 0.5) {
-                    var cardElements = panel.getElementsByClassName("card");
-                    for (var i = 0; i < cardElements.length; i++) {
-                        cardElements[i].classList.add("activate");
-                    }
-                }
+            if (middle > pageTop && middle < pageBottom) {
+                panel.classList.add("activate");
             }
+        }
     }
 
     function refreshGamePanelCards(panelID) {
@@ -606,15 +595,8 @@
     }
 
     window.onload = function() {
-        var ele1 = document.getElementById("loginForm");
-        ele1.classList.remove("loading");
-        ele1.classList.add("activate");
-
-        ele1 = document.getElementById("registrationForm");
-        ele1.classList.remove("loading");
-        ele1.classList.add("activate");
+        checkPanelsVisible();
     }
-
 
     window.addEventListener('scroll', checkPanelsVisible, false);
     window.addEventListener('resize', checkPanelsVisible, false);

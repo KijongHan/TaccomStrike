@@ -70,21 +70,16 @@
 }
 
 #loginRegisterRow .cardFront {
-    display: none;
     background-color: rgba(0, 0, 0, 0.88);
 }
 
-#loginRegisterRow .card.activate .cardBack {
-    animation-name: activateAnimationPart1;
-    animation-duration: 0.7s;
-    animation-fill-mode: forwards;
+#loginRegisterRow .cardBack {
+    display: none;
 }
 
 #loginForm.card.activate .cardFront {
-    transform: rotateY(90deg);
-    animation-name: activateAnimationPart3;
-    animation-delay: 0.7s;
-    animation-duration: 1.3s;
+    animation-name: tiltClockwise;
+    animation-duration: 0.5s;
     animation-fill-mode: forwards;
     display: inline;
 
@@ -94,10 +89,8 @@
 }
 
 #registrationForm.card.activate .cardFront {
-    transform: rotateY(90deg);
-    animation-name: activateAnimationPart4;
-    animation-delay: 0.7s;
-    animation-duration: 1.3s;
+    animation-name: tiltAntiClockwise;
+    animation-duration: 0.5s;
     animation-fill-mode: forwards;
     display: inline;
 

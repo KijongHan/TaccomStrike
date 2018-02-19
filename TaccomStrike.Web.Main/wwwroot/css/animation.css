@@ -132,12 +132,12 @@
 
 @keyframes tiltClockwise {
     100% {
-        transform: rotateY(20deg);
+        transform: rotateY(25deg);
     }
 }
 
 @keyframes tiltAntiClockwise {
     100% {
-        transform: rotateY(-20deg);
+        transform: rotateY(-25deg);
     }
 }

@@ -40,40 +40,24 @@
     background-color: rgba(0, 0, 0, 0.8);
     padding: 12px 12px 12px 12px;
     height: 500px;
-    display: none;
 }
 
 #gamePanel .cardBack {
     height: 500px;
-}
-
-#gamePanel #gamePanelCard1.card.activate > .cardBack {
-    animation-name: activateAnimationPart1;
-    animation-duration: 0.7s;
-    animation-fill-mode: forwards;
+    display: none;
 }
 
 #gamePanel #gamePanelCard1.card.activate > .cardFront {
     display: inline;
-    transform: rotateY(90deg);
-    animation-name: activateAnimationPart5;
-    animation-delay: 0.7s;
-    animation-duration: 1.3s;
-    animation-fill-mode: forwards;
-}
-
-#gamePanel #gamePanelCard2.card.activate > .cardBack {
-    animation-name: activateAnimationPart1;
-    animation-duration: 0.7s;
+    animation-name: tiltClockwise;
+    animation-duration: 0.5s;
     animation-fill-mode: forwards;
 }
 
 #gamePanel #gamePanelCard2.card.activate > .cardFront {
     display: inline;
-    transform: rotateY(90deg);
-    animation-name: activateAnimationPart6;
-    animation-delay: 0.7s;
-    animation-duration: 0.7s;
+    animation-name: tiltAntiClockwise;
+    animation-duration: 0.5s;
     animation-fill-mode: forwards;
 }
 
