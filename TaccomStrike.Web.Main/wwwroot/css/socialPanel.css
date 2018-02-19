@@ -250,17 +250,17 @@
     position: fixed;
     bottom: 0px;
     width: 100%;
-    display: inline-block;
     height: 55px;
-    overflow-x: scroll;
+    overflow: auto;
+    white-space: nowrap;
 }
 
 #chatsNavbar .item  {
-    float: left;
     height: 100%;
+    display: inline-block;
     color: rgba(255, 255, 255, 0.85);
     font-size: 1.2em;
-    padding-top: 5px;
+    line-height: 55px;
     padding-left: 40px;
     padding-right: 40px;
     background-color: rgba(168, 168, 168, 0.96);
