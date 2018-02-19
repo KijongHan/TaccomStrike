@@ -251,7 +251,7 @@
     bottom: 0px;
     width: 100%;
     display: inline-block;
-    height: 8%;
+    height: 55px;
     overflow-x: scroll;
 }
 
@@ -261,8 +261,8 @@
     color: rgba(255, 255, 255, 0.85);
     font-size: 1.2em;
     padding-top: 5px;
-    width: 20%;
-    text-align: center;
+    padding-left: 40px;
+    padding-right: 40px;
     background-color: rgba(168, 168, 168, 0.96);
     border-style: solid;
     border-width: 1px;
@@ -275,15 +275,22 @@
 }
 
 #currentChatsPanel .card {
-    width: 42%;
+    width: 45%;
     position: fixed;
-    bottom: 9%;
-    height: 50%;
+    bottom: 56px;
+    height: 55%;
     display: none;
 }
 
+@media(max-width: 950px) {
+    #currentChatsPanel .card {
+        height: 75%;
+        width: 70%;
+    }
+}
+
 #currentChatsPanel .cardFront {
-    background-color: rgba(168, 168, 168, 0.85);
+    background-color: rgba(168, 168, 168, 0.95);
     padding: 12px 12px 12px 12px;
     display: none;
     border-style: solid;
@@ -340,8 +347,7 @@
 
 #currentChatsPanel .panel1 .subTitle {
     font-size: 1.5em;
-    font-weight: bold;
-    color: rgba(0, 0, 0, 0.95);
+    color: rgba(255, 255, 255, 0.95);
 }
 
 #currentChatsPanel .panel2 {
@@ -390,9 +396,10 @@
 #currentChatsPanel .panel3 input {
     float: left;
     width: 70%;
-    background-color: rgba(255, 255, 255, 0.6);
+    color: rgba(240, 240, 240, 0.8);
+    background-color: rgba(168, 168, 168, 0.95);
     border-style: solid;
-    border-width: 2px;
+    border-width: 1px;
     border-color: rgba(255, 255, 255, 1);
     height: 100%;
 }
@@ -402,11 +409,11 @@
     height: 100%;
     width: 30%;
     padding-top: 2px;
-    color: rgba(0, 0, 0, 0.6);
-    background-color: rgba(255, 255, 255, 0.6);
+    color: rgba(240, 240, 240, 0.8);
+    background-color: rgba(168, 168, 168, 0.95);
     text-align: center;
     border-style: solid;
-    border-width: 2px;
+    border-width: 1px;
     border-color: rgba(255, 255, 255, 1);
 }
 

@@ -373,30 +373,21 @@
 
 #alertMessagePanel .card {
     width: 40%;
-    height: 30%;
+    height: 32%;
     margin: auto;
     margin-top: 20%;
+}
+
+@media(max-width: 950px) {
+    #alertMessagePanel .card {
+        width: 70%;
+        height: 50%;
+        margin-top: 10%;
+    }
 }
 
 #alertMessagePanel .cardFront {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 40%;
-    height: 30%;
-    margin: auto;
-    margin-top: 20%;
     background-color: rgba(255, 255, 255, 0.15);
-}
-
-#alertMessagePanel .cardBack {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 40%;
-    height: 30%;
-    margin: auto;
-    margin-top: 20%;
 }
 
 #alertMessagePanel .card.activate .cardBack {
@@ -433,7 +424,7 @@
 #alertMessagePanel .cardFront .button1 {
     background-color: rgba(255, 255, 255, 0.55);
     padding-top: 1%;
-    height: 20%;
+    height: 18%;
     color: white;
     width: 70%;
     margin-left: 15%;
