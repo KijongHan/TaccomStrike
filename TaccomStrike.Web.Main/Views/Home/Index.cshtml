@@ -23,6 +23,8 @@
     <script src="~/js/viewmodels/AlertMessageViewModel.js"></script>
 </head>
 <body>
+    <canvas id="backgroundCanvas1">
+    </canvas>
     <div id="loginScreen">
         <div id="titleRow">
             <div class="panel1">
@@ -516,6 +518,10 @@
 
             if (middle > pageTop && middle < pageBottom) {
                 panel.classList.add("activate");
+            }
+
+            if(bottom < pageTop || top > pageBottom) {
+                panel.classList.remove("activate");
             }
         }
     }

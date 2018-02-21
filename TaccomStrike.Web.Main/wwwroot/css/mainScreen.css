@@ -50,14 +50,16 @@
 #gamePanel #gamePanelCard1.card.activate > .cardFront {
     display: inline;
     animation-name: tiltClockwise;
-    animation-duration: 0.5s;
+    animation-delay: 0.3s;
+    animation-duration: 0.7s;
     animation-fill-mode: forwards;
 }
 
 #gamePanel #gamePanelCard2.card.activate > .cardFront {
     display: inline;
     animation-name: tiltAntiClockwise;
-    animation-duration: 0.5s;
+    animation-delay: 0.3s;
+    animation-duration: 0.7s;
     animation-fill-mode: forwards;
 }
 
