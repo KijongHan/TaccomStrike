@@ -8,8 +8,10 @@ CREATE TABLE [auth].[UserLogin] (
     [WhenDeleted]        DATETIME       NULL,
     [ForumUserID] INT,
     CONSTRAINT [PK_UserLogin] PRIMARY KEY CLUSTERED ([UserLoginID] ASC)
-);  
+);
+GO
 
 ALTER TABLE [auth].[UserLogin]
 ADD CONSTRAINT FK_UserLogin_ForumUser FOREIGN KEY ([ForumUserID])
 REFERENCES [forum].[ForumUser] ([ForumUserID]);
+GO

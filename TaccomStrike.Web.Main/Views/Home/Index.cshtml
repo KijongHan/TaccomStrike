@@ -1,26 +1,10 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="~/lib/bootstrap.min.css"></link>
-    <link rel="stylesheet" type="text/css" href="~/css/app.css"></link>
-    <link rel="stylesheet" type="text/css" href="~/css/mainScreen.css"></link>
-    <link rel="stylesheet" type="text/css" href="~/css/animation.css"></link>
-    <link rel="stylesheet" type="text/css" href="~/css/socialPanel.css"></link>
-    <link rel="stylesheet" type="text/css" href="~/css/gameScreen.css"></link>
-    <script src="~/lib/jquery.min.js"></script>
-    <script src="~/lib/bootstrap.min.js"></script>
-    <script src="~/lib/signalr-client-1.0.0-alpha2-final.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/lib/app.min.css" />
+    <link href="~/font/PoiretOne-Regular.ttf" rel="stylesheet">
+    <script src="~/lib/signalr.min.js"></script>
     <script src="~/lib/knockout-3.4.2.js"></script>
-    <script src="~/js/models/ChatMessage.js"></script>
-    <script src="~/js/models/User.js"></script>
-    <script src="~/js/models/GameLobby.js"></script>
-    <script src="~/js/viewmodels/GameCardViewModel.js"></script>
-    <script src="~/js/viewmodels/ChatRoomViewModel.js"></script>
-    <script src="~/js/viewmodels/ChatRoomsViewModel.js"></script>
-    <script src="~/js/viewmodels/GameLobbyViewModel.js"></script>
-    <script src="~/js/viewmodels/GameLobbiesViewModel.js"></script>
-    <script src="~/js/viewmodels/LoginViewModel.js"></script>
-    <script src="~/js/viewmodels/RegisterViewModel.js"></script>
-    <script src="~/js/viewmodels/AlertMessageViewModel.js"></script>
+    <script src="~/lib/app.min.js"></script>
 </head>
 <body>
     <canvas id="backgroundCanvas1">
@@ -334,7 +318,7 @@
 
     function setChatConnections(connection) {
         connection.on('ChatSendMessage', function(chatMessage, isSender, chatRoomName) {
-            console.log("message received" + chatRoomName);
+            console.log("message received" + chatRoomName + chatMessage.userID + " " + chatMessage.userName);
             currentChatRoomsViewModel.chatRooms().forEach(function(element) {
                 if(element.chatRoomName()==chatRoomName) {
                     console.log("chat message received" + chatMessage);

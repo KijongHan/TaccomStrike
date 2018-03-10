@@ -6,4 +6,4 @@ CREATE TABLE [auth].[UserRole]
     [WhenDeleted] DATETIME,
     CONSTRAINT [PK_UserRole] PRIMARY KEY CLUSTERED ([UserRoleID] ASC)
 );
-
+GO

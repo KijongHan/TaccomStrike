@@ -14,13 +14,13 @@ namespace TaccomStrike.Web.API.Hubs {
         private ChatRoomService chatRoomService;
         private UserConnectionService userConnectionService;
 
-
         public ChatHub(UserConnectionService userConnectionService, ChatRoomService chatRoomService) {
             this.userConnectionService = userConnectionService;
             this.chatRoomService = chatRoomService;
         }
 
         public Task ChatUserSendMessage(string message, int recipientUserID) {
+            Console.WriteLine("ChatUserSendMessage");
             return Task.Run(() => {
                 ChatMessage chatMessage = new ChatMessage {
                         UserID = Context.User.GetUserLoginID(),
@@ -32,7 +32,7 @@ namespace TaccomStrike.Web.API.Hubs {
                 var connections = userConnectionService.GetConnections(recipientUserID);
                         foreach(var connection in connections) {
                             Console.WriteLine("Im sending");
-                            Clients.Client(connection).InvokeAsync(
+                            Clients.Client(connection).SendAsync(
                                 "ChatUserSendMessage",
                                 new object[] {
                                     chatMessage
@@ -42,7 +42,7 @@ namespace TaccomStrike.Web.API.Hubs {
                 connections = userConnectionService.GetConnections(Context.User);
                         foreach(var connection in connections) {
                             Console.WriteLine("Im sending");
-                            Clients.Client(connection).InvokeAsync(
+                            Clients.Client(connection).SendAsync(
                                 "ChatUserSendMessage",
                                 new object[] {
                                     chatMessage
@@ -52,6 +52,7 @@ namespace TaccomStrike.Web.API.Hubs {
         }
 
         public Task ChatSendMessage(string message, string chatRoomName) {
+            Console.WriteLine("ChatSendMessage");
             return Task.Run(() => 
             {
                 Console.WriteLine(Context.User.GetUserName());
@@ -76,7 +77,7 @@ namespace TaccomStrike.Web.API.Hubs {
                         var connections = userConnectionService.GetConnections(participant);
                         foreach(var connection in connections) {
                             Console.WriteLine("Im sending");
-                            Clients.Client(connection).InvokeAsync(
+                            Clients.Client(connection).SendAsync(
                                 "ChatSendMessage",
                                 new object[] {
                                     chatMessage,
@@ -90,6 +91,7 @@ namespace TaccomStrike.Web.API.Hubs {
         }
 
         public Task ChatRoomJoin(string chatRoomName) {
+            Console.WriteLine("ChatRoomJoin");
             return Task.Run(() => 
             {
                 var chatRoom = chatRoomService.GetChatRoom(chatRoomName);
@@ -114,7 +116,7 @@ namespace TaccomStrike.Web.API.Hubs {
 
                         var connections = userConnectionService.GetConnections(participant);
                         foreach(var connection in connections) {
-                            Clients.Client(connection).InvokeAsync(
+                            Clients.Client(connection).SendAsync(
                                 "ChatRoomJoin", 
                                 new object[] {
                                     new {
@@ -138,7 +140,7 @@ namespace TaccomStrike.Web.API.Hubs {
                 {
                     userConnectionService.Add(Context.User, Context.ConnectionId);
                     foreach(var connection in userConnectionService.GetConnections()) {
-                        Clients.Client(connection).InvokeAsync(
+                        Clients.Client(connection).SendAsync(
                             "ChatUserConnected",
                             new object[] {
                                 new { userName = Context.User.GetUserName() },
@@ -166,7 +168,7 @@ namespace TaccomStrike.Web.API.Hubs {
                                 if(connections != null) {
                                     foreach(var connection in connections) {
                                         Console.WriteLine("Im sending");
-                                        Clients.Client(connection).InvokeAsync
+                                        Clients.Client(connection).SendAsync
                                         (
                                             "ChatRoomLeave", 
                                             new object[] { 
@@ -184,7 +186,7 @@ namespace TaccomStrike.Web.API.Hubs {
                     }
 
                     foreach(var connection in userConnectionService.GetConnections()) {
-                        Clients.Client(connection).InvokeAsync(
+                        Clients.Client(connection).SendAsync(
                             "ChatUserDisconnected",
                             new object[] {
                                 new { userName = Context.User.GetUserName() }

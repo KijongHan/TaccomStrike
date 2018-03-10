@@ -4,6 +4,8 @@ CREATE TABLE [app].AppSettingProgram
 	ProgramName NVARCHAR(200),
 	AppConfigFilePath NVARCHAR(500)
 );
+GO
 
 ALTER TABLE app.AppSettingProgram
 ADD CONSTRAINT PK_AppSettingProgram PRIMARY KEY(AppSettingProgramID);
+GO

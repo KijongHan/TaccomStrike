@@ -1,21 +1,35 @@
 #socialPanel {
-    width: 100%;
+    width: 95%;
     overflow: hidden;
-    padding-top: 60px;
-    padding-bottom: 100px;
+    padding-top: 120px;
+    padding-bottom: 120px;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
 }
 
-@media(max-width: 950px) {
-    padding-bottom: 50px;
+@media(max-width: 1350px) {
+    #socialPanel {
+        padding-top: 60px;
+        padding-bottom: 100px;
+        width: 97%;
+        padding-left: 1.5%;
+        padding-right: 1.5%;
+    }
 }
 
 #socialPanel #chatRoomsCard {
     float: left;
-    width: 35%;
+    width: 30%;
     height: 500px;
     position: relative;
     -webkit-perspective: 1000px; /* Safari 4-8 */
     perspective: 1000px;
+}
+
+@media(max-width: 1350px) {
+    #socialPanel #chatRoomsCard {
+        width: 48%;
+    }
 }
 
 @media(max-width: 950px) {
@@ -32,9 +46,21 @@
     height: 500px;
 }
 
+@media(max-width: 950px) {
+    #socialPanel #chatRoomsCard .cardFront {
+        height: 330px;
+    }
+}
+
 #socialPanel #chatRoomsCard .cardBack {
     height: 500px;
     display: none;
+}
+
+@media(max-width: 950px) {
+    #socialPanel #chatRoomsCard .cardBack {
+        height: 330px;
+    }
 }
 
 #socialPanel #chatRoomsCard.activate > .cardFront {
@@ -46,7 +72,7 @@
 }
 
 #socialPanel #playersCard {
-    width: 25%;
+    width: 21%;
     height: 500px;
     position: relative;
     float: left;
@@ -54,10 +80,16 @@
     perspective: 2000px;
 }
 
+@media(max-width: 1350px) {
+    #socialPanel #playersCard {
+        width: 35%;
+    }
+}
+
 @media(max-width: 950px) {
     #socialPanel #playersCard {
-        width: 50%;
-        margin-top: 230px;
+        width: 47%;
+        margin-top: 100px;
         margin-left: 3%;
         height: 260px;
         -webkit-perspective: 1000px; /* Safari 4-8 */
@@ -71,12 +103,25 @@
     height: 500px;
 }
 
+@media(max-width: 950px) {
+    #socialPanel #playersCard .cardFront {
+        height: 260px;
+    }
+}
+
 #socialPanel #playersCard .cardBack {
     height: 500px;
     display: none;
 }
 
 @media(max-width: 950px) {
+    #socialPanel #playersCard .cardBack {
+        height: 260px;
+    }
+}
+
+
+@media(max-width: 1350px) {
     #socialPanel #playersCard.activate > .cardFront {
         display: inline;
         animation-name: tiltAntiClockwise;
@@ -87,31 +132,52 @@
 }
 
 #socialPanel #profileCard {
-    width: 40%;
-    height: 500px;
+    width: 44%;
+    height: 750px;
     position: relative;
     float: left;
     -webkit-perspective: 1000px; /* Safari 4-8 */
     perspective: 1000px;
 }
 
+@media(max-width: 1350px) {
+    #socialPanel #profileCard {
+        width: 50%;
+        margin-left: 2%;
+        margin-top: 120px;
+        height: 550px;
+    }
+}
+
 @media(max-width: 950px) {
     #socialPanel #profileCard {
         width: 90%;
         margin-left: 5%;
-        margin-top: 300px;
+        margin-top: 120px;
     }
 }
 
 #socialPanel #profileCard .cardFront {
     background-color: rgba(0, 0, 0, 0.8);
     padding: 12px 12px 12px 12px;
-    height: 500px;;
+    height: 750px;
+}
+
+@media(max-width: 1350px) {
+    #socialPanel #profileCard .cardFront {
+        height: 550px;
+    }
 }
 
 #socialPanel #profileCard .cardBack {
-    height: 500px;
+    height: 750px;
     display: none
+}
+
+@media(max-width: 1350px) {
+    #socialPanel #profileCard .cardBack {
+        height: 550px;
+    }
 }
 
 #socialPanel #profileCard.activate > .cardFront {
@@ -187,6 +253,12 @@
     overflow-y: scroll;
 }
 
+@media(max-width: 950px) {
+    #chatRoomsPanel {
+        height: 270px;
+    }
+}
+
 #chatRoomsPanel .item {
     display: inline-block;
     height: 50px;
@@ -217,6 +289,12 @@
     background-color: rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.8);
     font-size: 1.1em;
+}
+
+@media(max-width: 950px) {
+    #onlinePlayersPanel {
+        height: 210px;
+    }
 }
 
 #chatsNavbar {

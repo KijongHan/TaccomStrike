@@ -1,3 +1,8 @@
+body {
+    margin: 0 0 0 0;
+    font-family: 'Poiret One', cursive;
+}
+
 .button1 {
     font-weight: bold;
     text-align: center;
@@ -48,7 +53,7 @@
 
 #loginRegisterRow .card {
     float: left;
-    width: 40%;
+    width: 20%;
     -webkit-perspective: 800px; /* Safari 4-8 */
     perspective: 800px;
 }
@@ -58,10 +63,28 @@
 }
 
 #registrationForm {
-    margin-left: 10%;
+    margin-left: 5%;
+}
+
+@media(max-width: 1350px) {
+    #loginRegisterRow .card {
+        width: 40%;
+    }
+
+    #registrationForm {
+        margin-left: 10%;
+    }
 }
 
 @media(max-width: 950px) {
+    #loginRegisterRow .card {
+        width: 60%;
+        margin-left: 10%;
+        margin-top: 50px;
+    }
+}
+
+@media(max-width: 650px) {
     #loginRegisterRow .card {
         width: 80%;
         margin-left: 10%;
@@ -165,7 +188,7 @@
     float: left;
     width: 40%;
     margin-left: 1%;    
-    transform: rotateX(-2deg);
+    transform: rotateX(-4deg);
 }
 
 #titleRow .panel2 {
@@ -173,7 +196,7 @@
     float: left;
     width: 55%;
     margin-left: 3%;
-    transform: rotateX(-2deg);
+    transform: rotateX(-4deg);
 }
 
 @media(max-width: 950px) {

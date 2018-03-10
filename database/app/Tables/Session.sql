@@ -7,7 +7,9 @@ CREATE TABLE [app].[Session] (
     [WhenBanned] DATETIME,
 	CONSTRAINT PK_Session PRIMARY KEY ([SessionID]),
 );
+GO
 
 ALTER TABLE [app].[Session]
 ADD CONSTRAINT FK_Session_UserLogin FOREIGN kEY ([UserLoginID])
 REFERENCES [auth].[UserLogin] ([UserLoginID]);
+GO

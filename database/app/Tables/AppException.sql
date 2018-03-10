@@ -6,5 +6,7 @@ CREATE TABLE app.AppException
 	ExceptionString NVARCHAR(MAX),
 	WhenCreated DATETIME
 );
+GO
+
 ALTER TABLE app.AppException
 ADD CONSTRAINT PK_AppException PRIMARY KEY(AppExceptionID);

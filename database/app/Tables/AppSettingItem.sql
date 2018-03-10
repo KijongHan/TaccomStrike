@@ -6,10 +6,13 @@ CREATE TABLE app.AppSettingItem
 	[Key] NVARCHAR(500),
 	Value NVARCHAR(500)
 );
+GO
 
 ALTER TABLE app.AppSettingItem
 ADD CONSTRAINT PK_AppSettingItem PRIMARY KEY (AppSettingItemID);
+GO
 
 ALTER TABLE app.AppSettingItem
 ADD CONSTRAINT FK_AppSettingItem_AppSettingProgram FOREIGN KEY(AppSettingProgramID)
 REFERENCES app.AppSettingProgram(AppSettingProgramID);
+GO

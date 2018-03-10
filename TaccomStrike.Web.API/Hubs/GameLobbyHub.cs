@@ -35,7 +35,7 @@ namespace TaccomStrike.Web.API.Hubs {
                             var connections = userConnectionService.GetConnections(gameUser);
 
                             foreach(var connection in connections) {
-                                Clients.Client(connection).InvokeAsync(
+                                Clients.Client(connection).SendAsync(
                                         "GameCallCheat",
                                         new object[] {
                                             gameState,
@@ -65,7 +65,7 @@ namespace TaccomStrike.Web.API.Hubs {
                                 var connections = userConnectionService.GetConnections(gameUser);
 
                                 foreach(var connection in connections) {
-                                        Clients.Client(connection).InvokeAsync(
+                                        Clients.Client(connection).SendAsync(
                                             "GameClaim",
                                             new object[] {
                                                 gameState
@@ -95,7 +95,7 @@ namespace TaccomStrike.Web.API.Hubs {
                                 var gameState = gameLobby.GameLogicController.GetGameState(user);
 
                                 foreach(var connection in connections) {
-                                    Clients.Client(connection).InvokeAsync(
+                                    Clients.Client(connection).SendAsync(
                                         "GameEndTurn", 
                                         new object[] {
                                             gameState
@@ -117,7 +117,7 @@ namespace TaccomStrike.Web.API.Hubs {
 
                     var connections = userConnectionService.GetConnections(Context.User);
                     foreach(var connection in connections) {
-                                Clients.Client(connection).InvokeAsync(
+                                Clients.Client(connection).SendAsync(
                                     "GameState", 
                                     new object[] {
                                         gameState
@@ -145,7 +145,7 @@ namespace TaccomStrike.Web.API.Hubs {
                                     currentTurn = true;
                                 }
 
-                                Clients.Client(connection).InvokeAsync(
+                                Clients.Client(connection).SendAsync(
                                     "GameLobbyStartGame", 
                                     new object[] {
                                         currentTurn
@@ -176,7 +176,7 @@ namespace TaccomStrike.Web.API.Hubs {
                     foreach(var user in gameLobby.GetUsers()) {
                         var connections = userConnectionService.GetConnections(user);
                             foreach(var connection in connections) {
-                                Clients.Client(connection).InvokeAsync(
+                                Clients.Client(connection).SendAsync(
                                     "GameLobbyLeave", 
                                     new object[] {
                                         true, 
@@ -188,7 +188,7 @@ namespace TaccomStrike.Web.API.Hubs {
 
                     var userConnections = userConnectionService.GetConnections(Context.User);
                     foreach(var connection in userConnections) {
-                        Clients.Client(connection).InvokeAsync(
+                        Clients.Client(connection).SendAsync(
                                     "GameLobbyLeave", 
                                     new object[] {
                                         true, 
@@ -211,14 +211,14 @@ namespace TaccomStrike.Web.API.Hubs {
                     if(gameLobby.GetUsersCount()>=gameLobby.MaxRoomLimit) {
                         foreach(var userConnection in userConnections) {
                             Console.WriteLine("Lobby Full");
-                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, "", "", null});
+                            Clients.Client(userConnection).SendAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, "", "", null});
                         }
                         return;
                     }
                     if(gameLobby.InGame()) {
                         foreach(var userConnection in userConnections) {
                             Console.WriteLine("Game in progress");
-                            Clients.Client(userConnection).InvokeAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, "", "", null});
+                            Clients.Client(userConnection).SendAsync("GameLobbyJoin", new object[] {false, null, null, newUser, false, "", "", null});
                         }
                         return;
                     }
@@ -244,7 +244,7 @@ namespace TaccomStrike.Web.API.Hubs {
                                 var connections = userConnectionService.GetConnections(user);
                                 foreach(var connection in connections) {
                                     Console.WriteLine("Lobby Joined");
-                                    Clients.Client(connection).InvokeAsync(
+                                    Clients.Client(connection).SendAsync(
                                         "GameLobbyJoin", 
                                         new object[] {
                                             true, host, players, newUser, isNewUser, gameLobbyID, gameLobby.GameLobbyName, gameLobby.MaxRoomLimit
@@ -281,7 +281,7 @@ namespace TaccomStrike.Web.API.Hubs {
                             var connections = userConnectionService.GetConnections(participant);
                             foreach(var connection in connections) {
                                 Console.WriteLine("Im sending");
-                                Clients.Client(connection).InvokeAsync(
+                                Clients.Client(connection).SendAsync(
                                     "GameLobbySendMessage", 
                                     new object[] {
                                         chatMessage,
@@ -324,7 +324,7 @@ namespace TaccomStrike.Web.API.Hubs {
                         var connections = userConnectionService.GetConnections(user);
                             if(connections != null) {
                                 foreach(var connection in connections) {
-                                    Clients.Client(connection).InvokeAsync(
+                                    Clients.Client(connection).SendAsync(
                                         "GameLobbyLeave", 
                                         new object[] {
                                             true, 

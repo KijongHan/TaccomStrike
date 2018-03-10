@@ -78,8 +78,8 @@ namespace TaccomStrike.Web.API
             app.UseMvc();
             app.UseSignalR(routes =>
             {
-                routes.MapHub<ChatHub>("chat");
-                routes.MapHub<GameLobbyHub>("gamelobby");
+                routes.MapHub<ChatHub>("/chat");
+                routes.MapHub<GameLobbyHub>("/gamelobby");
             });
         }
     }
