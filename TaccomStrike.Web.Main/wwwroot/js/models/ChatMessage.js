@@ -1,10 +1,10 @@
 function ChatMessage(data) {
     var self = this;
 
-    self.userName = data.UserName;
-    self.userID = data.UserID;
-    self.messageContent = data.MessageContent;
-    self.whenCreated = data.WhenCreated;
+    self.userName = data.userName;
+    self.userID = data.userID;
+    self.messageContent = data.messageContent;
+    self.whenCreated = data.whenCreated;
     console.log(this);
 
     self.userNameInfo = ko.computed(function() {

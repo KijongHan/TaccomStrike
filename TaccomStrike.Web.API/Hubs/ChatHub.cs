@@ -136,7 +136,7 @@ namespace TaccomStrike.Web.API.Hubs {
 
         public override Task OnConnectedAsync() {
             lock(UserConnectionService.ConnectionLock) {
-                return Task.Run(() => 
+                return Task.Run(() =>  
                 {
                     userConnectionService.Add(Context.User, Context.ConnectionId);
                     foreach(var connection in userConnectionService.GetConnections()) {

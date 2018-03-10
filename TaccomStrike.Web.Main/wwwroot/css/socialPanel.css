@@ -1,8 +1,8 @@
 #socialPanel {
     width: 95%;
     overflow: hidden;
-    padding-top: 120px;
-    padding-bottom: 120px;
+    padding-top: 140px;
+    padding-bottom: 140px;
     padding-left: 2.5%;
     padding-right: 2.5%;
 }
@@ -331,6 +331,8 @@
     bottom: 56px;
     height: 55%;
     display: none;
+    -webkit-perspective: 900px; /* Safari 4-8 */
+    perspective: 900px;
 }
 
 @media(max-width: 950px) {
@@ -413,6 +415,7 @@
     height: 100%;
     overflow-y: scroll;
     background-color: rgba(255, 255, 255, 0.6);
+    font-size: 1.2em;
 }
 
 #currentChatsPanel .panel2 .item1 > div {
@@ -436,6 +439,7 @@
     margin-left: 2%;
     overflow-y: scroll;
     background-color: rgba(255, 255, 255, 0.6);
+    font-size: 1.2em;
 }
 
 #currentChatsPanel .panel3 {
@@ -446,26 +450,28 @@
 
 #currentChatsPanel .panel3 input {
     float: left;
-    width: 70%;
+    width: 69%;
     color: rgba(240, 240, 240, 0.8);
     background-color: rgba(168, 168, 168, 0.95);
     border-style: solid;
     border-width: 1px;
     border-color: rgba(255, 255, 255, 1);
     height: 100%;
+    font-size: 1.2em;
 }
 
 #currentChatsPanel .panel3 .button1 {
     float: left;
     height: 100%;
     width: 30%;
-    padding-top: 2px;
-    color: rgba(240, 240, 240, 0.8);
-    background-color: rgba(168, 168, 168, 0.95);
-    text-align: center;
+    color: rgba(240, 240, 240, 0.95);
+    background-color: rgba(0, 0, 0, 0.5);
     border-style: solid;
     border-width: 1px;
     border-color: rgba(255, 255, 255, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #currentChatsPanel .panel3 .button1:hover {

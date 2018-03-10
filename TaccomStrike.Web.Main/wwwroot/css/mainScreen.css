@@ -5,7 +5,7 @@
 #gamePanel {
     width: 96%;
     overflow: hidden;
-    padding-top: 120px;
+    padding-top: 140px;
     padding-bottom: 120px;
     padding-left: 2%;
     padding-right: 2%;
@@ -269,11 +269,12 @@
 #gameLobbyMessagesPanel {
     float: left;
     height: 100%;
-    width: 80%;
+    width: 78%;
     overflow-y: scroll;
     color: rgba(255, 255, 255, 0.8);
     background-color: rgba(255, 255, 255, 0.1);
     padding-left: 10px;
+    font-size: 1.35em;
 }
 
 #gameLobbyMessagesPanel .item2 {
@@ -306,12 +307,10 @@
 
 #currentGameLobby .item2 .button1 {
     font-size: 1.2em;
-    width: 20%;
+    width: 19%;
     float: left;
     height: 45px;
     line-height: 45px;
-    padding-left: 20px;
-    padding-right: 20px;
     margin: 0 0 0 0;
 }
 
