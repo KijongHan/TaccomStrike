@@ -748,6 +748,13 @@ body {
   }
 }
 
+@media (max-width: 600px) {
+  #gamePanel #gamePanelCard2 {
+    width: 99%;
+    margin-left: 0.1%;
+  }
+}
+
 #gamePanel .cardFront {
   background-color: rgba(0, 0, 0, 0.8);
   padding: 12px 12px 12px 12px;
@@ -795,6 +802,12 @@ body {
   background-color: rgba(255, 255, 255, 0.6);
 }
 
+@media (max-width: 600px) {
+  #gameLobbies .item .button1 {
+    font-size: 1em;
+  }
+}
+
 #gameLobbies .item .subTitle {
   height: 50px;
   float: left;
@@ -809,14 +822,8 @@ body {
 }
 
 @media (max-width: 600px) {
-  #gameLobbies .item .button1 {
-    font-size: 0.8em;
-  }
-}
-
-@media (max-width: 600px) {
   #gameLobbies .item .subTitle {
-    font-size: 1.2em;
+    font-size: 1.4em;
     margin-right: 0px;
   }
 }
@@ -825,6 +832,12 @@ body {
   height: 430px;
   overflow-y: scroll;
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 600px) {
+  #gameLobbiesPanel {
+    height: 390px;
+  }
 }
 
 #gameLobbiesPanel .item {
@@ -875,6 +888,12 @@ body {
   background-color: rgba(255, 255, 255, 0.7);
 }
 
+@media (max-width: 600px) {
+  #createGameLobby .subTitle {
+    font-size: 1.2em;
+  }
+}
+
 #createGameLobby .panel {
   background-color: rgba(0, 0, 0, 0);
   height: 70%;
@@ -893,6 +912,7 @@ body {
   border-style: solid;
   border-width: 2px;
   border-color: rgba(255, 255, 255, 65);
+  font-size: 1.2em;
 }
 
 #createGameLobby .panel .gap1 {
@@ -904,12 +924,19 @@ body {
   font-size: 1.3em;
 }
 
+@media (max-width: 600px) {
+  #createGameLobby .item2 {
+    font-size: 1em;
+  }
+}
+
 #createGameLobby .item2 select {
   width: 80%;
   background-color: rgba(255, 255, 255, 0.5);
   border-style: solid;
   border-width: 2px;
   border-color: rgba(255, 255, 255, 0.65);
+  font-size: 1.2em;
 }
 
 #createGameLobby .item3 {
@@ -945,6 +972,12 @@ body {
   background-color: rgba(255, 255, 255, 0.7);
 }
 
+@media (max-width: 600px) {
+  #currentGameLobby .item .subTitle {
+    font-size: 1.1em;
+  }
+}
+
 #currentGameLobby .item3 {
   display: inline-block;
   height: 75%;
@@ -960,6 +993,12 @@ body {
   background-color: rgba(255, 255, 255, 0.1);
   padding-left: 10px;
   font-size: 1.35em;
+}
+
+@media (max-width: 600px) {
+  #gameLobbiesPanel {
+    width: 96%;
+  }
 }
 
 #gameLobbyMessagesPanel .item2 {
@@ -983,6 +1022,12 @@ body {
   overflow-y: scroll;
   color: rgba(255, 255, 255, 0.80);
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 600px) {
+  #playersPanel {
+    display: none;
+  }
 }
 
 #currentGameLobby .item2 {
@@ -1220,10 +1265,6 @@ body {
 }
 
 @media (max-width: 600px) {
-  #socialPanel .panel1 .subTitle {
-    font-size: 1.3em;
-  }
-
   #socialPanel .panel1 .button1 {
     margin-left: 0px;
   }
@@ -1240,6 +1281,12 @@ body {
   font-weight: bold;
   color: rgba(255, 255, 255, 0.95);
   background-color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 600px) {
+  #socialPanel .panel1 .subTitle {
+    font-size: 1.1em;
+  }
 }
 
 #socialPanel .panel1 .button1 {
