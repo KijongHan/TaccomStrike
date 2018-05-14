@@ -20,6 +20,7 @@ namespace TaccomStrike.Library.Data.DAL
             UserLogin insertUser = new UserLogin()
             {
                 Username = user.Username,
+                Email = user.Email,
                 PasswordSalt = passwordSalt,
                 PasswordHash = passwordHash,
                 ForumUserID = forumUserID
@@ -30,6 +31,13 @@ namespace TaccomStrike.Library.Data.DAL
             return insertUser.ForumUserID;
         }
 
+        public UserLogin GetUserLoginByEmail(string email) {
+            var user = dbContext.UserLogin
+                .Where((item) => item.Email == email)
+                .FirstOrDefault();
+            return user;
+        }
+
         public GetUserLogin GetUserLogin(string username)
         {
             var user = dbContext.UserLogin
@@ -37,6 +45,7 @@ namespace TaccomStrike.Library.Data.DAL
                 .Select((item) =>
                 new GetUserLogin()
                 {
+                    UserLoginID = item.UserLoginID,
                     Username = item.Username,
                     PasswordSalt = item.PasswordSalt,
                     PasswordHash = item.PasswordHash
@@ -49,18 +58,16 @@ namespace TaccomStrike.Library.Data.DAL
         {
             return Task.Run(() => 
             {
-                var user = dbContext.UserLogin
-                .Where((item) => item.Username == username)
-                .Select((item) =>
-                new GetUserLogin()
-                {
-                    Username = item.Username,
-                    PasswordSalt = item.PasswordSalt,
-                    PasswordHash = item.PasswordHash
-                })
-                .FirstOrDefault();
-                return user;
+                return GetUserLogin(username);
             });
+        }
+
+        public UserLogin GetUserLogin(int id)
+        {
+            var user = dbContext.UserLogin
+            .Where((item) => item.UserLoginID == id)
+            .FirstOrDefault();
+            return user;
         }
 
         public Task<int> CreateUserLoginAsync(CreateUserLogin user, string passwordSalt, string passwordHash, int forumUserID)

@@ -1,0 +1,593 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="~/lib/app.min.css" />
+    <link href="~/font/PoiretOne-Regular.ttf" rel="stylesheet">
+    <script src="~/lib/signalr.min.js"></script>
+    <script src="~/lib/knockout-3.4.2.js"></script>
+    <script src="~/lib/app.min.js"></script>
+</head>
+<body>
+    <canvas id="backgroundCanvas1">
+    </canvas>
+    <div id="loginScreen">
+        <div id="titleRow">
+            <div class="panel1">
+                <div class="card" id="title1">
+                    <div class="cardFront">C</div>
+                    <div class="cardBack"></div>
+                </div>
+                <div class="card" id="title2">
+                    <div class="cardFront">A</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+                <div class="card" id="title3">
+                    <div class="cardFront">L</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+                <div class="card" id="title4">
+                    <div class="cardFront">L</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+            </div>
+            <div class="panel2">
+                <div class="card" id="title5">
+                    <div class="cardFront">C</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+                <div class="card" id="title6">
+                    <div class="cardFront">H</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+                <div class="card" id="title7">
+                    <div class="cardFront">E</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+                <div class="card" id="title8">
+                    <div class="cardFront">A</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+                <div class="card" id="title9">
+                    <div class="cardFront">T</div>
+                    <div class="cardBack">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gap1"></div>
+
+        <div id="loginRegisterRow">
+            <div class="card" id="loginForm">
+                <div class="cardBack"></div>
+                <div class="cardFront">
+                    <div class="subTitle">LOGIN</div>
+                    <div class="gap1"></div>
+                    <div class="item">
+                        <div>Username</div><input data-bind="value: username"></input>
+                    </div>
+                    <div class="item">
+                        <div>Password</div><input type="password" data-bind="value: password"></input>
+                    </div>
+                    <div class="item2">
+                        <div class="button1" data-bind="click: login">Login</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" id="registrationForm">
+                <div class="cardFront">
+                    <div class="subTitle">REGISTER</div>
+                    <div class="gap1"></div>
+                    <div class="item">
+                        <div>Username</div><input data-bind="value: username"></input>
+                    </div>
+                    <div class="item">
+                        <div>Email</div><input data-bind="value: email"></input>
+                    </div>
+                    <div class="item">
+                        <div>Password</div><input type="password" data-bind="value: password"></input>
+                    </div>
+                    <div class="item2">
+                        <div class="button1" data-bind="click: register">Register</div>
+                    </div>
+                </div>
+                <div class="cardBack"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mainScreen">
+        <div id="socialPanel">
+            <div id="chatRoomsCard" class="card">
+                <div class="cardBack"></div>
+                <div class="cardFront">
+                    <div class="panel1">
+                        <div class="subTitle">CHAT ROOMS</div>
+                        <div class="button1" data-bind="click: getChatRooms">REFRESH</div>
+                    </div>
+                    <div class="panel2">
+                        <div id="chatRoomsPanel" data-bind="foreach: chatRooms">
+                            <div class="item" data-bind="click: joinChatRoom">
+                                <div data-bind="text: chatRoomName"></div>
+                                <div data-bind="text: usersCount"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="playersCard" class="card">
+                <div class="cardBack"></div>
+                <div class="cardFront">
+                    <div class="panel1">
+                        <div class="subTitle" data-bind="text: onlineUsersCount"></div>
+                    </div>
+                    <div class="panel2">
+                        <div id="onlinePlayersPanel" data-bind="foreach: onlineUsers">
+                            <div class="item">
+                                <div data-bind="text: userName"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="profileCard" class="card">
+                <div class="cardBack"></div>
+                <div class="cardFront">
+                    <div class="panel1">
+                        <div class="subTitle">PROFILE</div>
+                        <div class="subTitle" data-bind="text: username"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="gamePanel">
+            <div id="gamePanelCard1" class="card">
+                <div class="cardBack"></div>
+                <div class="cardFront">
+                    <div id="gameLobbies">
+                        <div class="item">
+                            <div class="subTitle">GAME LOBBIES</div>
+                            <div data-bind="click: getGameLobbies" class="button1">REFRESH</div>
+                            <div onclick="createNewGameClick()" class="button1">NEW GAME</div>
+                        </div>
+                        <div id="gameLobbiesPanel" data-bind="foreach: gameLobbies">
+                            <div class="item" data-bind="click: joinGameLobby">
+                                <div data-bind="text: gameLobbyName"></div>
+                                <div data-bind="text: userCountLimitFraction"></div>
+                                <div data-bind="text: hostInfo"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="createGameLobby">
+                        <div class="item">
+                            <div class="subTitle">CREATE NEW GAME</div>
+                        </div>
+                        <div class="panel">
+                            <div class="gap1"></div>
+                            <div class="item2">
+                                <div class="itemLabel">Game Lobby Name</div>
+                                <input data-bind="value: gameLobbyName" maxlength="10" />
+                            </div>
+                            <div class="item2">
+                                <div class="itemLabel">Number Of Players</div>
+                                <select data-bind="options: maxRoomLimitOptions, value: maxRoomLimit"></select>
+                            </div>
+                        </div>
+                        <div class="item3">
+                            <div class="button1" data-bind="click: createGameLobby">Create</div>
+                            <div class="button1" data-bind="click: goBack">Back</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="gamePanelCard2" class="card">
+                <div class="cardBack"></div>
+                <div class="cardFront">
+                    <div id="currentGameLobby">
+                        <div class="item">
+                            <div class="subTitle">GAME LOBBY</div>
+                            <div class="subTitle" data-bind="text: gameLobbyName"></div>
+                            <div class="subTitle" data-bind="text: userCountLimitFraction"></div>
+                        </div>
+                        <div class="item3">
+                            <div id="gameLobbyMessagesPanel">
+                                <div data-bind="foreach: gameLobbyMessages">
+                                    <div class="item2">
+                                        <div class="itemLabel1" data-bind="text: userNameInfo"></div>
+                                        <div class="itemLabel2" data-bind="text: messageContent"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="playersPanel">
+                                <div data-bind="foreach: players">
+                                    <div data-bind="text: userName"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item2">
+                            <div class="button1" data-bind="click: startGame">Start</div>
+                            <div class="button1" data-bind="click: leaveGameLobby">Leave</div>
+                            <input data-bind="textInput: gameLobbyMessage, event: {keypress: onKeyDown}"/>
+                            <div class="button1" data-bind="click: sendMessageGameLobby">Send</div>                                             
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="gameScreen">
+        <div id="handPanel" data-bind="foreach: hand">
+            <div class="card">
+                <div class="cardFront" data-bind="click: select, css: cssClass">
+                    <div data-bind="text: rank"></div>
+                </div>
+            </div>
+        </div>
+        <div id="gameDecisionsPanel">
+            <select></select>
+            <div class="button1">Claim</div>
+        </div>
+    </div>
+
+    <div id="currentChatsPanel">
+        <div class="card" data-bind="with: selectedChatRoom">
+            <div class="cardBack"></div>
+            <div class="cardFront">
+                <div class="panel1">
+                    <div class="subTitle" data-bind="text: chatRoomName"></div>
+                </div>
+                <div class="panel2">
+                    <div class="item1" data-bind="foreach: chatMessages">
+                        <div>
+                            <div class="itemLabel1" data-bind="text: userNameInfo"></div>
+                            <div class="itemLabel2" data-bind="text: messageContent"></div>
+                        </div>
+                    </div>
+                    <div class="item2" data-bind="foreach: users">
+                        <div data-bind="text: userName"></div>
+                    </div>
+                </div>
+                <div class="panel3">
+                    <input data-bind="textInput: chatMessageInput, event: {keypress: onKeyDown}"/>
+                    <div class="button1" data-bind="click: sendMessage">Send</div>
+                </div>
+            </div>
+        </div>
+        <div id="chatsNavbar" data-bind="foreach: chatRooms, style: { display: hasChat() }">
+            <div class="item" data-bind="click: selectChatRoom">
+                <div class="itemLabel" data-bind="text: chatRoomName"></div>
+            </div>
+        </div>
+    </div>
+    <div id="alertMessagePanel" data-bind="style: { display: cssDisplay() }">
+        <div class="card" data-bind="css: activateCard">
+            <div class="cardBack"></div>
+            <div class="cardFront">
+                <div class="subTitle" data-bind="text: title"></div>
+                <div class="panel" data-bind="text: message"></div>
+                <div class="button1" data-bind="click: confirmMessage">CONFIRM</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var loggedInUser = null;
+    var webAPIIPAddress = '@ViewData["WebAPIPIAddress"]';
+
+    var chatHub = new signalR.HttpConnection(webAPIIPAddress + "/chat");
+    var gameLobbyHub = new signalR.HttpConnection(webAPIIPAddress + "/gamelobby");
+    
+    var chatConnection = new signalR.HubConnection(chatHub);
+    var gameLobbyConnection = new signalR.HubConnection(gameLobbyHub);
+
+    var alertMessageViewModel = new AlertMessageViewModel();
+    var loginViewModel = new LoginViewModel(alertMessageViewModel);
+    var registerViewModel = new RegisterViewModel(alertMessageViewModel);
+
+    var chatRoomsViewModel = new ChatRoomsViewModel(chatConnection);
+    var currentChatRoomsViewModel = new ChatRoomsViewModel(chatConnection);
+    var gameLobbiesViewModel = new GameLobbiesViewModel(gameLobbyConnection);
+    var currentGameLobby = new GameLobbyViewModel(gameLobbyConnection, null);
+    var createGameLobby = new GameLobbyViewModel(gameLobbyConnection, null);
+
+    ko.applyBindings(alertMessageViewModel, document.getElementById("alertMessagePanel"));
+    ko.applyBindings(registerViewModel, document.getElementById("registrationForm"));
+    ko.applyBindings(loginViewModel, document.getElementById("loginForm"));
+    ko.applyBindings(loginViewModel, document.getElementById("profileCard"));
+    ko.applyBindings(chatRoomsViewModel, document.getElementById("chatRoomsCard"));
+    ko.applyBindings(chatRoomsViewModel, document.getElementById("playersCard"));
+    ko.applyBindings(currentChatRoomsViewModel, document.getElementById("currentChatsPanel"));
+    ko.applyBindings(gameLobbiesViewModel, document.getElementById("gameLobbies"));
+    ko.applyBindings(createGameLobby, document.getElementById("createGameLobby"));
+    ko.applyBindings(currentGameLobby, document.getElementById("currentGameLobby"));
+    ko.applyBindings(currentGameLobby, document.getElementById("gameScreen"));
+
+    function setConnections() {
+        setChatConnections(chatConnection);
+        setGameLobbyConnections(gameLobbyConnection);
+    }
+
+    function setChatConnections(connection) {
+        connection.on('ChatSendMessage', function(chatMessage, isSender, chatRoomName) {
+            console.log("message received" + chatRoomName + chatMessage.userID + " " + chatMessage.userName);
+            currentChatRoomsViewModel.chatRooms().forEach(function(element) {
+                if(element.chatRoomName()==chatRoomName) {
+                    console.log("chat message received" + chatMessage);
+                    element.chatMessages.push(new ChatMessage(chatMessage));
+                }
+            });
+        });
+        connection.on('ChatRoomLeave', function(disconnectedUser, chatRoomName) {
+            console.log(disconnectedUser.UserName + " has disconnected "  + chatRoomName);
+
+            var chatRoom = chatRoomsViewModel.chatRooms().find(function(element) {
+                return element.chatRoomName() == chatRoomName;
+            });
+
+            for(var i = 0; i < chatRoom.users().length; i++) {
+                var user = chatRoom.users()[i];
+                console.log(user.userName);
+                if(user.userName == disconnectedUser.UserName) {
+                    chatRoom.users.remove(user);
+                }
+            }
+        });
+        connection.on('ChatUserDisconnected', function(disconnectedUser) {
+            chatRoomsViewModel.onlineUsers().forEach(function(element) {
+                console.log("Chat User Disconnected " + element);
+                if(element.userName==disconnectedUser.userName) {
+                    chatRoomsViewModel.onlineUsers.remove(element);
+                }
+            });
+        }); 
+        connection.on('ChatRoomJoin', function(newUser, users, isNewChatUser, chatRoomName) {
+            console.log(newUser.UserName + " has entered chatroom " + chatRoomName);
+            if(newUser.userName==loginViewModel.username()) {
+                var chatRoom = new ChatRoomViewModel(currentChatRoomsViewModel, chatConnection, {"chatRoomName": chatRoomName, "participants":users});
+                currentChatRoomsViewModel.chatRooms.push(chatRoom);
+                currentChatRoomsViewModel.selectChatRoom(chatRoom);
+            }
+            else {
+                currentChatRoomsViewModel.chatRooms().forEach(function(element) {
+                    if(element.chatRoomName==chatRoomName) {
+                        element.users.push(newUser);
+                    }
+                });
+            }
+        });
+        connection.on('ChatUserConnected', function(newUser, onlineUsers) {
+            if(newUser.userName==loginViewModel.username()) {
+                onlineUsers.forEach(function(element) {
+                    chatRoomsViewModel.onlineUsers.push(element);
+                });
+            }
+            else {
+                chatRoomsViewModel.onlineUsers.push(newUser);
+            }
+        });
+        connection.onclose(function() {
+            console.log("closing: time to close");
+        });
+        connection.start();
+    }
+
+    function setGameLobbyConnections(connection) {
+        connection.on('GameLobbyJoin', function(success, host, players, newUser, isNewUser, gameLobbyID, gameLobbyName, gameLobbyMaxRoomLimit) {
+            console.log(success + " " + host + " " + players + " " + newUser + " " + isNewUser + gameLobbyID);
+            if(success) {
+                console.log("new user joined game lobby: " + newUser);
+                console.log(newUser.userName);
+                currentGameLobby.gameLobbyName(gameLobbyName);
+                currentGameLobby.host(host);
+                currentGameLobby.players(players);
+                currentGameLobby.gameLobbyID(gameLobbyID);
+                currentGameLobby.maxRoomLimit(gameLobbyMaxRoomLimit);
+                currentGameLobby.userCount(players.length);
+                joinGameLobby();
+            }
+        });
+        
+        connection.on('GameLobbySendMessage', function(chatMessage, isSender) {
+            console.log("herrrrrrrrrrre");
+            var message = new ChatMessage(chatMessage);
+            currentGameLobby.gameLobbyMessages.push(message);
+        });
+
+        connection.on('GameLobbyStartGame', function(turn) {
+            console.log(turn);
+            document.getElementById('mainScreen').style.display = "none";
+            document.getElementById('gameScreen').style.display = "inline";
+            currentGameLobby.gameState();
+        });
+
+        connection.on('GameLobbyLeave', function(success, playerLeaving, host, players) {
+            console.log("logging.." + playerLeaving.userName);
+            if(success) {
+                currentGameLobby.hostUserName(host.userName);
+                currentGameLobby.gameLobbyMessages.push({"userNameInfo": "", "messageContent": playerLeaving.userName + " has left the game"});
+                currentGameLobby.players.removeAll();
+                currentGameLobby.players(players);
+
+                if(loginViewModel.username()==playerLeaving.userName) {
+                    leaveGameLobbyClick();
+                }
+            }
+        });
+
+        connection.on('GameState', function(gameState) {
+            console.log(gameState);
+            currentGameLobby.hand.removeAll();
+            for(var i = 0; i < gameState.Hand.length; i++) {
+                currentGameLobby.hand.push(new GameCardViewModel(gameState.Hand[i]));
+            }
+        });
+
+        connection.on('GameClaim', function(gameState) {
+            console.log(gameState);
+            currentGameLobby.hand.removeAll();
+            for(var i = 0; i < gameState.Hand.length; i++) {
+                currentGameLobby.hand.push(new GameCardViewModel(gameState.Hand[i]));
+            }
+        });
+
+        connection.on('GameEndTurn', function(gameState) {
+            console.log(gameState);
+            currentGameLobby.hand.removeAll();
+            for(var i = 0; i < gameState.Hand.length; i++) {
+                currentGameLobby.hand.push(new GameCardViewModel(gameState.Hand[i]));
+            }
+        });
+
+        connection.on('GameCallCheat', function(gameState, cheatCallerUserName, lastClaimUserName, preCheatClaims, cheatCallSuccess) {
+            console.log(gameState);
+            console.log(cheatCallerUserName);
+            console.log(lastClaimUserName);
+            console.log(preCheatClaims);
+            console.log(cheatCallSuccess);
+            currentGameLobby.hand.removeAll();
+            for(var i = 0; i < gameState.Hand.length; i++) {
+                currentGameLobby.hand.push(new GameCardViewModel(gameState.Hand[i]));
+            }
+        });
+
+        connection.start();
+    }
+
+    function loginSuccessful() {
+        setConnections();
+        var loginScreen = document.getElementById("loginScreen");
+        loginScreen.style.display = "none";
+        var mainScreen = document.getElementById("mainScreen");
+        mainScreen.style.display = "inline";
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+        gameLobbiesViewModel.getGameLobbies();
+        chatRoomsViewModel.getChatRooms();
+        checkPanelsVisible();
+    }
+
+    function registerSuccessful() {
+        loginViewModel.username(registerViewModel.username());
+        loginViewModel.password(registerViewModel.password());
+    }
+
+    function checkPanelsVisible() {
+        var panels = [];
+        panels.push(document.getElementById("loginForm"));
+        panels.push(document.getElementById("registrationForm"));
+        panels.push(document.getElementById("chatRoomsCard"));
+        panels.push(document.getElementById("playersCard"));
+        panels.push(document.getElementById("profileCard"));
+        panels.push(document.getElementById("gamePanelCard1"));
+        panels.push(document.getElementById("gamePanelCard2"));
+
+        var pageTop = window.pageYOffset;
+        var pageBottom = window.pageYOffset + window.innerHeight;
+
+        for(var i = 0; i < panels.length; i++) {
+            var panel = panels[i];
+            
+            var top = panel.offsetTop;
+            var bottom = panel.offsetHeight + top;
+            var middle = (top + bottom) / 2;
+
+            if (middle > pageTop && middle < pageBottom) {
+                panel.classList.add("activate");
+            }
+
+            if(bottom < pageTop || top > pageBottom) {
+                panel.classList.remove("activate");
+            }
+        }
+    }
+
+    function refreshGamePanelCards(panelID) {
+        var ele = document.getElementById(panelID);
+        ele.classList.remove("activate");
+        ele.offsetWidth;
+        ele.classList.add("activate");
+    }
+
+    function joinGameLobby() {
+        refreshGamePanelCards("gamePanelCard1");
+        refreshGamePanelCards("gamePanelCard2");
+        gameLobbiesViewModel.getGameLobbies();
+        ele = document.getElementById("currentGameLobby");
+        ele.style.display = "inline";
+        ele = document.getElementById("createGameLobby");
+        ele.style.display = "none";
+        ele = document.getElementById("gameLobbies");
+        ele.style.display = "inline";
+    }
+
+    function createNewGameClick() {
+        refreshGamePanelCards("gamePanelCard1");
+        var ele = document.getElementById("gameLobbies");
+        ele.style.display = "none";
+        ele = document.getElementById("createGameLobby");
+        ele.style.display = "inline";
+    }
+
+    function leaveGameLobbyClick() {
+        refreshGamePanelCards("gamePanelCard1");
+        refreshGamePanelCards("gamePanelCard2");
+        currentGameLobby.gameLobbyName(null);
+        currentGameLobby.gameLobbyID(null);
+        currentGameLobby.gameLobbyMessages.removeAll();
+        gameLobbiesViewModel.getGameLobbies();
+        var ele = document.getElementById("gameLobbies");
+        ele.style.display = "inline";
+        ele = document.getElementById("currentGameLobby");
+        ele.style.display = "none";
+    }
+
+    function leaveGameCreation() {
+        refreshGamePanelCards("gamePanelCard1");
+        currentGameLobby.gameLobbyName(null);
+        currentGameLobby.gameLobbyID(null);
+        currentGameLobby.gameLobbyMessages.removeAll();
+        gameLobbiesViewModel.getGameLobbies();
+        var ele = document.getElementById("gameLobbies");
+        ele.style.display = "inline";
+        ele = document.getElementById("createGameLobby");
+        ele.style.display = "none";
+    }
+
+    function deactivateCurrentChatRoomCard() {
+        var ele = document.getElementById("currentChatsPanel");
+        var cardElements = ele.getElementsByClassName("card");
+        for (var i = 0; i < cardElements.length; i++) {
+            cardElements[i].classList.remove("activate");
+            cardElements[i].classList.remove("deactivate");
+            void cardElements[i].offsetWidth;
+            cardElements[i].classList.add("deactivate");
+        }
+    }
+
+    function activateCurrentChatRoomCard() {
+        var ele = document.getElementById("currentChatsPanel");
+        var cardElements = ele.getElementsByClassName("card");
+        for (var i = 0; i < cardElements.length; i++) {
+            cardElements[i].classList.remove("activate");
+            cardElements[i].classList.remove("deactivate");
+            void cardElements[i].offsetWidth;
+            cardElements[i].classList.add("activate");
+        }
+    }
+
+    window.onload = function() {
+        checkPanelsVisible();
+    }
+
+    window.addEventListener('scroll', checkPanelsVisible, false);
+    window.addEventListener('resize', checkPanelsVisible, false);
+</script>

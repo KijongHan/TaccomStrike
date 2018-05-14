@@ -7,10 +7,12 @@ using TaccomStrike.Library.Data.Services;
 using Microsoft.AspNetCore.Authentication;
 using TaccomStrike.Library.Utility.Security;
 using TaccomStrike.Library.Data.ViewModel;
+using Microsoft.AspNetCore.Cors;
 
 namespace TaccomStrike.Web.API.Controllers
 {
     [Route("api/authentication")]
+    [EnableCors("AllowSpecificOrigin")]
     public class AuthenticationController : Controller
     {
 
@@ -23,7 +25,7 @@ namespace TaccomStrike.Web.API.Controllers
 
         [Route("")]
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(CreateUserLogin userEntity)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateUserLogin userEntity)
         {
             if(await authenticationService.CreateLoginAsync(userEntity) == null)
             {
@@ -35,7 +37,7 @@ namespace TaccomStrike.Web.API.Controllers
 
         [Route("login")]
         [HttpPost]
-        public async Task<IActionResult> PostAsync(PostUserLogin loginEntity)
+        public async Task<IActionResult> PostAsync([FromBody] PostUserLogin loginEntity)
         {
             var claimsPrincipal = await authenticationService.AuthenticateLoginAsync(loginEntity);
 
