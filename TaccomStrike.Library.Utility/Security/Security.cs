@@ -8,5 +8,14 @@ namespace TaccomStrike.Library.Utility.Security
     {
         public static string AuthenticationScheme = "TaccomStrikeAuthentication";
         public static string CookieName = "TaccomStrikeCookie";
+
+        public static string UserLoginIDClaim = "UserLoginIDClaim";
+        public static string GameUserIDClaim = "GameUserIDClaim";
+        public static string ForumUserIDClaim = "ForumUserIDClaim";
+        public static string GameUserNameClaim = "GameUserNameClaim";
+        public static string UserNameClaim = "UserNameClaim";
+
+        public static string CurrentGameLobbyIDClaim = "CurrentGameLobbyIDClaim";
+
     }
 }

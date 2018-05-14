@@ -8,7 +8,6 @@
     <PackageId>TaccomStrike.Web</PackageId>
     <UserSecretsId>aspnet-AvaNet-63f1eb0b-1f8f-4ffb-b1ac-729816acb842</UserSecretsId>
     <RuntimeFrameworkVersion>2.0.0</RuntimeFrameworkVersion>
-    <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
     <RootNamespace>TaccomStrike.Web</RootNamespace>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>

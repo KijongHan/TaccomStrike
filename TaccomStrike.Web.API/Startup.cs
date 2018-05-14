@@ -10,9 +10,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TaccomStrike.Library.Data.DAL;
 using TaccomStrike.Library.Data.Model;
-using TaccomStrike.Web.API.Authentication;
+using TaccomStrike.Library.Data.Utilty;
 using TaccomStrike.Library.Utility.Security;
 using TaccomStrike.Library.Data.Services;
+using TaccomStrike.Web.API.Hubs;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 
@@ -30,37 +31,56 @@ namespace TaccomStrike.Web.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder
+                    .WithOrigins(new string[] {ConfigurationManager.AppSettings["WebUIIPAddress"]})
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials());
+            });
+
             services.AddMvc();
+            services.AddSignalR();
 
             //Data layer service configurations
             services.AddDbContext<TaccomStrikeContext>((options) => 
             {
-                options.UseSqlServer(ConfigurationManager.ConnectionStrings["Development"].ConnectionString);
+                options.UseSqlServer(ConfigurationManager.AppSettings["ConnectionString"]);
             });
             services.AddScoped<ForumThreadRepository>();
             services.AddScoped<ForumCommentRepository>();
             services.AddScoped<ForumUserRepository>();
             services.AddScoped<UserLoginRepository>();
+            services.AddScoped<AppExceptionRepository>();
 
             //Service layer configurations
             services.AddScoped<UserAuthenticationService>();
 
-            var sessionStore = new SessionStore();
-            services.AddSingleton<SessionStore>(sessionStore);
+            var sessionService = new SessionService();
+            services.AddSingleton<SessionService>(sessionService);
+            services.AddSingleton<UserConnectionService>();
+            services.AddSingleton<ChatRoomService>();
+            services.AddSingleton<GameLobbyService>();
 
-            services.AddTaccomStrikeAuthentication(sessionStore);
+            services.AddCustomCookieAuthentication(sessionService, ConfigurationManager.AppSettings["CookieDomain"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseMiddleware<ExceptionLogMiddleware>();
 
+            app.UseCors("AllowSpecificOrigin");
+            
             app.UseAuthentication();
+
             app.UseMvc();
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chat");
+                routes.MapHub<GameLobbyHub>("/gamelobby");
+            });
         }
     }
 }

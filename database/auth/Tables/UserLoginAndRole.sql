@@ -6,11 +6,14 @@ CREATE TABLE [auth].[UserLoginAndRole]
     [WhenDeleted] DATETIME,
     CONSTRAINT [PK_UserLoginAndRole] PRIMARY KEY CLUSTERED ([UserLoginID], [UserRoleID])
 );
+GO
 
 ALTER TABLE [auth].[UserLoginAndRole]
 ADD CONSTRAINT [FK_UserLoginAndRole_UserLogin] FOREIGN KEY ([UserLoginID])
 REFERENCES [auth].[UserLogin] ([UserLoginID]);
+GO
 
 ALTER TABLE [auth].[UserLoginAndRole]
 ADD CONSTRAINT [FK_UserLoginAndRole_UserRole] FOREIGN KEY ([UserRoleID])
 REFERENCES [auth].[UserRole] ([UserRoleID]);
+GO

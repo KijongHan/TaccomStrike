@@ -13,9 +13,11 @@ namespace TaccomStrike.Library.Data.Services
     {
         private readonly UserLoginRepository userRepository;
         private readonly ForumUserRepository forumUserRepository;
+        private object authenticationServiceLock;
 
         public UserAuthenticationService(UserLoginRepository userRepository, ForumUserRepository forumUserRepository)
         {
+            authenticationServiceLock = new object();
             this.userRepository = userRepository;
             this.forumUserRepository = forumUserRepository;
         }
@@ -35,55 +37,64 @@ namespace TaccomStrike.Library.Data.Services
             return userEntity;
         }
 
-        public ClaimsPrincipal AuthenticateLogin(PostUserLogin loginEntity)
+        public Task<CreateUserLogin> CreateLoginAsync(CreateUserLogin userEntity)
         {
-            var user = userRepository.GetUserLogin(loginEntity.Username);
+            lock(authenticationServiceLock) {
+                return Task.Run(() => {
+                    if(userRepository.GetUserLogin(userEntity.Username) != null)
+                    {
+                        return null;
+                    }
+                    if(userRepository.GetUserLoginByEmail(userEntity.Email) != null)
+                    {
+                        return null;
+                    }
+
+                    string passwordSalt = Authentication.GenerateSalt();
+                    string hashPassword = Authentication.HashPassword(userEntity.Password, passwordSalt);
+
+                    var forumUserID = forumUserRepository.CreateForumUser();
+                    userRepository.CreateUserLogin(userEntity, passwordSalt, hashPassword, forumUserID);
+                    return userEntity;
+                });
+            }
+        }
+
+        public Task<ClaimsPrincipal> AuthenticateLoginAsync(PostUserLogin loginEntity)
+        {
+            lock(authenticationServiceLock) {
+                return Task.Run(() => {
+                    var user = userRepository.GetUserLogin(loginEntity.Username);
+
+                    if(user == null)
+                    {
+                        return null;
+                    }
+
+                    if (!Authentication.AuthenticateLoginCredentials(user.PasswordSalt, loginEntity.Password, user.PasswordHash))
+                    {
+                        return null;
+                    }
+
+                    return GetClaimsPrincipal(user.UserLoginID);
+                });
+            }
+        }
+
+        public ClaimsPrincipal GetClaimsPrincipal(int id) 
+        {
+            var user = userRepository.GetUserLogin(id);
 
             if(user == null)
             {
                 return null;
             }
 
-            if (!Authentication.AuthenticateLoginCredentials(user.PasswordSalt, loginEntity.Password, user.PasswordHash))
-            {
-                return null;
-            }
-
-            var claims = new List<Claim>() { new Claim(ClaimTypes.Name, user.Username) };
-            var claimsIdentity = new ClaimsIdentity(claims);
-            return new ClaimsPrincipal(claimsIdentity);
-        }
-
-        public async Task<CreateUserLogin> CreateLoginAsync(CreateUserLogin userEntity)
-        {
-            if(userRepository.GetUserLogin(userEntity.Username) != null)
-            {
-                return null;
-            }
-
-            string passwordSalt = await Authentication.GenerateSaltAsync();
-            string hashPassword = await Authentication.HashPasswordAsync(userEntity.Password, passwordSalt);
-
-            var forumUserID = await forumUserRepository.CreateForumUserAsync();
-            await userRepository.CreateUserLoginAsync(userEntity, passwordSalt, hashPassword, forumUserID);
-            return userEntity;
-        }
-
-        public async Task<ClaimsPrincipal> AuthenticateLoginAsync(PostUserLogin loginEntity)
-        {
-            var user = await userRepository.GetUserLoginAsync(loginEntity.Username);
-
-            if(user == null)
-            {
-                return null;
-            }
-
-            if (!await Authentication.AuthenticateLoginCredentialsAsync(user.PasswordSalt, loginEntity.Password, user.PasswordHash))
-            {
-                return null;
-            }
-
-            var claims = new List<Claim>() { new Claim(ClaimTypes.Name, user.Username) };
+            var claims = new List<Claim>() 
+            { 
+                new Claim(Security.UserNameClaim, user.Username),
+                new Claim(Security.UserLoginIDClaim, user.UserLoginID.ToString())
+            };
             var claimsIdentity = new ClaimsIdentity(claims);
             return new ClaimsPrincipal(claimsIdentity);
         }
