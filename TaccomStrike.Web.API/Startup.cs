@@ -19,68 +19,67 @@ using System.Configuration;
 
 namespace TaccomStrike.Web.API
 {
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+	public class Startup
+	{
+		public Startup(IConfiguration configuration)
+		{
+			Configuration = configuration;
+		}
 
-        public IConfiguration Configuration { get; }
+		public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddCors(options => {
-                options.AddPolicy("AllowSpecificOrigin",
-                    builder => builder
-                    .WithOrigins(new string[] {ConfigurationManager.AppSettings["WebUIIPAddress"]})
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials());
-            });
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddCors(options => 
+			{
+				options.AddPolicy("AllowSpecificOrigin",
+					builder => builder
+					.WithOrigins(new string[] {ConfigurationManager.AppSettings["WebUIIPAddress"]})
+					.AllowAnyHeader()
+					.AllowAnyMethod()
+					.AllowCredentials());
+			});
 
-            services.AddMvc();
-            services.AddSignalR();
+			services.AddMvc();
+			services.AddSignalR();
 
-            //Data layer service configurations
-            services.AddDbContext<TaccomStrikeContext>((options) => 
-            {
-                options.UseSqlServer(ConfigurationManager.AppSettings["ConnectionString"]);
-            });
-            services.AddScoped<ForumThreadRepository>();
-            services.AddScoped<ForumCommentRepository>();
-            services.AddScoped<ForumUserRepository>();
-            services.AddScoped<UserLoginRepository>();
-            services.AddScoped<AppExceptionRepository>();
+			//Data layer service configurations
+			services.AddDbContext<TaccomStrikeContext>((options) => 
+			{
+				options.UseSqlServer(ConfigurationManager.AppSettings["ConnectionString"]);
+			});
+			services.AddScoped<ForumThreadRepository>();
+			services.AddScoped<ForumCommentRepository>();
+			services.AddScoped<ForumUserRepository>();
+			services.AddScoped<UserLoginRepository>();
+			services.AddScoped<AppExceptionRepository>();
 
-            //Service layer configurations
-            services.AddScoped<UserAuthenticationService>();
+			//Service layer configurations
+			services.AddScoped<UserAuthenticationService>();
+			
+			services.AddSingleton<UserConnectionsService>();
+			services.AddSingleton<ChatRoomService>();
+			services.AddSingleton<GameLobbyService>();
 
-            var sessionService = new SessionService();
-            services.AddSingleton<SessionService>(sessionService);
-            services.AddSingleton<UserConnectionService>();
-            services.AddSingleton<ChatRoomService>();
-            services.AddSingleton<GameLobbyService>();
+			services.AddCustomCookieAuthentication(ConfigurationManager.AppSettings["CookieDomain"]);
+		}
 
-            services.AddCustomCookieAuthentication(sessionService, ConfigurationManager.AppSettings["CookieDomain"]);
-        }
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		{
+			app.UseMiddleware<ExceptionLogMiddleware>();
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            app.UseMiddleware<ExceptionLogMiddleware>();
+			app.UseCors("AllowSpecificOrigin");
+			
+			app.UseAuthentication();
 
-            app.UseCors("AllowSpecificOrigin");
-            
-            app.UseAuthentication();
-
-            app.UseMvc();
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<ChatHub>("/chat");
-                routes.MapHub<GameLobbyHub>("/gamelobby");
-            });
-        }
-    }
+			app.UseMvc();
+			app.UseSignalR(routes =>
+			{
+				routes.MapHub<ChatHub>("/chat");
+				routes.MapHub<GameHub>("/game");
+			});
+		}
+	}
 }

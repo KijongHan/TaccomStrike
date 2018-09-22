@@ -7,12 +7,11 @@ using TaccomStrike.Library.Data.Model;
 
 namespace TaccomStrike.Library.Data.DAL
 {
-    public class ForumCommentRepository
-    {
+	public class ForumCommentRepository
+	{
 
-        private readonly TaccomStrikeContext context;
-        
+		private readonly TaccomStrikeContext context;
 
 
-    }
+	}
 }

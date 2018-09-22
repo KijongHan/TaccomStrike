@@ -9,29 +9,28 @@ using Microsoft.AspNetCore.DataProtection;
 
 namespace TaccomStrike.Library.Utility.Security
 {
-    public static class ServiceExtensions
-    {
-        public static IServiceCollection AddCustomCookieAuthentication(this IServiceCollection service, ITicketStore sessionStore, string cookieDomain)
-        {
-            service
-                .AddAuthentication(Security.AuthenticationScheme)
-                .AddCookie(Security.AuthenticationScheme, options => 
-                {
-                    options.Cookie.Name = Security.CookieName;
-                    options.Cookie.Domain = cookieDomain;
-                    options.Cookie.Expiration = TimeSpan.FromHours(2);
-                    options.SessionStore = sessionStore;
-                });
-            return service;
-        }
+	public static class ServiceExtensions
+	{
+		public static IServiceCollection AddCustomCookieAuthentication(this IServiceCollection service, string cookieDomain)
+		{
+			service
+				.AddAuthentication(Security.AuthenticationScheme)
+				.AddCookie(Security.AuthenticationScheme, options => 
+				{
+					options.Cookie.Name = Security.CookieName;
+					options.Cookie.Domain = cookieDomain;
+					options.Cookie.Expiration = TimeSpan.FromHours(2);
+				});
+			return service;
+		}
 
-        public static IServiceCollection AddTaccomStrikeAuthorization(this IServiceCollection service) 
-        {
-            service.AddAuthorization(options => 
-            {
-                options.AddPolicy("AdminOnly", policy => policy.RequireClaim("IsAdmin"));
-            });
-            return service;
-        }
-    }
+		public static IServiceCollection AddTaccomStrikeAuthorization(this IServiceCollection service) 
+		{
+			service.AddAuthorization(options => 
+			{
+				options.AddPolicy("AdminOnly", policy => policy.RequireClaim("IsAdmin"));
+			});
+			return service;
+		}
+	}
 }
