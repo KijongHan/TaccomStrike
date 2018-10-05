@@ -1,0 +1,419 @@
+﻿#loginRegisterRow {
+	width: 100%;
+	display: inline-block;
+	margin-bottom: 50px;
+}
+
+#loginRegisterRow .card {
+	float: left;
+	width: 20%;
+	-webkit-perspective: 800px; /* Safari 4-8 */
+	perspective: 800px;
+}
+
+#loginForm {
+	margin-left: 5%;
+}
+
+#registrationForm {
+	margin-left: 5%;
+}
+
+@media(max-width: 1350px) {
+	#loginRegisterRow .card {
+		width: 40%;
+	}
+
+	#registrationForm {
+		margin-left: 10%;
+	}
+}
+
+@media(max-width: 950px) {
+	#loginRegisterRow .card {
+		width: 60%;
+		margin-left: 10%;
+		margin-top: 50px;
+	}
+}
+
+@media(max-width: 650px) {
+	#loginRegisterRow .card {
+		width: 80%;
+		margin-left: 10%;
+		margin-top: 50px;
+	}
+}
+
+#loginRegisterRow .cardFront {
+	background-color: rgba(0, 0, 0, 0.88);
+}
+
+#loginRegisterRow .cardBack {
+	display: none;
+}
+
+#loginForm.card.activate .cardFront {
+	animation-name: tiltClockwise;
+	animation-delay: 0.3s;
+	animation-duration: 0.7s;
+	animation-fill-mode: forwards;
+	display: inline;
+	-webkit-box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
+	-moz-box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
+	box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
+}
+
+#registrationForm.card.activate .cardFront {
+	animation-name: tiltAntiClockwise;
+	animation-delay: 0.3s;
+	animation-duration: 0.7s;
+	animation-fill-mode: forwards;
+	display: inline;
+	-webkit-box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
+	-moz-box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
+	box-shadow: -10px 10px 1px 0px rgba(0,0,0,0.6);
+}
+
+#loginRegisterRow .subTitle {
+	color: rgba(255, 255, 255, 0.75);
+	font-size: 2.2em;
+	margin-left: 5%;
+}
+
+#loginRegisterRow .item {
+	width: 90%;
+	margin-left: 5%;
+	margin-top: 10px;
+}
+
+#loginRegisterRow .item div {
+	width: 40%;
+	padding-left: 5px;
+	background-color: rgba(255, 255, 255, 0.65);
+	font-size: 1.25em;
+}
+
+#loginRegisterRow .item input {
+	width: 80%;
+	background-color: rgba(255, 255, 255, 0.5);
+	border-style: solid;
+	border-width: 2px;
+	border-color: rgba(255, 255, 255, 0.65);
+	font-size: 1.2em;
+}
+
+#loginRegisterRow .item2 {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+}
+
+#loginRegisterRow .item2 .button1 {
+	width: 50%;
+	height: 50px;
+	line-height: 50px;
+	margin-left: 25%;
+	margin-bottom: 10px;
+}
+
+.gap1 {
+	margin-top: 50px;
+}
+
+#loginForm .gap1 {
+	margin-top: 30px;
+}
+
+#titleRow {
+	display: inline-block;
+	overflow: hidden;
+	margin-top: 20px;
+	margin-bottom: 50px;
+	padding-bottom: 10px;
+	width: 100%;
+	-webkit-perspective: 800px; /* Safari 4-8 */
+	perspective: 800px;
+}
+
+	#titleRow .panel1 {
+		height: 170px;
+		float: left;
+		width: 40%;
+		margin-left: 1%;
+		transform: rotateX(-4deg);
+	}
+
+	#titleRow .panel2 {
+		height: 170px;
+		float: left;
+		width: 55%;
+		margin-left: 3%;
+		transform: rotateX(-4deg);
+	}
+
+@media(max-width: 950px) {
+	#titleRow .panel1 {
+		width: 90%;
+		margin-left: 5%;
+	}
+
+	#titleRow .panel2 {
+		width: 90%;
+		margin-top: 15px;
+		margin-left: 5%;
+	}
+
+	#titleRow {
+		margin-bottom: 20px;
+	}
+}
+
+#titleRow .card {
+	height: 170px;
+	float: left;
+}
+
+#titleRow .panel1 .card {
+	width: 25%;
+}
+
+#titleRow .panel2 .card {
+	width: 20%;
+}
+
+#titleRow .cardFront {
+	font-size: 7em;
+	line-height: 170px;
+	text-align: center;
+	color: rgba(255, 255, 255, 0.95);
+	background-color: rgba(0, 0, 0, 0.35);
+	-webkit-box-shadow: -4px 4px 1px 0px rgba(0,0,0,0.55);
+	-moz-box-shadow: -4px 4px 1px 0px rgba(0,0,0,0.55);
+	box-shadow: -4px 4px 1px 0px rgba(0,0,0,0.55);
+}
+
+@media(max-width: 950px) {
+	#titleRow .cardFront {
+		font-size: 4.5em;
+	}
+}
+
+#title1 .cardBack {
+	animation-name: activateAnimationPart1;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title1 .cardFront {
+	transform: rotateY(90deg);
+	animation-name: activateAnimationPart2;
+	animation-delay: 0.4s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title2 .cardBack {
+	animation-name: activateAnimationPart1;
+	animation-delay: 0.4s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title2 .cardFront {
+	transform: rotateY(90deg);
+	animation-name: activateAnimationPart2;
+	animation-delay: 0.8s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title3 .cardBack {
+	animation-name: activateAnimationPart1;
+	animation-delay: 0.8s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title3 .cardFront {
+	transform: rotateY(90deg);
+	animation-name: activateAnimationPart2;
+	animation-delay: 1.2s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title4 .cardBack {
+	animation-name: activateAnimationPart1;
+	animation-delay: 1.2s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title4 .cardFront {
+	transform: rotateY(90deg);
+	animation-name: activateAnimationPart2;
+	animation-delay: 1.6s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title5 .cardBack {
+	animation-name: activateAnimationPart1;
+	animation-delay: 1.6s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title5 .cardFront {
+	transform: rotateY(90deg);
+	animation-name: activateAnimationPart2;
+	animation-delay: 2s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title6 .cardBack {
+	animation-name: activateAnimationPart1;
+	animation-delay: 2s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title6 .cardFront {
+	transform: rotateY(90deg);
+	animation-name: activateAnimationPart2;
+	animation-delay: 2.4s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title7 .cardBack {
+	animation-name: activateAnimationPart1;
+	animation-delay: 2.4s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title7 .cardFront {
+	transform: rotateY(90deg);
+	animation-name: activateAnimationPart2;
+	animation-delay: 2.8s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title8 .cardBack {
+	animation-name: activateAnimationPart1;
+	animation-delay: 2.8s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title8 .cardFront {
+	transform: rotateY(90deg);
+	animation-name: activateAnimationPart2;
+	animation-delay: 3.2s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title9 .cardBack {
+	animation-name: activateAnimationPart1;
+	animation-delay: 3.2s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#title9 .cardFront {
+	transform: rotateY(90deg);
+	animation-name: activateAnimationPart2;
+	animation-delay: 3.6s;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+#alertMessagePanel {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.9);
+}
+
+	#alertMessagePanel .card {
+		width: 40%;
+		height: 32%;
+		margin: auto;
+		margin-top: 20%;
+	}
+
+@media(max-width: 950px) {
+	#alertMessagePanel .card {
+		width: 70%;
+		height: 50%;
+		margin-top: 10%;
+	}
+}
+
+#alertMessagePanel .cardFront {
+	background-color: rgba(255, 255, 255, 0.15);
+}
+
+#alertMessagePanel .card.activate .cardBack {
+	animation-name: activateAnimationPart1;
+	animation-duration: 0.7s;
+	animation-fill-mode: forwards;
+}
+
+#alertMessagePanel .card.activate .cardFront {
+	transform: rotateY(90deg);
+	animation-name: activateAnimationPart2;
+	animation-delay: 0.7s;
+	animation-duration: 0.7s;
+	animation-fill-mode: forwards;
+}
+
+#alertMessagePanel .cardFront .subTitle {
+	height: 20%;
+	font-size: 1.5em;
+	font-weight: bold;
+	color: rgba(255, 255, 255, 0.95);
+	text-align: center;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+#alertMessagePanel .cardFront .panel {
+	height: 60%;
+	margin-bottom: 0px;
+	background-color: rgba(0, 0, 0, 0);
+	padding: 10 10 10 10;
+	color: rgba(255, 255, 255, 0.65);
+}
+
+#alertMessagePanel .cardFront .button1 {
+	background-color: rgba(255, 255, 255, 0.55);
+	padding-top: 1%;
+	height: 18%;
+	color: white;
+	width: 70%;
+	margin-left: 15%;
+}
+
+	#alertMessagePanel .cardFront .button1:hover {
+		background-color: rgba(255, 255, 255, 0.25);
+	}
+
+#backgroundCanvas1 {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.68);
+	position: fixed;
+}
+
+@media(max-width: 950px) {
+	#backgroundCanvas1 {
+		height: 140%;
+	}
+}

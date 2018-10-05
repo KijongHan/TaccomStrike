@@ -17,6 +17,8 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
+    <StartWebBrowser>True</StartWebBrowser>
+    <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -31,6 +33,9 @@
     <Folder Include="dist" />
     <Folder Include="src" />
     <Folder Include="src\components" />
+    <Folder Include="src\components\game\" />
+    <Folder Include="src\components\general\" />
+    <Folder Include="src\components\page\" />
     <Folder Include="src\models\" />
     <Folder Include="src\viewmodels\" />
     <Folder Include="src\services\" />
@@ -39,7 +44,16 @@
     <TypeScriptCompile Include="index.html">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\components\hello.tsx">
+    <TypeScriptCompile Include="src\components\general\card.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\components\general\title.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\components\general\titlepanel.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\components\page\login.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\index.tsx">
@@ -54,7 +68,7 @@
     <TypeScriptCompile Include="src\viewmodels\user.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="webpack.config.tsx">
+    <TypeScriptCompile Include="webpack.config.js">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>

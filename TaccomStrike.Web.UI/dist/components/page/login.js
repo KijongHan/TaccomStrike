@@ -14,20 +14,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
-var Hello = /** @class */ (function (_super) {
-    __extends(Hello, _super);
-    function Hello() {
+var LoginComponent = /** @class */ (function (_super) {
+    __extends(LoginComponent, _super);
+    function LoginComponent() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Hello.prototype.render = function () {
-        return React.createElement("h1", null,
-            "Hello from ",
-            this.props.compiler,
-            " and ",
-            this.props.framework,
-            "!");
-    };
-    return Hello;
+    return LoginComponent;
 }(React.Component));
-exports.Hello = Hello;
-//# sourceMappingURL=hello.js.map
+exports.LoginComponent = LoginComponent;
+//# sourceMappingURL=login.js.map

@@ -1,9 +1,10 @@
 ﻿import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { LoginPage } from "./components/page/login";
 
-import { Hello } from "./components/Hello";
+import '../styles/app.css';
 
 ReactDOM.render(
-	<Hello compiler="TypeScript" framework="React" />,
+	<LoginPage/>,
 	document.getElementById("root")
 );
