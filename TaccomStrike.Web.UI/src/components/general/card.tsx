@@ -1,5 +1,6 @@
 ﻿import * as React from "react";
 import styled from "styled-components";
+import { DisplayStyling } from "../../styling/layout";
 
 const CardFront = styled.div`
 	position: absolute;
@@ -7,6 +8,8 @@ const CardFront = styled.div`
 	bottom: 0;
 	left: 0;
 	right: 0;
+	display: ${(p: CardFrontStyling) => p.display ? 'initial' : 'none'};
+	transform: ${(p: CardFrontStyling) => p.flipped ? 'rotateY(180deg);' : 'rotateY(0deg);'};
 `;
 
 const CardBack = styled.div`
@@ -19,33 +22,54 @@ const CardBack = styled.div`
 	border-style: solid;
 	border-width: 4px;
 	border-color: rgba(180, 180, 180, 0.7);
-	transform: rotateY(180deg);
+	transform: ${(p: CardBackStyling) => p.flipped ? 'rotateY(180deg);' : 'rotateY(0deg);'};
+	display: ${(p: CardBackStyling) => p.display ? 'initial' : 'none'};
 `;
 
 const Card = styled.div`
 	position: relative;
 	float: left;
-	width: ${(p: CardStyleProps) => p.widthPercentage}%;
-	height: ${(p: CardStyleProps) => p.heightPercentage}%;
+	width: ${(p: CardComponentStyling) => p.displayStyling.getWidthString()};
+	height: ${(p: CardComponentStyling) => p.displayStyling.getHeightString()};
 `;
 
-export interface CardStyleProps
+export enum CardOrientation
 {
-	widthPercentage: number;
-	heightPercentage: number;
+	Front,
+	Back
+}
 
+export interface CardComponentStyling
+{
+	displayStyling: DisplayStyling;
+}
+
+export class CardBackStyling
+{
+	display: boolean;
+	flipped: boolean;
+}
+
+export class CardFrontStyling
+{
+	display: boolean;
+	flipped: boolean;
 }
 
 export interface CardComponentProps
 {
-	panel: React.Component;
-	cardStyling: CardStyleProps;
+	panel: JSX.Element;
+	cardStyling: CardComponentStyling;
+
+	cardOrientation: CardOrientation;
 }
 
 export interface CardComponentState
 {
-	panel: React.Component;
-	cardStyling: CardStyleProps;
+	panel: JSX.Element;
+	cardStyling: CardComponentStyling;
+
+	cardOrientation: CardOrientation;
 }
 
 export class CardComponent extends React.Component<CardComponentProps, CardComponentState>
@@ -56,19 +80,49 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 		this.state =
 		{
 			panel: props.panel,
-			cardStyling: props.cardStyling
+			cardStyling: props.cardStyling,
+			cardOrientation: props.cardOrientation
 		};
 	}
 
 	render()
 	{
+		let displayBack: boolean;
+		let displayFront: boolean;
+
+		let cardFlipped: boolean;
+		if (this.state.cardOrientation == CardOrientation.Front)
+		{
+			displayBack = false;
+			displayFront = true;
+			cardFlipped = false;
+		}
+		else
+		{
+			displayBack = true;
+			displayFront = false;
+			cardFlipped = true;
+		}
+
 		return (
 			<Card
-				widthPercentage={this.state.cardStyling.widthPercentage}
-				heightPercentage={this.state.cardStyling.heightPercentage}>
-				<CardFront>{this.state.panel.render()}</CardFront>
-				<CardBack></CardBack>
+				displayStyling={this.state.cardStyling.displayStyling}>
+				<CardFront display={displayFront} flipped={cardFlipped}>{this.state.panel}</CardFront>
+				<CardBack display={displayBack} flipped={cardFlipped}></CardBack>
 			</Card>
 		);
+	}
+
+	flip()
+	{
+
+	}
+
+	componentDidUpdate(prevProps: CardComponentProps, prevState: CardComponentState)
+	{
+		if (this.props.cardStyling !== prevProps.cardStyling)
+		{
+			this.setState({ cardStyling: this.props.cardStyling, panel: this.props.panel });
+		}
 	}
 }

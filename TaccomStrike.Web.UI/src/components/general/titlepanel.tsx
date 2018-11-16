@@ -1,8 +1,8 @@
 ﻿import * as React from "react";
-import { TitleComponent } from "./title";
-import { CardComponent, CardStyleProps } from "./card";
+import { CardComponent, CardComponentStyling, CardOrientation } from "./card";
 
 import styled from "styled-components"
+import { DisplayStyling } from "../../styling/layout";
 
 export interface TitlePanelComponentProps
 {
@@ -13,7 +13,7 @@ export interface TitlePanelComponentProps
 export interface TitlePanelComponentState
 {
 	titleLetters: string[];
-	cardStyling: CardStyleProps;
+	cardStyling: CardComponentStyling;
 	titlePanelStyling: TitlePanelStyling;
 }
 
@@ -44,10 +44,9 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 			titleLetters.push(props.title.charAt(i));
 		}
 
-		let cardStyling: CardStyleProps =
+		let cardStyling: CardComponentStyling =
 		{
-			widthPercentage: 100 / titleLetters.length,
-			heightPercentage: 100
+			displayStyling: new DisplayStyling({widthPercentage: 100/titleLetters.length, heightPercentage:100})
 		};
 
 		this.state =
@@ -62,8 +61,11 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 	{
 		let cardComponents = this.state.titleLetters.map((titleLetter: string, index: number) =>
 		{
-			var titlePanel = new TitleComponent({ titleLetter: titleLetter });
-			return <CardComponent panel={titlePanel} cardStyling={this.state.cardStyling} />;
+			let titlePanel = (
+				<div>
+					{titleLetter}
+				</div>);
+			return <CardComponent panel={titlePanel} cardStyling={this.state.cardStyling} cardOrientation={CardOrientation.Back}/>;
 		})
 
 		return (
