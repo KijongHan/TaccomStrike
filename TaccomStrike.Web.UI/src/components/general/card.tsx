@@ -1,6 +1,7 @@
 ﻿import * as React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { DisplayStyling } from "../../styling/layout";
+import { isNullOrUndefined } from "util";
 
 const CardFront = styled.div`
 	position: absolute;
@@ -8,7 +9,8 @@ const CardFront = styled.div`
 	bottom: 0;
 	left: 0;
 	right: 0;
-	display: ${(p: CardFrontStyling) => p.display ? 'initial' : 'none'};
+	${(p: CardFrontStyling) => isNullOrUndefined(p.flipAnimation) ? '' : `animation: ${CardFlip_2} ${p.flipAnimation.flipDuration / 2}s ${p.flipAnimation.flipDelay}s forwards`};
+	visibility: ${(p: CardFrontStyling) => p.display ? 'visible' : 'hidden'};
 	transform: ${(p: CardFrontStyling) => p.flipped ? 'rotateY(180deg);' : 'rotateY(0deg);'};
 `;
 
@@ -22,8 +24,9 @@ const CardBack = styled.div`
 	border-style: solid;
 	border-width: 4px;
 	border-color: rgba(180, 180, 180, 0.7);
+	${(p: CardBackStyling) => isNullOrUndefined(p.flipAnimation) ? '' : `animation: ${CardFlip_1} ${p.flipAnimation.flipDuration / 2}s ${p.flipAnimation.flipDelay}s forwards`};
 	transform: ${(p: CardBackStyling) => p.flipped ? 'rotateY(180deg);' : 'rotateY(0deg);'};
-	display: ${(p: CardBackStyling) => p.display ? 'initial' : 'none'};
+	visibility: ${(p: CardBackStyling) => p.display ? 'visible' : 'hidden'};
 `;
 
 const Card = styled.div`
@@ -31,6 +34,38 @@ const Card = styled.div`
 	float: left;
 	width: ${(p: CardComponentStyling) => p.displayStyling.getWidthString()};
 	height: ${(p: CardComponentStyling) => p.displayStyling.getHeightString()};
+`;
+
+const CardFlip_1 = keyframes`
+	0% {
+		transform: rotateY(180deg);
+	}
+	
+	50% {
+		transform: rotateY(90deg);
+		visibility: hidden;
+	}
+
+	100% {
+		transform: rotateY(0deg);
+		visibility: hidden;
+	}
+`;
+
+const CardFlip_2 = keyframes`
+	0% {
+		transform: rotateY(180deg);
+	}
+	
+	50% {
+		transform: rotateY(90deg);
+		visibility: visible;
+	}
+
+	100% {
+		transform: rotateY(0deg);
+		visibility: visible;
+	}
 `;
 
 export enum CardOrientation
@@ -48,12 +83,22 @@ export class CardBackStyling
 {
 	display: boolean;
 	flipped: boolean;
+
+	flipAnimation: CardFlipAnimation;
 }
 
 export class CardFrontStyling
 {
 	display: boolean;
 	flipped: boolean;
+
+	flipAnimation: CardFlipAnimation;
+}
+
+export class CardFlipAnimation
+{
+	flipDuration: number;
+	flipDelay: number;
 }
 
 export interface CardComponentProps
@@ -62,6 +107,7 @@ export interface CardComponentProps
 	cardStyling: CardComponentStyling;
 
 	cardOrientation: CardOrientation;
+	flipAnimation: CardFlipAnimation;
 }
 
 export interface CardComponentState
@@ -70,6 +116,7 @@ export interface CardComponentState
 	cardStyling: CardComponentStyling;
 
 	cardOrientation: CardOrientation;
+	flipAnimation: CardFlipAnimation;
 }
 
 export class CardComponent extends React.Component<CardComponentProps, CardComponentState>
@@ -81,7 +128,8 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 		{
 			panel: props.panel,
 			cardStyling: props.cardStyling,
-			cardOrientation: props.cardOrientation
+			cardOrientation: props.cardOrientation,
+			flipAnimation: props.flipAnimation
 		};
 	}
 
@@ -104,18 +152,14 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 			cardFlipped = true;
 		}
 
+		console.log("iluyg " + this.state.flipAnimation);
 		return (
 			<Card
 				displayStyling={this.state.cardStyling.displayStyling}>
-				<CardFront display={displayFront} flipped={cardFlipped}>{this.state.panel}</CardFront>
-				<CardBack display={displayBack} flipped={cardFlipped}></CardBack>
+				<CardFront flipAnimation={this.state.flipAnimation} display={displayFront} flipped={cardFlipped}>{this.state.panel}</CardFront>
+				<CardBack flipAnimation={this.state.flipAnimation} display={displayBack} flipped={cardFlipped}></CardBack>
 			</Card>
 		);
-	}
-
-	flip()
-	{
-
 	}
 
 	componentDidUpdate(prevProps: CardComponentProps, prevState: CardComponentState)
@@ -123,6 +167,10 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 		if (this.props.cardStyling !== prevProps.cardStyling)
 		{
 			this.setState({ cardStyling: this.props.cardStyling, panel: this.props.panel });
+		}
+		if (this.props.flipAnimation !== prevProps.flipAnimation)
+		{
+			this.setState({ flipAnimation: this.props.flipAnimation });
 		}
 	}
 }

@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\js\viewmodels\AlertMessageViewModel.ts" />
+    <Content Remove="wwwroot\js\viewmodels\AlertMessageViewModel.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="wwwroot\js\viewmodels\AlertMessageViewModel.ts" />
+    <TypeScriptCompile Include="wwwroot\js\viewmodels\AlertMessageViewModel.js" />
   </ItemGroup>
 
 </Project>

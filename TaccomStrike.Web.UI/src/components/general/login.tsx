@@ -56,7 +56,8 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 			<CardComponent
 				panel={loginComponent}
 				cardStyling={this.state.loginComponentStyling.cardComponentStyling}
-				cardOrientation={CardOrientation.Front}>
+				cardOrientation={CardOrientation.Front}
+				flipAnimation={null}>
 			</CardComponent>
 			);
 	}
