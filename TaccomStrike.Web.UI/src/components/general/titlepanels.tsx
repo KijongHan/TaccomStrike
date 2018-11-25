@@ -3,6 +3,7 @@ import { TitlePanelStyling, TitlePanelComponent } from "./titlepanel";
 import { CardComponent, CardComponentStyling } from "./card";
 
 import styled from "styled-components"
+import { DisplayStyling } from "../../styling/layout";
 
 export interface TitlePanelsComponentProps
 {
@@ -20,19 +21,18 @@ export interface TitlePanelsComponentState
 	titlePanelsStyling: TitlePanelsStyling;
 }
 
-export interface TitlePanelsStyling
+export class TitlePanelsStyling
 {
-	heightPercentage: number;
+	displayStyling: DisplayStyling;
 }
 
 const TitlesPanel = styled.div`
-	height: ${(p: TitlePanelsStyling) => p.heightPercentage}%;
-
+	height: ${(p: TitlePanelsStyling) => p.displayStyling.getHeightString()};
 	overflow: hidden;
-	-webkit-perspective: 800px;
-	perspective: 800px;
 	margin-bottom: 50px;
 	padding-bottom: 10px;
+	-webkit-perspective: 800px;
+	perspective: 800px;
 `;
 
 export class TitlePanelsComponent extends React.Component<TitlePanelsComponentProps, TitlePanelsComponentState>
@@ -61,7 +61,7 @@ export class TitlePanelsComponent extends React.Component<TitlePanelsComponentPr
 
 		return (
 			<TitlesPanel
-				heightPercentage={this.state.titlePanelsStyling.heightPercentage}>
+				displayStyling={this.state.titlePanelsStyling.displayStyling}>
 				{titlePanelComponents}
 			</TitlesPanel>
 		);

@@ -31,38 +31,43 @@ const largeStyling: LoginPageStyling =
 {
 	titlePanelsStyling:
 	{
-		heightPercentage: 20
+		displayStyling: new DisplayStyling({ heightPixels: 170 })
 	},
 
 	callTitlePanelStyling:
 	{
-		widthPercentage: 40,
-		heightPercentage: 100,
-		marginLeftPercentage: 1,
-		floatLeft: true
+		displayStyling: new DisplayStyling({
+			widthPercentage: 40,
+			heightPixels: 170,
+			marginLeftPercentage: 1,
+			floatLeft: true
+		})
 	},
 
 	cheatTitlePanelStyling:
 	{
-		widthPercentage: 55,
-		heightPercentage: 100,
-		marginLeftPercentage: 3,
-		floatLeft: true
+		displayStyling: new DisplayStyling({
+			widthPercentage: 55,
+			heightPixels: 170,
+			marginLeftPercentage: 3,
+			floatLeft: true
+		})
 	},
 
 	loginComponentStyling:
 	{
 		cardComponentStyling:
 		{
-			displayStyling: new DisplayStyling({ widthPercentage: 25, heightPixels: 400})
+			displayStyling: new DisplayStyling({ widthPercentage: 30, heightPixels: 400})
 		},
 
 		loginAsUserButtonComponentStyling:
 		{
 			layoutStyling: new DisplayStyling({
 				floatLeft: true,
-				widthPercentage: 40,
-				heightPixels: 50
+				widthPercentage: 30,
+				heightPixels: 50,
+				marginLeftPercentage: 5
 			})
 		},
 
@@ -70,8 +75,9 @@ const largeStyling: LoginPageStyling =
 		{
 			layoutStyling: new DisplayStyling({
 				floatLeft: true,
-				widthPercentage: 40,
-				heightPixels: 50
+				widthPercentage: 30,
+				heightPixels: 50,
+				marginLeftPercentage: 5
 			})
 		}
 	}
@@ -81,23 +87,27 @@ const mediumStyling: LoginPageStyling =
 {
 	titlePanelsStyling:
 	{
-		heightPercentage: 40
+		displayStyling: new DisplayStyling({ heightPixels: 340 })
 	},
 
 	callTitlePanelStyling:
 	{
-		widthPercentage: 90,
-		heightPercentage: 50,
-		marginLeftPercentage: 5,
-		floatLeft: true
+		displayStyling: new DisplayStyling({
+			widthPercentage: 90,
+			heightPixels: 170,
+			marginLeftPercentage: 5,
+			floatLeft: true
+		})
 	},
 
 	cheatTitlePanelStyling:
 	{
-		widthPercentage: 90,
-		heightPercentage: 50,
-		marginLeftPercentage: 5,
-		floatLeft: true
+		displayStyling: new DisplayStyling({
+			widthPercentage: 90,
+			heightPixels: 170,
+			marginLeftPercentage: 5,
+			floatLeft: true
+		})
 	},
 
 	loginComponentStyling:
@@ -131,30 +141,34 @@ const smallStyling: LoginPageStyling =
 {
 	titlePanelsStyling:
 	{
-		heightPercentage: 40
+		displayStyling: new DisplayStyling({ heightPixels: 340 })
 	},
 
 	callTitlePanelStyling:
 	{
-		widthPercentage: 90,
-		heightPercentage: 50,
-		marginLeftPercentage: 5,
-		floatLeft: true
+		displayStyling: new DisplayStyling({
+			widthPercentage: 90,
+			heightPixels: 170,
+			marginLeftPercentage: 5,
+			floatLeft: true
+		})
 	},
 
 	cheatTitlePanelStyling:
 	{
-		widthPercentage: 90,
-		heightPercentage: 50,
-		marginLeftPercentage: 5,
-		floatLeft: true
+		displayStyling: new DisplayStyling({
+			widthPercentage: 90,
+			heightPixels: 170,
+			marginLeftPercentage: 5,
+			floatLeft: true
+		})
 	},
 
 	loginComponentStyling:
 	{
 		cardComponentStyling:
 		{
-			displayStyling: new DisplayStyling({ widthPercentage: 25, heightPixels: 400 })
+			displayStyling: new DisplayStyling({ widthPercentage: 90, heightPixels: 400 })
 		},
 
 		loginAsUserButtonComponentStyling:
@@ -181,30 +195,34 @@ const verySmallStyling: LoginPageStyling =
 {
 	titlePanelsStyling:
 	{
-		heightPercentage: 40
+		displayStyling: new DisplayStyling({ heightPixels: 340 })
 	},
 
 	callTitlePanelStyling:
 	{
-		widthPercentage: 90,
-		heightPercentage: 50,
-		marginLeftPercentage: 5,
-		floatLeft: true
+		displayStyling: new DisplayStyling({
+			widthPercentage: 90,
+			heightPixels: 170,
+			marginLeftPercentage: 5,
+			floatLeft: true
+		})
 	},
 
 	cheatTitlePanelStyling:
 	{
-		widthPercentage: 90,
-		heightPercentage: 50,
-		marginLeftPercentage: 5,
-		floatLeft: true
+		displayStyling: new DisplayStyling({
+			widthPercentage: 90,
+			heightPixels: 170,
+			marginLeftPercentage: 5,
+			floatLeft: true
+		})
 	},
 
 	loginComponentStyling:
 	{
 		cardComponentStyling:
 		{
-			displayStyling: new DisplayStyling({ widthPercentage: 25, heightPixels: 400 })
+			displayStyling: new DisplayStyling({ widthPercentage: 90, heightPixels: 400 })
 		},
 
 		loginAsUserButtonComponentStyling:
@@ -292,14 +310,14 @@ export class LoginPageComponent extends React.Component<LoginPageComponentProps,
 		let w = window.innerWidth;
 		let h = window.innerHeight;
 
-		if (w > 1400)
+		if (w > 1100)
 		{
 			if (this.state.loginPageStyling != largeStyling)
 			{
 				this.setState({ loginPageStyling: largeStyling });
 			}
 		}
-		else if (w > 1200)
+		else if (w > 1050)
 		{
 			if (this.state.loginPageStyling != mediumStyling)
 			{

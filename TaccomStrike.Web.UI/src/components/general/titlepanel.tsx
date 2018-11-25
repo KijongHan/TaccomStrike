@@ -21,17 +21,28 @@ export class TitlePanelComponentState
 
 export class TitlePanelStyling
 {
-	widthPercentage: number;
-	heightPercentage: number;
-	marginLeftPercentage: number;
-	floatLeft: boolean;
+	displayStyling: DisplayStyling;
 }
 
+const TitleCharacter = styled.div`
+	width: 100%;
+	height: 100%;
+	font-size: 7em;
+	line-height: ${(p: TitlePanelStyling) => p.displayStyling.getHeightString()}
+	text-align: center;
+
+	color: rgba(255, 255, 255, 0.95);
+	background-color: rgba(0, 0, 0, 0.35);
+	-webkit-box-shadow: -4px 4px 1px 0px rgba(0,0,0,0.55);
+	-moz-box-shadow: -4px 4px 1px 0px rgba(0,0,0,0.55);
+	box-shadow: -4px 4px 1px 0px rgba(0,0,0,0.55);
+`;
+
 const TitlePanel = styled.div`
-	width: ${(p: TitlePanelStyling) => p.widthPercentage}%;
-	height: ${(p: TitlePanelStyling) => p.heightPercentage}%;
-	float: ${(p: TitlePanelStyling) => p.floatLeft ? 'left' : 'none'};
-	margin-left: ${(p: TitlePanelStyling) => p.marginLeftPercentage}%;
+	width: ${(p: TitlePanelStyling) => p.displayStyling.getWidthString()};
+	height: ${(p: TitlePanelStyling) => p.displayStyling.getHeightString()};
+	float: ${(p: TitlePanelStyling) => p.displayStyling.getFloatString()};
+	margin: ${(p: TitlePanelStyling) => p.displayStyling.getMarginString()};
 	transform: rotateX(-4deg);
 `;
 
@@ -72,20 +83,23 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 		let cardComponents = this.state.titleLetters.map((titleLetter: string, index: number) =>
 		{
 			let titlePanel = (
-				<div>
+				<TitleCharacter
+					displayStyling={this.state.titlePanelStyling.displayStyling}>
 					{titleLetter}
-				</div>);
+				</TitleCharacter>);
+
 			let cardFlipAnimation = this.state.cardFlipAnimations[index];
-			console.log("What is this" + cardFlipAnimation);
-			return <CardComponent panel={titlePanel} cardStyling={this.state.cardStyling} cardOrientation={CardOrientation.Back} flipAnimation={cardFlipAnimation}/>;
+			return <CardComponent
+				panel={titlePanel}
+				cardStyling={this.state.cardStyling}
+				cardOrientation={CardOrientation.Back}
+				flipAnimation={cardFlipAnimation}
+				tiltAnimation={null}/>;
 		})
 
 		return (
 			<TitlePanel
-				widthPercentage={this.state.titlePanelStyling.widthPercentage}
-				heightPercentage={this.state.titlePanelStyling.heightPercentage}
-				marginLeftPercentage={this.state.titlePanelStyling.marginLeftPercentage}
-				floatLeft={this.state.titlePanelStyling.floatLeft}>
+				displayStyling={this.state.titlePanelStyling.displayStyling}>
 				{cardComponents}
 			</TitlePanel>
 		);

@@ -2,7 +2,7 @@
 import { ButtonComponent, ButtonComponentStyling } from "./button";
 
 import styled from "styled-components";
-import { CardComponent, CardComponentStyling, CardOrientation } from "./card";
+import { CardComponent, CardComponentStyling, CardOrientation, CardTiltAnimation } from "./card";
 import { debug } from "util";
 
 export interface LoginComponentProps
@@ -44,20 +44,25 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 		let loginComponent = (
 			<LoginComponentElement>
 				<ButtonComponent
-					buttonText="Login As User"
+					buttonText="User"
 					buttonClickHandler={this.loginAsUserButtonClickHandler}
 					buttonComponentStyling={this.state.loginComponentStyling.loginAsUserButtonComponentStyling} />
 				<ButtonComponent
-					buttonText="Login As Guest"
+					buttonText="Guest"
 					buttonClickHandler={this.loginAsUserButtonClickHandler}
 					buttonComponentStyling={this.state.loginComponentStyling.loginAsGuestButtonComponentStyling} />
 			</LoginComponentElement>);
+		let tiltAnimation = new CardTiltAnimation();
+		tiltAnimation.tiltAngle = 20;
+		tiltAnimation.tiltDelay = 0;
+		tiltAnimation.tiltDuration = 0.7;
 		return (
 			<CardComponent
 				panel={loginComponent}
 				cardStyling={this.state.loginComponentStyling.cardComponentStyling}
 				cardOrientation={CardOrientation.Front}
-				flipAnimation={null}>
+				flipAnimation={null}
+				tiltAnimation={tiltAnimation}>
 			</CardComponent>
 			);
 	}

@@ -32,8 +32,13 @@ const ButtonElement = styled.div`
 	float: ${(p: ButtonComponentStyling) => p.layoutStyling.getFloatString()};
 	width: ${(p: ButtonComponentStyling) => p.layoutStyling.getWidthString()};
 	height: ${(p: ButtonComponentStyling) => p.layoutStyling.getHeightString()};
-
+	line-height: ${(p: ButtonComponentStyling) => p.layoutStyling.getHeightString()};
 	margin: ${(p: ButtonComponentStyling) => p.layoutStyling.getMarginString()};
+	
+	&:hover {
+		background-color: rgba(255, 255, 255, 0.25);
+		cursor: pointer;
+	}
 `;
 
 export class ButtonComponent extends React.Component<ButtonComponentProps, ButtonComponentState>
