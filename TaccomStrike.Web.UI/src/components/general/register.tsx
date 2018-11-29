@@ -1,8 +1,8 @@
 ﻿import * as React from "react";
-import { ButtonComponent, ButtonComponentStyling } from "./button";
+import { ButtonComponent, ButtonComponentStyle } from "./button";
 
 import styled from "styled-components";
-import { CardComponent, CardComponentStyling } from "./card";
+import { CardComponent, CardComponentStyle } from "./card";
 
 export interface RegisterComponentProps
 {
@@ -13,8 +13,8 @@ export interface RegisterComponentState { }
 
 export interface RegisterComponentStyling
 {
-	cardComponentStyling: CardComponentStyling;
-	registerButtonComponentStyling: ButtonComponentStyling;
+	cardComponentStyling: CardComponentStyle;
+	registerButtonComponentStyling: ButtonComponentStyle;
 }
 
 const LoginComponentElement = styled.div`

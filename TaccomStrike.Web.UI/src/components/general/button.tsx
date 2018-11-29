@@ -1,21 +1,21 @@
 ﻿import * as React from "react";
 import styled from "styled-components";
-import { DisplayStyling } from "../../styling/layout";
+import { DisplayStyling } from "../../styling/displaystyling";
 
 export interface ButtonComponentProps
 {
 	buttonText: string;
 	buttonClickHandler: () => void;
 
-	buttonComponentStyling: ButtonComponentStyling
+	buttonComponentStyling: ButtonComponentStyle
 }
 
 export interface ButtonComponentState
 {
-	buttonComponentStyling: ButtonComponentStyling
+	buttonComponentStyling: ButtonComponentStyle
 }
 
-export interface ButtonComponentStyling
+export interface ButtonComponentStyle
 {
 	layoutStyling: DisplayStyling;
 }
@@ -29,11 +29,11 @@ const ButtonElement = styled.div`
 	-moz-box-shadow: 0px 0px 0.2px 2px rgba(255,255,255,0.7);
 	box-shadow: 0px 0px 0.2px 2px rgba(255,255,255,0.7);
 
-	float: ${(p: ButtonComponentStyling) => p.layoutStyling.getFloatString()};
-	width: ${(p: ButtonComponentStyling) => p.layoutStyling.getWidthString()};
-	height: ${(p: ButtonComponentStyling) => p.layoutStyling.getHeightString()};
-	line-height: ${(p: ButtonComponentStyling) => p.layoutStyling.getHeightString()};
-	margin: ${(p: ButtonComponentStyling) => p.layoutStyling.getMarginString()};
+	float: ${(p: ButtonComponentStyle) => p.layoutStyling.getFloatString()};
+	width: ${(p: ButtonComponentStyle) => p.layoutStyling.getWidthString()};
+	height: ${(p: ButtonComponentStyle) => p.layoutStyling.getHeightString()};
+	line-height: ${(p: ButtonComponentStyle) => p.layoutStyling.getHeightString()};
+	margin: ${(p: ButtonComponentStyle) => p.layoutStyling.getMarginString()};
 	
 	&:hover {
 		background-color: rgba(255, 255, 255, 0.25);
@@ -46,8 +46,7 @@ export class ButtonComponent extends React.Component<ButtonComponentProps, Butto
 	constructor(props: ButtonComponentProps)
 	{
 		super(props);
-		this.state =
-		{
+		this.state = {
 			buttonComponentStyling: props.buttonComponentStyling
 		};
 	}

@@ -1,9 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var UserViewModel = /** @class */ (function () {
-    function UserViewModel() {
-    }
-    return UserViewModel;
-}());
+class UserViewModel {
+}
 exports.UserViewModel = UserViewModel;
 //# sourceMappingURL=user.js.map

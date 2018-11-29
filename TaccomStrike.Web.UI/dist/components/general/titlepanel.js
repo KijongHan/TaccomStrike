@@ -1,61 +1,76 @@
 "use strict";
-var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
-    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
-    return cooked;
-};
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    }
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = require("react");
-var card_1 = require("./card");
-var styled_components_1 = require("styled-components");
-var TitlePanel = styled_components_1.default.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n\twidth: ", "%;\n\theight: ", "%;\n\tfloat: ", ";\n\tmargin-left: ", "%;\n\ttransform: rotateX(-4deg);\n"], ["\n\twidth: ", "%;\n\theight: ", "%;\n\tfloat: ", ";\n\tmargin-left: ", "%;\n\ttransform: rotateX(-4deg);\n"])), function (p) { return p.widthPercentage; }, function (p) { return p.heightPercentage; }, function (p) { return p.floatLeft ? 'left' : 'none'; }, function (p) { return p.marginLeftPercentage; });
-var TitlePanelComponent = /** @class */ (function (_super) {
-    __extends(TitlePanelComponent, _super);
-    function TitlePanelComponent(props) {
-        var _this = _super.call(this, props) || this;
-        var titleLetters = [];
-        for (var i = 0; i < props.title.length; i++) {
+const React = require("react");
+const card_1 = require("./card");
+const styled_components_1 = require("styled-components");
+const displaystyling_1 = require("../../styling/displaystyling");
+class TitlePanelComponentProps {
+}
+exports.TitlePanelComponentProps = TitlePanelComponentProps;
+class TitlePanelComponentState {
+}
+exports.TitlePanelComponentState = TitlePanelComponentState;
+class TitlePanelStyling {
+}
+exports.TitlePanelStyling = TitlePanelStyling;
+const TitleCharacter = styled_components_1.default.div `
+	width: 100%;
+	height: 100%;
+	font-size: 7em;
+	line-height: ${(p) => p.displayStyling.getHeightString()}
+	text-align: center;
+
+	color: rgba(255, 255, 255, 0.95);
+	background-color: rgba(0, 0, 0, 0.35);
+	-webkit-box-shadow: -4px 4px 1px 0px rgba(0,0,0,0.55);
+	-moz-box-shadow: -4px 4px 1px 0px rgba(0,0,0,0.55);
+	box-shadow: -4px 4px 1px 0px rgba(0,0,0,0.55);
+`;
+const TitlePanel = styled_components_1.default.div `
+	width: ${(p) => p.displayStyling.getWidthString()};
+	height: ${(p) => p.displayStyling.getHeightString()};
+	float: ${(p) => p.displayStyling.getFloatString()};
+	margin: ${(p) => p.displayStyling.getMarginString()};
+	transform: rotateX(-4deg);
+`;
+class TitlePanelComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        let titleLetters = [];
+        let cardFlipAnimations = [];
+        for (let i = 0; i < props.title.length; i++) {
+            let cardFlipAnimation = new card_1.CardFlipAnimation();
+            cardFlipAnimation.flipDelay = i;
+            cardFlipAnimation.flipDuration = 2;
             titleLetters.push(props.title.charAt(i));
+            cardFlipAnimations.push(cardFlipAnimation);
         }
-        var cardStyling = {
-            widthPercentage: 100 / titleLetters.length,
-            heightPercentage: 100
+        let cardStyling = {
+            displayStyling: new displaystyling_1.DisplayStyling({ widthPercentage: 100 / titleLetters.length, heightPercentage: 100 })
         };
-        _this.state =
+        this.state =
             {
                 titleLetters: titleLetters,
                 cardStyling: cardStyling,
-                titlePanelStyling: props.titlePanelStyling
+                titlePanelStyling: props.titlePanelStyling,
+                cardFlipAnimations: cardFlipAnimations
             };
-        return _this;
     }
-    TitlePanelComponent.prototype.render = function () {
-        var _this = this;
-        var cardComponents = this.state.titleLetters.map(function (titleLetter, index) {
-            var titlePanel = (React.createElement("div", null, titleLetter));
-            return React.createElement(card_1.CardComponent, { panel: titlePanel, cardStyling: _this.state.cardStyling });
+    render() {
+        let cardComponents = this.state.titleLetters.map((titleLetter, index) => {
+            let titlePanel = (React.createElement(TitleCharacter, { displayStyling: this.state.titlePanelStyling.displayStyling }, titleLetter));
+            let cardFlipAnimation = this.state.cardFlipAnimations[index];
+            return React.createElement(card_1.CardComponent, { panel: titlePanel, cardStyling: this.state.cardStyling, cardOrientation: card_1.CardOrientation.Back, flipAnimation: cardFlipAnimation, tiltAnimation: null });
         });
-        return (React.createElement(TitlePanel, { widthPercentage: this.state.titlePanelStyling.widthPercentage, heightPercentage: this.state.titlePanelStyling.heightPercentage, marginLeftPercentage: this.state.titlePanelStyling.marginLeftPercentage, floatLeft: this.state.titlePanelStyling.floatLeft }, cardComponents));
-    };
-    TitlePanelComponent.prototype.componentDidUpdate = function (prevProps, prevState) {
+        return (React.createElement(TitlePanel, { displayStyling: this.state.titlePanelStyling.displayStyling }, cardComponents));
+    }
+    componentDidMount() {
+    }
+    componentDidUpdate(prevProps, prevState) {
         if (this.props.titlePanelStyling !== prevProps.titlePanelStyling) {
             this.setState({ titlePanelStyling: this.props.titlePanelStyling });
         }
-    };
-    return TitlePanelComponent;
-}(React.Component));
+    }
+}
 exports.TitlePanelComponent = TitlePanelComponent;
-var templateObject_1;
 //# sourceMappingURL=titlepanel.js.map

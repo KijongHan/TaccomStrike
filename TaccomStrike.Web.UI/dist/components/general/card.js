@@ -1,45 +1,142 @@
 "use strict";
-var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
-    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
-    return cooked;
-};
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    }
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = require("react");
-var styled_components_1 = require("styled-components");
-var CardFront = styled_components_1.default.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n\tposition: absolute;\n\ttop: 0;\n\tbottom: 0;\n\tleft: 0;\n\tright: 0;\n"], ["\n\tposition: absolute;\n\ttop: 0;\n\tbottom: 0;\n\tleft: 0;\n\tright: 0;\n"])));
-var CardBack = styled_components_1.default.div(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n\tposition: absolute;\n\ttop: 0;\n\tbottom: 0;\n\tleft: 0;\n\tright: 0;\n\tbackground-color: black;\n\tborder-style: solid;\n\tborder-width: 4px;\n\tborder-color: rgba(180, 180, 180, 0.7);\n\ttransform: rotateY(180deg);\n"], ["\n\tposition: absolute;\n\ttop: 0;\n\tbottom: 0;\n\tleft: 0;\n\tright: 0;\n\tbackground-color: black;\n\tborder-style: solid;\n\tborder-width: 4px;\n\tborder-color: rgba(180, 180, 180, 0.7);\n\ttransform: rotateY(180deg);\n"])));
-var Card = styled_components_1.default.div(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n\tposition: relative;\n\tfloat: left;\n\twidth: ", "%;\n\theight: ", "%;\n"], ["\n\tposition: relative;\n\tfloat: left;\n\twidth: ", "%;\n\theight: ", "%;\n"])), function (p) { return p.widthPercentage; }, function (p) { return p.heightPercentage; });
-var CardComponent = /** @class */ (function (_super) {
-    __extends(CardComponent, _super);
-    function CardComponent(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state =
+const React = require("react");
+const styled_components_1 = require("styled-components");
+const util_1 = require("util");
+const CardFront = styled_components_1.default.div `
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	${(p) => util_1.isNullOrUndefined(p.tiltAnimation) ? '' :
+    `animation: ${CardTilt(p.startRotation, p.endRotation)} ${p.tiltAnimation.tiltDuration}s ${p.tiltAnimation.tiltDelay}s forwards`};
+	${(p) => util_1.isNullOrUndefined(p.flipAnimation) ? '' :
+    `animation: ${CardFlip(180, 'visible')} ${p.flipAnimation.flipDuration / 2}s ${p.flipAnimation.flipDelay}s forwards`};
+	visibility: ${(p) => p.display ? 'visible' : 'hidden'};
+	transform: ${(p) => p.flipped ? 'rotateY(180deg);' : 'rotateY(0deg);'};
+`;
+const CardBack = styled_components_1.default.div `
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: black;
+	border-style: solid;
+	border-width: 4px;
+	border-color: rgba(180, 180, 180, 0.7);
+	${(p) => util_1.isNullOrUndefined(p.tiltAnimation) ? '' :
+    `animation: ${CardTilt(p.startRotation, p.endRotation)} ${p.tiltAnimation.tiltDuration}s ${p.tiltAnimation.tiltDelay}s forwards`};
+	${(p) => util_1.isNullOrUndefined(p.flipAnimation) ? '' :
+    `animation: ${CardFlip(180, 'hidden')} ${p.flipAnimation.flipDuration / 2}s ${p.flipAnimation.flipDelay}s forwards`};
+	transform: ${(p) => p.flipped ? 'rotateY(180deg);' : 'rotateY(0deg);'};
+	visibility: ${(p) => p.display ? 'visible' : 'hidden'};
+`;
+const Card = styled_components_1.default.div `
+	position: relative;
+	float: left;
+	width: ${(p) => p.displayStyling.getWidthString()};
+	height: ${(p) => p.displayStyling.getHeightString()};
+	-webkit-perspective: 800px;
+	perspective: 800px;
+`;
+function CardTilt(startRotation, endRotation) {
+    return styled_components_1.keyframes `
+		0% {
+			transform: rotateY(${startRotation}deg);
+		}
+
+		100% {
+			transform: rotateY(${endRotation}deg);
+		}
+	`;
+}
+function CardFlip(startRotation, endVisibility) {
+    return styled_components_1.keyframes `
+		0% {
+			transform: rotateY(${startRotation}deg);
+		}
+	
+		50% {
+			transform: rotateY(90deg);
+			visibility: ${endVisibility};
+		}
+
+		100% {
+			transform: rotateY(0deg);
+			visibility: ${endVisibility};
+		}
+	`;
+}
+var CardOrientation;
+(function (CardOrientation) {
+    CardOrientation[CardOrientation["Front"] = 0] = "Front";
+    CardOrientation[CardOrientation["Back"] = 1] = "Back";
+})(CardOrientation = exports.CardOrientation || (exports.CardOrientation = {}));
+class CardBackStyling {
+}
+exports.CardBackStyling = CardBackStyling;
+class CardFrontStyling {
+}
+exports.CardFrontStyling = CardFrontStyling;
+class CardFlipAnimation {
+}
+exports.CardFlipAnimation = CardFlipAnimation;
+class CardTiltAnimation {
+}
+exports.CardTiltAnimation = CardTiltAnimation;
+class CardComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state =
             {
                 panel: props.panel,
-                cardStyling: props.cardStyling
+                cardStyling: props.cardStyling,
+                cardOrientation: props.cardOrientation,
+                flipAnimation: props.flipAnimation,
+                tiltAnimation: props.tiltAnimation
             };
-        return _this;
     }
-    CardComponent.prototype.render = function () {
-        return (React.createElement(Card, { widthPercentage: this.state.cardStyling.widthPercentage, heightPercentage: this.state.cardStyling.heightPercentage },
-            React.createElement(CardFront, null, this.state.panel),
-            React.createElement(CardBack, null)));
-    };
-    return CardComponent;
-}(React.Component));
+    render() {
+        let displayBack;
+        let displayFront;
+        let cardFlipped;
+        if (this.state.cardOrientation == CardOrientation.Front) {
+            displayBack = false;
+            displayFront = true;
+            cardFlipped = false;
+        }
+        else {
+            displayBack = true;
+            displayFront = false;
+            cardFlipped = true;
+        }
+        let startRotation;
+        let endRotation;
+        if (this.state.tiltAnimation != null) {
+            if (cardFlipped) {
+                startRotation = 180;
+            }
+            else {
+                startRotation = 0;
+            }
+            endRotation = this.state.tiltAnimation.tiltAngle + startRotation;
+        }
+        return (React.createElement(Card, { displayStyling: this.state.cardStyling.displayStyling },
+            React.createElement(CardFront, { flipAnimation: this.state.flipAnimation, tiltAnimation: this.state.tiltAnimation, display: displayFront, flipped: cardFlipped, startRotation: startRotation, endRotation: endRotation }, this.state.panel),
+            React.createElement(CardBack, { flipAnimation: this.state.flipAnimation, tiltAnimation: this.state.tiltAnimation, display: displayBack, flipped: cardFlipped, startRotation: startRotation, endRotation: endRotation })));
+    }
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.cardStyling !== prevProps.cardStyling) {
+            this.setState({
+                cardStyling: this.props.cardStyling,
+                panel: this.props.panel,
+                flipAnimation: this.props.flipAnimation,
+                tiltAnimation: this.props.tiltAnimation
+            });
+        }
+    }
+}
 exports.CardComponent = CardComponent;
-var templateObject_1, templateObject_2, templateObject_3;
 //# sourceMappingURL=card.js.map

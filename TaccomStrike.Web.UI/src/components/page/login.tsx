@@ -1,11 +1,11 @@
 ﻿import * as React from "react";
 import { TitlePanelComponent, TitlePanelStyling } from "../general/titlepanel";
-import { CardComponentStyling, CardComponent } from "../general/card";
-import { LoginComponent, LoginComponentStyling } from "../general/login";
+import { CardComponentStyle, CardComponent } from "../general/card";
+import { LoginComponent, LoginComponentStyle } from "../general/login";
 
 import styled from "styled-components";
 import { TitlePanelsStyling, TitlePanelsComponent } from "../general/titlepanels";
-import { DisplayStyling } from "../../styling/layout";
+import { DisplayStyling } from "../../styling/displaystyling";
 
 export interface LoginPageComponentProps { }
 
@@ -20,7 +20,7 @@ export interface LoginPageStyling
 	callTitlePanelStyling: TitlePanelStyling;
 	cheatTitlePanelStyling: TitlePanelStyling;
 
-	loginComponentStyling: LoginComponentStyling;
+	loginComponentStyling: LoginComponentStyle;
 }
 
 const LoginPage = styled.div`
@@ -56,12 +56,12 @@ const largeStyling: LoginPageStyling =
 
 	loginComponentStyling:
 	{
-		cardComponentStyling:
+		cardComponentStyle:
 		{
 			displayStyling: new DisplayStyling({ widthPercentage: 30, heightPixels: 400})
 		},
 
-		loginAsUserButtonComponentStyling:
+		loginAsUserButtonComponentStyle:
 		{
 			layoutStyling: new DisplayStyling({
 				floatLeft: true,
@@ -71,13 +71,22 @@ const largeStyling: LoginPageStyling =
 			})
 		},
 
-		loginAsGuestButtonComponentStyling:
+		loginAsGuestButtonComponentStyle:
 		{
 			layoutStyling: new DisplayStyling({
 				floatLeft: true,
 				widthPercentage: 30,
 				heightPixels: 50,
 				marginLeftPercentage: 5
+			})
+		},
+
+		usernameLabelledInputStyle:
+		{
+			displayStyling: new DisplayStyling({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
 			})
 		}
 	}
@@ -112,12 +121,12 @@ const mediumStyling: LoginPageStyling =
 
 	loginComponentStyling:
 	{
-		cardComponentStyling:
+		cardComponentStyle:
 		{
 			displayStyling: new DisplayStyling({ widthPercentage: 25, heightPixels: 400 })
 		},
 
-		loginAsUserButtonComponentStyling:
+		loginAsUserButtonComponentStyle:
 		{
 			layoutStyling: new DisplayStyling({
 				floatLeft: false,
@@ -126,12 +135,21 @@ const mediumStyling: LoginPageStyling =
 			})
 		},
 
-		loginAsGuestButtonComponentStyling:
+		loginAsGuestButtonComponentStyle:
 		{
 			layoutStyling: new DisplayStyling({
 				floatLeft: false,
 				widthPercentage: 80,
 				heightPixels: 50
+			})
+		},
+
+		usernameLabelledInputStyle:
+		{
+			displayStyling: new DisplayStyling({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
 			})
 		}
 	}
@@ -166,12 +184,12 @@ const smallStyling: LoginPageStyling =
 
 	loginComponentStyling:
 	{
-		cardComponentStyling:
+		cardComponentStyle:
 		{
 			displayStyling: new DisplayStyling({ widthPercentage: 90, heightPixels: 400 })
 		},
 
-		loginAsUserButtonComponentStyling:
+		loginAsUserButtonComponentStyle:
 		{
 			layoutStyling: new DisplayStyling({
 				floatLeft: false,
@@ -180,12 +198,21 @@ const smallStyling: LoginPageStyling =
 			})
 		},
 
-		loginAsGuestButtonComponentStyling:
+		loginAsGuestButtonComponentStyle:
 		{
 			layoutStyling: new DisplayStyling({
 				floatLeft: false,
 				widthPercentage: 80,
 				heightPixels: 50
+			})
+		},
+
+		usernameLabelledInputStyle:
+		{
+			displayStyling: new DisplayStyling({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
 			})
 		}
 	}
@@ -220,12 +247,12 @@ const verySmallStyling: LoginPageStyling =
 
 	loginComponentStyling:
 	{
-		cardComponentStyling:
+		cardComponentStyle:
 		{
 			displayStyling: new DisplayStyling({ widthPercentage: 90, heightPixels: 400 })
 		},
 
-		loginAsUserButtonComponentStyling:
+		loginAsUserButtonComponentStyle:
 		{
 			layoutStyling: new DisplayStyling({
 				floatLeft: false,
@@ -234,12 +261,21 @@ const verySmallStyling: LoginPageStyling =
 			})
 		},
 
-		loginAsGuestButtonComponentStyling:
+		loginAsGuestButtonComponentStyle:
 		{
 			layoutStyling: new DisplayStyling({
 				floatLeft: false,
 				widthPercentage: 80,
 				heightPixels: 50
+			})
+		},
+
+		usernameLabelledInputStyle:
+		{
+			displayStyling: new DisplayStyling({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
 			})
 		}
 	}
@@ -270,7 +306,7 @@ export class LoginPageComponent extends React.Component<LoginPageComponentProps,
 				</TitlePanelsComponent>
 
 				<LoginComponent
-					loginComponentStyling={this.state.loginPageStyling.loginComponentStyling}>
+					loginComponentStyle={this.state.loginPageStyling.loginComponentStyling}>
 				</LoginComponent>
 			</LoginPage>
 		);

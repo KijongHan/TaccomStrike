@@ -9,6 +9,7 @@ export class DisplayStyling
 	heightPercentage?: number;
 
 	floatLeft?: boolean;
+	floatRight?: boolean;
 
 	marginTopPixels?: number;
 	marginTopPercentage?: number;
@@ -108,6 +109,10 @@ export class DisplayStyling
 		if (!isNullOrUndefined(this.floatLeft) && this.floatLeft === true)
 		{
 			return 'left';
+		}
+		else if (!isNullOrUndefined(this.floatRight) && this.floatRight === true)
+		{
+			return 'right';
 		}
 		else
 		{

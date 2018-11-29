@@ -39,6 +39,7 @@
     <Folder Include="src\models\" />
     <Folder Include="src\viewmodels\" />
     <Folder Include="src\services\" />
+	<Folder Include="src\styling\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="index.html">
@@ -53,6 +54,9 @@
     <TypeScriptCompile Include="src\components\general\heading.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\components\general\labelledinput.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\components\general\login.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -62,7 +66,7 @@
     <TypeScriptCompile Include="src\components\general\titlepanel.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-	<TypeScriptCompile Include="src\components\general\titlepanels.tsx">
+    <TypeScriptCompile Include="src\components\general\titlepanels.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\components\page\login.tsx">
@@ -78,6 +82,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\viewmodels\user.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+	<TypeScriptCompile Include="src\styling\displaystyling.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="webpack.config.js">

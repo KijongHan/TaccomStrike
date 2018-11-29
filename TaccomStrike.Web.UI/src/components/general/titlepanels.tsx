@@ -1,9 +1,9 @@
 ﻿import * as React from "react";
 import { TitlePanelStyling, TitlePanelComponent } from "./titlepanel";
-import { CardComponent, CardComponentStyling } from "./card";
+import { CardComponent, CardComponentStyle } from "./card";
 
 import styled from "styled-components"
-import { DisplayStyling } from "../../styling/layout";
+import { DisplayStyling } from "../../styling/displaystyling";
 
 export interface TitlePanelsComponentProps
 {

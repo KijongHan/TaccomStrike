@@ -1,8 +1,8 @@
 ﻿import * as React from "react";
-import { CardComponent, CardComponentStyling, CardOrientation, CardFlipAnimation } from "./card";
+import { CardComponent, CardComponentStyle, CardOrientation, CardFlipAnimation } from "./card";
 
 import styled from "styled-components"
-import { DisplayStyling } from "../../styling/layout";
+import { DisplayStyling } from "../../styling/displaystyling";
 
 export class TitlePanelComponentProps
 {
@@ -15,7 +15,7 @@ export class TitlePanelComponentState
 	titleLetters: string[];
 	cardFlipAnimations: CardFlipAnimation[];
 
-	cardStyling: CardComponentStyling;
+	cardStyling: CardComponentStyle;
 	titlePanelStyling: TitlePanelStyling;
 }
 
@@ -64,7 +64,7 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 			cardFlipAnimations.push(cardFlipAnimation);
 		}
 
-		let cardStyling: CardComponentStyling =
+		let cardStyling: CardComponentStyle =
 		{
 			displayStyling: new DisplayStyling({widthPercentage: 100/titleLetters.length, heightPercentage:100})
 		};
