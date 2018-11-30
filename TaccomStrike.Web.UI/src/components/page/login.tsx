@@ -1,42 +1,48 @@
 ﻿import * as React from "react";
-import { TitlePanelComponent, TitlePanelStyling } from "../general/titlepanel";
+import { TitlePanelComponent, TitlePanelStyle } from "../general/titlepanel";
 import { CardComponentStyle, CardComponent } from "../general/card";
 import { LoginComponent, LoginComponentStyle } from "../general/login";
 
 import styled from "styled-components";
-import { TitlePanelsStyling, TitlePanelsComponent } from "../general/titlepanels";
-import { DisplayStyling } from "../../styling/displaystyling";
+import { TitlePanelsStyle, TitlePanelsComponent } from "../general/titlepanels";
+import { DisplayStyle, Position } from "../../styles/displaystyle";
 
 export interface LoginPageComponentProps { }
 
 export interface LoginPageComponentState
 {
-	loginPageStyling: LoginPageStyling;
+	loginPageStyle: LoginPageStyle;
 }
 
-export interface LoginPageStyling
+export interface LoginPageStyle
 {
-	titlePanelsStyling: TitlePanelsStyling;
-	callTitlePanelStyling: TitlePanelStyling;
-	cheatTitlePanelStyling: TitlePanelStyling;
+	titlePanelsStyle: TitlePanelsStyle;
+	callTitlePanelStyle: TitlePanelStyle;
+	cheatTitlePanelStyle: TitlePanelStyle;
 
-	loginComponentStyling: LoginComponentStyle;
+	loginComponentStyle: LoginComponentStyle;
 }
 
 const LoginPage = styled.div`
 	height: 100%;
 `;
 
-const largeStyling: LoginPageStyling =
+const PanelsContainer = styled.div`
+	overflow: auto;
+	padding-top: 25px;
+	padding-bottom: 25px;
+`;
+
+const largeStyle: LoginPageStyle =
 {
-	titlePanelsStyling:
+	titlePanelsStyle:
 	{
-		displayStyling: new DisplayStyling({ heightPixels: 170 })
+		displayStyling: new DisplayStyle({ heightPixels: 170 })
 	},
 
-	callTitlePanelStyling:
+	callTitlePanelStyle:
 	{
-		displayStyling: new DisplayStyling({
+		displayStyle: new DisplayStyle({
 			widthPercentage: 40,
 			heightPixels: 170,
 			marginLeftPercentage: 1,
@@ -44,9 +50,9 @@ const largeStyling: LoginPageStyling =
 		})
 	},
 
-	cheatTitlePanelStyling:
+	cheatTitlePanelStyle:
 	{
-		displayStyling: new DisplayStyling({
+		displayStyle: new DisplayStyle({
 			widthPercentage: 55,
 			heightPixels: 170,
 			marginLeftPercentage: 3,
@@ -54,16 +60,19 @@ const largeStyling: LoginPageStyling =
 		})
 	},
 
-	loginComponentStyling:
+	loginComponentStyle:
 	{
 		cardComponentStyle:
 		{
-			displayStyling: new DisplayStyling({ widthPercentage: 30, heightPixels: 400})
+			displayStyle: new DisplayStyle({
+				widthPercentage: 30,
+				heightPixels: 400
+			})
 		},
 
-		loginAsUserButtonComponentStyle:
+		userButtonComponentStyle:
 		{
-			layoutStyling: new DisplayStyling({
+			displayStyle: new DisplayStyle({
 				floatLeft: true,
 				widthPercentage: 30,
 				heightPixels: 50,
@@ -71,10 +80,110 @@ const largeStyling: LoginPageStyling =
 			})
 		},
 
-		loginAsGuestButtonComponentStyle:
+		guestButtonComponentStyle:
 		{
-			layoutStyling: new DisplayStyling({
+			displayStyle: new DisplayStyle({
 				floatLeft: true,
+				widthPercentage: 30,
+				heightPixels: 50,
+				marginLeftPercentage: 5
+			})
+		},
+
+		loginButtonComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 30,
+				heightPixels: 50,
+				marginLeftPercentage: 5,
+				position: Position.absolute,
+				bottomPixels: 10
+			})
+		},
+
+		usernameLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 20
+			})
+		},
+
+		passwordLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
+			})
+		}
+	}
+}
+
+const mediumStyling: LoginPageStyle =
+{
+	titlePanelsStyle:
+	{
+		displayStyling: new DisplayStyle({
+			heightPixels: 340
+		})
+	},
+
+	callTitlePanelStyle:
+	{
+		displayStyle: new DisplayStyle({
+			widthPercentage: 90,
+			heightPixels: 170,
+			marginLeftPercentage: 5,
+			floatLeft: true
+		})
+	},
+
+	cheatTitlePanelStyle:
+	{
+		displayStyle: new DisplayStyle({
+			widthPercentage: 90,
+			heightPixels: 170,
+			marginLeftPercentage: 5,
+			floatLeft: true
+		})
+	},
+
+	loginComponentStyle:
+	{
+		cardComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 40,
+				marginLeftPercentage: 5,
+				heightPixels: 400
+			})
+		},
+
+		userButtonComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
+				floatLeft: true,
+				marginLeftPercentage: 5,
+				widthPercentage: 45,
+				heightPixels: 50
+			})
+		},
+
+		guestButtonComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
+				floatLeft: true,
+				marginLeftPercentage: 2.5,
+				widthPercentage: 45,
+				heightPixels: 50
+			})
+		},
+
+		loginButtonComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
 				widthPercentage: 30,
 				heightPixels: 50,
 				marginLeftPercentage: 5
@@ -83,7 +192,16 @@ const largeStyling: LoginPageStyling =
 
 		usernameLabelledInputStyle:
 		{
-			displayStyling: new DisplayStyling({
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 20
+			})
+		},
+
+		passwordLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
 				widthPercentage: 90,
 				marginLeftPercentage: 5,
 				marginTopPixels: 10
@@ -92,16 +210,16 @@ const largeStyling: LoginPageStyling =
 	}
 }
 
-const mediumStyling: LoginPageStyling =
+const smallStyling: LoginPageStyle =
 {
-	titlePanelsStyling:
+	titlePanelsStyle:
 	{
-		displayStyling: new DisplayStyling({ heightPixels: 340 })
+		displayStyling: new DisplayStyle({ heightPixels: 340 })
 	},
 
-	callTitlePanelStyling:
+	callTitlePanelStyle:
 	{
-		displayStyling: new DisplayStyling({
+		displayStyle: new DisplayStyle({
 			widthPercentage: 90,
 			heightPixels: 170,
 			marginLeftPercentage: 5,
@@ -109,9 +227,9 @@ const mediumStyling: LoginPageStyling =
 		})
 	},
 
-	cheatTitlePanelStyling:
+	cheatTitlePanelStyle:
 	{
-		displayStyling: new DisplayStyling({
+		displayStyle: new DisplayStyle({
 			widthPercentage: 90,
 			heightPixels: 170,
 			marginLeftPercentage: 5,
@@ -119,34 +237,52 @@ const mediumStyling: LoginPageStyling =
 		})
 	},
 
-	loginComponentStyling:
+	loginComponentStyle:
 	{
 		cardComponentStyle:
 		{
-			displayStyling: new DisplayStyling({ widthPercentage: 25, heightPixels: 400 })
+			displayStyle: new DisplayStyle({ widthPercentage: 90, heightPixels: 400 })
 		},
 
-		loginAsUserButtonComponentStyle:
+		userButtonComponentStyle:
 		{
-			layoutStyling: new DisplayStyling({
+			displayStyle: new DisplayStyle({
 				floatLeft: false,
 				widthPercentage: 80,
 				heightPixels: 50
 			})
 		},
 
-		loginAsGuestButtonComponentStyle:
+		guestButtonComponentStyle:
 		{
-			layoutStyling: new DisplayStyling({
+			displayStyle: new DisplayStyle({
 				floatLeft: false,
 				widthPercentage: 80,
 				heightPixels: 50
+			})
+		},
+
+		loginButtonComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 30,
+				heightPixels: 50,
+				marginLeftPercentage: 5
 			})
 		},
 
 		usernameLabelledInputStyle:
 		{
-			displayStyling: new DisplayStyling({
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 20
+			})
+		},
+
+		passwordLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
 				widthPercentage: 90,
 				marginLeftPercentage: 5,
 				marginTopPixels: 10
@@ -155,16 +291,16 @@ const mediumStyling: LoginPageStyling =
 	}
 }
 
-const smallStyling: LoginPageStyling =
+const verySmallStyling: LoginPageStyle =
 {
-	titlePanelsStyling:
+	titlePanelsStyle:
 	{
-		displayStyling: new DisplayStyling({ heightPixels: 340 })
+		displayStyling: new DisplayStyle({ heightPixels: 340 })
 	},
 
-	callTitlePanelStyling:
+	callTitlePanelStyle:
 	{
-		displayStyling: new DisplayStyling({
+		displayStyle: new DisplayStyle({
 			widthPercentage: 90,
 			heightPixels: 170,
 			marginLeftPercentage: 5,
@@ -172,9 +308,9 @@ const smallStyling: LoginPageStyling =
 		})
 	},
 
-	cheatTitlePanelStyling:
+	cheatTitlePanelStyle:
 	{
-		displayStyling: new DisplayStyling({
+		displayStyle: new DisplayStyle({
 			widthPercentage: 90,
 			heightPixels: 170,
 			marginLeftPercentage: 5,
@@ -182,97 +318,52 @@ const smallStyling: LoginPageStyling =
 		})
 	},
 
-	loginComponentStyling:
+	loginComponentStyle:
 	{
 		cardComponentStyle:
 		{
-			displayStyling: new DisplayStyling({ widthPercentage: 90, heightPixels: 400 })
+			displayStyle: new DisplayStyle({ widthPercentage: 90, heightPixels: 400 })
 		},
 
-		loginAsUserButtonComponentStyle:
+		userButtonComponentStyle:
 		{
-			layoutStyling: new DisplayStyling({
+			displayStyle: new DisplayStyle({
 				floatLeft: false,
 				widthPercentage: 80,
 				heightPixels: 50
 			})
 		},
 
-		loginAsGuestButtonComponentStyle:
+		guestButtonComponentStyle:
 		{
-			layoutStyling: new DisplayStyling({
+			displayStyle: new DisplayStyle({
 				floatLeft: false,
 				widthPercentage: 80,
 				heightPixels: 50
+			})
+		},
+
+		loginButtonComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 30,
+				heightPixels: 50,
+				marginLeftPercentage: 5
 			})
 		},
 
 		usernameLabelledInputStyle:
 		{
-			displayStyling: new DisplayStyling({
+			displayStyle: new DisplayStyle({
 				widthPercentage: 90,
 				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		}
-	}
-}
-
-const verySmallStyling: LoginPageStyling =
-{
-	titlePanelsStyling:
-	{
-		displayStyling: new DisplayStyling({ heightPixels: 340 })
-	},
-
-	callTitlePanelStyling:
-	{
-		displayStyling: new DisplayStyling({
-			widthPercentage: 90,
-			heightPixels: 170,
-			marginLeftPercentage: 5,
-			floatLeft: true
-		})
-	},
-
-	cheatTitlePanelStyling:
-	{
-		displayStyling: new DisplayStyling({
-			widthPercentage: 90,
-			heightPixels: 170,
-			marginLeftPercentage: 5,
-			floatLeft: true
-		})
-	},
-
-	loginComponentStyling:
-	{
-		cardComponentStyle:
-		{
-			displayStyling: new DisplayStyling({ widthPercentage: 90, heightPixels: 400 })
-		},
-
-		loginAsUserButtonComponentStyle:
-		{
-			layoutStyling: new DisplayStyling({
-				floatLeft: false,
-				widthPercentage: 80,
-				heightPixels: 50
+				marginTopPixels: 20
 			})
 		},
 
-		loginAsGuestButtonComponentStyle:
+		passwordLabelledInputStyle:
 		{
-			layoutStyling: new DisplayStyling({
-				floatLeft: false,
-				widthPercentage: 80,
-				heightPixels: 50
-			})
-		},
-
-		usernameLabelledInputStyle:
-		{
-			displayStyling: new DisplayStyling({
+			displayStyle: new DisplayStyle({
 				widthPercentage: 90,
 				marginLeftPercentage: 5,
 				marginTopPixels: 10
@@ -288,26 +379,28 @@ export class LoginPageComponent extends React.Component<LoginPageComponentProps,
 		super(props);
 		this.state =
 		{
-			loginPageStyling: largeStyling
+			loginPageStyle: largeStyle
 		};
 	}
 
 	render()
 	{
 		let titleWords = ["Call", "Cheat"];
-		let titlePanelStylings = [this.state.loginPageStyling.callTitlePanelStyling, this.state.loginPageStyling.cheatTitlePanelStyling];
+		let titlePanelStylings = [this.state.loginPageStyle.callTitlePanelStyle, this.state.loginPageStyle.cheatTitlePanelStyle];
 
 		return (
 			<LoginPage>
 				<TitlePanelsComponent
 					titleWords={titleWords}
-					titlePanelStylings={titlePanelStylings}
-					titlePanelsStyling={this.state.loginPageStyling.titlePanelsStyling}>
+					titlePanelStyles={titlePanelStylings}
+					titlePanelsStyle={this.state.loginPageStyle.titlePanelsStyle}>
 				</TitlePanelsComponent>
 
-				<LoginComponent
-					loginComponentStyle={this.state.loginPageStyling.loginComponentStyling}>
-				</LoginComponent>
+				<PanelsContainer>
+					<LoginComponent
+						loginComponentStyle={this.state.loginPageStyle.loginComponentStyle}>
+					</LoginComponent>
+				</PanelsContainer>
 			</LoginPage>
 		);
 	}
@@ -348,30 +441,30 @@ export class LoginPageComponent extends React.Component<LoginPageComponentProps,
 
 		if (w > 1100)
 		{
-			if (this.state.loginPageStyling != largeStyling)
+			if (this.state.loginPageStyle != largeStyle)
 			{
-				this.setState({ loginPageStyling: largeStyling });
+				this.setState({ loginPageStyle: largeStyle });
 			}
 		}
-		else if (w > 1050)
+		else if (w > 950)
 		{
-			if (this.state.loginPageStyling != mediumStyling)
+			if (this.state.loginPageStyle != mediumStyling)
 			{
-				this.setState({ loginPageStyling: mediumStyling });
+				this.setState({ loginPageStyle: mediumStyling });
 			}
 		}
-		else if (w > 1000)
+		else if (w > 850)
 		{
-			if (this.state.loginPageStyling != smallStyling)
+			if (this.state.loginPageStyle != smallStyling)
 			{
-				this.setState({ loginPageStyling: smallStyling });
+				this.setState({ loginPageStyle: smallStyling });
 			}
 		}
 		else
 		{
-			if (this.state.loginPageStyling != verySmallStyling)
+			if (this.state.loginPageStyle != verySmallStyling)
 			{
-				this.setState({ loginPageStyling: verySmallStyling });
+				this.setState({ loginPageStyle: verySmallStyling });
 			}
 		}
 	}

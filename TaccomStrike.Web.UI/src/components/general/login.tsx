@@ -6,22 +6,26 @@ import { CardComponent, CardComponentStyle, CardOrientation, CardTiltAnimation }
 import { debug } from "util";
 import { LabelledInputComponent, LabelledInputComponentStyle } from "./labelledinput";
 
-export interface LoginComponentProps
+export class LoginComponentProps
 {
 	loginComponentStyle: LoginComponentStyle
 }
 
-export interface LoginComponentState
+export class LoginComponentState
 {
 	loginComponentStyle: LoginComponentStyle
 }
 
-export interface LoginComponentStyle
+export class LoginComponentStyle
 {
 	cardComponentStyle: CardComponentStyle;
-	loginAsUserButtonComponentStyle: ButtonComponentStyle;
-	loginAsGuestButtonComponentStyle: ButtonComponentStyle;
+
+	userButtonComponentStyle: ButtonComponentStyle;
+	guestButtonComponentStyle: ButtonComponentStyle;
+	loginButtonComponentStyle: ButtonComponentStyle;
+
 	usernameLabelledInputStyle: LabelledInputComponentStyle;
+	passwordLabelledInputStyle: LabelledInputComponentStyle;
 }
 
 const LoginComponentElement = styled.div`
@@ -52,18 +56,27 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 				<ButtonsPanel>
 					<ButtonComponent
 						buttonText="User"
-						buttonClickHandler={this.loginAsUserButtonClickHandler}
-						buttonComponentStyling={this.state.loginComponentStyle.loginAsUserButtonComponentStyle} />
+						buttonClickHandler={this.userButtonClickHandler}
+						buttonComponentStyle={this.state.loginComponentStyle.userButtonComponentStyle} />
 					<ButtonComponent
 						buttonText="Guest"
-						buttonClickHandler={this.loginAsUserButtonClickHandler}
-						buttonComponentStyling={this.state.loginComponentStyle.loginAsGuestButtonComponentStyle} />
+						buttonClickHandler={this.userButtonClickHandler}
+						buttonComponentStyle={this.state.loginComponentStyle.guestButtonComponentStyle} />
 				</ButtonsPanel>
 				<LabelledInputComponent
 					initialValue={""}
 					labelValue={"Username"}
-					componentStyle={this.state.loginComponentStyle.usernameLabelledInputStyle}/>
+					componentStyle={this.state.loginComponentStyle.usernameLabelledInputStyle} />
+				<LabelledInputComponent
+					initialValue={""}
+					labelValue={"Password"}
+					componentStyle={this.state.loginComponentStyle.usernameLabelledInputStyle} />
+				<ButtonComponent
+					buttonText="Login"
+					buttonClickHandler={this.loginButtonClickHandler}
+					buttonComponentStyle={this.state.loginComponentStyle.loginButtonComponentStyle} />
 			</LoginComponentElement>);
+
 		let tiltAnimation = new CardTiltAnimation();
 		tiltAnimation.tiltAngle = 20;
 		tiltAnimation.tiltDelay = 0;
@@ -76,12 +89,17 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 				flipAnimation={null}
 				tiltAnimation={tiltAnimation}>
 			</CardComponent>
-			);
+		);
 	}
 
-	loginAsUserButtonClickHandler = () =>
+	userButtonClickHandler = () =>
 	{
 		console.log("login");
+	}
+
+	loginButtonClickHandler = () =>
+	{
+
 	}
 
 	componentDidUpdate(prevProps: LoginComponentProps, prevState: LoginComponentState)

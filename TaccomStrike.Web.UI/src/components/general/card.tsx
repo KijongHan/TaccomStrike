@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 import styled, { keyframes } from "styled-components";
-import { DisplayStyling } from "../../styling/displaystyling";
+import { DisplayStyle } from "../../styles/displaystyle";
 import { isNullOrUndefined } from "util";
 
 const CardFront = styled.div`
@@ -46,8 +46,9 @@ const CardBack = styled.div`
 const Card = styled.div`
 	position: relative;
 	float: left;
-	width: ${(p: CardComponentStyle) => p.displayStyling.getWidthString()};
-	height: ${(p: CardComponentStyle) => p.displayStyling.getHeightString()};
+	width: ${(p: CardComponentStyle) => p.displayStyle.getWidthString()};
+	height: ${(p: CardComponentStyle) => p.displayStyle.getHeightString()};
+	margin: ${(p : CardComponentStyle) => p.displayStyle.getMarginString()};
 	-webkit-perspective: 800px;
 	perspective: 800px;
 `;
@@ -92,7 +93,7 @@ export enum CardOrientation
 
 export interface CardComponentStyle
 {
-	displayStyling: DisplayStyling;
+	displayStyle: DisplayStyle;
 }
 
 export class CardBackStyling
@@ -204,7 +205,7 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 		
 		return (
 			<Card
-				displayStyling={this.state.cardStyling.displayStyling}>
+				displayStyle={this.state.cardStyling.displayStyle}>
 				<CardFront
 					flipAnimation={this.state.flipAnimation}
 					tiltAnimation={this.state.tiltAnimation}

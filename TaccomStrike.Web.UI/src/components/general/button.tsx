@@ -1,23 +1,23 @@
 ﻿import * as React from "react";
 import styled from "styled-components";
-import { DisplayStyling } from "../../styling/displaystyling";
+import { DisplayStyle } from "../../styles/displaystyle";
 
 export interface ButtonComponentProps
 {
 	buttonText: string;
 	buttonClickHandler: () => void;
 
-	buttonComponentStyling: ButtonComponentStyle
+	buttonComponentStyle: ButtonComponentStyle
 }
 
 export interface ButtonComponentState
 {
-	buttonComponentStyling: ButtonComponentStyle
+	buttonComponentStyle: ButtonComponentStyle
 }
 
 export interface ButtonComponentStyle
 {
-	layoutStyling: DisplayStyling;
+	displayStyle: DisplayStyle;
 }
 
 const ButtonElement = styled.div`
@@ -29,12 +29,15 @@ const ButtonElement = styled.div`
 	-moz-box-shadow: 0px 0px 0.2px 2px rgba(255,255,255,0.7);
 	box-shadow: 0px 0px 0.2px 2px rgba(255,255,255,0.7);
 
-	float: ${(p: ButtonComponentStyle) => p.layoutStyling.getFloatString()};
-	width: ${(p: ButtonComponentStyle) => p.layoutStyling.getWidthString()};
-	height: ${(p: ButtonComponentStyle) => p.layoutStyling.getHeightString()};
-	line-height: ${(p: ButtonComponentStyle) => p.layoutStyling.getHeightString()};
-	margin: ${(p: ButtonComponentStyle) => p.layoutStyling.getMarginString()};
-	
+	float: ${(p: ButtonComponentStyle) => p.displayStyle.getFloatString()};
+	width: ${(p: ButtonComponentStyle) => p.displayStyle.getWidthString()};
+	height: ${(p: ButtonComponentStyle) => p.displayStyle.getHeightString()};
+	line-height: ${(p: ButtonComponentStyle) => p.displayStyle.getHeightString()};
+	margin: ${(p: ButtonComponentStyle) => p.displayStyle.getMarginString()};
+	position: ${(p: ButtonComponentStyle) => p.displayStyle.getPositionString()};
+
+	bottom: ${(p: ButtonComponentStyle) => p.displayStyle.getBottomString()};
+
 	&:hover {
 		background-color: rgba(255, 255, 255, 0.25);
 		cursor: pointer;
@@ -47,7 +50,7 @@ export class ButtonComponent extends React.Component<ButtonComponentProps, Butto
 	{
 		super(props);
 		this.state = {
-			buttonComponentStyling: props.buttonComponentStyling
+			buttonComponentStyle: props.buttonComponentStyle
 		};
 	}
 
@@ -55,7 +58,7 @@ export class ButtonComponent extends React.Component<ButtonComponentProps, Butto
 	{
 		return (
 			<ButtonElement
-				layoutStyling={this.state.buttonComponentStyling.layoutStyling}
+				displayStyle={this.state.buttonComponentStyle.displayStyle}
 				onClick={this.props.buttonClickHandler}>
 				{this.props.buttonText}
 			</ButtonElement>
@@ -64,9 +67,9 @@ export class ButtonComponent extends React.Component<ButtonComponentProps, Butto
 
 	componentDidUpdate(prevProps: ButtonComponentProps, prevState: ButtonComponentState)
 	{
-		if (this.props.buttonComponentStyling !== prevProps.buttonComponentStyling)
+		if (this.props.buttonComponentStyle !== prevProps.buttonComponentStyle)
 		{
-			this.setState({ buttonComponentStyling: this.props.buttonComponentStyling });
+			this.setState({ buttonComponentStyle: this.props.buttonComponentStyle });
 		}
 	}
 }

@@ -2,22 +2,75 @@
 import { ButtonComponent, ButtonComponentStyle } from "./button";
 
 import styled from "styled-components";
-import { CardComponent, CardComponentStyle } from "./card";
+import { CardComponent, CardComponentStyle, CardTiltAnimation, CardOrientation } from "./card";
+import { LabelledInputComponentStyle } from "./labelledinput";
 
 export interface RegisterComponentProps
 {
-	loginComponentStyling: RegisterComponentStyling
+	registerComponentStyle: RegisterComponentStyle
 }
 
-export interface RegisterComponentState { }
-
-export interface RegisterComponentStyling
+export class RegisterComponentState
 {
-	cardComponentStyling: CardComponentStyle;
-	registerButtonComponentStyling: ButtonComponentStyle;
+	registerComponentStyle: RegisterComponentStyle
 }
 
-const LoginComponentElement = styled.div`
+export class RegisterComponentStyle
+{
+	cardComponentStyle: CardComponentStyle;
+
+	usernameLabelledInputStyle: LabelledInputComponentStyle;
+	emailLabelledInputStyle: LabelledInputComponentStyle;
+	passwordLabelledInputStyle: LabelledInputComponentStyle;
+	confirmPasswordLabelledInputStyle: LabelledInputComponentStyle;
+
+	registerButtonComponentStyle: ButtonComponentStyle;
+}
+
+const RegisterComponentElement = styled.div`
 	height: 100%;
 	width: 100%;
+	background-color: rgba(0, 0, 0, 0.88);
 `;
+
+export class RegisterComponent extends React.Component<RegisterComponentProps, RegisterComponentState>
+{
+	constructor(props: RegisterComponentProps)
+	{
+		super(props);
+		this.state =
+		{
+			registerComponentStyle: props.registerComponentStyle
+		};
+	}
+
+	render()
+	{
+		let tiltAnimation = new CardTiltAnimation();
+		tiltAnimation.tiltAngle = 20;
+		tiltAnimation.tiltDelay = 0;
+		tiltAnimation.tiltDuration = 0.7;
+		return (
+			<CardComponent
+				panel={registerComponent}
+				cardStyling={this.state.registerComponentStyle.cardComponentStyle}
+				cardOrientation={CardOrientation.Front}
+				flipAnimation={null}
+				tiltAnimation={tiltAnimation}>
+			</CardComponent>
+		);
+	}
+
+	registerButtonClickHandler = () =>
+	{
+
+	};
+
+	componentDidUpdate(prevProps: RegisterComponentProps, prevState: RegisterComponentState)
+	{
+		if (this.props.registerComponentStyle !== prevProps.registerComponentStyle)
+		{
+			this.setState({ registerComponentStyle: this.props.registerComponentStyle });
+		}
+	}
+}

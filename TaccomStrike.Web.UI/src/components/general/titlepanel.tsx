@@ -2,12 +2,12 @@
 import { CardComponent, CardComponentStyle, CardOrientation, CardFlipAnimation } from "./card";
 
 import styled from "styled-components"
-import { DisplayStyling } from "../../styling/displaystyling";
+import { DisplayStyle } from "../../styles/displaystyle";
 
 export class TitlePanelComponentProps
 {
 	title: string;
-	titlePanelStyling: TitlePanelStyling;
+	titlePanelStyling: TitlePanelStyle;
 }
 
 export class TitlePanelComponentState
@@ -16,19 +16,19 @@ export class TitlePanelComponentState
 	cardFlipAnimations: CardFlipAnimation[];
 
 	cardStyling: CardComponentStyle;
-	titlePanelStyling: TitlePanelStyling;
+	titlePanelStyling: TitlePanelStyle;
 }
 
-export class TitlePanelStyling
+export class TitlePanelStyle
 {
-	displayStyling: DisplayStyling;
+	displayStyle: DisplayStyle;
 }
 
 const TitleCharacter = styled.div`
 	width: 100%;
 	height: 100%;
 	font-size: 7em;
-	line-height: ${(p: TitlePanelStyling) => p.displayStyling.getHeightString()}
+	line-height: ${(p: TitlePanelStyle) => p.displayStyle.getHeightString()}
 	text-align: center;
 
 	color: rgba(255, 255, 255, 0.95);
@@ -39,10 +39,10 @@ const TitleCharacter = styled.div`
 `;
 
 const TitlePanel = styled.div`
-	width: ${(p: TitlePanelStyling) => p.displayStyling.getWidthString()};
-	height: ${(p: TitlePanelStyling) => p.displayStyling.getHeightString()};
-	float: ${(p: TitlePanelStyling) => p.displayStyling.getFloatString()};
-	margin: ${(p: TitlePanelStyling) => p.displayStyling.getMarginString()};
+	width: ${(p: TitlePanelStyle) => p.displayStyle.getWidthString()};
+	height: ${(p: TitlePanelStyle) => p.displayStyle.getHeightString()};
+	float: ${(p: TitlePanelStyle) => p.displayStyle.getFloatString()};
+	margin: ${(p: TitlePanelStyle) => p.displayStyle.getMarginString()};
 	transform: rotateX(-4deg);
 `;
 
@@ -66,7 +66,7 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 
 		let cardStyling: CardComponentStyle =
 		{
-			displayStyling: new DisplayStyling({widthPercentage: 100/titleLetters.length, heightPercentage:100})
+			displayStyle: new DisplayStyle({widthPercentage: 100/titleLetters.length, heightPercentage:100})
 		};
 
 		this.state =
@@ -84,7 +84,7 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 		{
 			let titlePanel = (
 				<TitleCharacter
-					displayStyling={this.state.titlePanelStyling.displayStyling}>
+					displayStyle={this.state.titlePanelStyling.displayStyle}>
 					{titleLetter}
 				</TitleCharacter>);
 
@@ -99,7 +99,7 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 
 		return (
 			<TitlePanel
-				displayStyling={this.state.titlePanelStyling.displayStyling}>
+				displayStyle={this.state.titlePanelStyling.displayStyle}>
 				{cardComponents}
 			</TitlePanel>
 		);

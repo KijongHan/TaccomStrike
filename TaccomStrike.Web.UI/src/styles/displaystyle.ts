@@ -1,7 +1,12 @@
 ﻿import styled from "styled-components";
 import { isNullOrUndefined } from "util";
 
-export class DisplayStyling
+export enum Position
+{
+	static, absolute, fixed, relative, sticky, initial, inherit
+}
+
+export class DisplayStyle
 {
 	widthPxiels?: number;
 	widthPercentage?: number;
@@ -20,9 +25,12 @@ export class DisplayStyling
 	marginRightPixels?: number;
 	marginRightPercentage?: number;
 
+	bottomPixels?: number;
+	position?: Position;
 
-	public constructor(init?: Partial<DisplayStyling>)
+	public constructor(init?: Partial<DisplayStyle>)
 	{
+		this.position = Position.static;
 		Object.assign(this, init);
 	}
 
@@ -119,4 +127,21 @@ export class DisplayStyling
 			return 'none';
 		}
 	}
+
+	getPositionString = (): string =>
+	{
+		return Position[this.position];
+	};
+
+	getBottomString = (): string =>
+	{
+		if (isNullOrUndefined(this.bottomPixels))
+		{
+			return 'auto';
+		}
+		else
+		{
+			return `${this.bottomPixels}px`;
+		}
+	};
 }

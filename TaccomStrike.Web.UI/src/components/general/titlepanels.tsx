@@ -1,35 +1,36 @@
 ﻿import * as React from "react";
-import { TitlePanelStyling, TitlePanelComponent } from "./titlepanel";
+import { TitlePanelStyle, TitlePanelComponent } from "./titlepanel";
 import { CardComponent, CardComponentStyle } from "./card";
 
 import styled from "styled-components"
-import { DisplayStyling } from "../../styling/displaystyling";
+import { DisplayStyle } from "../../styles/displaystyle";
 
 export interface TitlePanelsComponentProps
 {
 	titleWords: string[];
-	titlePanelStylings: TitlePanelStyling[];
+	titlePanelStyles: TitlePanelStyle[];
 
-	titlePanelsStyling: TitlePanelsStyling;
+	titlePanelsStyle: TitlePanelsStyle;
 }
 
 export interface TitlePanelsComponentState
 {
 	titleWords: string[];
-	titlePanelStylings: TitlePanelStyling[];
+	titlePanelStyles: TitlePanelStyle[];
 
-	titlePanelsStyling: TitlePanelsStyling;
+	titlePanelsStyle: TitlePanelsStyle;
 }
 
-export class TitlePanelsStyling
+export class TitlePanelsStyle
 {
-	displayStyling: DisplayStyling;
+	displayStyling: DisplayStyle;
 }
 
 const TitlesPanel = styled.div`
-	height: ${(p: TitlePanelsStyling) => p.displayStyling.getHeightString()};
+	height: ${(p: TitlePanelsStyle) => p.displayStyling.getHeightString()};
 	overflow: hidden;
 	margin-bottom: 50px;
+	padding-top: 15px;
 	padding-bottom: 10px;
 	-webkit-perspective: 800px;
 	perspective: 800px;
@@ -43,8 +44,8 @@ export class TitlePanelsComponent extends React.Component<TitlePanelsComponentPr
 		this.state =
 			{
 				titleWords: props.titleWords,
-				titlePanelStylings: props.titlePanelStylings,
-				titlePanelsStyling: props.titlePanelsStyling,
+				titlePanelStyles: props.titlePanelStyles,
+				titlePanelsStyle: props.titlePanelsStyle,
 			};
 	}
 
@@ -55,13 +56,13 @@ export class TitlePanelsComponent extends React.Component<TitlePanelsComponentPr
 			return (
 				<TitlePanelComponent
 					title={titleWord}
-					titlePanelStyling={this.state.titlePanelStylings[index]}>
+					titlePanelStyling={this.state.titlePanelStyles[index]}>
 				</TitlePanelComponent>);
 		})
 
 		return (
 			<TitlesPanel
-				displayStyling={this.state.titlePanelsStyling.displayStyling}>
+				displayStyling={this.state.titlePanelsStyle.displayStyling}>
 				{titlePanelComponents}
 			</TitlesPanel>
 		);
@@ -69,14 +70,14 @@ export class TitlePanelsComponent extends React.Component<TitlePanelsComponentPr
 
 	componentDidUpdate(prevProps: TitlePanelsComponentProps, prevState: TitlePanelsComponentState)
 	{
-		if (this.props.titlePanelStylings !== prevProps.titlePanelStylings)
+		if (this.props.titlePanelStyles !== prevProps.titlePanelStyles)
 		{
-			this.setState({ titlePanelStylings: this.props.titlePanelStylings });
+			this.setState({ titlePanelStyles: this.props.titlePanelStyles });
 		}
 
-		if (this.props.titlePanelsStyling !== prevProps.titlePanelsStyling)
+		if (this.props.titlePanelsStyle !== prevProps.titlePanelsStyle)
 		{
-			this.setState({ titlePanelsStyling: this.props.titlePanelsStyling });
+			this.setState({ titlePanelsStyle: this.props.titlePanelsStyle });
 		}
 	}
 }

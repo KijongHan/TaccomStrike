@@ -1,11 +1,11 @@
 ﻿import * as React from "react";
 
 import styled from "styled-components";
-import { DisplayStyling } from "../../styling/displaystyling";
+import { DisplayStyle } from "../../styles/displaystyle";
 
 const LabelledInputComponentElement = styled.div`
-	width: ${(p: LabelledInputComponentStyle) => p.displayStyling.getWidthString()};
-	margin: ${(p: LabelledInputComponentStyle) => p.displayStyling.getMarginString()};
+	width: ${(p: LabelledInputComponentStyle) => p.displayStyle.getWidthString()};
+	margin: ${(p: LabelledInputComponentStyle) => p.displayStyle.getMarginString()};
 `;
 
 const LabelComponentElement = styled.div`
@@ -39,7 +39,7 @@ export class LabelledInputComponentState
 
 export class LabelledInputComponentStyle
 {
-	displayStyling: DisplayStyling;
+	displayStyle: DisplayStyle;
 }
 
 export class LabelledInputComponent<T> extends React.Component<LabelledInputComponentProps<T>, LabelledInputComponentState>
@@ -58,7 +58,7 @@ export class LabelledInputComponent<T> extends React.Component<LabelledInputComp
 		console.log(" AA" + this.state.labelValue);
 		return (
 			<LabelledInputComponentElement
-				displayStyling={this.state.componentStyle.displayStyling}>
+				displayStyle={this.state.componentStyle.displayStyle}>
 				<LabelComponentElement>{this.state.labelValue}</LabelComponentElement>
 				<InputComponentElement value={String(this.props.initialValue)}></InputComponentElement>
 			</LabelledInputComponentElement>
