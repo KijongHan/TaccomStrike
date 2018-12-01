@@ -55,7 +55,6 @@ export class LabelledInputComponent<T> extends React.Component<LabelledInputComp
 
 	render()
 	{
-		console.log(" AA" + this.state.labelValue);
 		return (
 			<LabelledInputComponentElement
 				displayStyle={this.state.componentStyle.displayStyle}>

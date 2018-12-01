@@ -10,15 +10,15 @@ const CardFront = styled.div`
 	left: 0;
 	right: 0;
 	${
-		(p: CardFrontStyling) => isNullOrUndefined(p.tiltAnimation) ? '' :
+		(p: CardFrontStyle) => isNullOrUndefined(p.tiltAnimation) ? '' :
 		`animation: ${CardTilt(p.startRotation, p.endRotation)} ${p.tiltAnimation.tiltDuration}s ${p.tiltAnimation.tiltDelay}s forwards`
 	};
 	${
-		(p: CardFrontStyling) => isNullOrUndefined(p.flipAnimation) ? '' :
+		(p: CardFrontStyle) => isNullOrUndefined(p.flipAnimation) ? '' :
 		`animation: ${CardFlip(180, 'visible')} ${p.flipAnimation.flipDuration / 2}s ${p.flipAnimation.flipDelay}s forwards`
 	};
-	visibility: ${(p: CardFrontStyling) => p.display ? 'visible' : 'hidden'};
-	transform: ${(p: CardFrontStyling) => p.flipped ? 'rotateY(180deg);' : 'rotateY(0deg);'};
+	visibility: ${(p: CardFrontStyle) => p.displayFront ? 'visible' : 'hidden'};
+	transform: ${(p: CardFrontStyle) => p.flipped ? 'rotateY(180deg);' : 'rotateY(0deg);'};
 `;
 
 const CardBack = styled.div`
@@ -32,15 +32,15 @@ const CardBack = styled.div`
 	border-width: 4px;
 	border-color: rgba(180, 180, 180, 0.7);
 	${
-		(p: CardBackStyling) => isNullOrUndefined(p.tiltAnimation) ? '' :
+		(p: CardBackStyle) => isNullOrUndefined(p.tiltAnimation) ? '' :
 		`animation: ${CardTilt(p.startRotation, p.endRotation)} ${p.tiltAnimation.tiltDuration}s ${p.tiltAnimation.tiltDelay}s forwards`
 	};
 	${
-		(p: CardBackStyling) => isNullOrUndefined(p.flipAnimation) ? '' :
+		(p: CardBackStyle) => isNullOrUndefined(p.flipAnimation) ? '' :
 		`animation: ${CardFlip(180, 'hidden')} ${p.flipAnimation.flipDuration / 2}s ${p.flipAnimation.flipDelay}s forwards`
 	};
-	transform: ${(p: CardBackStyling) => p.flipped ? 'rotateY(180deg);' : 'rotateY(0deg);'};
-	visibility: ${(p: CardBackStyling) => p.display ? 'visible' : 'hidden'};
+	transform: ${(p: CardBackStyle) => p.flipped ? 'rotateY(180deg);' : 'rotateY(0deg);'};
+	visibility: ${(p: CardBackStyle) => p.displayBack ? 'visible' : 'hidden'};
 `;
 
 const Card = styled.div`
@@ -96,9 +96,9 @@ export interface CardComponentStyle
 	displayStyle: DisplayStyle;
 }
 
-export class CardBackStyling
+export class CardBackStyle
 {
-	display: boolean;
+	displayBack: boolean;
 	flipped: boolean;
 
 	flipAnimation: CardFlipAnimation;
@@ -108,9 +108,9 @@ export class CardBackStyling
 	endRotation: number;
 }
 
-export class CardFrontStyling
+export class CardFrontStyle
 {
-	display: boolean;
+	displayFront: boolean;
 	flipped: boolean;
 
 	flipAnimation: CardFlipAnimation;
@@ -209,7 +209,7 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 				<CardFront
 					flipAnimation={this.state.flipAnimation}
 					tiltAnimation={this.state.tiltAnimation}
-					display={displayFront}
+					displayFront={displayFront}
 					flipped={cardFlipped}
 					startRotation={startRotation}
 					endRotation={endRotation}>{this.state.panel}
@@ -217,7 +217,7 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 				<CardBack
 					flipAnimation={this.state.flipAnimation}
 					tiltAnimation={this.state.tiltAnimation}
-					display={displayBack}
+					displayBack={displayBack}
 					flipped={cardFlipped}
 					startRotation={startRotation}
 					endRotation={endRotation}></CardBack>

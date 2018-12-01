@@ -94,7 +94,7 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 
 	userButtonClickHandler = () =>
 	{
-		console.log("login");
+
 	}
 
 	loginButtonClickHandler = () =>

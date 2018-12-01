@@ -3,7 +3,7 @@ import { ButtonComponent, ButtonComponentStyle } from "./button";
 
 import styled from "styled-components";
 import { CardComponent, CardComponentStyle, CardTiltAnimation, CardOrientation } from "./card";
-import { LabelledInputComponentStyle } from "./labelledinput";
+import { LabelledInputComponentStyle, LabelledInputComponent } from "./labelledinput";
 
 export interface RegisterComponentProps
 {
@@ -46,8 +46,32 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 
 	render()
 	{
+		let registerComponent = (
+			<RegisterComponentElement>
+				<LabelledInputComponent
+					initialValue={""}
+					labelValue={"Username"}
+					componentStyle={this.state.registerComponentStyle.usernameLabelledInputStyle} />
+				<LabelledInputComponent
+					initialValue={""}
+					labelValue={"Email"}
+					componentStyle={this.state.registerComponentStyle.emailLabelledInputStyle} />
+				<LabelledInputComponent
+					initialValue={""}
+					labelValue={"Password"}
+					componentStyle={this.state.registerComponentStyle.passwordLabelledInputStyle} />
+				<LabelledInputComponent
+					initialValue={""}
+					labelValue={"Confirm Password"}
+					componentStyle={this.state.registerComponentStyle.confirmPasswordLabelledInputStyle} />
+				<ButtonComponent
+					buttonText="Register"
+					buttonClickHandler={this.registerButtonClickHandler}
+					buttonComponentStyle={this.state.registerComponentStyle.registerButtonComponentStyle} />
+			</RegisterComponentElement>);
+
 		let tiltAnimation = new CardTiltAnimation();
-		tiltAnimation.tiltAngle = 20;
+		tiltAnimation.tiltAngle = -20;
 		tiltAnimation.tiltDelay = 0;
 		tiltAnimation.tiltDuration = 0.7;
 		return (

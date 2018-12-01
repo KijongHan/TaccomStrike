@@ -84,12 +84,14 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 		{
 			let titlePanel = (
 				<TitleCharacter
+					key={index}
 					displayStyle={this.state.titlePanelStyling.displayStyle}>
 					{titleLetter}
 				</TitleCharacter>);
 
 			let cardFlipAnimation = this.state.cardFlipAnimations[index];
 			return <CardComponent
+				key = {index}
 				panel={titlePanel}
 				cardStyling={this.state.cardStyling}
 				cardOrientation={CardOrientation.Back}

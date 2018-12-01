@@ -6,6 +6,7 @@ import { LoginComponent, LoginComponentStyle } from "../general/login";
 import styled from "styled-components";
 import { TitlePanelsStyle, TitlePanelsComponent } from "../general/titlepanels";
 import { DisplayStyle, Position } from "../../styles/displaystyle";
+import { RegisterComponentStyle, RegisterComponent } from "../general/register";
 
 export interface LoginPageComponentProps { }
 
@@ -21,10 +22,12 @@ export interface LoginPageStyle
 	cheatTitlePanelStyle: TitlePanelStyle;
 
 	loginComponentStyle: LoginComponentStyle;
+	registerComponentStyle: RegisterComponentStyle;
 }
 
 const LoginPage = styled.div`
 	height: 100%;
+	font-family: 'Cormorant Upright', serif;
 `;
 
 const PanelsContainer = styled.div`
@@ -65,6 +68,7 @@ const largeStyle: LoginPageStyle =
 		cardComponentStyle:
 		{
 			displayStyle: new DisplayStyle({
+				floatLeft: true,
 				widthPercentage: 30,
 				heightPixels: 400
 			})
@@ -118,6 +122,64 @@ const largeStyle: LoginPageStyle =
 				marginTopPixels: 10
 			})
 		}
+	},
+
+	registerComponentStyle:
+	{
+		cardComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
+				floatLeft: true,
+				widthPercentage: 30,
+				heightPixels: 400
+			})
+		},
+
+		usernameLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5
+			})
+		},
+
+		emailLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
+			})
+		},
+
+		passwordLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
+			})
+		},
+
+		confirmPasswordLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
+			})
+		},
+
+		registerButtonComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 30,
+				heightPixels: 50,
+				marginLeftPercentage: 5,
+				position: Position.absolute,
+				bottomPixels: 10
+			})
+		}
 	}
 }
 
@@ -146,6 +208,7 @@ const mediumStyling: LoginPageStyle =
 			widthPercentage: 90,
 			heightPixels: 170,
 			marginLeftPercentage: 5,
+			marginTopPixels: 15,
 			floatLeft: true
 		})
 	},
@@ -186,7 +249,9 @@ const mediumStyling: LoginPageStyle =
 			displayStyle: new DisplayStyle({
 				widthPercentage: 30,
 				heightPixels: 50,
-				marginLeftPercentage: 5
+				marginLeftPercentage: 5,
+				position: Position.absolute,
+				bottomPixels: 10
 			})
 		},
 
@@ -205,6 +270,64 @@ const mediumStyling: LoginPageStyle =
 				widthPercentage: 90,
 				marginLeftPercentage: 5,
 				marginTopPixels: 10
+			})
+		}
+	},
+
+	registerComponentStyle:
+	{
+		cardComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 30,
+				heightPixels: 400
+			})
+		},
+
+		usernameLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 20
+			})
+		},
+
+		emailLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
+			})
+		},
+
+		passwordLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
+			})
+		},
+
+		confirmPasswordLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
+			})
+		},
+
+		registerButtonComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 30,
+				heightPixels: 50,
+				marginLeftPercentage: 5,
+				position: Position.absolute,
+				bottomPixels: 10
 			})
 		}
 	}
@@ -241,14 +364,19 @@ const smallStyling: LoginPageStyle =
 	{
 		cardComponentStyle:
 		{
-			displayStyle: new DisplayStyle({ widthPercentage: 90, heightPixels: 400 })
+			displayStyle: new DisplayStyle({
+				floatLeft: true,
+				widthPercentage: 45,
+				heightPixels: 400
+			})
 		},
 
 		userButtonComponentStyle:
 		{
 			displayStyle: new DisplayStyle({
-				floatLeft: false,
-				widthPercentage: 80,
+				floatLeft: true,
+				marginLeftPercentage: 5,
+				widthPercentage: 45,
 				heightPixels: 50
 			})
 		},
@@ -256,8 +384,9 @@ const smallStyling: LoginPageStyle =
 		guestButtonComponentStyle:
 		{
 			displayStyle: new DisplayStyle({
-				floatLeft: false,
-				widthPercentage: 80,
+				floatLeft: true,
+				marginLeftPercentage: 2.5,
+				widthPercentage: 45,
 				heightPixels: 50
 			})
 		},
@@ -267,7 +396,9 @@ const smallStyling: LoginPageStyle =
 			displayStyle: new DisplayStyle({
 				widthPercentage: 30,
 				heightPixels: 50,
-				marginLeftPercentage: 5
+				marginLeftPercentage: 5,
+				position: Position.absolute,
+				bottomPixels: 10
 			})
 		},
 
@@ -286,6 +417,65 @@ const smallStyling: LoginPageStyle =
 				widthPercentage: 90,
 				marginLeftPercentage: 5,
 				marginTopPixels: 10
+			})
+		}
+	},
+
+	registerComponentStyle:
+	{
+		cardComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
+				marginLeftPercentage: 8,
+				widthPercentage: 45,
+				heightPixels: 400
+			})
+		},
+
+		usernameLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 20
+			})
+		},
+
+		emailLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
+			})
+		},
+
+		passwordLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
+			})
+		},
+
+		confirmPasswordLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
+			})
+		},
+
+		registerButtonComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 30,
+				heightPixels: 50,
+				marginLeftPercentage: 5,
+				position: Position.absolute,
+				bottomPixels: 10
 			})
 		}
 	}
@@ -369,6 +559,64 @@ const verySmallStyling: LoginPageStyle =
 				marginTopPixels: 10
 			})
 		}
+	},
+
+	registerComponentStyle:
+	{
+		cardComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 30,
+				heightPixels: 400
+			})
+		},
+
+		usernameLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 20
+			})
+		},
+
+		emailLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
+			})
+		},
+
+		passwordLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
+			})
+		},
+
+		confirmPasswordLabelledInputStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 90,
+				marginLeftPercentage: 5,
+				marginTopPixels: 10
+			})
+		},
+
+		registerButtonComponentStyle:
+		{
+			displayStyle: new DisplayStyle({
+				widthPercentage: 30,
+				heightPixels: 50,
+				marginLeftPercentage: 5,
+				position: Position.absolute,
+				bottomPixels: 10
+			})
+		}
 	}
 }
 
@@ -400,6 +648,9 @@ export class LoginPageComponent extends React.Component<LoginPageComponentProps,
 					<LoginComponent
 						loginComponentStyle={this.state.loginPageStyle.loginComponentStyle}>
 					</LoginComponent>
+					<RegisterComponent
+						registerComponentStyle={this.state.loginPageStyle.registerComponentStyle}>
+					</RegisterComponent>
 				</PanelsContainer>
 			</LoginPage>
 		);
@@ -446,14 +697,14 @@ export class LoginPageComponent extends React.Component<LoginPageComponentProps,
 				this.setState({ loginPageStyle: largeStyle });
 			}
 		}
-		else if (w > 950)
+		else if (w > 900)
 		{
 			if (this.state.loginPageStyle != mediumStyling)
 			{
 				this.setState({ loginPageStyle: mediumStyling });
 			}
 		}
-		else if (w > 850)
+		else if (w > 700)
 		{
 			if (this.state.loginPageStyle != smallStyling)
 			{
