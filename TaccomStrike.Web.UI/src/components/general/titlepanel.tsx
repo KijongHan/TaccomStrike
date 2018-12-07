@@ -15,7 +15,7 @@ export class TitlePanelComponentState
 	titleLetters: string[];
 	cardFlipAnimations: CardFlipAnimation[];
 
-	cardStyling: CardComponentStyle;
+	cardStyle: CardComponentStyle;
 	titlePanelStyling: TitlePanelStyle;
 }
 
@@ -72,7 +72,7 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 		this.state =
 		{
 			titleLetters: titleLetters,
-			cardStyling: cardStyling,
+			cardStyle: cardStyling,
 			titlePanelStyling: props.titlePanelStyling,
 			cardFlipAnimations: cardFlipAnimations
 		};
@@ -93,7 +93,8 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 			return <CardComponent
 				key = {index}
 				panel={titlePanel}
-				cardStyling={this.state.cardStyling}
+				changeTriggers={[this.state.cardStyle]}
+				cardStyle={this.state.cardStyle}
 				cardOrientation={CardOrientation.Back}
 				flipAnimation={cardFlipAnimation}
 				tiltAnimation={null}/>;

@@ -81,7 +81,8 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 		return (
 			<CardComponent
 				panel={registerComponent}
-				cardStyling={this.state.registerComponentStyle.cardComponentStyle}
+				changeTriggers={[this.state.registerComponentStyle]}
+				cardStyle={this.state.registerComponentStyle.cardComponentStyle}
 				cardOrientation={CardOrientation.Front}
 				flipAnimation={null}
 				tiltAnimation={tiltAnimation}>

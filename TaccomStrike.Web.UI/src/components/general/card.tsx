@@ -136,17 +136,19 @@ export class CardTiltAnimation
 export interface CardComponentProps
 {
 	panel: JSX.Element;
-	cardStyling: CardComponentStyle;
+	cardStyle: CardComponentStyle;
 
 	cardOrientation: CardOrientation;
 	flipAnimation: CardFlipAnimation;
 	tiltAnimation: CardTiltAnimation;
+
+	changeTriggers: any[];
 }
 
 export interface CardComponentState
 {
 	panel: JSX.Element;
-	cardStyling: CardComponentStyle;
+	cardStyle: CardComponentStyle;
 
 	cardOrientation: CardOrientation;
 	flipAnimation: CardFlipAnimation;
@@ -161,7 +163,7 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 		this.state =
 		{
 			panel: props.panel,
-			cardStyling: props.cardStyling,
+			cardStyle: props.cardStyle,
 			cardOrientation: props.cardOrientation,
 			flipAnimation: props.flipAnimation,
 			tiltAnimation: props.tiltAnimation
@@ -205,7 +207,7 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 		
 		return (
 			<Card
-				displayStyle={this.state.cardStyling.displayStyle}>
+				displayStyle={this.state.cardStyle.displayStyle}>
 				<CardFront
 					flipAnimation={this.state.flipAnimation}
 					tiltAnimation={this.state.tiltAnimation}
@@ -227,22 +229,17 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 
 	componentDidUpdate(prevProps: CardComponentProps, prevState: CardComponentState)
 	{
-		if (this.props.cardStyling !== prevProps.cardStyling)
+		this.props.changeTriggers.forEach((value: any, index: number) => 
 		{
-			this.setState({
-				cardStyling: this.props.cardStyling,
-				panel: this.props.panel,
-				flipAnimation: this.props.flipAnimation,
-				tiltAnimation: this.props.tiltAnimation
-			});
-		}
-		if(this.props.panel !== prevProps.panel) 
-		{
-			console.log(this.props.panel.props);
-			console.log(prevProps.panel.props);
-			this.setState({
-				panel: this.props.panel
-			});
-		}
+			if(value !== prevProps.changeTriggers[index]) 
+			{
+				this.setState({
+					cardStyle: this.props.cardStyle,
+					panel: this.props.panel,
+					flipAnimation: this.props.flipAnimation,
+					tiltAnimation: this.props.tiltAnimation
+				});
+			}
+		});
 	}
 }

@@ -98,7 +98,8 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 		return (
 			<CardComponent
 				panel={loginComponent}
-				cardStyling={this.state.loginComponentStyle.cardComponentStyle}
+				changeTriggers={[this.state.loginComponentStyle, this.state.userLogin]}
+				cardStyle={this.state.loginComponentStyle.cardComponentStyle}
 				cardOrientation={CardOrientation.Front}
 				flipAnimation={null}
 				tiltAnimation={tiltAnimation}>

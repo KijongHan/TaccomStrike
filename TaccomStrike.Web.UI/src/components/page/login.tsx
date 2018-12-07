@@ -672,17 +672,18 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 		let newUserLogin = Object.assign({}, this.state.userLogin);
 		newUserLogin.username = input;
 		this.setState({userLogin: newUserLogin});
-		console.log(newUserLogin.username);
 	}
 
 	passwordInputOnChangeHandler = (input: string) =>
 	{
-		console.log(input);
+		let newUserLogin = Object.assign({}, this.state.userLogin);
+		newUserLogin.password = input;
+		this.setState({userLogin: newUserLogin});
 	}
 
 	userLoginButtonClickHandler = () =>
 	{
-		
+		console.log(this.state.userLogin);
 	}
 
 	guestLoginButtonClickHandler = () => 
