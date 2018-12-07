@@ -81,6 +81,7 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 					inputOnChangeHandler={this.usernameInputOnChangeHandler}
 					componentStyle={this.state.loginComponentStyle.usernameLabelledInputStyle} />
 				<LabelledInputComponent
+					inputType={"password"}
 					inputValue={this.state.userLogin.password}
 					labelValue={"Password"}
 					inputOnChangeHandler={this.passwordInputOnChangeHandler}

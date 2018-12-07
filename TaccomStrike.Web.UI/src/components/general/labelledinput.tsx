@@ -26,11 +26,17 @@ const InputComponentElement = styled.input`
 
 export class LabelledInputComponentProps
 {
+	inputType?: string;
 	inputValue: string;
 	labelValue: string;
 	componentStyle: LabelledInputComponentStyle;
 
 	inputOnChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+
+	constructor() 
+	{
+		this.inputType = "text";
+	}
 }
 
 export class LabelledInputComponentState
@@ -65,6 +71,7 @@ export class LabelledInputComponent extends React.Component<LabelledInputCompone
 				displayStyle={this.props.componentStyle.displayStyle}>
 				<LabelComponentElement>{this.props.labelValue}</LabelComponentElement>
 				<InputComponentElement 
+					type={this.props.inputType}
 					value={this.props.inputValue}
 					onChange={this.props.inputOnChangeHandler}></InputComponentElement>
 			</LabelledInputComponentElement>
