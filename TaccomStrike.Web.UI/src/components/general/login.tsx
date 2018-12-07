@@ -5,15 +5,26 @@ import styled from "styled-components";
 import { CardComponent, CardComponentStyle, CardOrientation, CardTiltAnimation } from "./card";
 import { debug } from "util";
 import { LabelledInputComponent, LabelledInputComponentStyle } from "./labelledinput";
+import { UserLogin } from "../../viewmodels/userlogin";
 
 export class LoginComponentProps
 {
 	loginComponentStyle: LoginComponentStyle
+
+	userLogin: UserLogin;
+
+	userLoginButtonClickHandler: () => void;
+	guestLoginButtonClickHandler: () => void;
+
+	usernameInputOnChangeHandler: (input: string) => void;
+	passwordInputOnChangeHandler: (input: string) => void;
 }
 
 export class LoginComponentState
 {
 	loginComponentStyle: LoginComponentStyle
+
+	userLogin: UserLogin;
 }
 
 export class LoginComponentStyle
@@ -45,7 +56,8 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 		super(props);
 		this.state =
 		{
-			loginComponentStyle: props.loginComponentStyle
+			loginComponentStyle: props.loginComponentStyle,
+			userLogin: props.userLogin
 		};
 	}
 
@@ -60,20 +72,22 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 						buttonComponentStyle={this.state.loginComponentStyle.userButtonComponentStyle} />
 					<ButtonComponent
 						buttonText="Guest"
-						buttonClickHandler={this.userButtonClickHandler}
+						buttonClickHandler={this.guestButtonClickHandler}
 						buttonComponentStyle={this.state.loginComponentStyle.guestButtonComponentStyle} />
 				</ButtonsPanel>
 				<LabelledInputComponent
-					initialValue={""}
+					inputValue={this.state.userLogin.username}
 					labelValue={"Username"}
+					inputOnChangeHandler={this.usernameInputOnChangeHandler}
 					componentStyle={this.state.loginComponentStyle.usernameLabelledInputStyle} />
 				<LabelledInputComponent
-					initialValue={""}
+					inputValue={this.state.userLogin.password}
 					labelValue={"Password"}
+					inputOnChangeHandler={this.passwordInputOnChangeHandler}
 					componentStyle={this.state.loginComponentStyle.usernameLabelledInputStyle} />
 				<ButtonComponent
 					buttonText="Login"
-					buttonClickHandler={this.loginButtonClickHandler}
+					buttonClickHandler={this.userLoginButtonClickHandler}
 					buttonComponentStyle={this.state.loginComponentStyle.loginButtonComponentStyle} />
 			</LoginComponentElement>);
 
@@ -92,12 +106,27 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 		);
 	}
 
-	userButtonClickHandler = () =>
+	userLoginButtonClickHandler = () =>  
+	{
+		this.props.userLoginButtonClickHandler();
+	}
+
+	usernameInputOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
+	{
+		this.props.usernameInputOnChangeHandler(event.target.value);
+	}
+
+	passwordInputOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
+	{
+		this.props.passwordInputOnChangeHandler(event.target.value);
+	}
+
+	guestButtonClickHandler= () =>  
 	{
 
 	}
 
-	loginButtonClickHandler = () =>
+	userButtonClickHandler= () => 
 	{
 
 	}
@@ -107,6 +136,10 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 		if (this.props.loginComponentStyle !== prevProps.loginComponentStyle)
 		{
 			this.setState({ loginComponentStyle: this.props.loginComponentStyle });
+		}
+		if(this.props.userLogin !== prevProps.userLogin) 
+		{
+			this.setState({ userLogin: this.props.userLogin });
 		}
 	}
 }

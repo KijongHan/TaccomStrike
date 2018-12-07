@@ -49,20 +49,24 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 		let registerComponent = (
 			<RegisterComponentElement>
 				<LabelledInputComponent
-					initialValue={""}
+					inputValue={""}
 					labelValue={"Username"}
+					inputOnChangeHandler={this.usernameOnChangeHandler}
 					componentStyle={this.state.registerComponentStyle.usernameLabelledInputStyle} />
 				<LabelledInputComponent
-					initialValue={""}
+					inputValue={""}
 					labelValue={"Email"}
+					inputOnChangeHandler={this.emailOnChangeHandler}
 					componentStyle={this.state.registerComponentStyle.emailLabelledInputStyle} />
 				<LabelledInputComponent
-					initialValue={""}
+					inputValue={""}
 					labelValue={"Password"}
+					inputOnChangeHandler={this.passwordOnChangeHandler}
 					componentStyle={this.state.registerComponentStyle.passwordLabelledInputStyle} />
 				<LabelledInputComponent
-					initialValue={""}
+					inputValue={""}
 					labelValue={"Confirm Password"}
+					inputOnChangeHandler={this.confirmPasswordOnChangeHandler}
 					componentStyle={this.state.registerComponentStyle.confirmPasswordLabelledInputStyle} />
 				<ButtonComponent
 					buttonText="Register"
@@ -83,6 +87,26 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 				tiltAnimation={tiltAnimation}>
 			</CardComponent>
 		);
+	}
+
+	usernameOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => 
+	{
+
+	}
+
+	emailOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => 
+	{
+
+	}
+
+	passwordOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => 
+	{
+
+	}
+
+	confirmPasswordOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => 
+	{
+
 	}
 
 	registerButtonClickHandler = () =>

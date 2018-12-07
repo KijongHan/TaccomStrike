@@ -24,15 +24,18 @@ const InputComponentElement = styled.input`
     font-size: 1.2em;
 `;
 
-export class LabelledInputComponentProps<T>
+export class LabelledInputComponentProps
 {
-	initialValue: T;
+	inputValue: string;
 	labelValue: string;
 	componentStyle: LabelledInputComponentStyle;
+
+	inputOnChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export class LabelledInputComponentState
 {
+	inputValue: string;
 	labelValue: string;
 	componentStyle: LabelledInputComponentStyle;
 }
@@ -42,12 +45,13 @@ export class LabelledInputComponentStyle
 	displayStyle: DisplayStyle;
 }
 
-export class LabelledInputComponent<T> extends React.Component<LabelledInputComponentProps<T>, LabelledInputComponentState>
+export class LabelledInputComponent extends React.Component<LabelledInputComponentProps, LabelledInputComponentState>
 {
-	constructor(props: LabelledInputComponentProps<T>)
+	constructor(props: LabelledInputComponentProps)
 	{
 		super(props);
 		this.state = {
+			inputValue: props.inputValue,
 			labelValue: props.labelValue,
 			componentStyle: props.componentStyle
 		};
@@ -55,12 +59,23 @@ export class LabelledInputComponent<T> extends React.Component<LabelledInputComp
 
 	render()
 	{
+		console.log("render input");
 		return (
 			<LabelledInputComponentElement
-				displayStyle={this.state.componentStyle.displayStyle}>
-				<LabelComponentElement>{this.state.labelValue}</LabelComponentElement>
-				<InputComponentElement value={String(this.props.initialValue)}></InputComponentElement>
+				displayStyle={this.props.componentStyle.displayStyle}>
+				<LabelComponentElement>{this.props.labelValue}</LabelComponentElement>
+				<InputComponentElement 
+					value={this.props.inputValue}
+					onChange={this.props.inputOnChangeHandler}></InputComponentElement>
 			</LabelledInputComponentElement>
 		);
+	}
+	
+	componentDidUpdate(prevProps: LabelledInputComponentProps, prevState: LabelledInputComponentState) 
+	{
+		if(this.props.inputValue !== prevProps.inputValue) 
+		{
+			this.setState({inputValue: this.props.inputValue});
+		}
 	}
 }

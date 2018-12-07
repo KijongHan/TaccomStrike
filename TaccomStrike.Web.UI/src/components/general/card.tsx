@@ -236,5 +236,13 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 				tiltAnimation: this.props.tiltAnimation
 			});
 		}
+		if(this.props.panel !== prevProps.panel) 
+		{
+			console.log(this.props.panel.props);
+			console.log(prevProps.panel.props);
+			this.setState({
+				panel: this.props.panel
+			});
+		}
 	}
 }
