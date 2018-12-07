@@ -2,17 +2,21 @@
 import { TitlePanelComponent, TitlePanelStyle } from "../general/titlepanel";
 import { CardComponentStyle, CardComponent } from "../general/card";
 import { LoginComponent, LoginComponentStyle } from "../general/login";
+import { withRouter } from "react-router";
 
 import styled from "styled-components";
 import { TitlePanelsStyle, TitlePanelsComponent } from "../general/titlepanels";
 import { DisplayStyle, Position } from "../../styles/displaystyle";
 import { RegisterComponentStyle, RegisterComponent } from "../general/register";
+import { BasePageComponentProps, BasePageComponent, BasePageComponentState } from "./base";
+import { UserLogin } from "../../viewmodels/userlogin";
 
-export interface LoginPageComponentProps { }
+export interface LoginPageComponentProps extends BasePageComponentProps { }
 
-export interface LoginPageComponentState
+export interface LoginPageComponentState extends BasePageComponentState
 {
 	loginPageStyle: LoginPageStyle;
+	userLogin: UserLogin;
 }
 
 export interface LoginPageStyle
@@ -620,14 +624,16 @@ const verySmallStyling: LoginPageStyle =
 	}
 }
 
-export class LoginPageComponent extends React.Component<LoginPageComponentProps, LoginPageComponentState>
+export class LoginPageComponent extends BasePageComponent<LoginPageComponentProps, LoginPageComponentState>
 {
 	constructor(props: LoginPageComponentProps)
 	{
 		super(props);
+		console.log(props);
 		this.state =
 		{
-			loginPageStyle: largeStyle
+			loginPageStyle: largeStyle,
+			userLogin: new UserLogin()
 		};
 	}
 
@@ -646,7 +652,12 @@ export class LoginPageComponent extends React.Component<LoginPageComponentProps,
 
 				<PanelsContainer>
 					<LoginComponent
-						loginComponentStyle={this.state.loginPageStyle.loginComponentStyle}>
+						userLogin={this.state.userLogin}
+						loginComponentStyle={this.state.loginPageStyle.loginComponentStyle}
+						userLoginButtonClickHandler={this.userLoginButtonClickHandler}
+						guestLoginButtonClickHandler={this.guestLoginButtonClickHandler}
+						usernameInputOnChangeHandler={this.usernameInputOnChangeHandler}
+						passwordInputOnChangeHandler={this.passwordInputOnChangeHandler}>
 					</LoginComponent>
 					<RegisterComponent
 						registerComponentStyle={this.state.loginPageStyle.registerComponentStyle}>
@@ -656,67 +667,58 @@ export class LoginPageComponent extends React.Component<LoginPageComponentProps,
 		);
 	}
 
-	componentDidMount()
+	usernameInputOnChangeHandler = (input: string) =>
 	{
-		window.addEventListener('resize', this.throttledResizeEventHandler);
-		this.resizeEventHandler();
+		let newUserLogin = Object.assign({}, this.state.userLogin);
+		newUserLogin.username = input;
+		this.setState({userLogin: newUserLogin});
+		console.log(newUserLogin.username);
 	}
 
-	componentWillUnmount()
+	passwordInputOnChangeHandler = (input: string) =>
 	{
-		window.removeEventListener('resize', this.throttledResizeEventHandler);
+		console.log(input);
 	}
 
-	throttledResizeEventHandler = () =>
+	userLoginButtonClickHandler = () =>
 	{
-		this.throttledEventHandler(this.resizeEventHandler);
+		
 	}
 
-	throttledEventHandler = (eventHandler: ()=>void) =>
+	guestLoginButtonClickHandler = () => 
 	{
-		let resizeTimeout;
-		if (!resizeTimeout)
+		
+	}
+
+	onResizeLarge = () =>  
+	{
+		if (this.state.loginPageStyle != largeStyle)
 		{
-			resizeTimeout = setTimeout(() =>
-			{
-				resizeTimeout = null;
-				eventHandler();
-			}, 500);
+			this.setState({ loginPageStyle: largeStyle });
 		}
 	}
 
-	resizeEventHandler = () =>
+	onResizeMedium = () =>  
 	{
-		let w = window.innerWidth;
-		let h = window.innerHeight;
+		if (this.state.loginPageStyle != mediumStyling)
+		{
+			this.setState({ loginPageStyle: mediumStyling });
+		}
+	}
 
-		if (w > 1100)
+	onResizeSmall = () =>  
+	{
+		if (this.state.loginPageStyle != smallStyling)
 		{
-			if (this.state.loginPageStyle != largeStyle)
-			{
-				this.setState({ loginPageStyle: largeStyle });
-			}
+			this.setState({ loginPageStyle: smallStyling });
 		}
-		else if (w > 900)
+	}
+
+	onResizeVerySmall= () =>  
+	{
+		if (this.state.loginPageStyle != verySmallStyling)
 		{
-			if (this.state.loginPageStyle != mediumStyling)
-			{
-				this.setState({ loginPageStyle: mediumStyling });
-			}
-		}
-		else if (w > 700)
-		{
-			if (this.state.loginPageStyle != smallStyling)
-			{
-				this.setState({ loginPageStyle: smallStyling });
-			}
-		}
-		else
-		{
-			if (this.state.loginPageStyle != verySmallStyling)
-			{
-				this.setState({ loginPageStyle: verySmallStyling });
-			}
+			this.setState({ loginPageStyle: verySmallStyling });
 		}
 	}
 }
