@@ -9,7 +9,7 @@ import { TitlePanelsStyle, TitlePanelsComponent } from "../general/titlepanels";
 import { DisplayStyle, Position } from "../../styles/displaystyle";
 import { RegisterComponentStyle, RegisterComponent } from "../general/register";
 import { BasePageComponentProps, BasePageComponent, BasePageComponentState } from "./base";
-import { UserLogin } from "../../viewmodels/userlogin";
+import { PostUserLogin } from "../../models/rest/postuserlogin";
 import { AuthenticationService } from "../../services/authentication";
 
 const LoginPage = styled.div`
@@ -612,7 +612,7 @@ export interface LoginPageComponentProps extends BasePageComponentProps { }
 export interface LoginPageComponentState extends BasePageComponentState
 {
 	loginPageStyle: LoginPageStyle;
-	userLogin: UserLogin;
+	userLogin: PostUserLogin;
 }
 
 export interface LoginPageStyle
@@ -634,7 +634,7 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 		this.state =
 		{
 			loginPageStyle: largeStyle,
-			userLogin: new UserLogin()
+			userLogin: new PostUserLogin()
 		};
 	}
 

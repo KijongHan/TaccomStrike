@@ -1,8 +1,8 @@
-import {UserLogin} from "../viewmodels/userlogin"
+import { PostUserLogin } from "../models/rest/postuserlogin"
 
 export class AuthenticationService
 {
-    static login = (userLogin: UserLogin) => 
+    static login = (userLogin: PostUserLogin) => 
     {
         return fetch("http://localhost:50248" + "/api/authentication/login", {
             method: 'POST',

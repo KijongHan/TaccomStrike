@@ -5,13 +5,13 @@ import styled from "styled-components";
 import { CardComponent, CardComponentStyle, CardOrientation, CardTiltAnimation } from "./card";
 import { debug } from "util";
 import { LabelledInputComponent, LabelledInputComponentStyle } from "./labelledinput";
-import { UserLogin } from "../../viewmodels/userlogin";
+import { PostUserLogin } from "../../models/rest/postuserlogin";
 
 export class LoginComponentProps
 {
 	loginComponentStyle: LoginComponentStyle
 
-	userLogin: UserLogin;
+	userLogin: PostUserLogin;
 
 	userLoginButtonClickHandler: () => void;
 	guestLoginButtonClickHandler: () => void;
@@ -24,7 +24,7 @@ export class LoginComponentState
 {
 	loginComponentStyle: LoginComponentStyle
 
-	userLogin: UserLogin;
+	userLogin: PostUserLogin;
 }
 
 export class LoginComponentStyle
