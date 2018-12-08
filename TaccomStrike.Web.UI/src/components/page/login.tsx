@@ -10,24 +10,7 @@ import { DisplayStyle, Position } from "../../styles/displaystyle";
 import { RegisterComponentStyle, RegisterComponent } from "../general/register";
 import { BasePageComponentProps, BasePageComponent, BasePageComponentState } from "./base";
 import { UserLogin } from "../../viewmodels/userlogin";
-
-export interface LoginPageComponentProps extends BasePageComponentProps { }
-
-export interface LoginPageComponentState extends BasePageComponentState
-{
-	loginPageStyle: LoginPageStyle;
-	userLogin: UserLogin;
-}
-
-export interface LoginPageStyle
-{
-	titlePanelsStyle: TitlePanelsStyle;
-	callTitlePanelStyle: TitlePanelStyle;
-	cheatTitlePanelStyle: TitlePanelStyle;
-
-	loginComponentStyle: LoginComponentStyle;
-	registerComponentStyle: RegisterComponentStyle;
-}
+import { AuthenticationService } from "../../services/authentication";
 
 const LoginPage = styled.div`
 	height: 100%;
@@ -624,6 +607,24 @@ const verySmallStyling: LoginPageStyle =
 	}
 }
 
+export interface LoginPageComponentProps extends BasePageComponentProps { }
+
+export interface LoginPageComponentState extends BasePageComponentState
+{
+	loginPageStyle: LoginPageStyle;
+	userLogin: UserLogin;
+}
+
+export interface LoginPageStyle
+{
+	titlePanelsStyle: TitlePanelsStyle;
+	callTitlePanelStyle: TitlePanelStyle;
+	cheatTitlePanelStyle: TitlePanelStyle;
+
+	loginComponentStyle: LoginComponentStyle;
+	registerComponentStyle: RegisterComponentStyle;
+}
+
 export class LoginPageComponent extends BasePageComponent<LoginPageComponentProps, LoginPageComponentState>
 {
 	constructor(props: LoginPageComponentProps)
@@ -683,7 +684,14 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 
 	userLoginButtonClickHandler = () =>
 	{
-		console.log(this.state.userLogin);
+		AuthenticationService
+			.login(this.state.userLogin)
+			.then((response: Response) => {
+				if(response.ok) 
+				{
+					this.props.history.push("/main");
+				}
+			});
 	}
 
 	guestLoginButtonClickHandler = () => 
