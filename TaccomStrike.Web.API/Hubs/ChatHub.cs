@@ -6,195 +6,177 @@ using Microsoft.AspNetCore.SignalR;
 using TaccomStrike.Library.Data.Services;
 using TaccomStrike.Library.Utility.Security;
 using TaccomStrike.Library.Data.ViewModel;
+using TaccomStrike.Library.Data.Utility;
+using TaccomStrike.Library.Data.Model;
+using TaccomStrike.Web.API.HubApi;
 
 namespace TaccomStrike.Web.API.Hubs {
 
-    public class ChatHub : Hub {
+	public class ChatHub : Hub
+	{
+		private ChatRoomService chatRoomService;
+		private UserConnectionsService userConnectionsService;
 
-        private ChatRoomService chatRoomService;
-        private UserConnectionService userConnectionService;
+		public ChatHub(UserConnectionsService userConnectionsService, ChatRoomService chatRoomService)
+		{
+			this.userConnectionsService = userConnectionsService;
+			this.chatRoomService = chatRoomService;
+		}
 
-        public ChatHub(UserConnectionService userConnectionService, ChatRoomService chatRoomService) {
-            this.userConnectionService = userConnectionService;
-            this.chatRoomService = chatRoomService;
-        }
+		public Task ChatUserSendMessage(string message, int recipientUserID)
+		{
+			return Task.Run(() =>
+			{
+				ChatMessage chatMessage = new ChatMessage
+				{
+					User = Context.User,
+					Message = message,
+					WhenCreated = DateTime.Now
+				};
+				var apiObject = new ChatUserSendMessage
+				{
+					ChatMessage = chatMessage.ApiGetChatMessage()
+				};
 
-        public Task ChatUserSendMessage(string message, int recipientUserID) {
-            Console.WriteLine("ChatUserSendMessage");
-            return Task.Run(() => {
-                ChatMessage chatMessage = new ChatMessage {
-                        UserID = Context.User.GetUserLoginID(),
-                        UserName = Context.User.GetUserName(),
-                        MessageContent = message,
-                        WhenCreated = DateTime.Now
-                    };
-                
-                var connections = userConnectionService.GetConnections(recipientUserID);
-                        foreach(var connection in connections) {
-                            Console.WriteLine("Im sending");
-                            Clients.Client(connection).SendAsync(
-                                "ChatUserSendMessage",
-                                new object[] {
-                                    chatMessage
-                                });
-                        }
-                
-                connections = userConnectionService.GetConnections(Context.User);
-                        foreach(var connection in connections) {
-                            Console.WriteLine("Im sending");
-                            Clients.Client(connection).SendAsync(
-                                "ChatUserSendMessage",
-                                new object[] {
-                                    chatMessage
-                                });
-                        }
-            });
-        }
+				var connection = userConnectionsService.ChatConnectionService.GetConnection(recipientUserID);
+				Clients.Client(connection).ChatUserSendMessage(apiObject);
 
-        public Task ChatSendMessage(string message, string chatRoomName) {
-            Console.WriteLine("ChatSendMessage");
-            return Task.Run(() => 
-            {
-                Console.WriteLine(Context.User.GetUserName());
-                var chatRoom = chatRoomService.GetChatRoom(chatRoomName);
-                if(chatRoom.HasParticipant(Context.User)) {
-                    Console.WriteLine(message);
-                    ChatMessage chatMessage = new ChatMessage {
-                        UserID = Context.User.GetUserLoginID(),
-                        UserName = Context.User.GetUserName(),
-                        MessageContent = message,
-                        WhenCreated = DateTime.Now
-                    };
+				connection = userConnectionsService.ChatConnectionService.GetConnection(Context.User);
+				Clients.Client(connection).ChatUserSendMessage(apiObject);
+			});
+		}
 
-                    chatRoom.AddChatMessage(message, Context.User);
+		public Task ChatRoomSendMessage(string message, string chatRoomName)
+		{
+			return Task.Run(() => 
+			{
+				var chatRoom = chatRoomService.GetChatRoom(chatRoomName);
+				if(chatRoom.HasParticipant(Context.User))
+				{
+					ChatMessage chatMessage = new ChatMessage
+					{
+						User = Context.User,
+						Message = message,
+						WhenCreated = DateTime.Now
+					};
+					chatRoom.AddChatMessage(chatMessage);
 
-                    foreach(var participant in chatRoom.GetParticipants()) {
-                        var isSender = false;
-                        if(participant.GetUserLoginID() == Context.User.GetUserLoginID()) {
-                            isSender = true;
-                        }
+					var apiObject = new ChatRoomSendMessage
+					{
+						ChatMessage = chatMessage.ApiGetChatMessage(),
+						ChatRoomName = chatRoomName
+					};
+					foreach(var participant in chatRoom.GetParticipants())
+					{
+						var connection = userConnectionsService.ChatConnectionService.GetConnection(participant);
+						Clients.Client(connection).ChatRoomSendMessage(apiObject);
+					}
+				}
+			});
+		}
 
-                        var connections = userConnectionService.GetConnections(participant);
-                        foreach(var connection in connections) {
-                            Console.WriteLine("Im sending");
-                            Clients.Client(connection).SendAsync(
-                                "ChatSendMessage",
-                                new object[] {
-                                    chatMessage,
-                                    isSender,
-                                    chatRoomName
-                                });
-                        }
-                    }
-                }
-            });
-        }
+		public Task ChatRoomJoin(string chatRoomName)
+		{
+			return Task.Run(() => 
+			{
+				var chatRoom = chatRoomService.GetChatRoom(chatRoomName);
+				if(chatRoom == null)
+				{
+					return;
+				}
 
-        public Task ChatRoomJoin(string chatRoomName) {
-            Console.WriteLine("ChatRoomJoin");
-            return Task.Run(() => 
-            {
-                var chatRoom = chatRoomService.GetChatRoom(chatRoomName);
-                if(chatRoom == null) {
-                    return;
-                }
+				if(chatRoom.HasParticipant(Context.User))
+				{
+					return;
+				}
 
-                if(chatRoom.HasParticipant(Context.User)) {
-                    return;
-                }
+				if(chatRoom.RoomType == ChatRoom.Type.Public)
+				{
+					chatRoom.AddParticipant(Context.User);
+					var apiObject = new ChatRoomJoin
+					{
+						ChatRoom = chatRoom.ApiChatRoom(),
+						NewUser = Context.User.ApiGetUser()
+					};
 
-                if(chatRoom.RoomType == ChatRoom.Type.Public) {
-                    chatRoom.AddParticipant(Context.User);
-                    var participants = chatRoom.GetParticipants();
+					foreach(var participant in chatRoom.GetParticipants())
+					{
+						var connection = userConnectionsService.ChatConnectionService.GetConnection(participant);
+						Clients.Client(connection).ChatRoomJoin(apiObject);
+					}
+				}
+			});
+		}
 
-                    foreach(var participant in participants) {
-                        var isNewChatUser = false;
+		public override Task OnConnectedAsync()
+		{
+			lock(userConnectionsService.ChatConnectionService)
+			{
+				return Task.Run(() =>  
+				{
+					userConnectionsService.ChatConnectionService.Add(Context.User, Context.ConnectionId);
+					var apiObject = new ChatUserConnected
+					{
+						NewUser = Context.User.ApiGetUser(),
+						ConnectedUsers = userConnectionsService
+							.ChatConnectionService
+							.GetUsers()
+							.ApiGetUsers()
+					};
 
-                        if(participant.GetUserLoginID() == Context.User.GetUserLoginID()) {
-                            isNewChatUser = true;
-                        }
+					foreach(var connection in userConnectionsService.ChatConnectionService.GetUserConnections())
+					{
+						Clients.Client(connection).ChatUserConnected(apiObject);
+					}
+					return base.OnConnectedAsync();
+				});
+			}
+		}
 
-                        var connections = userConnectionService.GetConnections(participant);
-                        foreach(var connection in connections) {
-                            Clients.Client(connection).SendAsync(
-                                "ChatRoomJoin", 
-                                new object[] {
-                                    new {
-                                        userName = Context.User.GetUserName()
-                                    },
-                                    participants.Select(item => new { 
-                                        userName = item.GetUserName()
-                                    }),
-                                    isNewChatUser,
-                                    chatRoomName
-                                });
-                        }
-                    }
-                }       
-            });
-        }
+		public override Task OnDisconnectedAsync(Exception exception)
+		{
+			lock(userConnectionsService.ChatConnectionService.ConnectionLock)
+			{
+				return Task.Run(() => 
+				{
+					userConnectionsService.ChatConnectionService.Remove(Context.User, Context.ConnectionId);
 
-        public override Task OnConnectedAsync() {
-            lock(UserConnectionService.ConnectionLock) {
-                return Task.Run(() =>  
-                {
-                    userConnectionService.Add(Context.User, Context.ConnectionId);
-                    foreach(var connection in userConnectionService.GetConnections()) {
-                        Clients.Client(connection).SendAsync(
-                            "ChatUserConnected",
-                            new object[] {
-                                new { userName = Context.User.GetUserName() },
-                                userConnectionService.GetUsers()
-                                .Select(item => new { userName = item.GetUserName()})
-                                });
-                    }
-                    return base.OnConnectedAsync();
-                });
-            }
-            
-        }
+					foreach(var chatRoom in chatRoomService.GetChatRooms())
+					{
+						if(chatRoom.HasParticipant(Context.User))
+						{
+							var apiObject = new ChatRoomLeave
+							{
+								LeavingUser = Context.User.ApiGetUser(),
+								ChatRoom = chatRoom.ApiChatRoom()
+							};
 
-        public override Task OnDisconnectedAsync(Exception exception) {
-            lock(UserConnectionService.ConnectionLock) {
-                return Task.Run(() => 
-                {
-                    userConnectionService.Remove(Context.User, Context.ConnectionId);
-                    foreach(var chatRoom in chatRoomService.GetChatRooms()) {
-                        if(chatRoom.HasParticipant(Context.User)) {
-                            chatRoom.RemoveParticipant(Context.User);
+							chatRoom.RemoveParticipant(Context.User);
+							foreach(var participant in chatRoom.GetParticipants())
+							{
+								var connection = userConnectionsService.ChatConnectionService.GetConnection(participant);
+								if(connection == null)
+								{
+									continue;
+								}
 
-                            foreach(var participant in chatRoom.GetParticipants()) {
-                                var connections = userConnectionService.GetConnections(participant);
-                                if(connections != null) {
-                                    foreach(var connection in connections) {
-                                        Console.WriteLine("Im sending");
-                                        Clients.Client(connection).SendAsync
-                                        (
-                                            "ChatRoomLeave", 
-                                            new object[] { 
-                                                new { 
-                                                    UserName = Context.User.GetUserName() 
-                                                },
-                                                chatRoom.ChatRoomName
-                                            }
-                                        );
-                                    }
-                                }
-                                
-                            }
-                        }
-                    }
+								Clients.Client(connection).ChatRoomLeave(apiObject);
+							}
+						}
+					}
 
-                    foreach(var connection in userConnectionService.GetConnections()) {
-                        Clients.Client(connection).SendAsync(
-                            "ChatUserDisconnected",
-                            new object[] {
-                                new { userName = Context.User.GetUserName() }
-                                });
-                    }
-                    return base.OnDisconnectedAsync(exception);
-                });
-            }
-        }
-    }
+					var disconnectedUserApiObject = new ChatUserDisconnected
+					{
+						DisconnectedUser = Context.User.ApiGetUser()
+					};
+
+					foreach (var connection in userConnectionsService.ChatConnectionService.GetUserConnections())
+					{
+						Clients.Client(connection).ChatUserDisconnected(disconnectedUserApiObject);
+					}
+					return base.OnDisconnectedAsync(exception);
+				});
+			}
+		}
+	}
 }

@@ -35,7 +35,7 @@ function ChatRoomsViewModel(connection) {
     }
 
     self.selectChatRoom = function(chatRoom) {
-        if(self.selectedChatRoom() == chatRoom) {
+        if(self.selectedChatRoom() === chatRoom) {
             deactivateCurrentChatRoomCard();
             self.selectedChatRoom(new ChatRoomViewModel(self, connection, {"chatRoomName": "", "participants": []}));
         }

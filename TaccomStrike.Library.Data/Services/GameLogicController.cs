@@ -7,195 +7,233 @@ using TaccomStrike.Library.Data.Model;
 using TaccomStrike.Library.Utility.Security;
 using TaccomStrike.Library.Data.Utilty;
 
-public class GameLogicController {
+public class GameLogicController
+{
+	private int turnsIndex;
 
-    private int turnsIndex;
+	public List<GameUser> GameUsers { get; set; }
+	public List<GameClaim> CurrentClaims { get; set; }
 
-    public List<GameUserEntity> GameUsers {get;set;}
-    public List<GameClaim> CurrentClaims {get;set;}
+	public GameState GetGameState(ClaimsPrincipal user)
+	{
+		GameState gameState = new GameState();
+		gameState.UserTurn = GetCurrentPlayerTurn();
+		gameState.User = GetPlayer(user);
+		gameState.Claims = CurrentClaims;
+		gameState.Players = GameUsers;
 
-    public GameState GetGameState(ClaimsPrincipal user) {
-        GameUserEntity gameUser = GetPlayer(user);
-        GameState gameState = new GameState();
-        gameState.CurrentTurnUserName = GetCurrentPlayerTurn().UserPrincipal.GetUserName();
-        gameState.Hand = gameUser.Hand.OrderByRank().ToList();
-        gameState.Claims = CurrentClaims;
+		return gameState;
+	}
 
-        foreach(var g in GameUsers) {
-            gameState.OpponentInformations.Add(
-                new OpponentInformation { 
-                    UserName = g.UserPrincipal.GetUserName(),
-                    HandCount = g.Hand.Count
-                });
-        }
+	public bool CallCheat(ClaimsPrincipal user)
+	{
+		var gameUser = GetPlayer(user);
 
-        return gameState;
-    }
+		var lastClaim = CurrentClaims.Last();
+		for(int i = 0; i < lastClaim.Claims.Count; i++)
+		{
+			if(lastClaim.Claims[i].Rank != lastClaim.Actual[i].Rank)
+			{
+				var lastClaimUser = lastClaim.ClaimUser;
 
-    public bool CallCheat(ClaimsPrincipal user) {
-        var gameUser = GetPlayer(user);
+				foreach(var claim in CurrentClaims)
+				{
+					foreach(var actualCard in claim.Actual)
+					{
+						lastClaimUser.Hand.Add(actualCard);
+					}
+				}
 
-        var lastClaim = CurrentClaims.Last();
-        for(int i = 0; i < lastClaim.Claims.Count; i++) {
-            if(lastClaim.Claims[i].Rank != lastClaim.Actual[i].Rank) {
-                var lastClaimUser = GetPlayer(lastClaim.ClaimUserName);
+				CurrentClaims = new List<GameClaim>();
+				return true;
+			}
+		}
 
-                foreach(var claim in CurrentClaims) {
-                    foreach(var actualCard in claim.Actual) {        
-                        lastClaimUser.Hand.Add(actualCard);
-                    }
-                }
+		foreach(var claim in CurrentClaims)
+		{
+			foreach(var actualCard in claim.Actual)
+			{
+				gameUser.Hand.Add(actualCard);
+			}
+		}
+		CurrentClaims = new List<GameClaim>();
+		return true;
+	}
 
-                CurrentClaims = new List<GameClaim>();
-                return true;
-            }
-        }
+	public bool SubmitClaim(ClaimsPrincipal user, List<GameCard> claims, List<GameCard> actual)
+	{
+		if(claims.Count != actual.Count)
+		{
+			return false;
+		}
 
-        foreach(var claim in CurrentClaims) {
-            foreach(var actualCard in claim.Actual) {        
-                gameUser.Hand.Add(actualCard);
-            }
-        }
-        CurrentClaims = new List<GameClaim>();
-        return true;
-    }
+		var referenceCard = claims[0];
+		foreach(var card in claims)
+		{
+			if(card.Rank != referenceCard.Rank)
+			{
+				return false;
+			}
+		}
 
-    public bool SubmitClaim(ClaimsPrincipal user, List<GameCardEntity> claims, List<GameCardEntity> actual) {
-        if(claims.Count != actual.Count) {
-            return false;
-        }
+		if(CurrentClaims.Count > 0)
+		{
+			if(CurrentClaims.Last().ClaimUser.UserPrincipal.GetUserName()==user.GetUserName())
+			{
+				return false;
+			}
+		}
 
-        var referenceCard = claims[0];
-        foreach(var card in claims) {
-            if(card.Rank != referenceCard.Rank) {
-                return false;
-            }
-        }
+		if(CurrentClaims.Count > 0)
+		{
+			var referenceCardIndex = GameCard
+				.Ranks
+				.FindIndex((item) => 
+				{
+					return item==referenceCard.Rank;
+				});
+			var recentClaimIndex = GameCard
+				.Ranks
+				.FindIndex((item) => 
+				{
+					return item==CurrentClaims.Last().Claims[0].Rank;
+				});
 
-        if(CurrentClaims.Count > 0) {
-            if(CurrentClaims.Last().ClaimUserName==user.GetUserName()) {
-                return false;
-            }
-        }
+			var lowerBound = recentClaimIndex-1;
+			if(lowerBound<0)
+			{
+				lowerBound=GameCard.Ranks.Count-1;
+			}
+			var upperBound = recentClaimIndex+1;
+			if(upperBound>=GameCard.Ranks.Count)
+			{
+				upperBound=0;
+			}
+			if(
+				referenceCard.Rank!=GameCard.Ranks[lowerBound] && 
+				referenceCard.Rank!=GameCard.Ranks[recentClaimIndex] && 
+				referenceCard.Rank!= GameCard.Ranks[upperBound]) 
+			{
+				return false;
+			}
+		}
 
-        if(CurrentClaims.Count > 0) {
-            var referenceCardIndex = GameCardEntity.Ranks.FindIndex((item) => { return item==referenceCard.Rank; });
-            var recentClaimIndex = GameCardEntity.Ranks.FindIndex((item) => { return item==CurrentClaims.Last().Claims[0].Rank; });
+		var gameUser = GetPlayer(user);
+		CurrentClaims.Add(new GameClaim(claims, actual, gameUser));
 
-            var lowerBound = recentClaimIndex-1;
-            if(lowerBound<0) {
-                lowerBound=GameCardEntity.Ranks.Count-1;
-            }
-            var upperBound = recentClaimIndex+1;
-            if(upperBound>=GameCardEntity.Ranks.Count) {
-                upperBound=0;
-            }
-            if(
-                referenceCard.Rank!=GameCardEntity.Ranks[lowerBound] && 
-                referenceCard.Rank!=GameCardEntity.Ranks[recentClaimIndex] && 
-                referenceCard.Rank!= GameCardEntity.Ranks[upperBound]) 
-            {
-                return false;
-            }
-        }
+		foreach(var card in actual)
+		{
+			gameUser.Hand.Remove(card);
+		}
+		return true;
+	}
 
-        var gameUser = GetPlayer(user);
-        CurrentClaims.Add(new GameClaim(claims, actual, gameUser.UserPrincipal.GetUserName()));
+	public bool IsVictory()
+	{
+		var gameUser = GetCurrentPlayerTurn();
+		if(gameUser.Hand.Count<=0) {
+			return true;
+		}
+		return false;
+	}
 
-        foreach(var card in actual) {
-            gameUser.Hand.Remove(card);
-        }
-        return true;
-    }
+	public void EndTurn()
+	{
+		turnsIndex++;
+		if(turnsIndex>=GameUsers.Count)
+		{
+			turnsIndex=0;
+		}
+	}
 
-    public bool IsVictory() {
-        var gameUser = GetCurrentPlayerTurn();
-        if(gameUser.Hand.Count<=0) {
-            return true;
-        }
-        return false;
-    }
+	public bool IsCurrentTurn(ClaimsPrincipal user)
+	{
+		var gamePlayer = GetPlayer(user);
+		return CurrentTurn(gamePlayer);
+	}
 
-    public void EndTurn() {
-        turnsIndex++;
-        if(turnsIndex>=GameUsers.Count) {
-            turnsIndex=0;
-        }
-    }
+	public bool CurrentTurn(TaccomStrike.Library.Data.ViewModel.GameUser gameUser)
+	{
+		TaccomStrike.Library.Data.ViewModel.GameUser currentUserTurn = GetCurrentPlayerTurn();
+		if(currentUserTurn.UserPrincipal.GetUserLoginID()==gameUser.UserPrincipal.GetUserLoginID())
+		{
+			return true;
+		}
+		return false;
+	} 
 
-    public bool IsCurrentTurn(ClaimsPrincipal user) {
-        var gamePlayer = GetPlayer(user);
-        return CurrentTurn(gamePlayer);
-    }
+	public GameUser GetCurrentPlayerTurn()
+	{
+		return GameUsers[turnsIndex];
+	}
 
-    public bool CurrentTurn(GameUserEntity gameUser) {
-        GameUserEntity currentUserTurn = GetCurrentPlayerTurn();
-        if(currentUserTurn.UserPrincipal.GetUserLoginID()==gameUser.UserPrincipal.GetUserLoginID()) {
-            return true;
-        }
-        return false;
-    } 
+	public GameUser GetPlayer(ClaimsPrincipal user)
+	{
+		return GameUsers
+		.Where(item => item.UserPrincipal.GetUserLoginID() == user.GetUserLoginID())
+		.FirstOrDefault();
+	}
 
-    public GameUserEntity GetCurrentPlayerTurn() {
-        return GameUsers[turnsIndex];
-    }
+	public GameUser GetPlayer(string userName)
+	{
+		return GameUsers
+		.Where(item => item.UserPrincipal.GetUserName() == userName)
+		.FirstOrDefault();
+	}
 
-    public GameUserEntity GetPlayer(ClaimsPrincipal user) {
-        return GameUsers
-        .Where(item => item.UserPrincipal.GetUserLoginID() == user.GetUserLoginID())
-        .FirstOrDefault();
-    }
+	public void StartGame(List<ClaimsPrincipal> users)
+	{
+		List<GameCard> deck = instantiateDeck();
+		GameUsers = new List<TaccomStrike.Library.Data.ViewModel.GameUser>();
+		CurrentClaims = new List<GameClaim>();
 
-    public GameUserEntity GetPlayer(string userName) {
-        return GameUsers
-        .Where(item => item.UserPrincipal.GetUserName() == userName)
-        .FirstOrDefault();
-    }
+		int interval = deck.Count / users.Count;
+		for(int i = 0; i < users.Count; i++)
+		{
+			if(i == users.Count-1)
+			{
+				List<GameCard> hand = deck;
+				GameUsers.Add(new TaccomStrike.Library.Data.ViewModel.GameUser(users[i], hand));
+			}
+			else
+			{
+				List<GameCard> hand = new List<GameCard>();
+				for(int j = 0; j < interval; j++)
+				{
+					GameCard lastCard = deck.Last();
+					hand.Add(lastCard);
+					deck.RemoveAt(deck.Count-1);
+				}
+				GameUsers.Add(new TaccomStrike.Library.Data.ViewModel.GameUser(users[i], hand));
+			}
+		}
+	}
 
-    public void StartGame(List<ClaimsPrincipal> users) {
-        List<GameCardEntity> deck = instantiateDeck();
-        GameUsers = new List<GameUserEntity>();
-        CurrentClaims = new List<GameClaim>();
+	private List<GameCard> instantiateDeck()
+	{
+		List<GameCard> deck = new List<GameCard>();
+		foreach(string suit in GameCard.Suits)
+		{
+			foreach(string rank in GameCard.Ranks)
+			{
+				GameCard card = new GameCard(rank, suit);
+				deck.Add(card);
+			}
+		}
 
-        int interval = deck.Count / users.Count;
-        for(int i = 0; i < users.Count; i++) {
-            if(i == users.Count-1) {
-                List<GameCardEntity> hand = deck;
-                GameUsers.Add(new GameUserEntity(users[i], hand));
-            }
-            else {
-                List<GameCardEntity> hand = new List<GameCardEntity>();
-                for(int j = 0; j < interval; j++) {
-                    GameCardEntity lastCard = deck.Last();
-                    hand.Add(lastCard);
-                    deck.RemoveAt(deck.Count-1);
-                }
-                GameUsers.Add(new GameUserEntity(users[i], hand));
-            }
-        }
-    }
+		shuffleDeck(deck);
+		return deck;
+	}
 
-    private List<GameCardEntity> instantiateDeck() {
-        List<GameCardEntity> deck = new List<GameCardEntity>();
-        foreach(string suit in GameCardEntity.Suits) {
-            foreach(string rank in GameCardEntity.Ranks) {
-                GameCardEntity card = new GameCardEntity(rank, suit);
-                deck.Add(card);
-            }
-        }
-
-        shuffleDeck(deck);
-        return deck;
-    }
-
-    private void shuffleDeck(List<GameCardEntity> deck) {
-        Random r = new Random();
-        for (int n = deck.Count - 1; n > 0; --n)
-        {
-            int k = r.Next(n+1);
-            GameCardEntity temp = deck[n];
-            deck[n] = deck[k];
-            deck[k] = temp;
-        }
-    }
+	private void shuffleDeck(List<GameCard> deck)
+	{
+		Random r = new Random();
+		for (int n = deck.Count - 1; n > 0; --n)
+		{
+			int k = r.Next(n+1);
+			GameCard temp = deck[n];
+			deck[n] = deck[k];
+			deck[k] = temp;
+		}
+	}
 }
