@@ -5,28 +5,30 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TaccomStrike.Library.Data.Model;
 
-namespace TaccomStrike.Library.Data.DAL {
+namespace TaccomStrike.Library.Data.DAL
+{
+	public class AppExceptionRepository
+	{
+		private readonly TaccomStrikeContext context;
 
-    public class AppExceptionRepository {
+		public AppExceptionRepository(TaccomStrikeContext context)
+		{
+			this.context = context;
+		}
 
-        private readonly TaccomStrikeContext context;
+		public int CreateAppException(Exception e)
+		{
+			var appException = new AppException
+			{
+				Message = e.Message,
+				StackTrace = e.StackTrace,
+				ExceptionString = e.ToString(),
+				WhenCreated = DateTime.Now
+			};
 
-        public AppExceptionRepository(TaccomStrikeContext context)
-        {
-            this.context = context;
-        }
-
-        public int CreateAppException(Exception e) {
-            var appException = new AppException() {
-                Message = e.Message,
-                StackTrace = e.StackTrace,
-                ExceptionString = e.ToString(),
-                WhenCreated = DateTime.Now
-            };
-
-            context.AppException.Add(appException);
-            context.SaveChanges();
-            return appException.AppExceptionID;
-        }
-    }
+			context.AppException.Add(appException);
+			context.SaveChanges();
+			return appException.AppExceptionID;
+		}
+	}
 }

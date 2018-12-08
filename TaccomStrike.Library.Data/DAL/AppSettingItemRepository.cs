@@ -7,23 +7,22 @@ using TaccomStrike.Library.Data.Model;
 
 namespace TaccomStrike.Library.Data.DAL {
 
-    public class AppSettingItemRepository {
+	public class AppSettingItemRepository
+	{
+		private readonly TaccomStrikeContext context;
 
-        private readonly TaccomStrikeContext context;
+		public AppSettingItemRepository(TaccomStrikeContext context)
+		{
+			this.context = context;
+		}
 
-        public AppSettingItemRepository(TaccomStrikeContext context)
-        {
-            this.context = context;
-        }
+		public List<AppSettingItem> GetAppSettingItemsByProgramIDAndEnvironment(int programID, string environment)
+		{
+			var list = context.AppSettingItem
+			.Where(item => item.AppSettingProgramID==programID && item.Environment ==environment)
+			.ToList();
 
-        public List<AppSettingItem> GetAppSettingItemsByProgramIDAndEnvironment(int programID, string environment) {
-            var list = context.AppSettingItem
-            .Where(item => item.AppSettingProgramID==programID && item.Environment ==environment)
-            .ToList();
-
-            return list;
-        }
-
-    }
-
+			return list;
+		}
+	}
 }

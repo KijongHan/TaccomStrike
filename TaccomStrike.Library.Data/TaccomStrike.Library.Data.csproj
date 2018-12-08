@@ -18,6 +18,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\TaccomStrike.Game.CallCheat\TaccomStrike.Game.CallCheat.csproj" />
     <ProjectReference Include="..\TaccomStrike.Library.Utility\TaccomStrike.Library.Utility.csproj" />
   </ItemGroup>
 
