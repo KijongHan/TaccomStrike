@@ -24,14 +24,36 @@ export class ConnectionsService
 
     static addChatUserConnectedHandler = (chatUserConenctedHandler: (chatUserConnected: ChatUserConnected) => void) => 
     {
+        ConnectionsService
+            .chatUserConnectedHandlers
+            .forEach((handler: (ChatUserConnected: ChatUserConnected) => void, index: number) => {
+                if(handler === chatUserConenctedHandler) 
+                {
+                    return;
+                }
+            });
+
         ConnectionsService.chatUserConnectedHandlers.push(chatUserConenctedHandler);
+    }
+
+    static removeChatUserConnectedHandler = (chatUserConenctedHandler: (chatUserConnected: ChatUserConnected) => void) => 
+    {
+        ConnectionsService
+            .chatUserConnectedHandlers
+            .forEach((handler: (ChatUserConnected: ChatUserConnected) => void, index: number) => {
+                if(handler === chatUserConenctedHandler) 
+                {
+                    ConnectionsService.chatUserConnectedHandlers.splice(index, 1);
+                }
+            });
     }
 
     static initializeChatEventHandlers = () => 
     {
         ConnectionsService.chatConnection.on("ChatUserConnected", (apiObject: ChatUserConnected) => {
             console.log(apiObject);
-            ConnectionsService.chatUserConnectedHandlers
+            ConnectionsService
+                .chatUserConnectedHandlers
                 .forEach((handler: (chatUserConnected: ChatUserConnected) => void, index: number) => {
                     handler(apiObject);
                 });

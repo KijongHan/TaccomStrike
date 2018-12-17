@@ -2,7 +2,7 @@ import { PostUserLogin } from "../models/rest/postuserlogin"
 
 export class AuthenticationService
 {
-    static login = (userLogin: PostUserLogin) => 
+    static userLogin = (userLogin: PostUserLogin) => 
     {
         return fetch("http://localhost:50248" + "/api/authentication/login", {
             method: 'POST',

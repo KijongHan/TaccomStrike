@@ -110,7 +110,7 @@ namespace TaccomStrike.Web.API.Hubs {
 
 		public override Task OnConnectedAsync()
 		{
-			lock(userConnectionsService.ChatConnectionService)
+			lock(userConnectionsService.ChatConnectionService.ConnectionLock)
 			{
 				return Task.Run(() =>  
 				{
