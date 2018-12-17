@@ -30,8 +30,8 @@ const TitlesPanel = styled.div`
 	height: ${(p: TitlePanelsStyle) => p.displayStyling.getHeightString()};
 	overflow: hidden;
 	margin-bottom: 50px;
-	padding-top: 15px;
-	padding-bottom: 10px;
+	padding-top: 30px;
+	padding-bottom: 30px;
 	-webkit-perspective: 800px;
 	perspective: 800px;
 `;

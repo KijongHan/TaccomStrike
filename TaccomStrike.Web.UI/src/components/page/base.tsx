@@ -1,15 +1,19 @@
 import * as React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { BasePageStyle } from "../pagestyles/base";
 
 export interface BasePageComponentProps extends RouteComponentProps {}
 
-export class BasePageComponentState {}
+export class BasePageComponentState 
+{
+	pageStyle: BasePageStyle;
+}
 
 export abstract class BasePageComponent<P extends BasePageComponentProps, S extends BasePageComponentState> extends React.Component<P, S> 
 {
     constructor(props: P) 
     {
-        super(props);
+		super(props);
     }
 
     componentDidMount()
@@ -45,29 +49,33 @@ export abstract class BasePageComponent<P extends BasePageComponentProps, S exte
 	{
 		let w = window.innerWidth;
 
-		if (w > 1100)
+		if (w > 1100 && this.state.pageStyle!==this.state.pageStyle.large())
 		{
+			this.setState({pageStyle: this.state.pageStyle.large()});
 			this.onResizeLarge();
 		}
-		else if (w > 900)
+		else if (w > 900 && this.state.pageStyle!==this.state.pageStyle.medium())
 		{
+			this.setState({pageStyle: this.state.pageStyle.medium()});
 			this.onResizeMedium();
 		}
-		else if (w > 700)
+		else if (w > 700 && this.state.pageStyle!==this.state.pageStyle.small())
 		{
+			this.setState({pageStyle: this.state.pageStyle.small()});
 			this.onResizeSmall();
 		}
-		else
+		else if(this.state.pageStyle!==this.state.pageStyle.verysmall())
 		{
+			this.setState({pageStyle: this.state.pageStyle.verysmall()});
 			this.onResizeVerySmall();
 		}
 	}
 
-	abstract onResizeLarge: () => void
+	onResizeLarge() {}
 
-	abstract onResizeMedium: () => void
+	onResizeMedium() {}
 
-	abstract onResizeSmall: () => void
+	onResizeSmall() {}
 
-	abstract onResizeVerySmall: () => void
+	onResizeVerySmall() {}
 }

@@ -1,6 +1,8 @@
 import * as React from "react";
 import { BasePageComponent, BasePageComponentProps, BasePageComponentState } from "./base";
 import { ConnectionsService } from "../../services/connections";
+import { ChatUserConnected } from "../../models/hub/chatuserconnected";
+import { MainPageStyle } from "../pagestyles/main";
 
 export interface MainPageComponentProps extends BasePageComponentProps {}
 
@@ -15,6 +17,8 @@ export class MainPageComponent extends BasePageComponent<MainPageComponentProps,
 			.initializeConnections()
 			.then(() => {
 				console.log("Connection Succeeded");
+				this.state = { pageStyle: new MainPageStyle() };
+				ConnectionsService.addChatUserConnectedHandler(this.chatUserConnectedHandler);
 			})
 			.catch(() => {
 				console.log("Connection Failed");
@@ -24,21 +28,10 @@ export class MainPageComponent extends BasePageComponent<MainPageComponentProps,
     render() 
     {
         return (<div>HI</div>);
-    }
-
-    onResizeLarge = () =>  
-	{
 	}
-
-	onResizeMedium = () =>  
+	
+	chatUserConnectedHandler = (chatUserConnected: ChatUserConnected) => 
 	{
-	}
-
-	onResizeSmall = () =>  
-	{
-	}
-
-	onResizeVerySmall= () =>  
-	{
+		console.log("Chat User Conected");
 	}
 }
