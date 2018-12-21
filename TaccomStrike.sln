@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "database\Database.sqlproj", "{8878F18B-8DE2-4793-AEE2-8B4C045E1817}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TaccomStrike.Database", "TaccomStrike.Database\TaccomStrike.Database.sqlproj", "{8878F18B-8DE2-4793-AEE2-8B4C045E1817}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaccomStrike.Web", "TaccomStrike.Web\TaccomStrike.Web.csproj", "{24442EA1-413A-4291-A1FC-92C0C909D89C}"
 EndProject
