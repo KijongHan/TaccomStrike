@@ -15,6 +15,6 @@ namespace TaccomStrike.Library.Data.ApiEntities
 
 		public GetUser Host { get; set; }
 
-		public List<GetUser> Player { get; set; }
+		public List<GetUser> Players { get; set; }
 	}
 }

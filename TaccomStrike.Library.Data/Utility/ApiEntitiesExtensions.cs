@@ -61,7 +61,7 @@ namespace TaccomStrike.Library.Data.Utility
 			return new GetGameLobby
 			{
 				Host = gameLobby.GetHost().ApiGetUser(),
-				Player = gameLobby.Players.ApiGetUsers(),
+				Players = gameLobby.Players.ApiGetUsers(),
 				MaxRoomLimit = gameLobby.MaxRoomLimit,
 				GameLobbyName = gameLobby.GameLobbyName,
 				GameLobbyID = gameLobby.GameLobbyID

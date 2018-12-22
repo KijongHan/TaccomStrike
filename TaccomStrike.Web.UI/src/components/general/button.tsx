@@ -5,14 +5,14 @@ import { DisplayStyle } from "../../styles/displaystyle";
 export interface ButtonComponentProps
 {
 	buttonText: string;
-	buttonClickHandler: () => void;
-
 	buttonComponentStyle: ButtonComponentStyle
+	buttonClickHandler: () => void;
 }
 
 export interface ButtonComponentState
 {
-	buttonComponentStyle: ButtonComponentStyle
+	buttonComponentStyle: ButtonComponentStyle;
+	buttonClickHandler: () => void;
 }
 
 export interface ButtonComponentStyle
@@ -50,7 +50,8 @@ export class ButtonComponent extends React.Component<ButtonComponentProps, Butto
 	{
 		super(props);
 		this.state = {
-			buttonComponentStyle: props.buttonComponentStyle
+			buttonComponentStyle: props.buttonComponentStyle,
+			buttonClickHandler: props.buttonClickHandler
 		};
 	}
 
@@ -59,7 +60,7 @@ export class ButtonComponent extends React.Component<ButtonComponentProps, Butto
 		return (
 			<ButtonElement
 				displayStyle={this.state.buttonComponentStyle.displayStyle}
-				onClick={this.props.buttonClickHandler}>
+				onClick={this.state.buttonClickHandler}>
 				{this.props.buttonText}
 			</ButtonElement>
 		); 

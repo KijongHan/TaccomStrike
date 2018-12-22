@@ -2,7 +2,7 @@
 import { ButtonComponent, ButtonComponentStyle } from "./button";
 
 import styled from "styled-components";
-import { CardComponent, CardComponentStyle, CardTiltAnimation, CardOrientation } from "./card";
+import { CardComponent, CardComponentStyle, CardTiltAnimation, CardOrientation, CardFlipAnimation } from "./card";
 import { LabelledInputComponentStyle, LabelledInputComponent } from "./labelledinput";
 
 export interface RegisterComponentProps
@@ -74,8 +74,11 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 					buttonComponentStyle={this.state.registerComponentStyle.registerButtonComponentStyle} />
 			</RegisterComponentElement>);
 
+		let flipAnimation = new CardFlipAnimation();
+		flipAnimation.flipDelay = 0;
+		flipAnimation.flipDuration = 2;
 		let tiltAnimation = new CardTiltAnimation();
-		tiltAnimation.tiltAngle = -20;
+		tiltAnimation.tiltAngle = 0;
 		tiltAnimation.tiltDelay = 0;
 		tiltAnimation.tiltDuration = 0.7;
 		return (

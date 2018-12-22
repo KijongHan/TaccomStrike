@@ -2,7 +2,7 @@
 import { ButtonComponent, ButtonComponentStyle } from "./button";
 
 import styled from "styled-components";
-import { CardComponent, CardComponentStyle, CardOrientation, CardTiltAnimation } from "./card";
+import { CardComponent, CardComponentStyle, CardOrientation, CardTiltAnimation, CardFlipAnimation } from "./card";
 import { debug } from "util";
 import { LabelledInputComponent, LabelledInputComponentStyle } from "./labelledinput";
 import { PostUserLogin } from "../../models/rest/postuserlogin";
@@ -92,8 +92,11 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 					buttonComponentStyle={this.state.loginComponentStyle.loginButtonComponentStyle} />
 			</LoginComponentElement>);
 
+		let flipAnimation = new CardFlipAnimation();
+		flipAnimation.flipDelay = 0;
+		flipAnimation.flipDuration = 2;
 		let tiltAnimation = new CardTiltAnimation();
-		tiltAnimation.tiltAngle = 20;
+		tiltAnimation.tiltAngle = 0;
 		tiltAnimation.tiltDelay = 0;
 		tiltAnimation.tiltDuration = 0.7;
 		return (

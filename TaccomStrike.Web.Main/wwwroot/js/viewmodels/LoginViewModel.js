@@ -6,7 +6,7 @@ function LoginViewModel(alertMessageViewModel) {
     self.password = ko.observable(null);
 
     self.login = function() {
-        if(self.username()==null || self.password()==null) {
+        if(self.username()===null || self.password()===null) {
             alertMessageViewModel.showLoginMissingInput();
             return;
         }

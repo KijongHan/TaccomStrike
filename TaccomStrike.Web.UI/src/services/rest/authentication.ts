@@ -1,4 +1,4 @@
-import { PostUserLogin } from "../models/rest/postuserlogin"
+import { PostUserLogin } from "../../models/rest/postuserlogin"
 
 export class AuthenticationService
 {
@@ -12,6 +12,6 @@ export class AuthenticationService
             },
             credentials: 'include',
             body: JSON.stringify(userLogin)
-        })
+        });
     }
 }

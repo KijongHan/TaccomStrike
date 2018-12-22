@@ -1,6 +1,7 @@
 import * as React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { BasePageStyle } from "../pagestyles/base";
+import { isNullOrUndefined } from "util";
 
 export interface BasePageComponentProps extends RouteComponentProps {}
 
@@ -48,6 +49,10 @@ export abstract class BasePageComponent<P extends BasePageComponentProps, S exte
     resizeEventHandler = () =>
 	{
 		let w = window.innerWidth;
+		if(isNullOrUndefined(this.state) || isNullOrUndefined(this.state.pageStyle)) 
+		{
+			return;
+		}
 
 		if (w > 1100 && this.state.pageStyle!==this.state.pageStyle.large())
 		{

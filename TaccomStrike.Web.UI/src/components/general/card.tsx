@@ -2,6 +2,7 @@
 import styled, { keyframes } from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
 import { isNullOrUndefined } from "util";
+import { PerspectiveStyle } from "../../styles/perspectivestyle";
 
 const CardFront = styled.div`
 	position: absolute;
@@ -49,8 +50,8 @@ const Card = styled.div`
 	width: ${(p: CardComponentStyle) => p.displayStyle.getWidthString()};
 	height: ${(p: CardComponentStyle) => p.displayStyle.getHeightString()};
 	margin: ${(p : CardComponentStyle) => p.displayStyle.getMarginString()};
-	-webkit-perspective: 800px;
-	perspective: 800px;
+	-webkit-perspective: 1200px;
+	perspective: 1200px;
 `;
 
 function CardTilt(startRotation: number, endRotation: number)
@@ -94,6 +95,7 @@ export enum CardOrientation
 export interface CardComponentStyle
 {
 	displayStyle: DisplayStyle;
+	perspectiveStyle?: PerspectiveStyle;
 }
 
 export class CardBackStyle

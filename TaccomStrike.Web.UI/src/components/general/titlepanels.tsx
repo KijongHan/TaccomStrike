@@ -56,7 +56,7 @@ export class TitlePanelsComponent extends React.Component<TitlePanelsComponentPr
 			return (
 				<TitlePanelComponent
 					key={index}
-					title={titleWord}
+					titleWord={titleWord}
 					titlePanelStyling={this.state.titlePanelStyles[index]}>
 				</TitlePanelComponent>);
 		})

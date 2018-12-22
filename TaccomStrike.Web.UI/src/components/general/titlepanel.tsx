@@ -6,7 +6,7 @@ import { DisplayStyle } from "../../styles/displaystyle";
 
 export class TitlePanelComponentProps
 {
-	title: string;
+	titleWord: string;
 	titlePanelStyling: TitlePanelStyle;
 }
 
@@ -54,13 +54,13 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 		let titleLetters: string[] = [];
 		let cardFlipAnimations: CardFlipAnimation[] = [];
 
-		for (let i = 0; i < props.title.length; i++)
+		for (let i = 0; i < props.titleWord.length; i++)
 		{
 			let cardFlipAnimation = new CardFlipAnimation();
-			cardFlipAnimation.flipDelay = i;
+			cardFlipAnimation.flipDelay = i/3;
 			cardFlipAnimation.flipDuration = 2;
 
-			titleLetters.push(props.title.charAt(i));
+			titleLetters.push(props.titleWord.charAt(i));
 			cardFlipAnimations.push(cardFlipAnimation);
 		}
 

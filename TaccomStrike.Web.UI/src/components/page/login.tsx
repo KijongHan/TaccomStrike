@@ -8,7 +8,7 @@ import { DisplayStyle, Position } from "../../styles/displaystyle";
 import { RegisterComponentStyle, RegisterComponent } from "../general/register";
 import { BasePageComponentProps, BasePageComponent, BasePageComponentState } from "./base";
 import { PostUserLogin } from "../../models/rest/postuserlogin";
-import { AuthenticationService } from "../../services/authentication";
+import { AuthenticationService } from "../../services/rest/authentication";
 import { LoginPageStyle } from "../pagestyles/login";
 
 const LoginPage = styled.div`
@@ -18,8 +18,8 @@ const LoginPage = styled.div`
 
 const PanelsContainer = styled.div`
 	overflow: auto;
-	padding-top: 25px;
-	padding-bottom: 25px;
+	padding-top: 10px;
+	padding-bottom: 50px;
 `;
 
 export interface LoginPageComponentProps extends BasePageComponentProps { }
@@ -27,16 +27,6 @@ export interface LoginPageComponentProps extends BasePageComponentProps { }
 export interface LoginPageComponentState extends BasePageComponentState
 {
 	userLogin: PostUserLogin;
-}
-
-export interface LoginPageStyle
-{
-	titlePanelsStyle: TitlePanelsStyle;
-	callTitlePanelStyle: TitlePanelStyle;
-	cheatTitlePanelStyle: TitlePanelStyle;
-
-	loginComponentStyle: LoginComponentStyle;
-	registerComponentStyle: RegisterComponentStyle;
 }
 
 export class LoginPageComponent extends BasePageComponent<LoginPageComponentProps, LoginPageComponentState>
@@ -103,7 +93,7 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 			.then((response: Response) => {
 				if(response.ok) 
 				{
-					this.props.history.push("/main");
+					this.props.history.push("/lobby");
 				}
 			});
 	}

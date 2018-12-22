@@ -1,5 +1,5 @@
 import { HubConnection, HubConnectionBuilder } from "@aspnet/signalr";
-import { ChatUserConnected } from "../models/hub/chatuserconnected";
+import { ChatUserConnected } from "../../models/hub/chatuserconnected";
 import { number } from "prop-types";
 
 export class ConnectionsService 
