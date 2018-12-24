@@ -47,6 +47,8 @@ const LoginComponentElement = styled.div`
 
 const ButtonsPanel = styled.div`
 	overflow: auto;
+	padding-top: 2px;
+    padding-bottom: 1px;
 `;
 
 export class LoginComponent extends React.Component<LoginComponentProps, LoginComponentState>

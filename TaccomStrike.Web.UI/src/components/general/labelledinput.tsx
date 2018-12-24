@@ -65,7 +65,6 @@ export class LabelledInputComponent extends React.Component<LabelledInputCompone
 
 	render()
 	{
-		console.log("render input");
 		return (
 			<LabelledInputComponentElement
 				displayStyle={this.props.componentStyle.displayStyle}>

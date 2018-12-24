@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 
 namespace TaccomStrike.Library.Utility.Security {
@@ -23,20 +24,20 @@ namespace TaccomStrike.Library.Utility.Security {
 			return "";
 		}
 
-		public static string GetCurrentGameLobbyID(this ClaimsPrincipal principal)
+		public static long? GetCurrentGameLobbyID(this ClaimsPrincipal principal)
 		{
 			foreach(Claim claim in principal.Claims) {
 				if(claim.Type == Security.CurrentGameLobbyIDClaim) {
-					return claim.Value;
+					return Convert.ToInt64(claim.Value);
 				}
 			}
-			return "";
+			return null;
 		}
 
-		public static void SetCurrentGameLobbyID(this ClaimsPrincipal principal, string currentGameLobbyID)
+		public static void SetCurrentGameLobbyID(this ClaimsPrincipal principal, long? currentGameLobbyID)
 		{
 			ClaimsIdentity identity = (ClaimsIdentity)principal.Identity;
-			if(principal.GetCurrentGameLobbyID()!=null && principal.GetCurrentGameLobbyID()!="")
+			if(principal.GetCurrentGameLobbyID()!=null)
 			{
 				foreach(Claim claim in principal.Claims)
 				{
@@ -47,7 +48,7 @@ namespace TaccomStrike.Library.Utility.Security {
 					}
 				}
 			}
-			identity.AddClaim(new Claim(Security.CurrentGameLobbyIDClaim, currentGameLobbyID));
+			identity.AddClaim(new Claim(Security.CurrentGameLobbyIDClaim, currentGameLobbyID.ToString()));
 		}
 	}
 }

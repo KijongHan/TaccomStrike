@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using TaccomStrike.Library.Utility.Security;
 using TaccomStrike.Library.Data.ViewModel;
 using Microsoft.AspNetCore.Cors;
+using TaccomStrike.Library.Data.Utility;
 
 namespace TaccomStrike.Web.API.Controllers
 {
@@ -50,7 +51,7 @@ namespace TaccomStrike.Web.API.Controllers
 				(
 					Security.AuthenticationScheme, claimsPrincipal
 				);
-			return Ok();
+			return Ok(claimsPrincipal.ApiGetUser());
 		}
 	}
 }

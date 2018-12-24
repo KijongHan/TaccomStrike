@@ -25,6 +25,11 @@ export class DisplayStyle
 	marginRightPixels?: number;
 	marginRightPercentage?: number;
 
+	paddingTopPixels?: number;
+	paddingBottomPixels?: number;
+	paddingLeftPixels?: number;
+	paddingRightPixels?: number;
+
 	bottomPixels?: number;
 	position?: Position;
 
@@ -78,6 +83,33 @@ export class DisplayStyle
 		}
 
 		return `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}`;
+	}
+
+	getPaddingString = (): string =>
+	{
+		let paddingLeft = "0";
+		let paddingRight = "0";
+		let paddingTop = "0";
+		let paddingBottom = "0";
+
+		if (!isNullOrUndefined(this.paddingLeftPixels))
+		{
+			paddingLeft = `${this.paddingLeftPixels}px`;
+		}
+		if (!isNullOrUndefined(this.paddingRightPixels))
+		{
+			paddingRight = `${this.paddingRightPixels}px`;
+		}
+		if (!isNullOrUndefined(this.paddingTopPixels))
+		{
+			paddingTop = `${this.paddingTopPixels}px`;
+		}
+		if (!isNullOrUndefined(this.paddingBottomPixels))
+		{
+			paddingBottom = `${this.paddingBottomPixels}px`;
+		}
+
+		return `${paddingTop} ${paddingRight} ${paddingBottom} ${paddingLeft}`;
 	}
 
 	getWidthString = (): string =>

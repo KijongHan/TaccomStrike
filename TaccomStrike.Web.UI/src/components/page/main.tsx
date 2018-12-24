@@ -1,6 +1,6 @@
 import * as React from "react";
 import { BasePageComponent, BasePageComponentProps, BasePageComponentState } from "./base";
-import { ConnectionsService } from "../../services/hub/connections";
+import { ChatConnectionsService } from "../../services/hub/chatconnections";
 import { ChatUserConnected } from "../../models/hub/chatuserconnected";
 import { MainPageStyle } from "../pagestyles/main";
 import styled from "styled-components";
@@ -21,12 +21,12 @@ export class MainPageComponent extends BasePageComponent<MainPageComponentProps,
 	constructor(props: MainPageComponentProps) 
 	{
 		super(props);
-		ConnectionsService
-			.initializeConnections()
+		ChatConnectionsService
+			.initializeChatConnections()
 			.then(() => {
 				console.log("Connection Succeeded");
 				this.state = { pageStyle: new MainPageStyle() };
-				ConnectionsService.addChatUserConnectedHandler(this.chatUserConnectedHandler);
+				ChatConnectionsService.addChatUserConnectedHandler(this.chatUserConnectedHandler);
 
 				ChatRoomsService.getChatRooms().then((response: GetChatRoom[]) => {console.log(response);});
 			})

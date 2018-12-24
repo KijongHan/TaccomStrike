@@ -1,4 +1,5 @@
 import { PostUserLogin } from "../../models/rest/postuserlogin"
+import { GetUser } from "../../models/rest/getuser";
 
 export class AuthenticationService
 {
@@ -12,6 +13,13 @@ export class AuthenticationService
             },
             credentials: 'include',
             body: JSON.stringify(userLogin)
+        })
+        .then((response: Response) => {
+            return response
+                .json()
+                .then((value: any) => {
+                    return <GetUser>value;
+                });
         });
     }
 }

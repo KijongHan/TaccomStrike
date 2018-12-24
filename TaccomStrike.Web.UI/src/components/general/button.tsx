@@ -25,9 +25,10 @@ const ButtonElement = styled.div`
 	text-align: center;
 	background-color: rgba(255, 255, 255, 0.1);
 	color: rgba(255, 255, 255, 0.75);
-	-webkit-box-shadow: 0px 0px 0.2px 2px rgba(255,255,255,0.7);
-	-moz-box-shadow: 0px 0px 0.2px 2px rgba(255,255,255,0.7);
-	box-shadow: 0px 0px 0.2px 2px rgba(255,255,255,0.7);
+	-webkit-box-shadow: 0px 0px 1px 1px rgba(255,255,255,0.7);
+	-moz-box-shadow: 0px 0px 1px 1px rgba(255,255,255,0.7);
+	box-shadow: 0px 0px 1px 1px rgba(255,255,255,0.7);
+	border-radius: 2px;
 
 	float: ${(p: ButtonComponentStyle) => p.displayStyle.getFloatString()};
 	width: ${(p: ButtonComponentStyle) => p.displayStyle.getWidthString()};

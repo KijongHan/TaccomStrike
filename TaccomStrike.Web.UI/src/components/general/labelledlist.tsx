@@ -26,22 +26,16 @@ const ListComponentElement = styled.select`
 
 export class LabelledInputComponentProps
 {
-	inputType?: string;
-	inputValue: string;
+	listItems: ListItem[];
 	labelValue: string;
 	componentStyle: LabelledListComponentStyle;
 
 	listOnChangeHandler: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-
-	constructor() 
-	{
-		this.inputType = "text";
-	}
 }
 
-export class LabelledInputComponentState
+export class LabelledListComponentState
 {
-	inputValue: string;
+	listItems: ListItem[];
 	labelValue: string;
 	componentStyle: LabelledListComponentStyle;
 }
@@ -51,13 +45,19 @@ export class LabelledListComponentStyle
 	displayStyle: DisplayStyle;
 }
 
-export class LabelledInputComponent extends React.Component<LabelledInputComponentProps, LabelledInputComponentState>
+export class ListItem 
+{
+	displayName: string;
+	itemValue: string;
+}
+
+export class LabelledListComponent extends React.Component<LabelledInputComponentProps, LabelledListComponentState>
 {
 	constructor(props: LabelledInputComponentProps)
 	{
 		super(props);
 		this.state = {
-			inputValue: props.inputValue,
+			listItems: props.listItems,
 			labelValue: props.labelValue,
 			componentStyle: props.componentStyle
 		};
@@ -65,24 +65,36 @@ export class LabelledInputComponent extends React.Component<LabelledInputCompone
 
 	render()
 	{
-		console.log("render input");
+		let listItemOptions = this.state
+			.listItems
+			.map((value: ListItem, index: number) => {
+				return (
+					<option
+						key={value.itemValue}
+						value={value.itemValue}>
+						{value.displayName}
+					</option>
+				);
+			});
 		return (
 			<LabelledListComponentElement
 				displayStyle={this.props.componentStyle.displayStyle}>
 				<LabelComponentElement>{this.props.labelValue}</LabelComponentElement>
 				<ListComponentElement
 					onChange={this.props.listOnChangeHandler}>
-                    <option value="Try"></option>
+                    {listItemOptions}
                 </ListComponentElement>
 			</LabelledListComponentElement>
 		);
 	}
 	
-	componentDidUpdate(prevProps: LabelledInputComponentProps, prevState: LabelledInputComponentState) 
+	componentDidUpdate(prevProps: LabelledInputComponentProps, prevState: LabelledListComponentState) 
 	{
-		if(this.props.inputValue !== prevProps.inputValue) 
+		if(this.props.componentStyle !== prevProps.componentStyle) 
 		{
-			this.setState({inputValue: this.props.inputValue});
+			this.setState({componentStyle: this.props.componentStyle});
 		}
 	}
+
+	
 }

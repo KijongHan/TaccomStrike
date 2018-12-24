@@ -19,7 +19,7 @@ namespace TaccomStrike.Library.Data.ViewModel
 		}
 
 		public string GameLobbyName {get;set;}
-		public string GameLobbyID {get;set;}
+		public long GameLobbyID {get;set;}
 		public string GameLobbyPassword {get;set;}
 
 		public List<ClaimsPrincipal> Hosts {get;set;}

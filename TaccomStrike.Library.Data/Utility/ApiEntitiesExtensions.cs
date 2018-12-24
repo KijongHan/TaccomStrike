@@ -49,6 +49,10 @@ namespace TaccomStrike.Library.Data.Utility
 
 		public static GetUser ApiGetUser(this ClaimsPrincipal principal)
 		{
+			if(principal == null)
+			{
+				return null;
+			}
 			return new GetUser
 			{
 				UserID = principal.GetUserLoginID(),

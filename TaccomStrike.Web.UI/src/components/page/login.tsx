@@ -10,6 +10,8 @@ import { BasePageComponentProps, BasePageComponent, BasePageComponentState } fro
 import { PostUserLogin } from "../../models/rest/postuserlogin";
 import { AuthenticationService } from "../../services/rest/authentication";
 import { LoginPageStyle } from "../pagestyles/login";
+import { GetUser } from "../../models/rest/getuser";
+import { EnvironmentUtil } from "../../utils/environment";
 
 const LoginPage = styled.div`
 	height: 100%;
@@ -90,11 +92,9 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 	{
 		AuthenticationService
 			.userLogin(this.state.userLogin)
-			.then((response: Response) => {
-				if(response.ok) 
-				{
-					this.props.history.push("/lobby");
-				}
+			.then((getUser: GetUser) => {
+				EnvironmentUtil.loggedInUser = getUser;
+				this.props.history.push("/lobby");
 			});
 	}
 

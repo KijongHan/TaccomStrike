@@ -41,7 +41,7 @@ export class LobbyPageStyle extends BasePageStyle
             cardComponentStyle: {
                 displayStyle: new DisplayStyle({
                     floatLeft: true,
-                    widthPercentage: 55,
+                    widthPercentage: 48,
                     heightPixels: 450,
                     marginLeftPercentage: 1
                 })
@@ -61,19 +61,34 @@ export class LobbyPageStyle extends BasePageStyle
                     widthPercentage: 20,
                     heightPixels: 50
                 })
+            },
+
+            lobbyListItemsPanelStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 400,
+                    paddingBottomPixels: 2
+                })
             }
         }
         style.gameLobbyComponentStyle = {
             cardComponentStyle: {
                 displayStyle: new DisplayStyle({
                     floatLeft: true,
-                    widthPercentage: 42,
+                    widthPercentage: 48,
                     heightPixels: 450,
                     marginLeftPercentage: 1
                 })
             },
 
             gameLobbyNameLabelledInputStyle: {
+                displayStyle: new DisplayStyle({
+                    widthPercentage: 90,
+                    marginLeftPercentage: 5,
+                    marginTopPixels: 20
+                })
+            },
+
+            maxLobbyLimitLabelledListStyle: {
                 displayStyle: new DisplayStyle({
                     widthPercentage: 90,
                     marginLeftPercentage: 5,
@@ -88,6 +103,50 @@ export class LobbyPageStyle extends BasePageStyle
                     marginLeftPercentage: 5,
                     position: Position.absolute,
                     bottomPixels: 10
+                })
+            },
+
+            gameLobbyMessageButtonedInputStyle: {
+                buttonedInputComponentPanelStyle: {
+                    displayStyle: new DisplayStyle({
+                        widthPercentage: 90,
+                        marginLeftPercentage: 5,
+                        heightPixels: 40
+                    })
+                },
+
+                buttonComponentStyle: {
+                    displayStyle: new DisplayStyle({
+                        floatLeft: true,
+                        widthPercentage: 25,
+                        heightPixels: 40
+                    })
+                },
+
+                inputComponentStyle: {
+                    displayStyle: new DisplayStyle({
+                        floatLeft: true,
+                        widthPercentage: 75,
+                        heightPixels: 40
+                    })
+                }
+            },
+
+            startGameButtonStyle: {
+                displayStyle: new DisplayStyle({
+                    floatLeft: true,
+                    widthPercentage: 30,
+                    heightPixels: 50,
+                    marginLeftPercentage: 5
+                })
+            },
+
+            leaveGameButtonStyle: {
+                displayStyle: new DisplayStyle({
+                    floatLeft: true,
+                    widthPercentage: 30,
+                    heightPixels: 50,
+                    marginLeftPercentage: 2
                 })
             }
         }

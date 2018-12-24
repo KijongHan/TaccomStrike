@@ -24,7 +24,7 @@ namespace TaccomStrike.Web.API.Hubs
 			this.userConnectionsService = userConnectionsService;
 		}
 
-		public Task GameCallCheat(string gameLobbyID)
+		public Task GameCallCheat(long gameLobbyID)
 		{
 			return Task.Run(() => 
 			{
@@ -59,7 +59,7 @@ namespace TaccomStrike.Web.API.Hubs
 			});
 		}
 
-		public Task GameClaim(string gameLobbyID, List<GameCard> claims, List<GameCard> actual)
+		public Task GameClaim(long gameLobbyID, List<GameCard> claims, List<GameCard> actual)
 		{
 			return Task.Run(() => 
 			{
@@ -90,7 +90,7 @@ namespace TaccomStrike.Web.API.Hubs
 			});
 		}
 
-		public Task GameEndTurn(string gameLobbyID)
+		public Task GameEndTurn(long gameLobbyID)
 		{
 			return Task.Run(() => 
 			{
@@ -125,7 +125,7 @@ namespace TaccomStrike.Web.API.Hubs
 			});
 		}
 
-		public Task GameLobbyStartGame(string gameLobbyID)
+		public Task GameLobbyStartGame(long gameLobbyID)
 		{
 			return Task.Run(() => 
 			{
@@ -149,7 +149,7 @@ namespace TaccomStrike.Web.API.Hubs
 			});
 		}
 
-		public Task GameLobbyLeave(string gameLobbyID)
+		public Task GameLobbyLeave(long gameLobbyID)
 		{
 			return Task.Run(() => 
 			{
@@ -180,16 +180,16 @@ namespace TaccomStrike.Web.API.Hubs
 					}
 
 					gameLobby.RemoveUser(Context.User);
+					Context.User.SetCurrentGameLobbyID(null);
 					if (gameLobby.GetUsers().Count <= 0)
 					{
 						gameLobbyService.RemoveGameLobby(gameLobbyID);
-						Context.User.SetCurrentGameLobbyID(null);
 					}
 				}
 			});
 		}
 
-		public Task GameLobbyJoin(string gameLobbyID)
+		public Task GameLobbyJoin(long gameLobbyID)
 		{
 			return Task.Run(() =>
 			{
@@ -216,17 +216,9 @@ namespace TaccomStrike.Web.API.Hubs
 							gameLobby.AddUser(Context.User);    
 						}
 						Context.User.SetCurrentGameLobbyID(gameLobbyID);
-
-						var host = gameLobby
-							.GetHost()
-							.ApiGetUser();
-						var players = gameLobby
-							.Players
-							.ApiGetUsers();
+						
 						var apiObject = new GameLobbyJoin
 						{
-							Host = host,
-							Players = players,
 							NewUser = newUser,
 							GameLobby = gameLobby.ApiGetGameLobby()
 						};
@@ -244,7 +236,7 @@ namespace TaccomStrike.Web.API.Hubs
 			});
 		}
 
-		public Task GameLobbySendMessage(string message, string gameLobbyID)
+		public Task GameLobbySendMessage(string message, long gameLobbyID)
 		{
 			return Task.Run(() => 
 			{
@@ -287,9 +279,9 @@ namespace TaccomStrike.Web.API.Hubs
 			{
 				var currentGameLobbyID = Context.User.GetCurrentGameLobbyID();
 			
-				if(currentGameLobbyID!=null && currentGameLobbyID!="")
+				if(currentGameLobbyID!=null)
 				{
-					var gameLobby = gameLobbyService.GetGameLobby(currentGameLobbyID);
+					var gameLobby = gameLobbyService.GetGameLobby(currentGameLobbyID.Value);
 
 					var playerLeaving = Context
 						.User
@@ -321,8 +313,8 @@ namespace TaccomStrike.Web.API.Hubs
 					gameLobby.RemoveUser(Context.User);
 					if (gameLobby.GetUsers().Count <= 0)
 					{
-						gameLobbyService.RemoveGameLobby(currentGameLobbyID);
-						Context.User.SetCurrentGameLobbyID("");
+						gameLobbyService.RemoveGameLobby(currentGameLobbyID.Value);
+						Context.User.SetCurrentGameLobbyID(null);
 					}
 				}
 

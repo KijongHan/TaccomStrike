@@ -9,7 +9,7 @@ namespace TaccomStrike.Library.Data.ApiEntities
 	{
 		public string GameLobbyName { get; set; }
 
-		public string GameLobbyID { get; set; }
+		public long GameLobbyID { get; set; }
 
 		public int MaxRoomLimit { get; set; }
 

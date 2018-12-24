@@ -8,6 +8,9 @@ import { GameLobbyComponent } from "../general/gamelobby";
 import { GetGameLobby } from "../../models/rest/getgamelobby";
 import { CreateGameLobby } from "../../models/rest/creategamelobby";
 import { GameLobbiesService } from "../../services/rest/gamelobbies";
+import { GameConnectionsService } from "../../services/hub/gameconnections";
+import { GameLobbyJoin } from "../../models/hub/gamelobbyjoin";
+import { EnvironmentUtil } from "../../utils/environment";
 
 const LobbyPage = styled.div`
 	height: 100%;
@@ -41,8 +44,12 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
             currentGameLobby: null,
             createGameLobby: new CreateGameLobby()
         };
-
         this.retrieveGameLobbies();
+        GameConnectionsService
+            .initializeGameConnections()
+            .then(() => {
+                GameConnectionsService.addGameLobbyJoinHandler(this.gameLobbyJoinHandler);
+            });
     }
 
     render() 
@@ -51,7 +58,6 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
 		let titleWords = ["Game", "Lobbies"];
         let titlePanelStylings = [lobbyPageStyle.gameTitlePanelStyle, lobbyPageStyle.lobbiesTitlePanelStyle];
         
-        console.log(this.state.createGameLobby);
         return (
             <LobbyPage>
                 <TitlePanelsComponent
@@ -72,6 +78,7 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                         createGameLobby={this.state.createGameLobby}
                         gameLobbyComponentStyle={lobbyPageStyle.gameLobbyComponentStyle}
                         gameLobbyNameInputOnChangeHandler={this.gameLobbyNameInputOnChangeHandler}
+                        maxLobbyLimitListOnChangeHandler={this.maxLobbyLimitListOnChangeHandler}
                         createGameButtonClickHandler={this.createGameButtonClickHandler}>
                     </GameLobbyComponent>
                 </PanelsContainer>
@@ -105,14 +112,27 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
         GameLobbiesService
             .createGameLobby(this.state.createGameLobby)
             .then((value: GetGameLobby) => {
-                this.setState({currentGameLobby: value});
+                console.log(value);
+                GameConnectionsService.gameLobbyJoin(value.gameLobbyID);
             });
     }
+
+    maxLobbyLimitListOnChangeHandler = (input: string) => 
+	{
+        let newCreateGameLobby = Object.assign({}, this.state.createGameLobby);
+        newCreateGameLobby.maxRoomLimit = Number(input);
+        this.setState({createGameLobby: newCreateGameLobby});
+	}
 
     gameLobbyNameInputOnChangeHandler = (input: string) => 
     {
         let newCreateGameLobby = Object.assign({}, this.state.createGameLobby);
         newCreateGameLobby.gameLobbyName = input;
 		this.setState({createGameLobby: newCreateGameLobby});
+    }
+
+    gameLobbyJoinHandler = (gameLobbyJoin: GameLobbyJoin) => 
+    {
+        this.setState({currentGameLobby: gameLobbyJoin.gameLobby});
     }
 }
