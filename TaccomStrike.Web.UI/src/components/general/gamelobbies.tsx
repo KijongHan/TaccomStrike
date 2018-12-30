@@ -13,6 +13,7 @@ const GameLobbies = styled.div`
 
 const ButtonsPanel = styled.div`
     overflow: auto;
+    padding-left: 2px;
     padding-top: 2px;
     padding-bottom: 1px;
 `;
@@ -49,6 +50,7 @@ export class GameLobbiesComponentProps
     gameLobbiesComponentStyle: GameLobbiesComponentStyle;
     gameLobbies: GetGameLobby[];
 
+    lobbyListItemClickHandler: (gameLobbyID: number) => void;
     refreshButtonClickHandler: () => void;
     searchButtonClickHandler: () => void;
 }
@@ -73,6 +75,39 @@ export class LobbyListItemsPanelStyle
     displayStyle: DisplayStyle;
 }
 
+class LobbyListItemComponentProps 
+{
+    gameLobby: GetGameLobby;
+    lobbyListItemClickHandler: (gameLobbyID: number) => void;
+}
+
+class LobbyListItemComponentState {}
+
+class LobbyListItemComponent extends React.Component<LobbyListItemComponentProps, LobbyListItemComponentState> 
+{
+    constructor(props: LobbyListItemComponentProps) 
+    {
+        super(props);
+    }
+
+    render() 
+    {
+        return (
+            <LobbyListItem
+                key={this.props.gameLobby.gameLobbyID}
+                onClick={this.lobbyListItemClickHandler}>
+                <LobbyListItemColumn>{this.props.gameLobby.gameLobbyName}</LobbyListItemColumn>
+                <LobbyListItemColumn>{this.props.gameLobby.players.length}/{this.props.gameLobby.maxRoomLimit}</LobbyListItemColumn>
+            </LobbyListItem>
+        );
+    }
+
+    lobbyListItemClickHandler = () => 
+    {
+        this.props.lobbyListItemClickHandler(this.props.gameLobby.gameLobbyID);
+    }
+}
+
 export class GameLobbiesComponent extends React.Component<GameLobbiesComponentProps, GameLobbiesComponentState> 
 {
     constructor(props: GameLobbiesComponentProps) 
@@ -91,11 +126,10 @@ export class GameLobbiesComponent extends React.Component<GameLobbiesComponentPr
             .gameLobbies
             .map((value: GetGameLobby, index: number) => {
                 return (
-                    <LobbyListItem
-                        key={value.gameLobbyID}>
-                        <LobbyListItemColumn>{value.gameLobbyName}</LobbyListItemColumn>
-                        <LobbyListItemColumn>{value.players.length}/{value.maxRoomLimit}</LobbyListItemColumn>
-                    </LobbyListItem>
+                    <LobbyListItemComponent
+                        gameLobby={value}
+                        lobbyListItemClickHandler={this.lobbyListItemClickHandler}>
+                    </LobbyListItemComponent>
                 );
             });
 
@@ -128,6 +162,11 @@ export class GameLobbiesComponent extends React.Component<GameLobbiesComponentPr
 				tiltAnimation={null}>
 			</CardComponent>
 		);
+    }
+
+    lobbyListItemClickHandler = (gameLobbyID: number) => 
+    {
+        this.props.lobbyListItemClickHandler(gameLobbyID);
     }
 
     refreshButtonClickHandler = () =>  

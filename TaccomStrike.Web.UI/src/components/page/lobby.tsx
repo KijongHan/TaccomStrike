@@ -11,6 +11,8 @@ import { GameLobbiesService } from "../../services/rest/gamelobbies";
 import { GameConnectionsService } from "../../services/hub/gameconnections";
 import { GameLobbyJoin } from "../../models/hub/gamelobbyjoin";
 import { EnvironmentUtil } from "../../utils/environment";
+import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
+import { isNullOrUndefined } from "util";
 
 const LobbyPage = styled.div`
 	height: 100%;
@@ -30,6 +32,9 @@ export class LobbyPageComponentState extends BasePageComponentState
     gameLobbies: GetGameLobby[];
     currentGameLobby: GetGameLobby;
     createGameLobby: CreateGameLobby;
+
+    gameLobbyMessage: string;
+    gameLobbyMessages: GameLobbySendMessage[];
 }
 
 export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProps, LobbyPageComponentState>
@@ -42,7 +47,10 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
             pageStyle: new LobbyPageStyle().large(),
             gameLobbies: [],
             currentGameLobby: null,
-            createGameLobby: new CreateGameLobby()
+            createGameLobby: new CreateGameLobby(),
+
+            gameLobbyMessage: null,
+            gameLobbyMessages: []
         };
         this.retrieveGameLobbies();
         GameConnectionsService
@@ -70,6 +78,7 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                     <GameLobbiesComponent
                         gameLobbiesComponentStyle={lobbyPageStyle.gameLobbiesComponentStyle}
                         gameLobbies={this.state.gameLobbies}
+                        lobbyListItemClickHandler={this.lobbyListItemClickHandler}
                         refreshButtonClickHandler={this.refreshButtonClickHandler}
                         searchButtonClickHandler={this.searchButtonClickHandler}>
                     </GameLobbiesComponent>
@@ -97,6 +106,14 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
             });
     }
 
+    lobbyListItemClickHandler = (gameLobbyID: number) => 
+    {
+        if(isNullOrUndefined(this.state.currentGameLobby)) 
+        {
+            GameConnectionsService.gameLobbyJoin(gameLobbyID);
+        }
+    }
+
     refreshButtonClickHandler = () => 
     {
         this.retrieveGameLobbies();
@@ -109,6 +126,11 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
 
     createGameButtonClickHandler = () => 
     {
+        if(isNullOrUndefined(this.state.createGameLobby.gameLobbyName) || this.state.createGameLobby.gameLobbyName==="") 
+        {
+            return;
+        }
+
         GameLobbiesService
             .createGameLobby(this.state.createGameLobby)
             .then((value: GetGameLobby) => {

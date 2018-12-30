@@ -31,7 +31,7 @@ export class ButtonedInputComponentProps
 	inputValue: string;
 	componentStyle: ButtonedInputComponentStyle;
 
-    inputOnChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    inputOnChangeHandler: (inputValue: string) => void;
     buttonClickHandler: () => void;
 
 	constructor() 
@@ -83,7 +83,7 @@ export class ButtonedInputComponent extends React.Component<ButtonedInputCompone
                     displayStyle={this.state.componentStyle.inputComponentStyle.displayStyle}
 					type={this.props.inputType}
 					value={this.state.inputValue}
-					onChange={this.props.inputOnChangeHandler}>
+					onChange={this.inputOnChangeHandler}>
                 </InputComponentElement>
                 <ButtonComponent
                     buttonText={"Send"}
@@ -93,6 +93,11 @@ export class ButtonedInputComponent extends React.Component<ButtonedInputCompone
 			</ButtonedInputComponentElement>
 		);
     }
+
+    inputOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
+	{
+		this.props.inputOnChangeHandler(event.target.value);
+	}
 	
 	componentDidUpdate(prevProps: ButtonedInputComponentProps, prevState: ButtonedInputComponentState) 
 	{

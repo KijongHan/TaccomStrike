@@ -311,10 +311,10 @@ namespace TaccomStrike.Web.API.Hubs
 					}
 
 					gameLobby.RemoveUser(Context.User);
+					Context.User.SetCurrentGameLobbyID(null);
 					if (gameLobby.GetUsers().Count <= 0)
 					{
 						gameLobbyService.RemoveGameLobby(currentGameLobbyID.Value);
-						Context.User.SetCurrentGameLobbyID(null);
 					}
 				}
 

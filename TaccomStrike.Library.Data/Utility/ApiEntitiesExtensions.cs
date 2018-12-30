@@ -86,7 +86,7 @@ namespace TaccomStrike.Library.Data.Utility
 		{
 			return new GetChatMessage
 			{
-				UserViewmodel = chatMessage.User.ApiGetUser(),
+				User = chatMessage.User.ApiGetUser(),
 				Message = chatMessage.Message,
 				WhenCreated = chatMessage.WhenCreated
 			};

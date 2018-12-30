@@ -106,11 +106,34 @@ export class LobbyPageStyle extends BasePageStyle
                 })
             },
 
+            gameLobbyContentPanelStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 300,
+                    widthPercentage: 100
+                })
+            },
+
+            gameLobbyPlayersPanelStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 300,
+                    widthPercentage: 50,
+                    floatLeft: true
+                })
+            },
+
+            gameLobbyMessagesPanelStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 300,
+                    widthPercentage: 50,
+                    floatLeft: true
+                })
+            },
+
             gameLobbyMessageButtonedInputStyle: {
                 buttonedInputComponentPanelStyle: {
                     displayStyle: new DisplayStyle({
-                        widthPercentage: 90,
-                        marginLeftPercentage: 5,
+                        widthPercentage: 100,
+                        marginTopPixels: 35,
                         heightPixels: 40
                     })
                 },
@@ -136,8 +159,7 @@ export class LobbyPageStyle extends BasePageStyle
                 displayStyle: new DisplayStyle({
                     floatLeft: true,
                     widthPercentage: 30,
-                    heightPixels: 50,
-                    marginLeftPercentage: 5
+                    heightPixels: 50
                 })
             },
 
@@ -145,8 +167,7 @@ export class LobbyPageStyle extends BasePageStyle
                 displayStyle: new DisplayStyle({
                     floatLeft: true,
                     widthPercentage: 30,
-                    heightPixels: 50,
-                    marginLeftPercentage: 2
+                    heightPixels: 50
                 })
             }
         }

@@ -8,14 +8,15 @@ import { LabelledInputComponent, LabelledInputComponentStyle } from "./labelledi
 import { LabelledListComponent, LabelledListComponentStyle, ListItem } from "./labelledlist";
 import { isNullOrUndefined } from "util";
 import { ButtonedInputComponentStyle, ButtonedInputComponent } from "./buttonedinput";
+import { DisplayStyle } from "../../styles/displaystyle";
 
 const ButtonsPanel = styled.div`
     overflow: auto;
-    position: absolute;
     bottom: 10px;
     width: 100%;
+    padding-left: 2px;
     padding-top: 2px;
-    padding-bottom: 1px;
+    padding-bottom: 2px;
 `;
 
 const CreateGameLobbyElement = styled.div`
@@ -29,7 +30,29 @@ const CurrentGameLobbyElement = styled.div`
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.88);
+    padding: 5px 5px 5px 5px;
     overflow: auto;
+`;
+
+const GameLobbyContentPanel = styled.div`
+    overflow: auto;
+    display: inline-block;
+    height: ${(p : GameLobbyContentPanelStyle) => p.displayStyle.getHeightString()};
+    width: ${(p : GameLobbyContentPanelStyle) => p.displayStyle.getWidthString()};
+`;
+
+const GameLobbyPlayersPanel = styled.div`
+    background-color: blue;
+    float: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getFloatString()};
+    height: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getHeightString()};
+    width: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getWidthString()};
+`;
+
+const GameLobbyMessagesPanel = styled.div`
+    background-color: red;
+    float: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getFloatString()};
+    height: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getHeightString()};
+    width: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getWidthString()};
 `;
 
 export class GameLobbyComponentProps 
@@ -60,9 +83,27 @@ export class GameLobbyComponentStyle
     maxLobbyLimitLabelledListStyle: LabelledListComponentStyle;
     createGameButtonStyle: ButtonComponentStyle;
 
+    gameLobbyContentPanelStyle: GameLobbyContentPanelStyle;
+    gameLobbyPlayersPanelStyle: GameLobbyPlayersPanelStyle;
+    gameLobbyMessagesPanelStyle: GameLobbyMessagesPanelStyle;
     gameLobbyMessageButtonedInputStyle: ButtonedInputComponentStyle; 
     startGameButtonStyle: ButtonComponentStyle;
     leaveGameButtonStyle: ButtonComponentStyle;
+}
+
+export class GameLobbyContentPanelStyle 
+{
+    displayStyle: DisplayStyle;
+}
+
+export class GameLobbyPlayersPanelStyle 
+{
+    displayStyle: DisplayStyle;
+}
+
+export class GameLobbyMessagesPanelStyle 
+{
+    displayStyle: DisplayStyle;
 }
 
 export class GameLobbyComponent extends React.Component<GameLobbyComponentProps, GameLobbyComponentState> 
@@ -112,6 +153,13 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
     {
         return (
             <CurrentGameLobbyElement>
+                <GameLobbyContentPanel
+                    displayStyle={this.state.gameLobbyComponentStyle.gameLobbyContentPanelStyle.displayStyle}>
+                    <GameLobbyMessagesPanel
+                        displayStyle={this.state.gameLobbyComponentStyle.gameLobbyMessagesPanelStyle.displayStyle}/>
+                    <GameLobbyPlayersPanel
+                        displayStyle={this.state.gameLobbyComponentStyle.gameLobbyPlayersPanelStyle.displayStyle}/>
+                </GameLobbyContentPanel>
                 <ButtonedInputComponent
                     inputValue={""}
                     componentStyle={this.state.gameLobbyComponentStyle.gameLobbyMessageButtonedInputStyle}

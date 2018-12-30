@@ -1,12 +1,14 @@
 import { HubConnection, HubConnectionBuilder } from "@aspnet/signalr";
 import { GameLobbyJoin } from "../../models/hub/gamelobbyjoin";
 import { GetGameLobby } from "../../models/rest/getgamelobby";
+import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
 
 export class GameConnectionsService
 {
     static gameConnection: HubConnection;
 
     static gameLobbyJoinHandlers: ((gameLobbyJoin: GameLobbyJoin) => void)[] = [];
+    static gameLobbySendMessageHandlers: ((gameLobbySendMessage: GameLobbySendMessage) => void)[] = [];
 
     static initializeGameConnections = () => 
     {
@@ -24,6 +26,14 @@ export class GameConnectionsService
             GameConnectionsService
                 .gameLobbyJoinHandlers
                 .forEach((handler: (gameLobbyJoin: GameLobbyJoin) => void, index: number) => {
+                    handler(apiObject);
+                });
+        });
+        GameConnectionsService.gameConnection.on("GameLobbySendMessage", (apiObject: GameLobbySendMessage) => {
+            console.log(apiObject);
+            GameConnectionsService
+                .gameLobbySendMessageHandlers
+                .forEach((handler: (gameLobbySendMessage: GameLobbySendMessage) => void, index: number) => {
                     handler(apiObject);
                 });
         });
@@ -55,9 +65,39 @@ export class GameConnectionsService
             });
     }
 
+    static addGameLobbySendMessageHandler = (gameLobbySendMessageHandler: (gameLobbySendMessage: GameLobbySendMessage) => void) => 
+    {
+        GameConnectionsService
+            .gameLobbySendMessageHandlers
+            .forEach((handler: (gameLobbySendMessage: GameLobbySendMessage) => void, index: number) => {
+                if(handler === gameLobbySendMessageHandler) 
+                {
+                    return;
+                }
+            });
+
+            GameConnectionsService.gameLobbySendMessageHandlers.push(gameLobbySendMessageHandler);
+    }
+
+    static removeGameLobbySendMessageHandler = (gameLobbySendMessageHandler: (gameLobbySendMessage: GameLobbySendMessage) => void) => 
+    {
+        GameConnectionsService
+            .gameLobbySendMessageHandlers
+            .forEach((handler: (gameLobbySendMessage: GameLobbySendMessage) => void, index: number) => {
+                if(handler === gameLobbySendMessageHandler) 
+                {
+                    GameConnectionsService.gameLobbySendMessageHandlers.splice(index, 1);
+                }
+            });
+    }
+
     static gameLobbyJoin(gameLobbyId: any)
     {
-        console.log(gameLobbyId);
         GameConnectionsService.gameConnection.invoke("GameLobbyJoin", gameLobbyId);
+    }
+
+    static gameLobbySendMessage(gameLobbyMessage: string, gameLobbyId: any)
+    {
+        GameConnectionsService.gameConnection.invoke("GameLobbySendMessage", gameLobbyMessage, gameLobbyId);
     }
 }
