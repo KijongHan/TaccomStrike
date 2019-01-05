@@ -22,7 +22,11 @@ const InputComponentElement = styled.input`
     background-color: rgba(255, 255, 255, 0.5);
     font-size: 1.2em;
     border: none;
-    padding: 0 0 0 0;
+	padding: 0 0 0 0;
+	
+	&:focus {
+		caret-color: blue;
+	}
 `;
 
 export class ButtonedInputComponentProps

@@ -55,14 +55,6 @@ export class LobbyPageStyle extends BasePageStyle
                 })
             },
 
-            searchButtonComponentStyle: {
-                displayStyle: new DisplayStyle({
-                    floatLeft: true,
-                    widthPercentage: 20,
-                    heightPixels: 50
-                })
-            },
-
             lobbyListItemsPanelStyle: {
                 displayStyle: new DisplayStyle({
                     heightPixels: 400,
@@ -115,16 +107,16 @@ export class LobbyPageStyle extends BasePageStyle
 
             gameLobbyPlayersPanelStyle: {
                 displayStyle: new DisplayStyle({
-                    heightPixels: 300,
-                    widthPercentage: 50,
+                    heightPixels: 298,
+                    widthPercentage: 49,
                     floatLeft: true
                 })
             },
 
             gameLobbyMessagesPanelStyle: {
                 displayStyle: new DisplayStyle({
-                    heightPixels: 300,
-                    widthPercentage: 50,
+                    heightPixels: 298,
+                    widthPercentage: 49,
                     floatLeft: true
                 })
             },

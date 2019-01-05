@@ -13,6 +13,8 @@ import { GameLobbyJoin } from "../../models/hub/gamelobbyjoin";
 import { EnvironmentUtil } from "../../utils/environment";
 import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
 import { isNullOrUndefined } from "util";
+import { GameLobbyLeaveGame } from "../../models/hub/gamelobbyleave";
+import { GameLobbyStartGame } from "../../models/hub/gamelobbystart";
 
 const LobbyPage = styled.div`
 	height: 100%;
@@ -57,6 +59,7 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
             .initializeGameConnections()
             .then(() => {
                 GameConnectionsService.addGameLobbyJoinHandler(this.gameLobbyJoinHandler);
+                GameConnectionsService.addGameLobbySendMessageHandler(this.gameLobbySendMessageHandler);
             });
     }
 
@@ -65,6 +68,10 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
         let lobbyPageStyle = this.state.pageStyle as LobbyPageStyle;
 		let titleWords = ["Game", "Lobbies"];
         let titlePanelStylings = [lobbyPageStyle.gameTitlePanelStyle, lobbyPageStyle.lobbiesTitlePanelStyle];
+
+        let gameLobbyMessages = this.state.gameLobbyMessages.map((value: GameLobbySendMessage) => {
+            return value.chatMessage;
+        });
         
         return (
             <LobbyPage>
@@ -79,8 +86,7 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                         gameLobbiesComponentStyle={lobbyPageStyle.gameLobbiesComponentStyle}
                         gameLobbies={this.state.gameLobbies}
                         lobbyListItemClickHandler={this.lobbyListItemClickHandler}
-                        refreshButtonClickHandler={this.refreshButtonClickHandler}
-                        searchButtonClickHandler={this.searchButtonClickHandler}>
+                        refreshButtonClickHandler={this.refreshButtonClickHandler}>
                     </GameLobbiesComponent>
                     <GameLobbyComponent
                         currentGameLobby={this.state.currentGameLobby}
@@ -88,7 +94,10 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                         gameLobbyComponentStyle={lobbyPageStyle.gameLobbyComponentStyle}
                         gameLobbyNameInputOnChangeHandler={this.gameLobbyNameInputOnChangeHandler}
                         maxLobbyLimitListOnChangeHandler={this.maxLobbyLimitListOnChangeHandler}
-                        createGameButtonClickHandler={this.createGameButtonClickHandler}>
+                        createGameButtonClickHandler={this.createGameButtonClickHandler}
+                        startGameButtonClickHandler={this.startGameButtonClickHandler}
+                        currentGameLobbyMessages={gameLobbyMessages}
+                        sendMessageButtonHandler={this.sendMessageButtonClickHandler}>
                     </GameLobbyComponent>
                 </PanelsContainer>
             </LobbyPage>
@@ -114,14 +123,27 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
         }
     }
 
+    sendMessageButtonClickHandler = (message: string) => 
+    {
+        GameConnectionsService.gameLobbySendMessage(message, this.state.currentGameLobby.gameLobbyID);
+    }
+
     refreshButtonClickHandler = () => 
     {
         this.retrieveGameLobbies();
     }
 
-    searchButtonClickHandler = () => 
+    startGameButtonClickHandler = () => 
     {
-
+        if(isNullOrUndefined(this.state.currentGameLobby)) 
+        {
+            return;
+        }
+        if(this.state.currentGameLobby.host.userId !== EnvironmentUtil.loggedInUser.userId) 
+        {
+            return;
+        }
+        GameConnectionsService.gameLobbyStartGame(this.state.currentGameLobby.gameLobbyID);
     }
 
     createGameButtonClickHandler = () => 
@@ -153,8 +175,26 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
 		this.setState({createGameLobby: newCreateGameLobby});
     }
 
+    gameLobbyStartGameHandler = (gameLobbyStartGame: GameLobbyStartGame) => 
+    {
+        this.props.history.push("/game?");
+    }
+
+    gameLobbyLeaveGameHandler = (gameLobbyLeaveGame: GameLobbyLeaveGame) => 
+    {
+        let currentGameLobby = this.state.currentGameLobby;
+        currentGameLobby.players = gameLobbyLeaveGame.players;
+        this.setState({currentGameLobby: currentGameLobby});    
+    }
+
     gameLobbyJoinHandler = (gameLobbyJoin: GameLobbyJoin) => 
     {
         this.setState({currentGameLobby: gameLobbyJoin.gameLobby});
+    }
+
+    gameLobbySendMessageHandler = (gameLobbySendMessage: GameLobbySendMessage) => 
+    {
+        let currentList = this.state.gameLobbyMessages;
+        this.setState({gameLobbyMessages: currentList.concat(gameLobbySendMessage)});
     }
 }

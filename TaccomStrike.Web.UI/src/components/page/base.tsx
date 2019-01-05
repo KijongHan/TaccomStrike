@@ -2,12 +2,14 @@ import * as React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { BasePageStyle } from "../pagestyles/base";
 import { isNullOrUndefined } from "util";
+import { GetGameState } from "../../models/rest/getgamestate";
+import { GetGameLobby } from "../../models/rest/getgamelobby";
 
 export interface BasePageComponentProps extends RouteComponentProps {}
 
 export class BasePageComponentState 
 {
-	pageStyle: BasePageStyle;
+	pageStyle: BasePageStyle;	
 }
 
 export abstract class BasePageComponent<P extends BasePageComponentProps, S extends BasePageComponentState> extends React.Component<P, S> 

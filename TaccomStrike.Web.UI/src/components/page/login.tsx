@@ -12,6 +12,8 @@ import { AuthenticationService } from "../../services/rest/authentication";
 import { LoginPageStyle } from "../pagestyles/login";
 import { GetUser } from "../../models/rest/getuser";
 import { EnvironmentUtil } from "../../utils/environment";
+import { ChatConnectionsService } from "../../services/hub/chatconnections";
+import { GameConnectionsService } from "../../services/hub/gameconnections";
 
 const LoginPage = styled.div`
 	height: 100%;
@@ -41,6 +43,8 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 			pageStyle: new LoginPageStyle().large(),
 			userLogin: new PostUserLogin()
 		};
+		GameConnectionsService.deinitializeGameConnections();
+		ChatConnectionsService.deinitializeChatConnections();
 	}
 
 	render()

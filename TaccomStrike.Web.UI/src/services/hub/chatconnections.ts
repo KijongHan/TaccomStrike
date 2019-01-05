@@ -1,7 +1,8 @@
-import { HubConnection, HubConnectionBuilder } from "@aspnet/signalr";
+import { HubConnection, HubConnectionBuilder, HubConnectionState } from "@aspnet/signalr";
 import { ChatUserConnected } from "../../models/hub/chatuserconnected";
 import { number } from "prop-types";
 import { GameLobbyJoin } from "../../models/hub/gamelobbyjoin";
+import { isNull, isNullOrUndefined } from "util";
 
 export class ChatConnectionsService 
 {
@@ -16,6 +17,25 @@ export class ChatConnectionsService
             .build();    
         ChatConnectionsService.initializeChatEventHandlers();
         return ChatConnectionsService.chatConnection.start();
+    }
+
+    static deinitializeChatConnections = () => 
+    {
+        if(isNullOrUndefined(ChatConnectionsService.chatConnection)) 
+        {
+            return;
+        }
+
+        if(ChatConnectionsService.chatConnection.state===HubConnectionState.Connected) 
+        {
+            ChatConnectionsService.deinitializeChatEventHandlers();
+            ChatConnectionsService.chatConnection.stop();
+        }
+    }
+
+    static deinitializeChatEventHandlers = () => 
+    {
+        ChatConnectionsService.chatUserConnectedHandlers = [];
     }
 
     static initializeChatEventHandlers = () => 

@@ -9,6 +9,8 @@ import { LabelledListComponent, LabelledListComponentStyle, ListItem } from "./l
 import { isNullOrUndefined } from "util";
 import { ButtonedInputComponentStyle, ButtonedInputComponent } from "./buttonedinput";
 import { DisplayStyle } from "../../styles/displaystyle";
+import { GetChatMessage } from "../../models/rest/getchatmessage";
+import { GetUser } from "../../models/rest/getuser";
 
 const ButtonsPanel = styled.div`
     overflow: auto;
@@ -42,28 +44,37 @@ const GameLobbyContentPanel = styled.div`
 `;
 
 const GameLobbyPlayersPanel = styled.div`
-    background-color: blue;
+    background-color: rgba(255, 255, 255, 0.7);
     float: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getFloatString()};
     height: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getHeightString()};
     width: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getWidthString()};
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.88);
 `;
 
 const GameLobbyMessagesPanel = styled.div`
-    background-color: red;
+    background-color: rgba(255, 255, 255, 0.7);
     float: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getFloatString()};
     height: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getHeightString()};
     width: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getWidthString()};
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.88);
 `;
 
 export class GameLobbyComponentProps 
 {
     gameLobbyComponentStyle: GameLobbyComponentStyle;
     currentGameLobby: GetGameLobby;
+    currentGameLobbyMessages: GetChatMessage[];
     createGameLobby: CreateGameLobby;
 
     gameLobbyNameInputOnChangeHandler: (input: string) => void;
     maxLobbyLimitListOnChangeHandler: (value: string) => void;
+    startGameButtonClickHandler: () => void;
     createGameButtonClickHandler: () => void;
+    sendMessageButtonHandler: (message: string) => void;
 }
 
 export class GameLobbyComponentState 
@@ -73,6 +84,8 @@ export class GameLobbyComponentState
     createGameLobby: CreateGameLobby;
 
     listItems: ListItem[];
+    gameLobbyMessage: string;
+    currentGameLobbyMessages: GetChatMessage[];
 }
 
 export class GameLobbyComponentStyle 
@@ -116,6 +129,8 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
             createGameLobby: props.createGameLobby,
             currentGameLobby: props.currentGameLobby,
             gameLobbyComponentStyle: props.gameLobbyComponentStyle,
+            gameLobbyMessage: "",
+            currentGameLobbyMessages: props.currentGameLobbyMessages,
             listItems: [
                 {displayName:"4", itemValue:"4"}, 
                 {displayName:"5", itemValue:"5"},
@@ -140,7 +155,13 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
         return (
 			<CardComponent
 				panel={gameLobbyComponent}
-				changeTriggers={[this.state.gameLobbyComponentStyle, this.state.createGameLobby, this.state.currentGameLobby]}
+				changeTriggers={[
+                    this.state.gameLobbyComponentStyle, 
+                    this.state.createGameLobby, 
+                    this.state.currentGameLobby, 
+                    this.state.gameLobbyMessage,
+                    this.state.currentGameLobbyMessages
+                ]}
 				cardStyle={this.state.gameLobbyComponentStyle.cardComponentStyle}
 				cardOrientation={CardOrientation.Front}
 				flipAnimation={null}
@@ -151,20 +172,39 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
 
     getCurrentGameLobbyComponent = () => 
     {
+        let gameLobbyMessages = this.state.currentGameLobbyMessages.map((value: GetChatMessage) => {
+            return (
+                <div>
+                    {value.message}
+                </div>);
+        });
+
+        let gameLobbyPlayers = this.state.currentGameLobby.players.map((value: GetUser) => {
+            return (
+                <div>
+                    {value.username}
+                </div>
+            );
+        });
+
         return (
             <CurrentGameLobbyElement>
                 <GameLobbyContentPanel
                     displayStyle={this.state.gameLobbyComponentStyle.gameLobbyContentPanelStyle.displayStyle}>
                     <GameLobbyMessagesPanel
-                        displayStyle={this.state.gameLobbyComponentStyle.gameLobbyMessagesPanelStyle.displayStyle}/>
+                        displayStyle={this.state.gameLobbyComponentStyle.gameLobbyMessagesPanelStyle.displayStyle}>
+                        {gameLobbyMessages}
+                    </GameLobbyMessagesPanel>
                     <GameLobbyPlayersPanel
-                        displayStyle={this.state.gameLobbyComponentStyle.gameLobbyPlayersPanelStyle.displayStyle}/>
+                        displayStyle={this.state.gameLobbyComponentStyle.gameLobbyPlayersPanelStyle.displayStyle}>
+                        {gameLobbyPlayers}
+                    </GameLobbyPlayersPanel>
                 </GameLobbyContentPanel>
                 <ButtonedInputComponent
-                    inputValue={""}
+                    inputValue={this.state.gameLobbyMessage}
                     componentStyle={this.state.gameLobbyComponentStyle.gameLobbyMessageButtonedInputStyle}
-                    inputOnChangeHandler={null}
-                    buttonClickHandler={null}>                    
+                    inputOnChangeHandler={this.messageInputOnChangeHandler}
+                    buttonClickHandler={this.sendMessageButtonClickHandler}>                    
                 </ButtonedInputComponent>
                 <ButtonsPanel>
                     <ButtonComponent
@@ -206,10 +246,26 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
     {
         this.props.createGameButtonClickHandler();
     }
+    
+    messageInputOnChangeHandler = (value: string) => 
+    {
+        this.setState({gameLobbyMessage: value});
+    }
+
+    sendMessageButtonClickHandler = () => 
+    {
+        if(isNullOrUndefined(this.state.gameLobbyMessage) || this.state.gameLobbyMessage === "") 
+        {
+            return;
+        }
+
+        this.props.sendMessageButtonHandler(this.state.gameLobbyMessage);
+        this.setState({gameLobbyMessage: ""});
+    }
 
     startGameButtonClickHandler = () => 
     {
-
+        this.props.startGameButtonClickHandler();
     }
 
     leaveGameButtonClickHandler = () => 
@@ -240,6 +296,10 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
         if(this.props.currentGameLobby !== prevProps.currentGameLobby) 
 		{
 			this.setState({ currentGameLobby: this.props.currentGameLobby });
-		}
+        }
+        if(this.props.currentGameLobbyMessages !== prevProps.currentGameLobbyMessages) 
+        {
+            this.setState({currentGameLobbyMessages: this.props.currentGameLobbyMessages});
+        }
 	}
 }

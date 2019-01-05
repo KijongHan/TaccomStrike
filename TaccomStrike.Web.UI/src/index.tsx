@@ -4,11 +4,13 @@ import { LoginPageComponent } from "./components/page/login";
 import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
 import { MainPageComponent } from "./components/page/main";
 import { LobbyPageComponent } from "./components/page/lobby";
+import { GamePageComponent } from "./components/page/game";
 
 ReactDOM.render(
 	<BrowserRouter>
 		<Switch>
 			<Route exact path="/" component={LoginPageComponent}/>
+			<Route path="/game" component={GamePageComponent}/>
 			<Route path="/lobby" component={LobbyPageComponent}/>
 			<Route path="/main" component={MainPageComponent}/>
 		</Switch>

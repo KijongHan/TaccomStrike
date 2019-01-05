@@ -282,6 +282,8 @@ namespace TaccomStrike.Web.API.Hubs
 				if(currentGameLobbyID!=null)
 				{
 					var gameLobby = gameLobbyService.GetGameLobby(currentGameLobbyID.Value);
+					gameLobby.RemoveUser(Context.User);
+					Context.User.SetCurrentGameLobbyID(null);
 
 					var playerLeaving = Context
 						.User
@@ -310,8 +312,6 @@ namespace TaccomStrike.Web.API.Hubs
 						Clients.Client(connection).GameLobbyLeaveGame(apiObject);
 					}
 
-					gameLobby.RemoveUser(Context.User);
-					Context.User.SetCurrentGameLobbyID(null);
 					if (gameLobby.GetUsers().Count <= 0)
 					{
 						gameLobbyService.RemoveGameLobby(currentGameLobbyID.Value);

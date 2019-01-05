@@ -19,6 +19,7 @@ const ButtonsPanel = styled.div`
 `;
 
 const LobbyListItemsPanel = styled.div`
+    margin-top: 1px;
     height: ${(p: LobbyListItemsPanelStyle) => p.displayStyle.getHeightString()};
     padding: ${(p: LobbyListItemsPanelStyle) => p.displayStyle.getPaddingString()};
     overflow-y: scroll;
@@ -52,7 +53,6 @@ export class GameLobbiesComponentProps
 
     lobbyListItemClickHandler: (gameLobbyID: number) => void;
     refreshButtonClickHandler: () => void;
-    searchButtonClickHandler: () => void;
 }
 
 export class GameLobbiesComponentState 
@@ -67,7 +67,6 @@ export class GameLobbiesComponentStyle
     lobbyListItemsPanelStyle: LobbyListItemsPanelStyle;
 
     refreshButtonComponentStyle: ButtonComponentStyle;
-    searchButtonComponentStyle: ButtonComponentStyle;
 }
 
 export class LobbyListItemsPanelStyle 
@@ -136,10 +135,6 @@ export class GameLobbiesComponent extends React.Component<GameLobbiesComponentPr
         let gameLobbiesComponent = (
             <GameLobbies>
                 <ButtonsPanel>
-                    <ButtonComponent
-						buttonText="Search"
-						buttonClickHandler={this.searchButtonClickHandler}
-						buttonComponentStyle={this.state.gameLobbiesComponentStyle.searchButtonComponentStyle} />
 					<ButtonComponent
 						buttonText="Refresh"
 						buttonClickHandler={this.refreshButtonClickHandler}
@@ -172,11 +167,6 @@ export class GameLobbiesComponent extends React.Component<GameLobbiesComponentPr
     refreshButtonClickHandler = () =>  
 	{
 		this.props.refreshButtonClickHandler();
-    }
-    
-    searchButtonClickHandler = () =>  
-	{
-		this.props.searchButtonClickHandler();
     }
     
     componentDidUpdate(prevProps: GameLobbiesComponentProps, prevState: GameLobbiesComponentState)
