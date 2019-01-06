@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace TaccomStrike.Library.Data.ViewModel
+namespace TaccomStrike.Game.CallCheat
 {
 	public class GameUser
 	{

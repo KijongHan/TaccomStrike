@@ -10,6 +10,7 @@ using TaccomStrike.Library.Data.Utility;
 using TaccomStrike.Library.Data.Model;
 using TaccomStrike.Web.API.HubApi;
 using TaccomStrike.Library.Data.ApiEntities;
+using TaccomStrike.Game.CallCheat;
 
 namespace TaccomStrike.Web.API.Hubs
 {

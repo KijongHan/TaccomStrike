@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TaccomStrike.Library.Data.ViewModel
+namespace TaccomStrike.Game.CallCheat
 {
 	public class GameCard
 	{

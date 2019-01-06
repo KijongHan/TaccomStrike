@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Security.Claims;
 using TaccomStrike.Library.Utility.Security;
+using TaccomStrike.Game.CallCheat.Services;
 
 namespace TaccomStrike.Library.Data.ViewModel
 {
