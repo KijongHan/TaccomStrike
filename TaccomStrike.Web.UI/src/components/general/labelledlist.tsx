@@ -33,12 +33,7 @@ export class LabelledInputComponentProps
 	listOnChangeHandler: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export class LabelledListComponentState
-{
-	listItems: ListItem[];
-	labelValue: string;
-	componentStyle: LabelledListComponentStyle;
-}
+export class LabelledListComponentState {}
 
 export class LabelledListComponentStyle
 {
@@ -56,16 +51,11 @@ export class LabelledListComponent extends React.Component<LabelledInputComponen
 	constructor(props: LabelledInputComponentProps)
 	{
 		super(props);
-		this.state = {
-			listItems: props.listItems,
-			labelValue: props.labelValue,
-			componentStyle: props.componentStyle
-		};
 	}
 
 	render()
 	{
-		let listItemOptions = this.state
+		let listItemOptions = this.props
 			.listItems
 			.map((value: ListItem, index: number) => {
 				return (
@@ -87,14 +77,4 @@ export class LabelledListComponent extends React.Component<LabelledInputComponen
 			</LabelledListComponentElement>
 		);
 	}
-	
-	componentDidUpdate(prevProps: LabelledInputComponentProps, prevState: LabelledListComponentState) 
-	{
-		if(this.props.componentStyle !== prevProps.componentStyle) 
-		{
-			this.setState({componentStyle: this.props.componentStyle});
-		}
-	}
-
-	
 }

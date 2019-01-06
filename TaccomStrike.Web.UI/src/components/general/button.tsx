@@ -9,11 +9,7 @@ export interface ButtonComponentProps
 	buttonClickHandler: () => void;
 }
 
-export interface ButtonComponentState
-{
-	buttonComponentStyle: ButtonComponentStyle;
-	buttonClickHandler: () => void;
-}
+export interface ButtonComponentState {}
 
 export interface ButtonComponentStyle
 {
@@ -50,28 +46,16 @@ export class ButtonComponent extends React.Component<ButtonComponentProps, Butto
 	constructor(props: ButtonComponentProps)
 	{
 		super(props);
-		this.state = {
-			buttonComponentStyle: props.buttonComponentStyle,
-			buttonClickHandler: props.buttonClickHandler
-		};
 	}
 
 	render()
 	{
 		return (
 			<ButtonElement
-				displayStyle={this.state.buttonComponentStyle.displayStyle}
-				onClick={this.state.buttonClickHandler}>
+				displayStyle={this.props.buttonComponentStyle.displayStyle}
+				onClick={this.props.buttonClickHandler}>
 				{this.props.buttonText}
 			</ButtonElement>
 		); 
-	}
-
-	componentDidUpdate(prevProps: ButtonComponentProps, prevState: ButtonComponentState)
-	{
-		if (this.props.buttonComponentStyle !== prevProps.buttonComponentStyle)
-		{
-			this.setState({ buttonComponentStyle: this.props.buttonComponentStyle });
-		}
 	}
 }

@@ -44,11 +44,7 @@ export class ButtonedInputComponentProps
 	}
 }
 
-export class ButtonedInputComponentState
-{
-	inputValue: string;
-    componentStyle: ButtonedInputComponentStyle;
-}
+export class ButtonedInputComponentState {}
 
 export class ButtonedInputComponentStyle
 {
@@ -82,17 +78,17 @@ export class ButtonedInputComponent extends React.Component<ButtonedInputCompone
 	{
 		return (
 			<ButtonedInputComponentElement
-				displayStyle={this.state.componentStyle.buttonedInputComponentPanelStyle.displayStyle}>
+				displayStyle={this.props.componentStyle.buttonedInputComponentPanelStyle.displayStyle}>
                 <InputComponentElement 
-                    displayStyle={this.state.componentStyle.inputComponentStyle.displayStyle}
+                    displayStyle={this.props.componentStyle.inputComponentStyle.displayStyle}
 					type={this.props.inputType}
-					value={this.state.inputValue}
+					value={this.props.inputValue}
 					onChange={this.inputOnChangeHandler}>
                 </InputComponentElement>
                 <ButtonComponent
                     buttonText={"Send"}
                     buttonClickHandler={this.props.buttonClickHandler}
-                    buttonComponentStyle={this.state.componentStyle.buttonComponentStyle}>
+                    buttonComponentStyle={this.props.componentStyle.buttonComponentStyle}>
                 </ButtonComponent>
 			</ButtonedInputComponentElement>
 		);
@@ -101,13 +97,5 @@ export class ButtonedInputComponent extends React.Component<ButtonedInputCompone
     inputOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
 	{
 		this.props.inputOnChangeHandler(event.target.value);
-	}
-	
-	componentDidUpdate(prevProps: ButtonedInputComponentProps, prevState: ButtonedInputComponentState) 
-	{
-		if(this.props.inputValue !== prevProps.inputValue) 
-		{
-			this.setState({inputValue: this.props.inputValue});
-		}
 	}
 }

@@ -55,11 +55,7 @@ export class GameLobbiesComponentProps
     refreshButtonClickHandler: () => void;
 }
 
-export class GameLobbiesComponentState 
-{
-    gameLobbiesComponentStyle: GameLobbiesComponentStyle;
-    gameLobbies: GetGameLobby[];
-}
+export class GameLobbiesComponentState {}
 
 export class GameLobbiesComponentStyle 
 {
@@ -121,7 +117,7 @@ export class GameLobbiesComponent extends React.Component<GameLobbiesComponentPr
 
     render() 
     {
-        let lobbyListItems = this.state
+        let lobbyListItems = this.props
             .gameLobbies
             .map((value: GetGameLobby, index: number) => {
                 return (
@@ -138,11 +134,11 @@ export class GameLobbiesComponent extends React.Component<GameLobbiesComponentPr
 					<ButtonComponent
 						buttonText="Refresh"
 						buttonClickHandler={this.refreshButtonClickHandler}
-						buttonComponentStyle={this.state.gameLobbiesComponentStyle.refreshButtonComponentStyle} />	
+						buttonComponentStyle={this.props.gameLobbiesComponentStyle.refreshButtonComponentStyle} />	
 				</ButtonsPanel>
 
                 <LobbyListItemsPanel
-                    displayStyle={this.state.gameLobbiesComponentStyle.lobbyListItemsPanelStyle.displayStyle}>
+                    displayStyle={this.props.gameLobbiesComponentStyle.lobbyListItemsPanelStyle.displayStyle}>
                     {lobbyListItems}
                 </LobbyListItemsPanel>
             </GameLobbies>
@@ -150,8 +146,7 @@ export class GameLobbiesComponent extends React.Component<GameLobbiesComponentPr
         return (
 			<CardComponent
 				panel={gameLobbiesComponent}
-				changeTriggers={[this.state.gameLobbiesComponentStyle, this.state.gameLobbies]}
-				cardStyle={this.state.gameLobbiesComponentStyle.cardComponentStyle}
+				cardStyle={this.props.gameLobbiesComponentStyle.cardComponentStyle}
 				cardOrientation={CardOrientation.Front}
 				flipAnimation={null}
 				tiltAnimation={null}>
@@ -168,16 +163,4 @@ export class GameLobbiesComponent extends React.Component<GameLobbiesComponentPr
 	{
 		this.props.refreshButtonClickHandler();
     }
-    
-    componentDidUpdate(prevProps: GameLobbiesComponentProps, prevState: GameLobbiesComponentState)
-	{
-		if (this.props.gameLobbiesComponentStyle !== prevProps.gameLobbiesComponentStyle)
-		{
-			this.setState({ gameLobbiesComponentStyle: this.props.gameLobbiesComponentStyle });
-		}
-		if(this.props.gameLobbies !== prevProps.gameLobbies) 
-		{
-			this.setState({ gameLobbies: this.props.gameLobbies });
-        }
-	}
 }

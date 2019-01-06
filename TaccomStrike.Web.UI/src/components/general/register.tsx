@@ -10,10 +10,7 @@ export interface RegisterComponentProps
 	registerComponentStyle: RegisterComponentStyle
 }
 
-export class RegisterComponentState
-{
-	registerComponentStyle: RegisterComponentStyle
-}
+export class RegisterComponentState {}
 
 export class RegisterComponentStyle
 {
@@ -38,10 +35,6 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 	constructor(props: RegisterComponentProps)
 	{
 		super(props);
-		this.state =
-		{
-			registerComponentStyle: props.registerComponentStyle
-		};
 	}
 
 	render()
@@ -52,26 +45,26 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 					inputValue={""}
 					labelValue={"Username"}
 					inputOnChangeHandler={this.usernameOnChangeHandler}
-					componentStyle={this.state.registerComponentStyle.usernameLabelledInputStyle} />
+					componentStyle={this.props.registerComponentStyle.usernameLabelledInputStyle} />
 				<LabelledInputComponent
 					inputValue={""}
 					labelValue={"Email"}
 					inputOnChangeHandler={this.emailOnChangeHandler}
-					componentStyle={this.state.registerComponentStyle.emailLabelledInputStyle} />
+					componentStyle={this.props.registerComponentStyle.emailLabelledInputStyle} />
 				<LabelledInputComponent
 					inputValue={""}
 					labelValue={"Password"}
 					inputOnChangeHandler={this.passwordOnChangeHandler}
-					componentStyle={this.state.registerComponentStyle.passwordLabelledInputStyle} />
+					componentStyle={this.props.registerComponentStyle.passwordLabelledInputStyle} />
 				<LabelledInputComponent
 					inputValue={""}
 					labelValue={"Confirm Password"}
 					inputOnChangeHandler={this.confirmPasswordOnChangeHandler}
-					componentStyle={this.state.registerComponentStyle.confirmPasswordLabelledInputStyle} />
+					componentStyle={this.props.registerComponentStyle.confirmPasswordLabelledInputStyle} />
 				<ButtonComponent
 					buttonText="Register"
 					buttonClickHandler={this.registerButtonClickHandler}
-					buttonComponentStyle={this.state.registerComponentStyle.registerButtonComponentStyle} />
+					buttonComponentStyle={this.props.registerComponentStyle.registerButtonComponentStyle} />
 			</RegisterComponentElement>);
 
 		let flipAnimation = new CardFlipAnimation();
@@ -84,8 +77,7 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 		return (
 			<CardComponent
 				panel={registerComponent}
-				changeTriggers={[this.state.registerComponentStyle]}
-				cardStyle={this.state.registerComponentStyle.cardComponentStyle}
+				cardStyle={this.props.registerComponentStyle.cardComponentStyle}
 				cardOrientation={CardOrientation.Front}
 				flipAnimation={null}
 				tiltAnimation={tiltAnimation}>
@@ -117,12 +109,4 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 	{
 
 	};
-
-	componentDidUpdate(prevProps: RegisterComponentProps, prevState: RegisterComponentState)
-	{
-		if (this.props.registerComponentStyle !== prevProps.registerComponentStyle)
-		{
-			this.setState({ registerComponentStyle: this.props.registerComponentStyle });
-		}
-	}
 }

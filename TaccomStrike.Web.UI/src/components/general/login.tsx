@@ -10,7 +10,6 @@ import { PostUserLogin } from "../../models/rest/postuserlogin";
 export class LoginComponentProps
 {
 	loginComponentStyle: LoginComponentStyle
-
 	userLogin: PostUserLogin;
 
 	userLoginButtonClickHandler: () => void;
@@ -20,12 +19,7 @@ export class LoginComponentProps
 	passwordInputOnChangeHandler: (input: string) => void;
 }
 
-export class LoginComponentState
-{
-	loginComponentStyle: LoginComponentStyle
-
-	userLogin: PostUserLogin;
-}
+export class LoginComponentState {}
 
 export class LoginComponentStyle
 {
@@ -56,11 +50,6 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 	constructor(props: LoginComponentProps)
 	{
 		super(props);
-		this.state =
-		{
-			loginComponentStyle: props.loginComponentStyle,
-			userLogin: props.userLogin
-		};
 	}
 
 	render()
@@ -71,27 +60,27 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 					<ButtonComponent
 						buttonText="User"
 						buttonClickHandler={this.userButtonClickHandler}
-						buttonComponentStyle={this.state.loginComponentStyle.userButtonComponentStyle} />
+						buttonComponentStyle={this.props.loginComponentStyle.userButtonComponentStyle} />
 					<ButtonComponent
 						buttonText="Guest"
 						buttonClickHandler={this.guestButtonClickHandler}
-						buttonComponentStyle={this.state.loginComponentStyle.guestButtonComponentStyle} />
+						buttonComponentStyle={this.props.loginComponentStyle.guestButtonComponentStyle} />
 				</ButtonsPanel>
 				<LabelledInputComponent
-					inputValue={this.state.userLogin.username}
+					inputValue={this.props.userLogin.username}
 					labelValue={"Username"}
 					inputOnChangeHandler={this.usernameInputOnChangeHandler}
-					componentStyle={this.state.loginComponentStyle.usernameLabelledInputStyle} />
+					componentStyle={this.props.loginComponentStyle.usernameLabelledInputStyle} />
 				<LabelledInputComponent
 					inputType={"password"}
-					inputValue={this.state.userLogin.password}
+					inputValue={this.props.userLogin.password}
 					labelValue={"Password"}
 					inputOnChangeHandler={this.passwordInputOnChangeHandler}
-					componentStyle={this.state.loginComponentStyle.usernameLabelledInputStyle} />
+					componentStyle={this.props.loginComponentStyle.usernameLabelledInputStyle} />
 				<ButtonComponent
 					buttonText="Login"
 					buttonClickHandler={this.userLoginButtonClickHandler}
-					buttonComponentStyle={this.state.loginComponentStyle.loginButtonComponentStyle} />
+					buttonComponentStyle={this.props.loginComponentStyle.loginButtonComponentStyle} />
 			</LoginComponentElement>);
 
 		let flipAnimation = new CardFlipAnimation();
@@ -104,8 +93,7 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 		return (
 			<CardComponent
 				panel={loginComponent}
-				changeTriggers={[this.state.loginComponentStyle, this.state.userLogin]}
-				cardStyle={this.state.loginComponentStyle.cardComponentStyle}
+				cardStyle={this.props.loginComponentStyle.cardComponentStyle}
 				cardOrientation={CardOrientation.Front}
 				flipAnimation={null}
 				tiltAnimation={tiltAnimation}>

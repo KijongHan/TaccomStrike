@@ -14,9 +14,7 @@ export class TitlePanelComponentState
 {
 	titleLetters: string[];
 	cardFlipAnimations: CardFlipAnimation[];
-
 	cardStyle: CardComponentStyle;
-	titlePanelStyling: TitlePanelStyle;
 }
 
 export class TitlePanelStyle
@@ -73,7 +71,6 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 		{
 			titleLetters: titleLetters,
 			cardStyle: cardStyling,
-			titlePanelStyling: props.titlePanelStyling,
 			cardFlipAnimations: cardFlipAnimations
 		};
 	}
@@ -85,7 +82,7 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 			let titlePanel = (
 				<TitleCharacter
 					key={index}
-					displayStyle={this.state.titlePanelStyling.displayStyle}>
+					displayStyle={this.props.titlePanelStyling.displayStyle}>
 					{titleLetter}
 				</TitleCharacter>);
 
@@ -93,7 +90,6 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 			return <CardComponent
 				key = {index}
 				panel={titlePanel}
-				changeTriggers={[this.state.cardStyle]}
 				cardStyle={this.state.cardStyle}
 				cardOrientation={CardOrientation.Back}
 				flipAnimation={cardFlipAnimation}
@@ -102,22 +98,9 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 
 		return (
 			<TitlePanel
-				displayStyle={this.state.titlePanelStyling.displayStyle}>
+				displayStyle={this.props.titlePanelStyling.displayStyle}>
 				{cardComponents}
 			</TitlePanel>
 		);
-	}
-
-	componentDidMount()
-	{
-
-	}
-
-	componentDidUpdate(prevProps: TitlePanelComponentProps, prevState: TitlePanelComponentState)
-	{
-		if (this.props.titlePanelStyling !== prevProps.titlePanelStyling)
-		{
-			this.setState({ titlePanelStyling: this.props.titlePanelStyling });
-		}
 	}
 }

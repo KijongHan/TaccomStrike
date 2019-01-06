@@ -13,13 +13,7 @@ export interface TitlePanelsComponentProps
 	titlePanelsStyle: TitlePanelsStyle;
 }
 
-export interface TitlePanelsComponentState
-{
-	titleWords: string[];
-	titlePanelStyles: TitlePanelStyle[];
-
-	titlePanelsStyle: TitlePanelsStyle;
-}
+export interface TitlePanelsComponentState {}
 
 export class TitlePanelsStyle
 {
@@ -41,44 +35,25 @@ export class TitlePanelsComponent extends React.Component<TitlePanelsComponentPr
 	constructor(props: TitlePanelsComponentProps)
 	{
 		super(props);
-		this.state =
-			{
-				titleWords: props.titleWords,
-				titlePanelStyles: props.titlePanelStyles,
-				titlePanelsStyle: props.titlePanelsStyle,
-			};
 	}
 
 	render()
 	{
-		let titlePanelComponents = this.state.titleWords.map((titleWord: string, index: number) =>
+		let titlePanelComponents = this.props.titleWords.map((titleWord: string, index: number) =>
 		{
 			return (
 				<TitlePanelComponent
 					key={index}
 					titleWord={titleWord}
-					titlePanelStyling={this.state.titlePanelStyles[index]}>
+					titlePanelStyling={this.props.titlePanelStyles[index]}>
 				</TitlePanelComponent>);
 		})
 
 		return (
 			<TitlesPanel
-				displayStyling={this.state.titlePanelsStyle.displayStyling}>
+				displayStyling={this.props.titlePanelsStyle.displayStyling}>
 				{titlePanelComponents}
 			</TitlesPanel>
 		);
-	}
-
-	componentDidUpdate(prevProps: TitlePanelsComponentProps, prevState: TitlePanelsComponentState)
-	{
-		if (this.props.titlePanelStyles !== prevProps.titlePanelStyles)
-		{
-			this.setState({ titlePanelStyles: this.props.titlePanelStyles });
-		}
-
-		if (this.props.titlePanelsStyle !== prevProps.titlePanelsStyle)
-		{
-			this.setState({ titlePanelsStyle: this.props.titlePanelsStyle });
-		}
 	}
 }

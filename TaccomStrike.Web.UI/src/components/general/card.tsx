@@ -143,33 +143,15 @@ export interface CardComponentProps
 	cardOrientation: CardOrientation;
 	flipAnimation: CardFlipAnimation;
 	tiltAnimation: CardTiltAnimation;
-
-	changeTriggers: any[];
 }
 
-export interface CardComponentState
-{
-	panel: JSX.Element;
-	cardStyle: CardComponentStyle;
-
-	cardOrientation: CardOrientation;
-	flipAnimation: CardFlipAnimation;
-	tiltAnimation: CardTiltAnimation;
-}
+export interface CardComponentState {}
 
 export class CardComponent extends React.Component<CardComponentProps, CardComponentState>
 {
 	constructor(props: CardComponentProps)
 	{
 		super(props);
-		this.state =
-		{
-			panel: props.panel,
-			cardStyle: props.cardStyle,
-			cardOrientation: props.cardOrientation,
-			flipAnimation: props.flipAnimation,
-			tiltAnimation: props.tiltAnimation
-		};
 	}
 
 	render()
@@ -178,7 +160,7 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 		let displayFront: boolean;
 
 		let cardFlipped: boolean;
-		if (this.state.cardOrientation == CardOrientation.Front)
+		if (this.props.cardOrientation == CardOrientation.Front)
 		{
 			displayBack = false;
 			displayFront = true;
@@ -193,7 +175,7 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 
 		let startRotation: number;
 		let endRotation: number;
-		if (this.state.tiltAnimation != null)
+		if (this.props.tiltAnimation != null)
 		{
 			if (cardFlipped)
 			{
@@ -204,44 +186,28 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 				startRotation = 0;
 			}
 
-			endRotation = this.state.tiltAnimation.tiltAngle + startRotation;
+			endRotation = this.props.tiltAnimation.tiltAngle + startRotation;
 		}
 		
 		return (
 			<Card
-				displayStyle={this.state.cardStyle.displayStyle}>
+				displayStyle={this.props.cardStyle.displayStyle}>
 				<CardFront
-					flipAnimation={this.state.flipAnimation}
-					tiltAnimation={this.state.tiltAnimation}
+					flipAnimation={this.props.flipAnimation}
+					tiltAnimation={this.props.tiltAnimation}
 					displayFront={displayFront}
 					flipped={cardFlipped}
 					startRotation={startRotation}
-					endRotation={endRotation}>{this.state.panel}
+					endRotation={endRotation}>{this.props.panel}
 				</CardFront>
 				<CardBack
-					flipAnimation={this.state.flipAnimation}
-					tiltAnimation={this.state.tiltAnimation}
+					flipAnimation={this.props.flipAnimation}
+					tiltAnimation={this.props.tiltAnimation}
 					displayBack={displayBack}
 					flipped={cardFlipped}
 					startRotation={startRotation}
 					endRotation={endRotation}></CardBack>
 			</Card>
 		);
-	}
-
-	componentDidUpdate(prevProps: CardComponentProps, prevState: CardComponentState)
-	{
-		this.props.changeTriggers.forEach((value: any, index: number) => 
-		{
-			if(value !== prevProps.changeTriggers[index]) 
-			{
-				this.setState({
-					cardStyle: this.props.cardStyle,
-					panel: this.props.panel,
-					flipAnimation: this.props.flipAnimation,
-					tiltAnimation: this.props.tiltAnimation
-				});
-			}
-		});
 	}
 }

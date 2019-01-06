@@ -39,12 +39,7 @@ export class LabelledInputComponentProps
 	}
 }
 
-export class LabelledInputComponentState
-{
-	inputValue: string;
-	labelValue: string;
-	componentStyle: LabelledInputComponentStyle;
-}
+export class LabelledInputComponentState {}
 
 export class LabelledInputComponentStyle
 {
@@ -56,11 +51,6 @@ export class LabelledInputComponent extends React.Component<LabelledInputCompone
 	constructor(props: LabelledInputComponentProps)
 	{
 		super(props);
-		this.state = {
-			inputValue: props.inputValue,
-			labelValue: props.labelValue,
-			componentStyle: props.componentStyle
-		};
 	}
 
 	render()
@@ -75,13 +65,5 @@ export class LabelledInputComponent extends React.Component<LabelledInputCompone
 					onChange={this.props.inputOnChangeHandler}></InputComponentElement>
 			</LabelledInputComponentElement>
 		);
-	}
-	
-	componentDidUpdate(prevProps: LabelledInputComponentProps, prevState: LabelledInputComponentState) 
-	{
-		if(this.props.inputValue !== prevProps.inputValue) 
-		{
-			this.setState({inputValue: this.props.inputValue});
-		}
 	}
 }
