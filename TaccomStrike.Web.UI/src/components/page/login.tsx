@@ -98,7 +98,7 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 			.userLogin(this.state.userLogin)
 			.then((getUser: GetUser) => {
 				EnvironmentUtil.loggedInUser = getUser;
-				this.props.history.push("/lobby");
+				this.props.history.push("/play");
 			});
 	}
 

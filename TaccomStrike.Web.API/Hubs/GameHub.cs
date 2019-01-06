@@ -132,7 +132,11 @@ namespace TaccomStrike.Web.API.Hubs
 				var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
 				if(gameLobby.HasUser(Context.User))
 				{
-					gameLobby.StartGame();
+					var gameStarted = gameLobby.StartGame();
+					if(!gameStarted)
+					{
+						return;
+					}
 
 					foreach(var user in gameLobby.Players)
 					{
