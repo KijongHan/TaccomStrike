@@ -10,7 +10,6 @@ import { CreateGameLobby } from "../../models/rest/creategamelobby";
 import { GameLobbiesService } from "../../services/rest/gamelobbies";
 import { GameConnectionsService } from "../../services/hub/gameconnections";
 import { GameLobbyJoin } from "../../models/hub/gamelobbyjoin";
-import { EnvironmentUtil } from "../../utils/environment";
 import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
 import { isNullOrUndefined } from "util";
 import { GameLobbyLeaveGame } from "../../models/hub/gamelobbyleave";

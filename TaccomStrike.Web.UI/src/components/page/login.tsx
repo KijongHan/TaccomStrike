@@ -11,7 +11,6 @@ import { PostUserLogin } from "../../models/rest/postuserlogin";
 import { AuthenticationService } from "../../services/rest/authentication";
 import { LoginPageStyle } from "../pagestyles/login";
 import { GetUser } from "../../models/rest/getuser";
-import { EnvironmentUtil } from "../../utils/environment";
 import { ChatConnectionsService } from "../../services/hub/chatconnections";
 import { GameConnectionsService } from "../../services/hub/gameconnections";
 
@@ -26,7 +25,10 @@ const PanelsContainer = styled.div`
 	padding-bottom: 50px;
 `;
 
-export interface LoginPageComponentProps extends BasePageComponentProps { }
+export interface LoginPageComponentProps extends BasePageComponentProps 
+{
+	userLoggedIn: (user: GetUser) => void;
+}
 
 export interface LoginPageComponentState extends BasePageComponentState
 {
@@ -97,7 +99,7 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 		AuthenticationService
 			.userLogin(this.state.userLogin)
 			.then((getUser: GetUser) => {
-				EnvironmentUtil.loggedInUser = getUser;
+				this.props.userLoggedIn(getUser);
 				this.props.history.push("/play");
 			});
 	}

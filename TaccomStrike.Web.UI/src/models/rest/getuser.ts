@@ -1,6 +1,6 @@
 export class GetUser 
 {
-    userId: number;
+    userID: number;
 
     username: string;
 }

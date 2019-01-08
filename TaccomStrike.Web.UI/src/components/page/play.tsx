@@ -6,7 +6,6 @@ import { GetGameLobby } from "../../models/rest/getgamelobby";
 import { GetGameState } from "../../models/rest/getgamestate";
 import { isNullOrUndefined } from "util";
 import { GameConnectionsService } from "../../services/hub/gameconnections";
-import { EnvironmentUtil } from "../../utils/environment";
 import { GameLobbyStartGame } from "../../models/hub/gamelobbystart";
 import { GameLobbyLeaveGame } from "../../models/hub/gamelobbyleave";
 import { GameLobbyJoin } from "../../models/hub/gamelobbyjoin";
@@ -64,6 +63,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     location={this.props.location}
                     match={this.props.match}
                     
+                    loggedInUser={this.props.loggedInUser}
                     currentGameLobby={this.state.currentGameLobby}
                     currentGameLobbyMessages={this.state.currentGameLobbyMessages}
                     currentGameLobbyMessage={this.state.currentGameLobbyMessage}
@@ -88,6 +88,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     location={this.props.location}
                     match={this.props.match}
                     
+                    loggedInUser={this.props.loggedInUser}
                     gameState={this.state.currentGameState}>
                 </GamePageComponent>
             );
@@ -158,7 +159,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
         {
             return;
         }
-        if(this.state.currentGameLobby.host.userId !== EnvironmentUtil.loggedInUser.userId) 
+        if(this.state.currentGameLobby.host.userID !== this.props.loggedInUser.userID) 
         {
             return;
         }

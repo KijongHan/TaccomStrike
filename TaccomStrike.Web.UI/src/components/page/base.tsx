@@ -4,8 +4,12 @@ import { BasePageStyle } from "../pagestyles/base";
 import { isNullOrUndefined } from "util";
 import { GetGameState } from "../../models/rest/getgamestate";
 import { GetGameLobby } from "../../models/rest/getgamelobby";
+import { GetUser } from "../../models/rest/getuser";
 
-export interface BasePageComponentProps extends RouteComponentProps {}
+export interface BasePageComponentProps extends RouteComponentProps 
+{
+	loggedInUser: GetUser;
+}
 
 export class BasePageComponentState 
 {
