@@ -3,6 +3,7 @@ import { CardComponent, CardComponentStyle, CardOrientation, CardFlipAnimation }
 
 import styled from "styled-components"
 import { DisplayStyle } from "../../styles/displaystyle";
+import { PerspectiveStyle } from "../../styles/perspectivestyle";
 
 export class TitlePanelComponentProps
 {
@@ -64,7 +65,8 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 
 		let cardStyling: CardComponentStyle =
 		{
-			displayStyle: new DisplayStyle({widthPercentage: 100/titleLetters.length, heightPercentage:100})
+			displayStyle: new DisplayStyle({widthPercentage: 100/titleLetters.length, heightPercentage:100}),
+			perspectiveStyle: new PerspectiveStyle({perspective: 1200})
 		};
 
 		this.state =

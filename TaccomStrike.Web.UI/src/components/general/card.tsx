@@ -50,8 +50,8 @@ const Card = styled.div`
 	width: ${(p: CardComponentStyle) => p.displayStyle.getWidthString()};
 	height: ${(p: CardComponentStyle) => p.displayStyle.getHeightString()};
 	margin: ${(p : CardComponentStyle) => p.displayStyle.getMarginString()};
-	-webkit-perspective: 1200px;
-	perspective: 1200px;
+	-webkit-perspective: ${(p : CardComponentStyle) => p.perspectiveStyle.getPerspectiveString()};
+	perspective: ${(p : CardComponentStyle) => p.perspectiveStyle.getPerspectiveString()};
 `;
 
 function CardTilt(startRotation: number, endRotation: number)
@@ -95,7 +95,7 @@ export enum CardOrientation
 export interface CardComponentStyle
 {
 	displayStyle: DisplayStyle;
-	perspectiveStyle?: PerspectiveStyle;
+	perspectiveStyle: PerspectiveStyle;
 }
 
 export class CardBackStyle
@@ -191,7 +191,8 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 		
 		return (
 			<Card
-				displayStyle={this.props.cardStyle.displayStyle}>
+				displayStyle={this.props.cardStyle.displayStyle}
+				perspectiveStyle={this.props.cardStyle.perspectiveStyle}>
 				<CardFront
 					flipAnimation={this.props.flipAnimation}
 					tiltAnimation={this.props.tiltAnimation}

@@ -14,6 +14,7 @@ import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
 import { isNullOrUndefined } from "util";
 import { GameLobbyLeaveGame } from "../../models/hub/gamelobbyleave";
 import { GameLobbyStartGame } from "../../models/hub/gamelobbystart";
+import { NavbarComponent } from "../general/navbar";
 
 const LobbyPage = styled.div`
 	height: 100%;
@@ -74,6 +75,11 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
 					titlePanelStyles={titlePanelStylings}
 					titlePanelsStyle={lobbyPageStyle.titlePanelsStyle}>
 				</TitlePanelsComponent>
+
+                <NavbarComponent
+                    navbarComponentStyle={lobbyPageStyle.navbarComponentStyle}
+                    navbarItemStyle={lobbyPageStyle.navbarItemStyle}>
+                </NavbarComponent>
 
                 <PanelsContainer>
                     <GameLobbiesComponent

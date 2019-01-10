@@ -4,12 +4,18 @@ import { TitlePanelStyle } from "../general/titlepanel";
 import { DisplayStyle, Position } from "../../styles/displaystyle";
 import { GameLobbiesComponentStyle } from "../general/gamelobbies";
 import { GameLobbyComponentStyle } from "../general/gamelobby";
+import { NavbarComponentStyle, NavbarItemStyle } from "../general/navbar";
+import { CardComponentStyle } from "../general/card";
+import { PerspectiveStyle } from "../../styles/perspectivestyle";
 
 export class LobbyPageStyle extends BasePageStyle 
 {
     titlePanelsStyle: TitlePanelsStyle;
 	gameTitlePanelStyle: TitlePanelStyle;
-	lobbiesTitlePanelStyle: TitlePanelStyle;
+    lobbiesTitlePanelStyle: TitlePanelStyle;
+    
+    navbarComponentStyle: NavbarComponentStyle;
+    navbarItemStyle: NavbarItemStyle;
 
     gameLobbiesComponentStyle: GameLobbiesComponentStyle;
     gameLobbyComponentStyle: GameLobbyComponentStyle;
@@ -44,7 +50,8 @@ export class LobbyPageStyle extends BasePageStyle
                     widthPercentage: 48,
                     heightPixels: 450,
                     marginLeftPercentage: 1
-                })
+                }),
+                perspectiveStyle: new PerspectiveStyle()
             },
 
             refreshButtonComponentStyle: {
@@ -62,6 +69,32 @@ export class LobbyPageStyle extends BasePageStyle
                 })
             }
         }
+        
+        style.navbarComponentStyle = {
+            displayStyle: new DisplayStyle({
+                widthPercentage: 100,
+                marginLeftPercentage: 2,
+                paddingTopPixels: 17,
+                paddingBottomPixels: 17
+            })
+        };
+        style.navbarItemStyle = {
+            cardComponentStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 55,
+                    widthPercentage: 12
+                }),
+                perspectiveStyle: new PerspectiveStyle({
+                    perspective: 400
+                })
+            },
+            cardTiltAnimation: {
+                tiltAngle: 20,
+                tiltDelay: 0,
+                tiltDuration: 1
+            }
+        }
+
         style.gameLobbyComponentStyle = {
             cardComponentStyle: {
                 displayStyle: new DisplayStyle({
@@ -69,7 +102,8 @@ export class LobbyPageStyle extends BasePageStyle
                     widthPercentage: 48,
                     heightPixels: 450,
                     marginLeftPercentage: 1
-                })
+                }),
+                perspectiveStyle: new PerspectiveStyle()
             },
 
             gameLobbyNameLabelledInputStyle: {

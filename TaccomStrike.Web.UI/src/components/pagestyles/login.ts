@@ -4,6 +4,7 @@ import { TitlePanelStyle } from "../general/titlepanel";
 import { LoginComponentStyle } from "../general/login";
 import { RegisterComponentStyle } from "../general/register";
 import { DisplayStyle, Position } from "../../styles/displaystyle";
+import { PerspectiveStyle } from "../../styles/perspectivestyle";
 
 export class LoginPageStyle extends BasePageStyle
 {
@@ -44,6 +45,9 @@ export class LoginPageStyle extends BasePageStyle
                         widthPercentage: 30,
                         heightPixels: 400,
                         marginLeftPixels: 20
+                    }),
+                    perspectiveStyle: new PerspectiveStyle({
+                        perspective: 1200
                     })
                 },
         
@@ -104,6 +108,9 @@ export class LoginPageStyle extends BasePageStyle
                         widthPercentage: 30,
                         heightPixels: 400,
                         marginLeftPixels: 10
+                    }),
+                    perspectiveStyle: new PerspectiveStyle({
+                        perspective: 1200
                     })
                 },
         
@@ -188,6 +195,9 @@ export class LoginPageStyle extends BasePageStyle
                         widthPercentage: 40,
                         marginLeftPercentage: 5,
                         heightPixels: 400
+                    }),
+                    perspectiveStyle: new PerspectiveStyle({
+                        perspective: 1200
                     })
                 },
         
@@ -246,6 +256,9 @@ export class LoginPageStyle extends BasePageStyle
                     displayStyle: new DisplayStyle({
                         widthPercentage: 30,
                         heightPixels: 400
+                    }),
+                    perspectiveStyle: new PerspectiveStyle({
+                        perspective: 1200
                     })
                 },
         
@@ -330,6 +343,9 @@ export class LoginPageStyle extends BasePageStyle
                         floatLeft: true,
                         widthPercentage: 45,
                         heightPixels: 400
+                    }),
+                    perspectiveStyle: new PerspectiveStyle({
+                        perspective: 1200
                     })
                 },
         
@@ -389,6 +405,9 @@ export class LoginPageStyle extends BasePageStyle
                         marginLeftPercentage: 8,
                         widthPercentage: 45,
                         heightPixels: 400
+                    }),
+                    perspectiveStyle: new PerspectiveStyle({
+                        perspective: 1200
                     })
                 },
         
@@ -472,6 +491,9 @@ export class LoginPageStyle extends BasePageStyle
                     displayStyle: new DisplayStyle({ 
                         widthPercentage: 90, 
                         heightPixels: 400 
+                    }),
+                    perspectiveStyle: new PerspectiveStyle({
+                        perspective: 1200
                     })
                 },
         
@@ -526,6 +548,9 @@ export class LoginPageStyle extends BasePageStyle
                     displayStyle: new DisplayStyle({
                         widthPercentage: 30,
                         heightPixels: 400
+                    }),
+                    perspectiveStyle: new PerspectiveStyle({
+                        perspective: 1200
                     })
                 },
         

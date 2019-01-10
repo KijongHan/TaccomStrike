@@ -7,6 +7,7 @@ import { GetGameCard } from "../../models/rest/getgamecard";
 import { CardComponent, CardOrientation } from "../general/card";
 import { DisplayStyle } from "../../styles/displaystyle";
 import { GetGameUser } from "../../models/rest/getgameuser";
+import { PerspectiveStyle } from "../../styles/perspectivestyle";
 
 const GamePage = styled.div`
 	height: 100%;
@@ -68,6 +69,9 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                 displayStyle: new DisplayStyle({
                     heightPixels: 50,
                     widthPxiels: 40
+                }),
+                perspectiveStyle: new PerspectiveStyle({
+                    
                 })
             }
             return (
