@@ -7,6 +7,7 @@ export class PerspectiveStyle
 
     public constructor(init?: Partial<PerspectiveStyle>)
 	{
+        this.rotateY = 0;
 		Object.assign(this, init);
     }
 

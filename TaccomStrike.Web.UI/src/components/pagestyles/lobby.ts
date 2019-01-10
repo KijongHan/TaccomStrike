@@ -88,10 +88,10 @@ export class LobbyPageStyle extends BasePageStyle
                     perspective: 400
                 })
             },
-            cardTiltAnimation: {
-                tiltAngle: 20,
-                tiltDelay: 0,
-                tiltDuration: 1
+            cardRotationAnimation: {
+                rotationAngle: 20,
+                rotationDelay: 1000,
+                rotationDuration: 500
             }
         }
 

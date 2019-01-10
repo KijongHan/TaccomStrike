@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ButtonComponent, ButtonComponentStyle } from "./button";
 import styled from "styled-components";
-import { CardComponent, CardComponentStyle, CardOrientation, CardTiltAnimation, CardFlipAnimation } from "./card";
+import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
 import { GetGameLobby } from "../../models/rest/getgamelobby";
 import { CreateGameLobby } from "../../models/rest/creategamelobby";
 import { LabelledInputComponent, LabelledInputComponentStyle } from "./labelledinput";
@@ -147,9 +147,7 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
 			<CardComponent
 				panel={gameLobbyComponent}
 				cardStyle={this.props.gameLobbyComponentStyle.cardComponentStyle}
-				cardOrientation={CardOrientation.Front}
-				flipAnimation={null}
-				tiltAnimation={null}>
+				rotationAnimation={null}>
 			</CardComponent>
 		);
     }

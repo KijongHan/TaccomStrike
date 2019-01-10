@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CardComponent, CardComponentStyle, CardOrientation, CardTiltAnimation, CardFlipAnimation } from "./card";
+import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
 import { ButtonComponent, ButtonComponentStyle } from "./button";
 import styled from "styled-components";
 import { GetGameLobby } from "../../models/rest/getgamelobby";
@@ -147,9 +147,7 @@ export class GameLobbiesComponent extends React.Component<GameLobbiesComponentPr
 			<CardComponent
 				panel={gameLobbiesComponent}
 				cardStyle={this.props.gameLobbiesComponentStyle.cardComponentStyle}
-				cardOrientation={CardOrientation.Front}
-				flipAnimation={null}
-				tiltAnimation={null}>
+				rotationAnimation={null}>
 			</CardComponent>
 		);
     }

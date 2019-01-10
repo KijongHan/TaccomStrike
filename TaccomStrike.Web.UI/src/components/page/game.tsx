@@ -4,7 +4,7 @@ import { GamePageStyle } from "../pagestyles/game";
 import { GetGameState } from "../../models/rest/getgamestate";
 import styled from "styled-components";
 import { GetGameCard } from "../../models/rest/getgamecard";
-import { CardComponent, CardOrientation } from "../general/card";
+import { CardComponent } from "../general/card";
 import { DisplayStyle } from "../../styles/displaystyle";
 import { GetGameUser } from "../../models/rest/getgameuser";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
@@ -79,9 +79,7 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                     key={value.rank+value.suit}
                     panel={cardFace}
                     cardStyle={cardStyle}
-                    cardOrientation={CardOrientation.Front}
-                    flipAnimation={null}
-                    tiltAnimation={null}>
+                    rotationAnimation={null}>
                 </CardComponent>
             );
         });

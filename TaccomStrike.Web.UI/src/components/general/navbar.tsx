@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
-import { CardComponent, CardComponentStyle, CardOrientation, CardTiltAnimation } from "./card";
+import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
 
 const Navbar = styled.div`
     overflow: hidden;
@@ -56,7 +56,7 @@ export class NavbarComponentStyle
 export class NavbarItemStyle 
 {
     cardComponentStyle: CardComponentStyle;
-    cardTiltAnimation: CardTiltAnimation;
+    cardRotationAnimation: CardRotationAnimation;
 }
 
 export class NavbarComponent extends React.Component<NavbarComponentProps, {}> 
@@ -74,9 +74,7 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
                             Play
                         </PlayNavbarItem>}
                     cardStyle={this.props.navbarItemStyle.cardComponentStyle}
-                    cardOrientation={CardOrientation.Front}
-                    flipAnimation={null}
-                    tiltAnimation={this.props.navbarItemStyle.cardTiltAnimation}>
+                    rotationAnimation={this.props.navbarItemStyle.cardRotationAnimation}>
                 </CardComponent>
                 <CardComponent
                     panel={
@@ -86,9 +84,7 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
                             Community
                         </CommunityNavbarItem>}
                     cardStyle={this.props.navbarItemStyle.cardComponentStyle}
-                    cardOrientation={CardOrientation.Front}
-                    flipAnimation={null}
-                    tiltAnimation={this.props.navbarItemStyle.cardTiltAnimation}>
+                    rotationAnimation={this.props.navbarItemStyle.cardRotationAnimation}>
                 </CardComponent>
                 <CardComponent
                     panel={
@@ -98,9 +94,7 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
                             News
                         </NewsNavbarItem>}
                     cardStyle={this.props.navbarItemStyle.cardComponentStyle}
-                    cardOrientation={CardOrientation.Front}
-                    flipAnimation={null}
-                    tiltAnimation={this.props.navbarItemStyle.cardTiltAnimation}>
+                    rotationAnimation={this.props.navbarItemStyle.cardRotationAnimation}>
                 </CardComponent>
             </Navbar>
         );

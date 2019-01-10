@@ -1,5 +1,5 @@
 ﻿import * as React from "react";
-import { CardComponent, CardComponentStyle, CardOrientation, CardFlipAnimation } from "./card";
+import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
 
 import styled from "styled-components"
 import { DisplayStyle } from "../../styles/displaystyle";
@@ -14,7 +14,7 @@ export class TitlePanelComponentProps
 export class TitlePanelComponentState
 {
 	titleLetters: string[];
-	cardFlipAnimations: CardFlipAnimation[];
+	cardFlipAnimations: CardRotationAnimation[];
 	cardStyle: CardComponentStyle;
 }
 
@@ -51,13 +51,14 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 	{
 		super(props);
 		let titleLetters: string[] = [];
-		let cardFlipAnimations: CardFlipAnimation[] = [];
+		let cardFlipAnimations: CardRotationAnimation[] = [];
 
 		for (let i = 0; i < props.titleWord.length; i++)
 		{
-			let cardFlipAnimation = new CardFlipAnimation();
-			cardFlipAnimation.flipDelay = i/3;
-			cardFlipAnimation.flipDuration = 2;
+			let cardFlipAnimation = new CardRotationAnimation();
+			cardFlipAnimation.rotationAngle = 359.99;
+			cardFlipAnimation.rotationDelay = (i/3)*1000;
+			cardFlipAnimation.rotationDuration = 500;
 
 			titleLetters.push(props.titleWord.charAt(i));
 			cardFlipAnimations.push(cardFlipAnimation);
@@ -66,7 +67,7 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 		let cardStyling: CardComponentStyle =
 		{
 			displayStyle: new DisplayStyle({widthPercentage: 100/titleLetters.length, heightPercentage:100}),
-			perspectiveStyle: new PerspectiveStyle({perspective: 1200})
+			perspectiveStyle: new PerspectiveStyle({perspective: 1200, rotateY: 180})
 		};
 
 		this.state =
@@ -93,9 +94,7 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 				key = {index}
 				panel={titlePanel}
 				cardStyle={this.state.cardStyle}
-				cardOrientation={CardOrientation.Back}
-				flipAnimation={cardFlipAnimation}
-				tiltAnimation={null}/>;
+				rotationAnimation={cardFlipAnimation}/>;
 		})
 
 		return (
