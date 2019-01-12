@@ -72,7 +72,7 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 		flipAnimation.rotationDuration = 2;
 		return (
 			<CardComponent
-				panel={registerComponent}
+				front={registerComponent}
 				cardStyle={this.props.registerComponentStyle.cardComponentStyle}
 				rotationAnimation={null}>
 			</CardComponent>

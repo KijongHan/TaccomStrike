@@ -50,6 +50,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                 GameConnectionsService.addGameLobbyJoinHandler(this.gameLobbyJoinHandler);
                 GameConnectionsService.addGameLobbySendMessageHandler(this.gameLobbySendMessageHandler);
                 GameConnectionsService.addGameLobbyStartGameHandler(this.gameLobbyStartGameHandler);
+                GameConnectionsService.addGameLobbyLeaveGameHandler(this.gameLobbyLeaveGameHandler);
             });
     }
 
@@ -73,6 +74,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     lobbyListItemClickHandler={this.lobbyListItemClickHandler}
                     sendMessageButtonClickHandler={this.sendMessageButtonClickHandler}
                     startGameButtonClickHandler={this.startGameButtonClickHandler}
+                    leaveGameButtonClickHandler={this.leaveGameButtonClickHandler}
                     createGameButtonClickHandler={this.createGameButtonClickHandler}
                     gameLobbyNameInputOnChangeHandler={this.gameLobbyNameInputOnChangeHandler}
                     maxLobbyLimitListOnChangeHandler={this.maxLobbyLimitListOnChangeHandler}
@@ -166,6 +168,15 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
         GameConnectionsService.gameLobbyStartGame(this.state.currentGameLobby.gameLobbyID);
     }
 
+    leaveGameButtonClickHandler = () => 
+    {
+        if(isNullOrUndefined(this.state.currentGameLobby)) 
+        {
+            return;
+        }
+        GameConnectionsService.gameLobbyLeaveGame(this.state.currentGameLobby.gameLobbyID);
+    }
+
     gameLobbyStartGameHandler = (gameLobbyStartGame: GameLobbyStartGame) => 
     {
         this.setState({currentGameState: gameLobbyStartGame.gameState});
@@ -173,9 +184,16 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
 
     gameLobbyLeaveGameHandler = (gameLobbyLeaveGame: GameLobbyLeaveGame) => 
     {
-        let currentGameLobby = this.state.currentGameLobby;
-        currentGameLobby.players = gameLobbyLeaveGame.players;
-        this.setState({currentGameLobby: currentGameLobby});    
+        if(this.props.loggedInUser.userID===gameLobbyLeaveGame.playerLeaving.userID) 
+        {
+            this.setState({currentGameLobby: null});
+        }
+        else 
+        {
+            let currentGameLobby = this.state.currentGameLobby;
+            currentGameLobby.players = gameLobbyLeaveGame.players;
+            this.setState({currentGameLobby: currentGameLobby});  
+        }
     }
 
     gameLobbyJoinHandler = (gameLobbyJoin: GameLobbyJoin) => 

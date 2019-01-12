@@ -56,7 +56,8 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 		for (let i = 0; i < props.titleWord.length; i++)
 		{
 			let cardFlipAnimation = new CardRotationAnimation();
-			cardFlipAnimation.rotationAngle = 359.99;
+			cardFlipAnimation.rotationFrom = 180;
+			cardFlipAnimation.rotationTo = 359.99;
 			cardFlipAnimation.rotationDelay = (i/3)*1000;
 			cardFlipAnimation.rotationDuration = 500;
 
@@ -92,7 +93,7 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 			let cardFlipAnimation = this.state.cardFlipAnimations[index];
 			return <CardComponent
 				key = {index}
-				panel={titlePanel}
+				front={titlePanel}
 				cardStyle={this.state.cardStyle}
 				rotationAnimation={cardFlipAnimation}/>;
 		})

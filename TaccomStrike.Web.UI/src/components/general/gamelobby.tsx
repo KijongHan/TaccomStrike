@@ -73,6 +73,7 @@ export class GameLobbyComponentProps
     gameLobbyNameInputOnChangeHandler: (input: string) => void;
     maxLobbyLimitListOnChangeHandler: (value: string) => void;
     startGameButtonClickHandler: () => void;
+    leaveGameButtonClickHandler: () => void;
     createGameButtonClickHandler: () => void;
     sendMessageButtonHandler: (message: string) => void;
 }
@@ -97,6 +98,9 @@ export class GameLobbyComponentStyle
     gameLobbyMessageButtonedInputStyle: ButtonedInputComponentStyle; 
     startGameButtonStyle: ButtonComponentStyle;
     leaveGameButtonStyle: ButtonComponentStyle;
+
+    currentGameLobbyFlipAnimation: CardRotationAnimation;
+    createGameLobbyFlipAnimation: CardRotationAnimation;
 }
 
 export class GameLobbyContentPanelStyle 
@@ -134,20 +138,24 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
 
     render() 
     {
-        let gameLobbyComponent: JSX.Element;
+        let currentGameLobbyComponent: JSX.Element;
+        let flipAnimation: CardRotationAnimation;
         if(isNullOrUndefined(this.props.currentGameLobby)) 
         {
-            gameLobbyComponent = this.getCreateGameLobbyComponent();
+            flipAnimation = this.props.gameLobbyComponentStyle.createGameLobbyFlipAnimation;
+            currentGameLobbyComponent = null;
         }
         else 
         {
-            gameLobbyComponent = this.getCurrentGameLobbyComponent();
+            currentGameLobbyComponent = this.getCurrentGameLobbyComponent();
+            flipAnimation = this.props.gameLobbyComponentStyle.currentGameLobbyFlipAnimation;
         }
         return (
 			<CardComponent
-				panel={gameLobbyComponent}
+                front={this.getCreateGameLobbyComponent()}
+                back={currentGameLobbyComponent}
 				cardStyle={this.props.gameLobbyComponentStyle.cardComponentStyle}
-				rotationAnimation={null}>
+				rotationAnimation={flipAnimation}>
 			</CardComponent>
 		);
     }
@@ -191,11 +199,11 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
                 <ButtonsPanel>
                     <ButtonComponent
 						buttonText="Start"
-						buttonClickHandler={this.startGameButtonClickHandler}
+						buttonClickHandler={this.props.startGameButtonClickHandler}
 						buttonComponentStyle={this.props.gameLobbyComponentStyle.startGameButtonStyle} />
 					<ButtonComponent
 						buttonText="Leave"
-						buttonClickHandler={this.leaveGameButtonClickHandler}
+						buttonClickHandler={this.props.leaveGameButtonClickHandler}
 						buttonComponentStyle={this.props.gameLobbyComponentStyle.leaveGameButtonStyle} />	
 				</ButtonsPanel>
             </CurrentGameLobbyElement>
@@ -243,16 +251,6 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
 
         this.props.sendMessageButtonHandler(this.state.gameLobbyMessage);
         this.setState({gameLobbyMessage: ""});
-    }
-
-    startGameButtonClickHandler = () => 
-    {
-        this.props.startGameButtonClickHandler();
-    }
-
-    leaveGameButtonClickHandler = () => 
-    {
-
     }
 
     maxLobbyLimitListOnChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => 

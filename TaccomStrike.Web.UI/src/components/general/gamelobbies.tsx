@@ -145,7 +145,7 @@ export class GameLobbiesComponent extends React.Component<GameLobbiesComponentPr
         );
         return (
 			<CardComponent
-				panel={gameLobbiesComponent}
+				front={gameLobbiesComponent}
 				cardStyle={this.props.gameLobbiesComponentStyle.cardComponentStyle}
 				rotationAnimation={null}>
 			</CardComponent>

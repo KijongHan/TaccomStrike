@@ -89,7 +89,8 @@ export class LobbyPageStyle extends BasePageStyle
                 })
             },
             cardRotationAnimation: {
-                rotationAngle: 20,
+                rotationFrom: 0,
+                rotationTo: 20,
                 rotationDelay: 1000,
                 rotationDuration: 500
             }
@@ -103,7 +104,9 @@ export class LobbyPageStyle extends BasePageStyle
                     heightPixels: 450,
                     marginLeftPercentage: 1
                 }),
-                perspectiveStyle: new PerspectiveStyle()
+                perspectiveStyle: new PerspectiveStyle({
+                    perspective: 4000
+                })
             },
 
             gameLobbyNameLabelledInputStyle: {
@@ -195,6 +198,20 @@ export class LobbyPageStyle extends BasePageStyle
                     widthPercentage: 30,
                     heightPixels: 50
                 })
+            },
+
+            createGameLobbyFlipAnimation: {
+                rotationFrom: 180,
+                rotationTo: 359.9,
+                rotationDelay: 0,
+                rotationDuration: 1000
+            },
+
+            currentGameLobbyFlipAnimation: {
+                rotationFrom: 0,
+                rotationTo: 180,
+                rotationDelay: 0,
+                rotationDuration: 1000
             }
         }
         return style;

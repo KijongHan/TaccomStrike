@@ -85,10 +85,11 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 
 		let flipAnimation = new CardRotationAnimation();
 		flipAnimation.rotationDelay = 0;
-		flipAnimation.rotationDuration = 2;
+		flipAnimation.rotationDuration = 2000;
+		flipAnimation.rotationTo = 0;
 		return (
 			<CardComponent
-				panel={loginComponent}
+				front={loginComponent}
 				cardStyle={this.props.loginComponentStyle.cardComponentStyle}
 				rotationAnimation={null}>
 			</CardComponent>

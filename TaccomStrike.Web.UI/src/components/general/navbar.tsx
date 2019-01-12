@@ -67,7 +67,7 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
             <Navbar
                 displayStyle={this.props.navbarComponentStyle.displayStyle}>
                 <CardComponent
-                    panel={
+                    front={
                         <PlayNavbarItem
                             displayStyle={this.props.navbarItemStyle.cardComponentStyle.displayStyle}
                             perspectiveStyle={this.props.navbarItemStyle.cardComponentStyle.perspectiveStyle}>
@@ -77,7 +77,7 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
                     rotationAnimation={this.props.navbarItemStyle.cardRotationAnimation}>
                 </CardComponent>
                 <CardComponent
-                    panel={
+                    front={
                         <CommunityNavbarItem
                             displayStyle={this.props.navbarItemStyle.cardComponentStyle.displayStyle}
                             perspectiveStyle={this.props.navbarItemStyle.cardComponentStyle.perspectiveStyle}>
@@ -87,7 +87,7 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
                     rotationAnimation={this.props.navbarItemStyle.cardRotationAnimation}>
                 </CardComponent>
                 <CardComponent
-                    panel={
+                    front={
                         <NewsNavbarItem
                             displayStyle={this.props.navbarItemStyle.cardComponentStyle.displayStyle}
                             perspectiveStyle={this.props.navbarItemStyle.cardComponentStyle.perspectiveStyle}>

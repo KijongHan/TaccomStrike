@@ -1,9 +1,8 @@
 ﻿import * as React from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, consolidateStreamedStyles } from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined, isNull } from "util";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
-import { setInterval } from "timers";
 
 const CardFront = styled.div`
 	position: absolute;
@@ -12,10 +11,9 @@ const CardFront = styled.div`
 	left: 0;
 	right: 0;
 	visibility: ${(p: CardFrontStyle) => p.displayFront ? 'visible' : 'hidden'};
-	transform: rotateY(${(p: CardFrontStyle) => p.rotation}deg);
 `;
 
-const CardBack = styled.div`
+const CardBackCover = styled.div`
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -26,7 +24,15 @@ const CardBack = styled.div`
 	border-width: 4px;
 	border-color: rgba(180, 180, 180, 0.7);
 	visibility: ${(p: CardBackStyle) => p.displayBack ? 'visible' : 'hidden'};
-	transform: rotateY(${(p: CardBackStyle) => p.rotation}deg);
+`;
+
+const CardBack = styled.div`
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	visibility: ${(p: CardBackStyle) => p.displayBack ? 'visible' : 'hidden'};
 `;
 
 const Card = styled.div`
@@ -54,25 +60,25 @@ export interface CardComponentStyle
 export class CardBackStyle
 {
 	displayBack: boolean;
-	rotation: number;
 }
 
 export class CardFrontStyle
 {
 	displayFront: boolean;
-	rotation: number;
 }
 
 export class CardRotationAnimation
 {
-	rotationAngle: number;
+	rotationFrom: number;
+	rotationTo: number;
 	rotationDuration: number;
 	rotationDelay: number;
 }
 
 export interface CardComponentProps
 {
-	panel: JSX.Element;
+	front: JSX.Element;
+	back?: JSX.Element;
 	cardStyle: CardComponentStyle;
 
 	rotationAnimation: CardRotationAnimation;
@@ -93,7 +99,7 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 		}
 		if(!isNullOrUndefined(props.rotationAnimation)) 
 		{
-			this.delayedRotateCard(props.rotationAnimation.rotationAngle, 1, props.rotationAnimation.rotationDuration, props.rotationAnimation.rotationDelay);
+			this.delayedRotateCard(props.rotationAnimation.rotationFrom, props.rotationAnimation.rotationTo, 1, props.rotationAnimation.rotationDuration, props.rotationAnimation.rotationDelay);
 		}
 	}
 
@@ -112,31 +118,49 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 			displayFront = false;
 			displayBack = true;
 		}
+
+		let back: JSX.Element;
+		if(isNullOrUndefined(this.props.back)) 
+		{
+			back = (
+				<CardBackCover
+					displayBack={displayBack}
+					style={{transform: `rotateY(${180 + this.state.currentRotation}deg)`}}>
+				</CardBackCover>
+			);
+		}
+		else 
+		{
+			back = (
+				<CardBack
+					displayBack={displayBack}
+					style={{transform: `rotateY(${180 + this.state.currentRotation}deg)`}}>
+					{this.props.back}
+				</CardBack>
+			);
+		}
 		return (
 			<Card
 				displayStyle={this.props.cardStyle.displayStyle}
 				perspectiveStyle={this.props.cardStyle.perspectiveStyle}>
 				<CardFront
 					displayFront={displayFront}
-					rotation={this.state.currentRotation}>
-					{this.props.panel}
+					style={{transform: `rotateY(${this.state.currentRotation}deg)`}}>
+					{this.props.front}
 				</CardFront>
-				<CardBack
-					displayBack={displayBack}
-					rotation={this.state.currentRotation}>
-				</CardBack>
+				{back}
 			</Card>
 		);
 	}
 
-	delayedRotateCard(toAngle: number, direction: number, durationMiliseconds: number, delayMiliseconds: number) 
+	delayedRotateCard(fromAngle: number, toAngle: number, direction: number, durationMiliseconds: number, delayMiliseconds: number) 
 	{
-		console.log(delayMiliseconds);
 		let rotationTimeout;
 		if (!rotationTimeout)
 		{
 			rotationTimeout = setTimeout(() =>
 			{
+				this.setState({currentRotation: fromAngle});
 				rotationTimeout = null;
 				this.rotateCard(toAngle, direction, durationMiliseconds);
 			}, delayMiliseconds);
@@ -147,7 +171,7 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 	{
 		let rotationAngles = toAngle - this.state.currentRotation;
 		let rotationsPerMilisecond = rotationAngles / durationMiliseconds;
-		let rotationsPerInterval = rotationsPerMilisecond * 10;
+		let rotationsPerInterval = rotationsPerMilisecond * 15;
 
 		if(direction>1) {
 			direction = 1;
@@ -155,21 +179,31 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 		if(direction<-1) {
 			direction = -1;
 		}
-		let handleID = setInterval(() => {
+
+		let handlerID = window.setInterval(() => {
 			if(direction===1 && this.state.currentRotation>=toAngle) 
 			{
 				this.setState({currentRotation: toAngle});
-				clearInterval(handleID);
+				clearInterval(handlerID);
 			}
-			else 
+			else if(this.state.currentRotation !== toAngle)
 			{
-				console.log("rotate");
 				let nextRotation = this.state.currentRotation + (rotationsPerInterval * direction);
 				if(nextRotation < 0) {
 					nextRotation = 365 + nextRotation;
 				}
 				this.setState({currentRotation: nextRotation});
 			}
-		}, 10);
+		}, 15);
+	}
+
+	componentDidUpdate(prevProps: CardComponentProps) 
+	{
+		if(prevProps.rotationAnimation !== this.props.rotationAnimation && !isNullOrUndefined(this.props.rotationAnimation)) 
+		{
+			console.log("component did update");
+			console.log(this.props.rotationAnimation);
+			this.delayedRotateCard(this.props.rotationAnimation.rotationFrom, this.props.rotationAnimation.rotationTo, 1, this.props.rotationAnimation.rotationDuration, this.props.rotationAnimation.rotationDelay);
+		}
 	}
 }

@@ -39,6 +39,7 @@ export interface LobbyPageComponentProps extends BasePageComponentProps
     lobbyListItemClickHandler: (gameLobbyID: number) => void;
     sendMessageButtonClickHandler: (message: string) => void;
     startGameButtonClickHandler: () => void;
+    leaveGameButtonClickHandler: () => void;
     refreshButtonClickHandler: () => void;
     createGameButtonClickHandler: () => void;
     gameLobbyNameInputOnChangeHandler: (input: string) => void;
@@ -96,6 +97,7 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                         maxLobbyLimitListOnChangeHandler={this.props.maxLobbyLimitListOnChangeHandler}
                         createGameButtonClickHandler={this.props.createGameButtonClickHandler}
                         startGameButtonClickHandler={this.props.startGameButtonClickHandler}
+                        leaveGameButtonClickHandler={this.props.leaveGameButtonClickHandler}
                         currentGameLobbyMessages={gameLobbyMessages}
                         sendMessageButtonHandler={this.props.sendMessageButtonClickHandler}>
                     </GameLobbyComponent>

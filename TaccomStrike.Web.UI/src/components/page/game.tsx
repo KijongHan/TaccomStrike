@@ -77,7 +77,7 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
             return (
                 <CardComponent
                     key={value.rank+value.suit}
-                    panel={cardFace}
+                    front={cardFace}
                     cardStyle={cardStyle}
                     rotationAnimation={null}>
                 </CardComponent>
