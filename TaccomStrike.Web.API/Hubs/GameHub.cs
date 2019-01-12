@@ -154,7 +154,7 @@ namespace TaccomStrike.Web.API.Hubs
 			});
 		}
 
-		public Task GameLobbyLeave(long gameLobbyID)
+		public Task GameLobbyLeaveGame(long gameLobbyID)
 		{
 			return Task.Run(() => 
 			{
