@@ -187,6 +187,8 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
         if(this.props.loggedInUser.userID===gameLobbyLeaveGame.playerLeaving.userID) 
         {
             this.setState({currentGameLobby: null});
+            this.setState({currentGameLobbyMessages: []});
+            this.setState({currentGameLobbyMessage: null});
         }
         else 
         {

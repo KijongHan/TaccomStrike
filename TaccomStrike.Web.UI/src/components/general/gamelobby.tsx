@@ -51,6 +51,16 @@ const GameLobbyPlayersPanel = styled.div`
     border-style: solid;
     border-width: 1px;
     border-color: rgba(0, 0, 0, 0.88);
+    overflow-y: scroll;
+`;
+
+const GameLobbyPlayerItem = styled.div`
+    font-size: 1.2em;
+    height: 40px;
+    padding: 5px 5px 5px 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(100, 100, 100, 0.88);
 `;
 
 const GameLobbyMessagesPanel = styled.div`
@@ -61,6 +71,23 @@ const GameLobbyMessagesPanel = styled.div`
     border-style: solid;
     border-width: 1px;
     border-color: rgba(0, 0, 0, 0.88);
+`;
+
+const GameLobbyMessageItem = styled.div`
+    display: inline-block;
+    width: 100%;
+    font-size: 1.1em;
+    padding: 1px 7px 1px 7px;
+`;
+
+const GameLobbyMessagePlayerItem = styled.div`
+    float: left;
+    font-weight: bold;
+`;
+
+const GameLobbyMessageMessageItem = styled.div`
+    float: left;
+    padding-left: 5px;
 `;
 
 export class GameLobbyComponentProps 
@@ -164,16 +191,22 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
     {
         let gameLobbyMessages = this.props.currentGameLobbyMessages.map((value: GetChatMessage) => {
             return (
-                <div>
-                    {value.message}
-                </div>);
+                <GameLobbyMessageItem>
+                    <GameLobbyMessagePlayerItem>
+                        {value.user.username}:
+                    </GameLobbyMessagePlayerItem>
+                    <GameLobbyMessageMessageItem>
+                        {value.message}
+                    </GameLobbyMessageMessageItem>
+                </GameLobbyMessageItem>
+            );
         });
 
         let gameLobbyPlayers = this.props.currentGameLobby.players.map((value: GetUser) => {
             return (
-                <div>
+                <GameLobbyPlayerItem>
                     {value.username}
-                </div>
+                </GameLobbyPlayerItem>
             );
         });
 

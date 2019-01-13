@@ -42,8 +42,20 @@ const LobbyListItem = styled.div`
 	}
 `;
 
-const LobbyListItemColumn = styled.div`
+const LobbyListItemLobbyName = styled.div`
+    font-size: 1.2em;
+    font-weight: bold;
+    padding-left: 10px;
+`;
+
+const LobbyListItemHost = styled.div`
     float: left;
+    padding-left: 10px;
+`;
+
+const LobbyListItemPlayers = styled.div`
+    float: left;
+    margin-left: 20px;
 `;
 
 export class GameLobbiesComponentProps 
@@ -91,8 +103,11 @@ class LobbyListItemComponent extends React.Component<LobbyListItemComponentProps
             <LobbyListItem
                 key={this.props.gameLobby.gameLobbyID}
                 onClick={this.lobbyListItemClickHandler}>
-                <LobbyListItemColumn>{this.props.gameLobby.gameLobbyName}</LobbyListItemColumn>
-                <LobbyListItemColumn>{this.props.gameLobby.players.length}/{this.props.gameLobby.maxRoomLimit}</LobbyListItemColumn>
+                <LobbyListItemLobbyName>
+                    {this.props.gameLobby.gameLobbyName}
+                </LobbyListItemLobbyName>
+                <LobbyListItemHost>Host: {this.props.gameLobby.host.username}</LobbyListItemHost>
+                <LobbyListItemPlayers>Players: {this.props.gameLobby.players.length}/{this.props.gameLobby.maxRoomLimit}</LobbyListItemPlayers>
             </LobbyListItem>
         );
     }

@@ -30,6 +30,7 @@ export class DisplayStyle
 	paddingLeftPixels?: number;
 	paddingRightPixels?: number;
 
+	leftPixels?: number;
 	bottomPixels?: number;
 	position?: Position;
 
@@ -176,4 +177,16 @@ export class DisplayStyle
 			return `${this.bottomPixels}px`;
 		}
 	};
+
+	getLeftString = (): string => 
+	{
+		if (isNullOrUndefined(this.leftPixels))
+		{
+			return 'auto';
+		}
+		else
+		{
+			return `${this.leftPixels}px`;
+		}
+	}
 }

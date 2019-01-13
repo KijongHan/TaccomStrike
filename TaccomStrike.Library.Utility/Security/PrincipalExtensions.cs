@@ -28,6 +28,10 @@ namespace TaccomStrike.Library.Utility.Security {
 		{
 			foreach(Claim claim in principal.Claims) {
 				if(claim.Type == Security.CurrentGameLobbyIDClaim) {
+					if(string.IsNullOrEmpty(claim.Value))
+					{
+						return null;
+					}
 					return Convert.ToInt64(claim.Value);
 				}
 			}

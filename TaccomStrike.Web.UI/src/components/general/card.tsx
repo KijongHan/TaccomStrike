@@ -37,7 +37,8 @@ const CardBack = styled.div`
 
 const Card = styled.div`
 	position: relative;
-	float: left;
+	display: inline-block;
+	left: ${(p: CardComponentStyle) => p.displayStyle.getLeftString()};
 	width: ${(p: CardComponentStyle) => p.displayStyle.getWidthString()};
 	height: ${(p: CardComponentStyle) => p.displayStyle.getHeightString()};
 	margin: ${(p : CardComponentStyle) => p.displayStyle.getMarginString()};

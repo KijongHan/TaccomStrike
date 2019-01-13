@@ -5,9 +5,10 @@ import { GetGameState } from "../../models/rest/getgamestate";
 import styled from "styled-components";
 import { GetGameCard } from "../../models/rest/getgamecard";
 import { CardComponent } from "../general/card";
-import { DisplayStyle } from "../../styles/displaystyle";
+import { DisplayStyle, Position } from "../../styles/displaystyle";
 import { GetGameUser } from "../../models/rest/getgameuser";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
+import { GameCardComponent, GameCardComponentStyle } from "../game/gamecard";
 
 const GamePage = styled.div`
 	height: 100%;
@@ -18,6 +19,12 @@ const GameCard = styled.div`
     height: 100%;
     width: 100%;
     border: 1px solid black;
+`;
+
+const GameUserHandPanel = styled.div`
+    overflow-y: auto;
+    overflow-x: scroll;
+    white-space: nowrap
 `;
 
 const GameUserOpponent = styled.div`
@@ -58,36 +65,44 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                 </GameUserOpponent>
             );
         });
-
-        let hand = this.props.gameState.hand.map((value: GetGameCard) => {
-            let cardFace = (
-                <GameCard>
-                    {value.rank} {value.suit}
-                </GameCard>
-            );
+        
+        let leftPixels = 0;
+        let hand = this.props.gameState.hand.map((value: GetGameCard, index: number) => {
             let cardStyle = {
                 displayStyle: new DisplayStyle({
-                    heightPixels: 50,
-                    widthPxiels: 40
+                    heightPixels: 150,
+                    widthPxiels: 100,
+                    position: Position.absolute,
+                    leftPixels: leftPixels
                 }),
                 perspectiveStyle: new PerspectiveStyle({
                     
                 })
             }
+            if(index===this.props.gameState.hand.length-1) 
+            {
+                cardStyle.displayStyle.marginRightPixels = leftPixels;
+            }
+            leftPixels -= 70;
+
+            let gameCardStyle = new GameCardComponentStyle();
+            gameCardStyle.cardComponentStyle = cardStyle;
+
             return (
-                <CardComponent
+                <GameCardComponent
                     key={value.rank+value.suit}
-                    front={cardFace}
-                    cardStyle={cardStyle}
-                    rotationAnimation={null}>
-                </CardComponent>
+                    gameCard={value}
+                    gameCardComponentStyle={gameCardStyle}>
+                </GameCardComponent>
             );
         });
 
         return (
             <GamePage>
                 {opponentPlayersComponents}
-                {hand}
+                <GameUserHandPanel>
+                    {hand}
+                </GameUserHandPanel>
             </GamePage>
         );
     }

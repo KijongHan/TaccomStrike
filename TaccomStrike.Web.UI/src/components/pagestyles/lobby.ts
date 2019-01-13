@@ -105,7 +105,7 @@ export class LobbyPageStyle extends BasePageStyle
                     marginLeftPercentage: 1
                 }),
                 perspectiveStyle: new PerspectiveStyle({
-                    perspective: 4000
+                    perspective: 5000
                 })
             },
 
@@ -153,7 +153,7 @@ export class LobbyPageStyle extends BasePageStyle
             gameLobbyMessagesPanelStyle: {
                 displayStyle: new DisplayStyle({
                     heightPixels: 298,
-                    widthPercentage: 49,
+                    widthPercentage: 50,
                     floatLeft: true
                 })
             },
@@ -161,7 +161,7 @@ export class LobbyPageStyle extends BasePageStyle
             gameLobbyMessageButtonedInputStyle: {
                 buttonedInputComponentPanelStyle: {
                     displayStyle: new DisplayStyle({
-                        widthPercentage: 100,
+                        widthPercentage: 99,
                         marginTopPixels: 35,
                         heightPixels: 40
                     })
