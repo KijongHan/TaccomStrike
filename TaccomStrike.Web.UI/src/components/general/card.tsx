@@ -202,8 +202,6 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 	{
 		if(prevProps.rotationAnimation !== this.props.rotationAnimation && !isNullOrUndefined(this.props.rotationAnimation)) 
 		{
-			console.log("component did update");
-			console.log(this.props.rotationAnimation);
 			this.delayedRotateCard(this.props.rotationAnimation.rotationFrom, this.props.rotationAnimation.rotationTo, 1, this.props.rotationAnimation.rotationDuration, this.props.rotationAnimation.rotationDelay);
 		}
 	}

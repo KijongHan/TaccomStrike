@@ -9,9 +9,12 @@ import { DisplayStyle, Position } from "../../styles/displaystyle";
 import { GetGameUser } from "../../models/rest/getgameuser";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
 import { GameCardComponent, GameCardComponentStyle } from "../game/gamecard";
+import { GameBoardComponent, GameBoardComponentStyle, GameBoardSeatComponentStyle } from "../game/gameboard";
 
 const GamePage = styled.div`
-	height: 100%;
+    position: fixed;
+    height: 100%;
+    width: 100%;
 	font-family: 'Cormorant Upright', serif;
 `;
 
@@ -22,14 +25,12 @@ const GameCard = styled.div`
 `;
 
 const GameUserHandPanel = styled.div`
+    position: absolute;
+    bottom: 0;
     overflow-y: auto;
     overflow-x: scroll;
     white-space: nowrap
-`;
-
-const GameUserOpponent = styled.div`
-    height: 60px;
-    width: 50px;
+    width: 100%;
 `;
 
 export class GamePageComponentState extends BasePageComponentState {}
@@ -52,20 +53,6 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
 
     render() 
     {
-        let opponentPlayers = this.props.gameState.players.filter((value: GetGameUser) => {
-            console.log(this.props.loggedInUser)
-            return value.user.userID!==this.props.loggedInUser.userID;
-        });
-        console.log(opponentPlayers);
-        let opponentPlayersComponents = opponentPlayers.map((value: GetGameUser) => {
-            return (
-                <GameUserOpponent>
-                    {value.user.username}
-                    {value.handCount}
-                </GameUserOpponent>
-            );
-        });
-        
         let leftPixels = 0;
         let hand = this.props.gameState.hand.map((value: GetGameCard, index: number) => {
             let cardStyle = {
@@ -97,9 +84,19 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
             );
         });
 
+        let gameBoardComponentStyle = new GameBoardComponentStyle();
+        gameBoardComponentStyle.displayStyle.widthPxiels = 200;
+        gameBoardComponentStyle.displayStyle.heightPixels = 200;
+        let gameBoardSeatComponentStyle = new GameBoardSeatComponentStyle();
+        gameBoardSeatComponentStyle.displayStyle.widthPxiels = 100;
+        gameBoardSeatComponentStyle.displayStyle.heightPixels = 100;
         return (
             <GamePage>
-                {opponentPlayersComponents}
+                <GameBoardComponent
+                    players={[]}
+                    gameBoardComponentStyle={gameBoardComponentStyle}
+                    gameBoardSeatComponentStyle={gameBoardSeatComponentStyle}>
+                </GameBoardComponent>
                 <GameUserHandPanel>
                     {hand}
                 </GameUserHandPanel>
