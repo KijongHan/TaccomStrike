@@ -2,6 +2,8 @@ import * as React from "react";
 import styled, { keyframes, consolidateStreamedStyles } from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
 import { GetUser } from "../../models/rest/getuser";
+import { GetGameState } from "../../models/rest/getgamestate";
+import { GetGameUser } from "../../models/rest/getgameuser";
 
 const GameBoard = styled.div`
     background-color: red;
@@ -13,7 +15,11 @@ const GameBoard = styled.div`
     height: ${(p: GameBoardComponentStyle) => p.displayStyle.getHeightString()};
 `;
 
-const GameBoardSeat = styled.div`
+const GameBoardPlayer = styled.div`
+    background-color: white;
+`;
+
+const GameBoardVacantSeat = styled.div`
     position: absolute;
     background-color: blue;
     width: ${(p: GameBoardSeatComponentStyle) => p.displayStyle.getWidthString()};
@@ -22,7 +28,8 @@ const GameBoardSeat = styled.div`
 
 export class GameBoardComponentProps 
 {
-    players: GetUser[];
+    loggedInUser: GetUser;
+    gameState: GetGameState;
 
     gameBoardComponentStyle: GameBoardComponentStyle;
     gameBoardSeatComponentStyle: GameBoardSeatComponentStyle;
@@ -59,25 +66,74 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
 
     render()
     {
+        let gameUserIDToGameUserMapping = new Map<number, GetGameUser>();
+        this.props.gameState.players.forEach((player: GetGameUser) => {
+            gameUserIDToGameUserMapping.set(player.gameUserID, player)
+        });
+
+        let playerOne: JSX.Element;
+        if(gameUserIDToGameUserMapping.has(1))
+        {
+            playerOne = (
+                <GameBoardPlayer>
+                    {gameUserIDToGameUserMapping.get(1).handCount}
+                    {gameUserIDToGameUserMapping.get(1).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(1).user.username}
+                </GameBoardPlayer>
+            );
+        }
+        let playerTwo: JSX.Element;
+        if(gameUserIDToGameUserMapping.has(2))
+        {
+            playerTwo = (
+                <GameBoardPlayer>
+                    {gameUserIDToGameUserMapping.get(2).handCount}
+                    {gameUserIDToGameUserMapping.get(2).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(2).user.username}
+                </GameBoardPlayer>
+            );
+        }
+        let playerThree: JSX.Element;
+        if(gameUserIDToGameUserMapping.has(3))
+        {
+            playerThree = (
+                <GameBoardPlayer>
+                    {gameUserIDToGameUserMapping.get(3).handCount}
+                    {gameUserIDToGameUserMapping.get(3).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(3).user.username}
+                </GameBoardPlayer>
+            );
+        }
+        let playerFour: JSX.Element;
+        if(gameUserIDToGameUserMapping.has(4))
+        {
+            playerFour = (
+                <GameBoardPlayer>
+                    {gameUserIDToGameUserMapping.get(4).handCount}
+                    {gameUserIDToGameUserMapping.get(4).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(4).user.username}
+                </GameBoardPlayer>
+            );
+        }
         return (
             <GameBoard
                 displayStyle={this.props.gameBoardComponentStyle.displayStyle}>
-                <GameBoardSeat
+                <GameBoardVacantSeat
                     style={{top:-100, left:-100}}
                     displayStyle={this.props.gameBoardSeatComponentStyle.displayStyle}>
-                </GameBoardSeat>
-                <GameBoardSeat
+                    {playerOne}
+                </GameBoardVacantSeat>
+                <GameBoardVacantSeat
                     style={{top:-100, right:-100}}
                     displayStyle={this.props.gameBoardSeatComponentStyle.displayStyle}>
-                </GameBoardSeat>
-                <GameBoardSeat
+                    {playerTwo}
+                </GameBoardVacantSeat>
+                <GameBoardVacantSeat
                     style={{bottom:-100, left:-100}}
                     displayStyle={this.props.gameBoardSeatComponentStyle.displayStyle}>
-                </GameBoardSeat>
-                <GameBoardSeat
+                    {playerThree}
+                </GameBoardVacantSeat>
+                <GameBoardVacantSeat
                     style={{bottom:-100, right:-100}}
                     displayStyle={this.props.gameBoardSeatComponentStyle.displayStyle}>
-                </GameBoardSeat>
+                    {playerFour}
+                </GameBoardVacantSeat>
             </GameBoard>
         );
     }

@@ -18,12 +18,6 @@ const GamePage = styled.div`
 	font-family: 'Cormorant Upright', serif;
 `;
 
-const GameCard = styled.div`
-    height: 100%;
-    width: 100%;
-    border: 1px solid black;
-`;
-
 const GameUserHandPanel = styled.div`
     position: absolute;
     bottom: 0;
@@ -93,7 +87,8 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
         return (
             <GamePage>
                 <GameBoardComponent
-                    players={[]}
+                    loggedInUser={this.props.loggedInUser}
+                    gameState={this.props.gameState}
                     gameBoardComponentStyle={gameBoardComponentStyle}
                     gameBoardSeatComponentStyle={gameBoardSeatComponentStyle}>
                 </GameBoardComponent>

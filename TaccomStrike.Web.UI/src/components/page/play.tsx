@@ -77,7 +77,6 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     leaveGameButtonClickHandler={this.leaveGameButtonClickHandler}
                     createGameButtonClickHandler={this.createGameButtonClickHandler}
                     gameLobbyNameInputOnChangeHandler={this.gameLobbyNameInputOnChangeHandler}
-                    maxLobbyLimitListOnChangeHandler={this.maxLobbyLimitListOnChangeHandler}
                     refreshButtonClickHandler={this.refreshButtonClickHandler}>
                 </LobbyPageComponent>
             );

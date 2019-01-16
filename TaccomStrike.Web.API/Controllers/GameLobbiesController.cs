@@ -32,7 +32,7 @@ namespace TaccomStrike.Web.API.Controllers {
 			GameLobby gameLobby = new GameLobby 
 			{
 				GameLobbyName = gameLobbyViewModel.GameLobbyName,
-				MaxRoomLimit = gameLobbyViewModel.MaxRoomLimit
+				MaxRoomLimit = 4
 			};
 			
 			if(HttpContext.User.GetCurrentGameLobbyID() != null)

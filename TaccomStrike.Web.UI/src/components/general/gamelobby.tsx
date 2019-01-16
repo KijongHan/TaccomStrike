@@ -98,7 +98,6 @@ export class GameLobbyComponentProps
     createGameLobby: CreateGameLobby;
 
     gameLobbyNameInputOnChangeHandler: (input: string) => void;
-    maxLobbyLimitListOnChangeHandler: (value: string) => void;
     startGameButtonClickHandler: () => void;
     leaveGameButtonClickHandler: () => void;
     createGameButtonClickHandler: () => void;
@@ -252,11 +251,6 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
 					labelValue={"Game Lobby Name"}
 					inputOnChangeHandler={this.gameLobbyNameInputOnChangeHandler}
 					componentStyle={this.props.gameLobbyComponentStyle.gameLobbyNameLabelledInputStyle} />
-                <LabelledListComponent
-                    listItems={this.state.listItems}
-                    labelValue={"Max Lobby Limit"}
-                    componentStyle={this.props.gameLobbyComponentStyle.maxLobbyLimitLabelledListStyle}
-                    listOnChangeHandler={this.maxLobbyLimitListOnChangeHandler}/>
                 <ButtonComponent
                     buttonText={"Create Game"}
                     buttonComponentStyle={this.props.gameLobbyComponentStyle.createGameButtonStyle}
@@ -285,11 +279,6 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
         this.props.sendMessageButtonHandler(this.state.gameLobbyMessage);
         this.setState({gameLobbyMessage: ""});
     }
-
-    maxLobbyLimitListOnChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => 
-	{
-		this.props.maxLobbyLimitListOnChangeHandler(event.target.value);
-	}
 
     gameLobbyNameInputOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
 	{

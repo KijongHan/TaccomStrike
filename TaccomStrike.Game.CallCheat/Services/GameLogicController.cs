@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using TaccomStrike.Library.Utility.Security;
@@ -196,7 +193,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 				if (i == users.Count - 1)
 				{
 					List<GameCard> hand = deck;
-					GameUsers.Add(new GameUser(users[i], hand));
+					GameUsers.Add(new GameUser(i+1, users[i], hand));
 				}
 				else
 				{
@@ -207,7 +204,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 						hand.Add(lastCard);
 						deck.RemoveAt(deck.Count - 1);
 					}
-					GameUsers.Add(new GameUser(users[i], hand));
+					GameUsers.Add(new GameUser(i+1, users[i], hand));
 				}
 			}
 		}

@@ -8,6 +8,8 @@ namespace TaccomStrike.Library.Data.ApiEntities
 {
 	public class GetGameUser
 	{
+		public int GameUserID { get; set; }
+
 		public GetUser User { get; set; }
 
 		public int HandCount { get; set; }
@@ -16,6 +18,7 @@ namespace TaccomStrike.Library.Data.ApiEntities
 
 		public GetGameUser(GameUser gameUser)
 		{
+			GameUserID = gameUser.GameUserID;
 			User = new GetUser(gameUser.UserPrincipal);
 			HandCount = gameUser.Hand.Count;
 		}
