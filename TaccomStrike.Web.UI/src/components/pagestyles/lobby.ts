@@ -46,6 +46,7 @@ export class LobbyPageStyle extends BasePageStyle
         style.gameLobbiesComponentStyle = {
             cardComponentStyle: {
                 displayStyle: new DisplayStyle({
+                    position: Position.relative,
                     floatLeft: true,
                     widthPercentage: 48,
                     heightPixels: 450,
@@ -99,6 +100,7 @@ export class LobbyPageStyle extends BasePageStyle
         style.gameLobbyComponentStyle = {
             cardComponentStyle: {
                 displayStyle: new DisplayStyle({
+                    position: Position.relative,
                     floatLeft: true,
                     widthPercentage: 48,
                     heightPixels: 450,

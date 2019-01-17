@@ -5,23 +5,49 @@ import { GetUser } from "../../models/rest/getuser";
 import { GetGameState } from "../../models/rest/getgamestate";
 import { GetGameUser } from "../../models/rest/getgameuser";
 
+const PersonIcon = require("../../res/person.png");
+const CardHandIcon = require("../../res/card_hand.png");
+
 const GameBoard = styled.div`
     background-color: red;
     margin: auto;
     position: relative;
-    top: 25%;
+    top: 35%;
     border-radius: 50%;
     width: ${(p: GameBoardComponentStyle) => p.displayStyle.getWidthString()};
     height: ${(p: GameBoardComponentStyle) => p.displayStyle.getHeightString()};
 `;
 
+const GameBoardPlayerPanel = styled.div`
+    width: 100%;
+    height: 100%;
+`;
+
 const GameBoardPlayer = styled.div`
     background-color: white;
+    background-size: 100% 100%;
+    background-image: url(${PersonIcon});
+    width: 100%;
+    height: 50%;
+`;
+
+const GameBoardPlayerName = styled.div`
+    width: 100%;
+    text-align: center;
+`;
+
+const GameBoardPlayerCardHand = styled.div`
+    width: 70%;
+    height: 25%;
+    text-align: center;
+    color: white;
+    margin: auto
+    background-size: 100% 100%;
+    background-image: url(${CardHandIcon});
 `;
 
 const GameBoardVacantSeat = styled.div`
     position: absolute;
-    background-color: blue;
     width: ${(p: GameBoardSeatComponentStyle) => p.displayStyle.getWidthString()};
     height: ${(p: GameBoardSeatComponentStyle) => p.displayStyle.getHeightString()};
 `;
@@ -75,40 +101,64 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
         if(gameUserIDToGameUserMapping.has(1))
         {
             playerOne = (
-                <GameBoardPlayer>
-                    {gameUserIDToGameUserMapping.get(1).handCount}
-                    {gameUserIDToGameUserMapping.get(1).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(1).user.username}
-                </GameBoardPlayer>
+                <GameBoardPlayerPanel>
+                    <GameBoardPlayerName>
+                        {gameUserIDToGameUserMapping.get(1).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(1).user.username}
+                    </GameBoardPlayerName>
+                    <GameBoardPlayer>                     
+                    </GameBoardPlayer>
+                    <GameBoardPlayerCardHand>
+                        {gameUserIDToGameUserMapping.get(1).handCount}  
+                    </GameBoardPlayerCardHand>
+                </GameBoardPlayerPanel>
             );
         }
         let playerTwo: JSX.Element;
         if(gameUserIDToGameUserMapping.has(2))
         {
             playerTwo = (
-                <GameBoardPlayer>
-                    {gameUserIDToGameUserMapping.get(2).handCount}
-                    {gameUserIDToGameUserMapping.get(2).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(2).user.username}
-                </GameBoardPlayer>
+                <GameBoardPlayerPanel>
+                    <GameBoardPlayerName>
+                        {gameUserIDToGameUserMapping.get(2).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(2).user.username}
+                    </GameBoardPlayerName>
+                    <GameBoardPlayer>                     
+                    </GameBoardPlayer>
+                    <GameBoardPlayerCardHand>
+                        {gameUserIDToGameUserMapping.get(2).handCount}
+                    </GameBoardPlayerCardHand>
+                </GameBoardPlayerPanel>
             );
         }
         let playerThree: JSX.Element;
         if(gameUserIDToGameUserMapping.has(3))
         {
             playerThree = (
-                <GameBoardPlayer>
-                    {gameUserIDToGameUserMapping.get(3).handCount}
-                    {gameUserIDToGameUserMapping.get(3).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(3).user.username}
-                </GameBoardPlayer>
+                <GameBoardPlayerPanel>
+                    <GameBoardPlayerName>
+                        {gameUserIDToGameUserMapping.get(3).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(3).user.username}
+                    </GameBoardPlayerName>
+                    <GameBoardPlayer>                     
+                    </GameBoardPlayer>
+                    <GameBoardPlayerCardHand>
+                        {gameUserIDToGameUserMapping.get(3).handCount}
+                    </GameBoardPlayerCardHand>
+                </GameBoardPlayerPanel>
             );
         }
         let playerFour: JSX.Element;
         if(gameUserIDToGameUserMapping.has(4))
         {
             playerFour = (
-                <GameBoardPlayer>
-                    {gameUserIDToGameUserMapping.get(4).handCount}
-                    {gameUserIDToGameUserMapping.get(4).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(4).user.username}
-                </GameBoardPlayer>
+                <GameBoardPlayerPanel>
+                    <GameBoardPlayerName>
+                        {gameUserIDToGameUserMapping.get(4).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(4).user.username}
+                    </GameBoardPlayerName>
+                    <GameBoardPlayer>                     
+                    </GameBoardPlayer>
+                    <GameBoardPlayerCardHand>
+                        {gameUserIDToGameUserMapping.get(4).handCount}
+                    </GameBoardPlayerCardHand>
+                </GameBoardPlayerPanel>
             );
         }
         return (

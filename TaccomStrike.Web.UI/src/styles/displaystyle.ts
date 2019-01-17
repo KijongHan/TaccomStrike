@@ -30,6 +30,8 @@ export class DisplayStyle
 	paddingLeftPixels?: number;
 	paddingRightPixels?: number;
 
+	rightPixels?: number;
+	topPixels?: number;
 	leftPixels?: number;
 	bottomPixels?: number;
 	position?: Position;
@@ -187,6 +189,30 @@ export class DisplayStyle
 		else
 		{
 			return `${this.leftPixels}px`;
+		}
+	}
+
+	getRightString = (): string => 
+	{
+		if (isNullOrUndefined(this.rightPixels))
+		{
+			return 'auto';
+		}
+		else
+		{
+			return `${this.rightPixels}px`;
+		}
+	}
+
+	getTopString = (): string => 
+	{
+		if (isNullOrUndefined(this.topPixels))
+		{
+			return 'auto';
+		}
+		else
+		{
+			return `${this.topPixels}px`;
 		}
 	}
 }

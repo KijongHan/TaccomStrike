@@ -10,6 +10,7 @@ import { GetGameUser } from "../../models/rest/getgameuser";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
 import { GameCardComponent, GameCardComponentStyle } from "../game/gamecard";
 import { GameBoardComponent, GameBoardComponentStyle, GameBoardSeatComponentStyle } from "../game/gameboard";
+import { GameActionComponent, GameActionComponentStyle } from "../game/gameaction";
 
 const GamePage = styled.div`
     position: fixed;
@@ -18,13 +19,17 @@ const GamePage = styled.div`
 	font-family: 'Cormorant Upright', serif;
 `;
 
+const GameBoardPanel = styled.div`
+    width: 100%;
+    height: 80%;
+`;
+
 const GameUserHandPanel = styled.div`
-    position: absolute;
-    bottom: 0;
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: scroll;
     white-space: nowrap
     width: 100%;
+    height: 20%;
 `;
 
 export class GamePageComponentState extends BasePageComponentState {}
@@ -51,9 +56,9 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
         let hand = this.props.gameState.hand.map((value: GetGameCard, index: number) => {
             let cardStyle = {
                 displayStyle: new DisplayStyle({
-                    heightPixels: 150,
+                    heightPercentage: 98,
                     widthPxiels: 100,
-                    position: Position.absolute,
+                    position: Position.relative,
                     leftPixels: leftPixels
                 }),
                 perspectiveStyle: new PerspectiveStyle({
@@ -79,19 +84,31 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
         });
 
         let gameBoardComponentStyle = new GameBoardComponentStyle();
-        gameBoardComponentStyle.displayStyle.widthPxiels = 200;
-        gameBoardComponentStyle.displayStyle.heightPixels = 200;
+        gameBoardComponentStyle.displayStyle.widthPercentage = 12;
+        gameBoardComponentStyle.displayStyle.heightPercentage = 30;
         let gameBoardSeatComponentStyle = new GameBoardSeatComponentStyle();
-        gameBoardSeatComponentStyle.displayStyle.widthPxiels = 100;
-        gameBoardSeatComponentStyle.displayStyle.heightPixels = 100;
+        gameBoardSeatComponentStyle.displayStyle.widthPercentage = 60;
+        gameBoardSeatComponentStyle.displayStyle.heightPercentage = 100;
+
+        let gameActionComponentStyle = new GameActionComponentStyle();
+        gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.fixed;
+        gameActionComponentStyle.cardComponentStyle.displayStyle.heightPercentage = 70;
+        gameActionComponentStyle.cardComponentStyle.displayStyle.widthPercentage = 25;
+        gameActionComponentStyle.cardComponentStyle.displayStyle.topPixels = 0;
+        gameActionComponentStyle.cardComponentStyle.displayStyle.rightPixels = 0;
         return (
             <GamePage>
-                <GameBoardComponent
-                    loggedInUser={this.props.loggedInUser}
-                    gameState={this.props.gameState}
-                    gameBoardComponentStyle={gameBoardComponentStyle}
-                    gameBoardSeatComponentStyle={gameBoardSeatComponentStyle}>
-                </GameBoardComponent>
+                <GameBoardPanel>
+                    <GameBoardComponent
+                        loggedInUser={this.props.loggedInUser}
+                        gameState={this.props.gameState}
+                        gameBoardComponentStyle={gameBoardComponentStyle}
+                        gameBoardSeatComponentStyle={gameBoardSeatComponentStyle}>
+                    </GameBoardComponent>
+                    <GameActionComponent
+                        gameActionComponentStyle={gameActionComponentStyle}>
+                    </GameActionComponent>
+                </GameBoardPanel>
                 <GameUserHandPanel>
                     {hand}
                 </GameUserHandPanel>

@@ -36,9 +36,12 @@ const CardBack = styled.div`
 `;
 
 const Card = styled.div`
-	position: relative;
+	position: ${(p: CardComponentStyle) => p.displayStyle.getPositionString()};
 	display: inline-block;
 	left: ${(p: CardComponentStyle) => p.displayStyle.getLeftString()};
+	top: ${(p: CardComponentStyle) => p.displayStyle.getTopString()};
+	bottom: ${(p: CardComponentStyle) => p.displayStyle.getBottomString()};
+	right: ${(p: CardComponentStyle) => p.displayStyle.getRightString()};
 	width: ${(p: CardComponentStyle) => p.displayStyle.getWidthString()};
 	height: ${(p: CardComponentStyle) => p.displayStyle.getHeightString()};
 	margin: ${(p : CardComponentStyle) => p.displayStyle.getMarginString()};
@@ -52,10 +55,16 @@ export enum CardRotationDirection
 	Negative
 }
 
-export interface CardComponentStyle
+export class CardComponentStyle
 {
 	displayStyle: DisplayStyle;
 	perspectiveStyle: PerspectiveStyle;
+
+	constructor() 
+	{
+		this.displayStyle = new DisplayStyle();
+		this.perspectiveStyle = new PerspectiveStyle();
+	}
 }
 
 export class CardBackStyle
