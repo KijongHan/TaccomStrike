@@ -60,7 +60,7 @@ namespace TaccomStrike.Web.API.Hubs
 			});
 		}
 
-		public Task GameClaim(long gameLobbyID, List<GameCard> claims, List<GameCard> actual)
+		public Task GameSubmitClaim(long gameLobbyID, List<GameCard> claims, List<GameCard> actual)
 		{
 			return Task.Run(() => 
 			{

@@ -77,7 +77,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 
 			if (CurrentClaims.Count > 0)
 			{
-				if (CurrentClaims.Last().ClaimUser.UserPrincipal.GetUserName() == user.GetUserName())
+				if (CurrentClaims.Last().ClaimUser.UserPrincipal.GetUserLoginID() == user.GetUserLoginID())
 				{
 					return false;
 				}
