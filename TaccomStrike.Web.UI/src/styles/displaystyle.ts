@@ -34,6 +34,7 @@ export class DisplayStyle
 	topPixels?: number;
 	leftPixels?: number;
 	bottomPixels?: number;
+	bottomPercentage?: number;
 	position?: Position;
 
 	public constructor(init?: Partial<DisplayStyle>)
@@ -170,14 +171,15 @@ export class DisplayStyle
 
 	getBottomString = (): string =>
 	{
-		if (isNullOrUndefined(this.bottomPixels))
-		{
-			return 'auto';
-		}
-		else
+		if(!isNullOrUndefined(this.bottomPixels))
 		{
 			return `${this.bottomPixels}px`;
 		}
+		if(!isNullOrUndefined(this.bottomPercentage))
+		{
+			return `${this.bottomPercentage}%`;
+		}
+		return 'auto';
 	};
 
 	getLeftString = (): string => 

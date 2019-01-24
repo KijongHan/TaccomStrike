@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
-import { CardComponent, CardComponentStyle } from "../general/card";
+import { CardComponent, CardComponentStyle, CardSlideAnimation, CardRotationAnimation } from "../general/card";
 import { GetGameCard } from "../../models/rest/getgamecard";
 
 const RedDiamond = require("../../res/red_diamond.png");
@@ -36,6 +36,7 @@ export class GameCardComponentState {}
 export class GameCardComponentStyle 
 {
     cardComponentStyle: CardComponentStyle;
+    cardHoverAnimation: CardSlideAnimation | CardRotationAnimation;
 }
 
 export class GameCardComponent extends React.Component<GameCardComponentProps, GameCardComponentState> 
@@ -148,7 +149,7 @@ export class GameCardComponent extends React.Component<GameCardComponentProps, G
             <CardComponent
                 front={gameCardFace}
                 cardStyle={this.props.gameCardComponentStyle.cardComponentStyle}
-                rotationAnimation={null}>
+                hoverAnimation={this.props.gameCardComponentStyle.cardHoverAnimation}>
             </CardComponent>
         );
     }

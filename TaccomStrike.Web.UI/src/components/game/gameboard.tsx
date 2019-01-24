@@ -21,6 +21,7 @@ const GameBoard = styled.div`
 const GameBoardPlayerPanel = styled.div`
     width: 100%;
     height: 100%;
+    display: flex;
 `;
 
 const GameBoardPlayer = styled.div`
@@ -28,7 +29,7 @@ const GameBoardPlayer = styled.div`
     background-size: 100% 100%;
     background-image: url(${PersonIcon});
     width: 100%;
-    height: 50%;
+    height: 100%;
 `;
 
 const GameBoardPlayerName = styled.div`
@@ -38,12 +39,17 @@ const GameBoardPlayerName = styled.div`
 
 const GameBoardPlayerCardHand = styled.div`
     width: 70%;
-    height: 25%;
-    text-align: center;
-    color: white;
-    margin: auto
+    height: 30%;
     background-size: 100% 100%;
     background-image: url(${CardHandIcon});
+    display: flex;
+`;
+
+const GameBoardPlayerCardHandText = styled.p`
+    height: 100%;
+    margin: auto;
+    color: white;
+    text-align: center;
 `;
 
 const GameBoardVacantSeat = styled.div`
@@ -107,8 +113,11 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
                     </GameBoardPlayerName>
                     <GameBoardPlayer>                     
                     </GameBoardPlayer>
-                    <GameBoardPlayerCardHand>
-                        {gameUserIDToGameUserMapping.get(1).handCount}  
+                    <GameBoardPlayerCardHand
+                        style={{marginTop: '50%'}}>
+                        <GameBoardPlayerCardHandText>
+                            {gameUserIDToGameUserMapping.get(1).handCount}
+                        </GameBoardPlayerCardHandText>
                     </GameBoardPlayerCardHand>
                 </GameBoardPlayerPanel>
             );
@@ -118,14 +127,17 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
         {
             playerTwo = (
                 <GameBoardPlayerPanel>
+                    <GameBoardPlayerCardHand
+                        style={{marginTop: '50%'}}>
+                        <GameBoardPlayerCardHandText>
+                            {gameUserIDToGameUserMapping.get(2).handCount}
+                        </GameBoardPlayerCardHandText>
+                    </GameBoardPlayerCardHand>
+                    <GameBoardPlayer>                     
+                    </GameBoardPlayer>
                     <GameBoardPlayerName>
                         {gameUserIDToGameUserMapping.get(2).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(2).user.username}
                     </GameBoardPlayerName>
-                    <GameBoardPlayer>                     
-                    </GameBoardPlayer>
-                    <GameBoardPlayerCardHand>
-                        {gameUserIDToGameUserMapping.get(2).handCount}
-                    </GameBoardPlayerCardHand>
                 </GameBoardPlayerPanel>
             );
         }
@@ -139,8 +151,11 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
                     </GameBoardPlayerName>
                     <GameBoardPlayer>                     
                     </GameBoardPlayer>
-                    <GameBoardPlayerCardHand>
-                        {gameUserIDToGameUserMapping.get(3).handCount}
+                    <GameBoardPlayerCardHand
+                        style={{marginBottom: '50%'}}>
+                        <GameBoardPlayerCardHandText>
+                            {gameUserIDToGameUserMapping.get(3).handCount}
+                        </GameBoardPlayerCardHandText>
                     </GameBoardPlayerCardHand>
                 </GameBoardPlayerPanel>
             );
@@ -150,14 +165,17 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
         {
             playerFour = (
                 <GameBoardPlayerPanel>
+                    <GameBoardPlayerCardHand
+                        style={{marginBottom: '50%'}}>
+                        <GameBoardPlayerCardHandText>
+                            {gameUserIDToGameUserMapping.get(4).handCount}
+                        </GameBoardPlayerCardHandText>
+                    </GameBoardPlayerCardHand>
+                    <GameBoardPlayer>                     
+                    </GameBoardPlayer>
                     <GameBoardPlayerName>
                         {gameUserIDToGameUserMapping.get(4).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(4).user.username}
                     </GameBoardPlayerName>
-                    <GameBoardPlayer>                     
-                    </GameBoardPlayer>
-                    <GameBoardPlayerCardHand>
-                        {gameUserIDToGameUserMapping.get(4).handCount}
-                    </GameBoardPlayerCardHand>
                 </GameBoardPlayerPanel>
             );
         }
