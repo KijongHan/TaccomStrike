@@ -2,20 +2,6 @@
 import styled from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
 
-export interface ButtonComponentProps
-{
-	buttonText: string;
-	buttonComponentStyle: ButtonComponentStyle
-	buttonClickHandler: () => void;
-}
-
-export interface ButtonComponentState {}
-
-export interface ButtonComponentStyle
-{
-	displayStyle: DisplayStyle;
-}
-
 const ButtonElement = styled.div`
 	font-weight: bold;
 	text-align: center;
@@ -40,6 +26,25 @@ const ButtonElement = styled.div`
 		cursor: pointer;
 	}
 `;
+
+export interface ButtonComponentProps
+{
+	buttonText: string;
+	buttonComponentStyle: ButtonComponentStyle
+	buttonClickHandler: () => void;
+}
+
+export interface ButtonComponentState {}
+
+export class ButtonComponentStyle
+{
+	displayStyle: DisplayStyle;
+
+	constructor() 
+	{
+		this.displayStyle = new DisplayStyle();
+	}
+}
 
 export class ButtonComponent extends React.Component<ButtonComponentProps, ButtonComponentState>
 {

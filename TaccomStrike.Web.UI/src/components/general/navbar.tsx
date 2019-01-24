@@ -57,6 +57,7 @@ export class NavbarItemStyle
 {
     cardComponentStyle: CardComponentStyle;
     cardRotationAnimation: CardRotationAnimation;
+    cardHoverAnimation: CardRotationAnimation;
 }
 
 export class NavbarComponent extends React.Component<NavbarComponentProps, {}> 
@@ -74,7 +75,8 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
                             Play
                         </PlayNavbarItem>}
                     cardStyle={this.props.navbarItemStyle.cardComponentStyle}
-                    rotationAnimation={this.props.navbarItemStyle.cardRotationAnimation}>
+                    rotationAnimation={this.props.navbarItemStyle.cardRotationAnimation}
+                    hoverAnimation={this.props.navbarItemStyle.cardHoverAnimation}>
                 </CardComponent>
                 <CardComponent
                     front={
@@ -84,7 +86,8 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
                             Community
                         </CommunityNavbarItem>}
                     cardStyle={this.props.navbarItemStyle.cardComponentStyle}
-                    rotationAnimation={this.props.navbarItemStyle.cardRotationAnimation}>
+                    rotationAnimation={this.props.navbarItemStyle.cardRotationAnimation}
+                    hoverAnimation={this.props.navbarItemStyle.cardHoverAnimation}>
                 </CardComponent>
                 <CardComponent
                     front={
@@ -94,7 +97,8 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
                             News
                         </NewsNavbarItem>}
                     cardStyle={this.props.navbarItemStyle.cardComponentStyle}
-                    rotationAnimation={this.props.navbarItemStyle.cardRotationAnimation}>
+                    rotationAnimation={this.props.navbarItemStyle.cardRotationAnimation}
+                    hoverAnimation={this.props.navbarItemStyle.cardHoverAnimation}>
                 </CardComponent>
             </Navbar>
         );

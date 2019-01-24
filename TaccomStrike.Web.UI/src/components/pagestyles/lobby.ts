@@ -5,7 +5,7 @@ import { DisplayStyle, Position } from "../../styles/displaystyle";
 import { GameLobbiesComponentStyle } from "../general/gamelobbies";
 import { GameLobbyComponentStyle } from "../general/gamelobby";
 import { NavbarComponentStyle, NavbarItemStyle } from "../general/navbar";
-import { CardComponentStyle } from "../general/card";
+import { CardComponentStyle, CardRotationAnimation } from "../general/card";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
 
 export class LobbyPageStyle extends BasePageStyle 
@@ -92,9 +92,17 @@ export class LobbyPageStyle extends BasePageStyle
             cardRotationAnimation: {
                 rotationFrom: 0,
                 rotationTo: 20,
+                rotationDirection: 1,
                 rotationDelay: 1000,
                 rotationDuration: 500
-            }
+            },
+            cardHoverAnimation: new CardRotationAnimation({
+                rotationFrom: 20,
+                rotationTo: 0,
+                rotationDirection: 1,
+                rotationDelay: 0,
+                rotationDuration: 1000
+            }) 
         }
 
         style.gameLobbyComponentStyle = {
@@ -205,6 +213,7 @@ export class LobbyPageStyle extends BasePageStyle
             createGameLobbyFlipAnimation: {
                 rotationFrom: 180,
                 rotationTo: 359.9,
+                rotationDirection: 1,
                 rotationDelay: 0,
                 rotationDuration: 1000
             },
@@ -212,6 +221,7 @@ export class LobbyPageStyle extends BasePageStyle
             currentGameLobbyFlipAnimation: {
                 rotationFrom: 0,
                 rotationTo: 180,
+                rotationDirection: 1,
                 rotationDelay: 0,
                 rotationDuration: 1000
             }

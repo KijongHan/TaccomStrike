@@ -81,8 +81,24 @@ export class CardRotationAnimation
 {
 	rotationFrom: number;
 	rotationTo: number;
+	rotationDirection: number;
 	rotationDuration: number;
 	rotationDelay: number;
+
+	constructor(init?: Partial<CardRotationAnimation>) 
+	{
+		Object.assign(this, init);
+	}
+}
+
+export class CardSlideAnimation 
+{
+	slideTop: number;
+	slideLeft: number;
+	slideRight: number;
+	slideBottom: number;
+	slideDuration: number;
+	slideDelay: number;
 }
 
 export interface CardComponentProps
@@ -91,12 +107,21 @@ export interface CardComponentProps
 	back?: JSX.Element;
 	cardStyle: CardComponentStyle;
 
-	rotationAnimation: CardRotationAnimation;
+	rotationAnimation?: CardRotationAnimation;
+	slideAnimation?: CardSlideAnimation;
+
+	hoverAnimation?: CardRotationAnimation | CardSlideAnimation;
 }
 
 export interface CardComponentState 
 {
 	currentRotation: number;
+	currentTopOffset: number;
+
+	rotationAnimationHandlerID: number;
+	slideAnimationHandlerID: number;
+	rotationTimeoutHandlerID: number;
+	slideTimeoutHandlerID: number;
 }
 
 export class CardComponent extends React.Component<CardComponentProps, CardComponentState>
@@ -105,12 +130,56 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 	{
 		super(props);
 		this.state = {
-			currentRotation: props.cardStyle.perspectiveStyle.rotateY
+			currentRotation: props.cardStyle.perspectiveStyle.rotateY,
+			currentTopOffset: 0,
+			rotationAnimationHandlerID: null,
+			slideAnimationHandlerID: null,
+			rotationTimeoutHandlerID: null,
+			slideTimeoutHandlerID: null
 		}
-		if(!isNullOrUndefined(props.rotationAnimation)) 
+	}
+
+	getBack = (displayBack: boolean) => 
+	{
+		if(isNullOrUndefined(this.props.back)) 
 		{
-			this.delayedRotateCard(props.rotationAnimation.rotationFrom, props.rotationAnimation.rotationTo, 1, props.rotationAnimation.rotationDuration, props.rotationAnimation.rotationDelay);
+			return (
+				<CardBackCover
+					displayBack={displayBack}
+					style={{
+						transform: `rotateY(${180 + this.state.currentRotation}deg)`,
+						top: `${this.state.currentTopOffset}`
+					}}>
+				</CardBackCover>
+			);
 		}
+		else 
+		{
+			return (
+				<CardBack
+					displayBack={displayBack}
+					style={{
+						transform: `rotateY(${180 + this.state.currentRotation}deg)`,
+						top: `${this.state.currentTopOffset}`
+					}}>
+					{this.props.back}
+				</CardBack>
+			);
+		}
+	}
+
+	getFront = (displayFront: boolean) => 
+	{
+		return (
+			<CardFront
+				displayFront={displayFront}
+				style={{
+					transform: `rotateY(${this.state.currentRotation}deg)`,
+					top: `${this.state.currentTopOffset}`
+				}}>
+				{this.props.front}
+			</CardFront>
+		);
 	}
 
 	render()
@@ -129,55 +198,71 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 			displayBack = true;
 		}
 
-		let back: JSX.Element;
-		if(isNullOrUndefined(this.props.back)) 
-		{
-			back = (
-				<CardBackCover
-					displayBack={displayBack}
-					style={{transform: `rotateY(${180 + this.state.currentRotation}deg)`}}>
-				</CardBackCover>
-			);
-		}
-		else 
-		{
-			back = (
-				<CardBack
-					displayBack={displayBack}
-					style={{transform: `rotateY(${180 + this.state.currentRotation}deg)`}}>
-					{this.props.back}
-				</CardBack>
-			);
-		}
+		let back = this.getBack(displayBack);
+		let front = this.getFront(displayFront);
+		
 		return (
 			<Card
+				onMouseEnter={this.onMouseEnterEventHandler}
+				onMouseLeave={this.onMouseLeaveEventHandler}
 				displayStyle={this.props.cardStyle.displayStyle}
 				perspectiveStyle={this.props.cardStyle.perspectiveStyle}>
-				<CardFront
-					displayFront={displayFront}
-					style={{transform: `rotateY(${this.state.currentRotation}deg)`}}>
-					{this.props.front}
-				</CardFront>
+				{front}
 				{back}
 			</Card>
 		);
 	}
 
-	delayedRotateCard(fromAngle: number, toAngle: number, direction: number, durationMiliseconds: number, delayMiliseconds: number) 
+	onMouseEnterEventHandler = () => 
 	{
-		let rotationTimeout;
-		if (!rotationTimeout)
+		if(!isNullOrUndefined(this.props.hoverAnimation)) 
 		{
-			rotationTimeout = setTimeout(() =>
+			console.log(this.props.hoverAnimation);
+			if(this.props.hoverAnimation instanceof CardRotationAnimation) 
 			{
-				this.setState({currentRotation: fromAngle});
-				rotationTimeout = null;
-				this.rotateCard(toAngle, direction, durationMiliseconds);
-			}, delayMiliseconds);
+				console.log("here");
+				this.delayedRotateCard(this.props.hoverAnimation);
+			}
 		}
 	}
 
-	rotateCard(toAngle: number, direction: number, durationMiliseconds: number)
+	onMouseLeaveEventHandler = () => 
+	{
+		if(!isNullOrUndefined(this.props.hoverAnimation)) 
+		{
+			if(this.props.hoverAnimation instanceof CardRotationAnimation) 
+			{
+				console.log("leave");
+				window.clearTimeout(this.state.rotationTimeoutHandlerID);
+				window.clearInterval(this.state.rotationAnimationHandlerID);
+				this.setState({currentRotation: this.props.hoverAnimation.rotationFrom});
+			}
+		}
+	}
+
+	delayedRotateCard = (rotationAnimation: CardRotationAnimation) =>
+	{
+		if(!isNullOrUndefined(this.state.rotationTimeoutHandlerID)) 
+		{
+			window.clearTimeout(this.state.rotationTimeoutHandlerID);
+		}
+		if(!isNullOrUndefined(this.state.rotationAnimationHandlerID)) 
+		{
+			window.clearInterval(this.state.rotationAnimationHandlerID);
+		}
+
+		let handlerID = window.setTimeout(() =>
+		{
+			this.setState({
+				currentRotation: rotationAnimation.rotationFrom,
+				rotationTimeoutHandlerID: null
+			});
+			this.rotateCard(rotationAnimation.rotationTo, rotationAnimation.rotationDirection, rotationAnimation.rotationDuration);
+		}, rotationAnimation.rotationDelay);
+		this.setState({rotationTimeoutHandlerID: handlerID});
+	}
+
+	rotateCard = (toAngle: number, direction: number, durationMiliseconds: number) =>
 	{
 		let rotationAngles = toAngle - this.state.currentRotation;
 		let rotationsPerMilisecond = rotationAngles / durationMiliseconds;
@@ -194,7 +279,8 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 			if(direction===1 && this.state.currentRotation>=toAngle) 
 			{
 				this.setState({currentRotation: toAngle});
-				clearInterval(handlerID);
+				clearInterval(this.state.rotationAnimationHandlerID);
+				this.setState({rotationAnimationHandlerID: null});
 			}
 			else if(this.state.currentRotation !== toAngle)
 			{
@@ -205,13 +291,27 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 				this.setState({currentRotation: nextRotation});
 			}
 		}, 15);
+		this.setState({rotationAnimationHandlerID: handlerID});
+	}
+
+	slideCard = () => 
+	{
+		
 	}
 
 	componentDidUpdate(prevProps: CardComponentProps) 
 	{
 		if(prevProps.rotationAnimation !== this.props.rotationAnimation && !isNullOrUndefined(this.props.rotationAnimation)) 
 		{
-			this.delayedRotateCard(this.props.rotationAnimation.rotationFrom, this.props.rotationAnimation.rotationTo, 1, this.props.rotationAnimation.rotationDuration, this.props.rotationAnimation.rotationDelay);
+			this.delayedRotateCard(this.props.rotationAnimation);
+		}
+	}
+
+	componentDidMount() 
+	{
+		if(!isNullOrUndefined(this.props.rotationAnimation)) 
+		{
+			this.delayedRotateCard(this.props.rotationAnimation);
 		}
 	}
 }

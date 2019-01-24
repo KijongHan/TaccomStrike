@@ -58,6 +58,7 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 			let cardFlipAnimation = new CardRotationAnimation();
 			cardFlipAnimation.rotationFrom = 180;
 			cardFlipAnimation.rotationTo = 359.99;
+			cardFlipAnimation.rotationDirection = 1;
 			cardFlipAnimation.rotationDelay = (i/3)*1000;
 			cardFlipAnimation.rotationDuration = 500;
 
@@ -91,11 +92,19 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 				</TitleCharacter>);
 
 			let cardFlipAnimation = this.state.cardFlipAnimations[index];
+			let hoverAnimation = new CardRotationAnimation({
+				rotationFrom: 0,
+				rotationTo: 359.99,
+				rotationDirection: 1,
+				rotationDelay: 0,
+				rotationDuration: 500
+			});
 			return <CardComponent
 				key = {index}
 				front={titlePanel}
 				cardStyle={this.state.cardStyle}
-				rotationAnimation={cardFlipAnimation}/>;
+				rotationAnimation={cardFlipAnimation}
+				hoverAnimation={hoverAnimation}/>;
 		})
 
 		return (

@@ -106,7 +106,8 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                         gameBoardSeatComponentStyle={gameBoardSeatComponentStyle}>
                     </GameBoardComponent>
                     <GameActionComponent
-                        gameActionComponentStyle={gameActionComponentStyle}>
+                        gameActionComponentStyle={gameActionComponentStyle}
+                        submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}>
                     </GameActionComponent>
                 </GameBoardPanel>
                 <GameUserHandPanel>
@@ -114,5 +115,10 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                 </GameUserHandPanel>
             </GamePage>
         );
+    }
+
+    submitClaimButtonClickHandler = () => 
+    {
+        
     }
 }
