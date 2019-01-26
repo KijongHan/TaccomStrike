@@ -11,6 +11,7 @@ import { PerspectiveStyle } from "../../styles/perspectivestyle";
 import { GameCardComponent, GameCardComponentStyle } from "../game/gamecard";
 import { GameBoardComponent, GameBoardComponentStyle, GameBoardSeatComponentStyle } from "../game/gameboard";
 import { GameActionComponent, GameActionComponentStyle } from "../game/gameaction";
+import { stat } from "fs";
 
 const GamePage = styled.div`
     position: fixed;
@@ -33,7 +34,11 @@ const GameUserHandPanel = styled.div`
     position: relative;
 `;
 
-export class GamePageComponentState extends BasePageComponentState {}
+export class GamePageComponentState extends BasePageComponentState 
+{
+    selectedCards: GetGameCard[];
+    selectedClaimRank: string;
+}
 
 export interface GamePageComponentProps extends BasePageComponentProps 
 {
@@ -47,7 +52,9 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
         super(props);
         this.state = 
         {
-            pageStyle: new GamePageStyle().large()
+            pageStyle: new GamePageStyle().large(),
+            selectedCards: [],
+            selectedClaimRank: null
         }
     }
 
@@ -83,8 +90,17 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
             gameCardStyle.cardComponentStyle = cardStyle;
             gameCardStyle.cardHoverAnimation = hoverAnimation;
             
+            let selected = false;
+            if(this.state.selectedCards.some((selectedCard: GetGameCard, index: number) => {
+                return value.rank===selectedCard.rank && value.suit===selectedCard.suit;
+            })) 
+            {
+                selected = true;
+            }
             return (
                 <GameCardComponent
+                    gameCardClickHandler={this.gameCardClickHandler}
+                    isSelected={selected}
                     key={value.rank+value.suit}
                     gameCard={value}
                     gameCardComponentStyle={gameCardStyle}>
@@ -96,8 +112,8 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
         gameBoardComponentStyle.displayStyle.widthPercentage = 12;
         gameBoardComponentStyle.displayStyle.heightPercentage = 30;
         let gameBoardSeatComponentStyle = new GameBoardSeatComponentStyle();
-        gameBoardSeatComponentStyle.displayStyle.widthPercentage = 80;
-        gameBoardSeatComponentStyle.displayStyle.heightPercentage = 70;
+        gameBoardSeatComponentStyle.displayStyle.widthPercentage = 90;
+        gameBoardSeatComponentStyle.displayStyle.heightPercentage = 75;
 
         let gameActionComponentStyle = new GameActionComponentStyle();
         gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.fixed;
@@ -115,6 +131,8 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                         gameBoardSeatComponentStyle={gameBoardSeatComponentStyle}>
                     </GameBoardComponent>
                     <GameActionComponent
+                        loggedInUser={this.props.loggedInUser}
+                        gameState={this.props.gameState}
                         gameActionComponentStyle={gameActionComponentStyle}
                         submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}>
                     </GameActionComponent>
@@ -124,6 +142,31 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                 </GameUserHandPanel>
             </GamePage>
         );
+    }
+
+    gameCardClickHandler = (gameCard: GetGameCard) => 
+    {
+        for(let i = 0; i < this.state.selectedCards.length; i++) 
+        {
+            let value = this.state.selectedCards[i];
+            if(gameCard.rank===value.rank && gameCard.suit===value.suit) 
+            {
+                this.setState((state: GamePageComponentState) => {
+                    let newSelectedCards = state.selectedCards.map(a => Object.assign({}, a));
+                    newSelectedCards.splice(i, 1);
+                    return {selectedCards: newSelectedCards};
+                });
+                return;
+            }
+        }
+        if(this.state.selectedCards.length===4) 
+        {
+            return;
+        }
+
+        this.setState((state: GamePageComponentState) => {
+            return {selectedCards: state.selectedCards.concat(gameCard)}
+        });
     }
 
     submitClaimButtonClickHandler = () => 

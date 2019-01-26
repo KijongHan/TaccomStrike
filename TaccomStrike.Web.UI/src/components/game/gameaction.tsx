@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { CardComponentStyle, CardComponent } from "../general/card";
 import { DisplayStyle } from "../../styles/displaystyle";
 import { ButtonComponent, ButtonComponentStyle } from "../general/button";
+import { GetUser } from "../../models/rest/getuser";
+import { GetGameState } from "../../models/rest/getgamestate";
+import { ComboButtonComponent, ComboButtonComponentStyle, ComboButtonItem } from "../general/combobutton";
 
 const GameActionElement = styled.div`
     width: 100%;
@@ -12,6 +15,9 @@ const GameActionElement = styled.div`
 
 export class GameActionComponentProps 
 {
+    loggedInUser: GetUser;
+    gameState: GetGameState;
+
     gameActionComponentStyle: GameActionComponentStyle;
 
     submitClaimButtonClickHandler: () => void;
@@ -40,16 +46,43 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
     {
         let style = new ButtonComponentStyle();
         style.displayStyle.widthPercentage = 80;
-        style.displayStyle.heightPixels = 50;
-        let gameActionComponent = (
-            <GameActionElement>
-                <ButtonComponent
-                    buttonText="Submit Claim"
-                    buttonComponentStyle={style}
-                    buttonClickHandler={this.props.submitClaimButtonClickHandler}>
-                </ButtonComponent>
-            </GameActionElement>
-        );
+        style.displayStyle.heightPercentage = 10;
+
+        let comboButtonComponentStyle = new ComboButtonComponentStyle(new DisplayStyle({
+            widthPercentage: 80,
+            heightPercentage: 10
+        }));
+        let comboButtons = [
+            new ComboButtonItem(this.props.gameState.lowerBoundRank, null),
+            new ComboButtonItem(this.props.gameState.middleBoundRank, null),
+            new ComboButtonItem(this.props.gameState.upperBoundRank, null)
+        ]
+
+        let gameActionComponent: JSX.Element;
+        if(this.props.loggedInUser.userID===this.props.gameState.userTurn.user.userID) 
+        {
+            gameActionComponent = (
+                <GameActionElement>
+                    <ComboButtonComponent
+                        comboButtons={comboButtons}
+                        comboButtonComponentStyle={comboButtonComponentStyle}>
+                    </ComboButtonComponent>
+                    <ButtonComponent
+                        buttonText="Submit Claim"
+                        buttonComponentStyle={style}
+                        buttonClickHandler={this.props.submitClaimButtonClickHandler}>
+                    </ButtonComponent>
+                </GameActionElement>
+            );
+        }
+        else 
+        {
+            gameActionComponent = (
+                <GameActionElement>
+                </GameActionElement>
+            );
+        }
+        
         return (
 			<CardComponent
 				front={gameActionComponent}

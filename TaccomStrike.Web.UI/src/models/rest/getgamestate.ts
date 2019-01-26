@@ -8,4 +8,8 @@ export class GetGameState
     hand: GetGameCard[];
     players: GetGameUser[];
     claims: GetGameClaim[];
+
+    lowerBoundRank: string;
+    middleBoundRank: string;
+    upperBoundRank: string;
 }

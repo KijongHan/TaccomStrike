@@ -12,6 +12,10 @@ namespace TaccomStrike.Game.CallCheat
 
 		public List<GameClaim> Claims { get; set; }
 
+		public string LowerBoundRank { get; set; }
+		public string UpperBoundRank { get; set; }
+		public string MiddleBoundRank { get; set; }
+
 		public GameState()
 		{
 			Players = new List<GameUser>();

@@ -21,6 +21,19 @@ namespace TaccomStrike.Game.CallCheat.Services
 			gameState.Claims = CurrentClaims;
 			gameState.Players = GameUsers;
 
+			if(CurrentClaims.Count > 0)
+			{
+				var recentClaimIndex = GameCard
+					.Ranks
+					.FindIndex((item) =>
+					{
+						return item == CurrentClaims.Last().Claims[0].Rank;
+					});
+
+				gameState.LowerBoundRank = GetLowerBoundRank(recentClaimIndex);
+				gameState.UpperBoundRank = GetUpperBoundRank(recentClaimIndex);
+				gameState.MiddleBoundRank = GetMiddleBoundRank(recentClaimIndex);
+			}
 			return gameState;
 		}
 
@@ -85,12 +98,6 @@ namespace TaccomStrike.Game.CallCheat.Services
 
 			if (CurrentClaims.Count > 0)
 			{
-				var referenceCardIndex = GameCard
-					.Ranks
-					.FindIndex((item) =>
-					{
-						return item == referenceCard.Rank;
-					});
 				var recentClaimIndex = GameCard
 					.Ranks
 					.FindIndex((item) =>
@@ -98,20 +105,14 @@ namespace TaccomStrike.Game.CallCheat.Services
 						return item == CurrentClaims.Last().Claims[0].Rank;
 					});
 
-				var lowerBound = recentClaimIndex - 1;
-				if (lowerBound < 0)
-				{
-					lowerBound = GameCard.Ranks.Count - 1;
-				}
-				var upperBound = recentClaimIndex + 1;
-				if (upperBound >= GameCard.Ranks.Count)
-				{
-					upperBound = 0;
-				}
+				var lowerBoundRank = GetLowerBoundRank(recentClaimIndex);
+				var upperBoundRank = GetUpperBoundRank(recentClaimIndex);
+				var middleBoundRank = GetMiddleBoundRank(recentClaimIndex);
+
 				if (
-					referenceCard.Rank != GameCard.Ranks[lowerBound] &&
-					referenceCard.Rank != GameCard.Ranks[recentClaimIndex] &&
-					referenceCard.Rank != GameCard.Ranks[upperBound])
+					referenceCard.Rank != lowerBoundRank &&
+					referenceCard.Rank != middleBoundRank &&
+					referenceCard.Rank != upperBoundRank)
 				{
 					return false;
 				}
@@ -125,6 +126,31 @@ namespace TaccomStrike.Game.CallCheat.Services
 				gameUser.Hand.Remove(card);
 			}
 			return true;
+		}
+
+		public string GetLowerBoundRank(int recentClaimIndex)
+		{
+			var lowerBound = recentClaimIndex - 1;
+			if (lowerBound < 0)
+			{
+				lowerBound = GameCard.Ranks.Count - 1;
+			}
+			return GameCard.Ranks[lowerBound];
+		}
+
+		public string GetUpperBoundRank(int recentClaimIndex)
+		{
+			var upperBound = recentClaimIndex + 1;
+			if (upperBound >= GameCard.Ranks.Count)
+			{
+				upperBound = 0;
+			}
+			return GameCard.Ranks[upperBound];
+		}
+
+		public string GetMiddleBoundRank(int recentClaimIndex)
+		{
+			return GameCard.Ranks[recentClaimIndex];
 		}
 
 		public bool IsVictory()

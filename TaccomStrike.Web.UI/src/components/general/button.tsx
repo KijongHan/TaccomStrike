@@ -2,6 +2,11 @@
 import styled from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
 
+const ButtonText = styled.p`
+	margin: auto;
+	text-align: center; 
+`;
+
 const ButtonElement = styled.div`
 	font-weight: bold;
 	text-align: center;
@@ -20,6 +25,7 @@ const ButtonElement = styled.div`
 	position: ${(p: ButtonComponentStyle) => p.displayStyle.getPositionString()};
 
 	bottom: ${(p: ButtonComponentStyle) => p.displayStyle.getBottomString()};
+	display: flex;
 
 	&:hover {
 		background-color: rgba(255, 255, 255, 0.25);
@@ -59,7 +65,9 @@ export class ButtonComponent extends React.Component<ButtonComponentProps, Butto
 			<ButtonElement
 				displayStyle={this.props.buttonComponentStyle.displayStyle}
 				onClick={this.props.buttonClickHandler}>
-				{this.props.buttonText}
+				<ButtonText>
+					{this.props.buttonText}
+				</ButtonText>
 			</ButtonElement>
 		); 
 	}

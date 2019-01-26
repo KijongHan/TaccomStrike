@@ -32,6 +32,7 @@ export class DisplayStyle
 
 	rightPixels?: number;
 	topPixels?: number;
+	topPercentage?: number;
 	leftPixels?: number;
 	bottomPixels?: number;
 	bottomPercentage?: number;
@@ -208,13 +209,14 @@ export class DisplayStyle
 
 	getTopString = (): string => 
 	{
-		if (isNullOrUndefined(this.topPixels))
-		{
-			return 'auto';
-		}
-		else
+		if(!isNullOrUndefined(this.topPixels))
 		{
 			return `${this.topPixels}px`;
 		}
+		if(!isNullOrUndefined(this.topPercentage))
+		{
+			return `${this.topPercentage}%`;
+		}
+		return 'auto';
 	}
 }

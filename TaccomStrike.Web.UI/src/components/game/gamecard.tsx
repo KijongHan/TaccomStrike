@@ -29,6 +29,8 @@ export class GameCardComponentProps
 {
     gameCard: GetGameCard;
     gameCardComponentStyle: GameCardComponentStyle;
+    gameCardClickHandler: (gameCard: GetGameCard) => void;
+    isSelected: boolean;
 }
 
 export class GameCardComponentState {}
@@ -140,17 +142,31 @@ export class GameCardComponent extends React.Component<GameCardComponentProps, G
             );
         }
         let gameCardFace = (
-            <GameCardFace>
+            <GameCardFace
+                onClick={this.gameCardClickHandler}>
                 {gameCardIcon1}
                 {gameCardIcon2}
             </GameCardFace>
         );
+
+        let cardStyle = this.props.gameCardComponentStyle.cardComponentStyle
+        let hoverAnimation = this.props.gameCardComponentStyle.cardHoverAnimation
+        if(this.props.isSelected) 
+        {
+            cardStyle.displayStyle.topPercentage = -10;
+            hoverAnimation = null;
+        }
         return (
             <CardComponent
                 front={gameCardFace}
-                cardStyle={this.props.gameCardComponentStyle.cardComponentStyle}
-                hoverAnimation={this.props.gameCardComponentStyle.cardHoverAnimation}>
+                cardStyle={cardStyle}
+                hoverAnimation={hoverAnimation}>
             </CardComponent>
         );
+    }
+
+    gameCardClickHandler = () => 
+    {
+        this.props.gameCardClickHandler(this.props.gameCard);
     }
 }

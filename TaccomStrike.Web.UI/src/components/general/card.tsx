@@ -334,14 +334,12 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 		let handlerID = window.setInterval(() => {
 			if(this.state.currentTopOffset<=to)
 			{
-				console.log("End here " + this.state.currentTopOffset);
 				this.setState({currentTopOffset: to});
 				clearInterval(this.state.animationHandlerID);
 				this.setState({animationHandlerID: null});
 			}
 			else if(this.state.currentTopOffset !== to)
 			{
-				console.log("How many times " + this.state.currentTopOffset);
 				let nextDistance = this.state.currentTopOffset + distancePerInterval;
 				this.setState({currentTopOffset: nextDistance});
 			}
