@@ -6,6 +6,7 @@ import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card
 import { debug } from "util";
 import { LabelledInputComponent, LabelledInputComponentStyle } from "./labelledinput";
 import { PostUserLogin } from "../../models/rest/postuserlogin";
+import { ComboButtonComponent, ComboButtonItem, ComboButtonComponentStyle } from "./combobutton";
 
 export class LoginComponentProps
 {
@@ -25,8 +26,7 @@ export class LoginComponentStyle
 {
 	cardComponentStyle: CardComponentStyle;
 
-	userButtonComponentStyle: ButtonComponentStyle;
-	guestButtonComponentStyle: ButtonComponentStyle;
+	userGuestComboButtonComponentStyle: ComboButtonComponentStyle;
 	loginButtonComponentStyle: ButtonComponentStyle;
 
 	usernameLabelledInputStyle: LabelledInputComponentStyle;
@@ -54,18 +54,16 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 
 	render()
 	{
+		let comboButtons = [
+			new ComboButtonItem("User", true, this.userButtonClickHandler),
+			new ComboButtonItem("Guest", false, this.guestButtonClickHandler)
+		];
 		let loginComponent = (
 			<LoginComponentElement>
-				<ButtonsPanel>
-					<ButtonComponent
-						buttonText="User"
-						buttonClickHandler={this.userButtonClickHandler}
-						buttonComponentStyle={this.props.loginComponentStyle.userButtonComponentStyle} />
-					<ButtonComponent
-						buttonText="Guest"
-						buttonClickHandler={this.guestButtonClickHandler}
-						buttonComponentStyle={this.props.loginComponentStyle.guestButtonComponentStyle} />
-				</ButtonsPanel>
+				<ComboButtonComponent
+					comboButtons={comboButtons}
+					comboButtonComponentStyle={this.props.loginComponentStyle.userGuestComboButtonComponentStyle}>
+				</ComboButtonComponent>
 				<LabelledInputComponent
 					inputValue={this.props.userLogin.username}
 					labelValue={"Username"}

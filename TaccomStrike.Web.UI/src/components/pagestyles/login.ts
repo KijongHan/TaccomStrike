@@ -5,6 +5,7 @@ import { LoginComponentStyle } from "../general/login";
 import { RegisterComponentStyle } from "../general/register";
 import { DisplayStyle, Position } from "../../styles/displaystyle";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
+import { ComboButtonComponentStyle } from "../general/combobutton";
 
 export class LoginPageStyle extends BasePageStyle
 {
@@ -50,26 +51,14 @@ export class LoginPageStyle extends BasePageStyle
                         perspective: 1200
                     })
                 },
-        
-                userButtonComponentStyle:
-                {
-                    displayStyle: new DisplayStyle({
-                        floatLeft: true,
-                        widthPercentage: 30,
+                
+                userGuestComboButtonComponentStyle: new ComboButtonComponentStyle(
+                    new DisplayStyle({
+                        widthPercentage: 60,
                         heightPixels: 50,
                         marginLeftPercentage: 5
                     })
-                },
-        
-                guestButtonComponentStyle:
-                {
-                    displayStyle: new DisplayStyle({
-                        floatLeft: true,
-                        widthPercentage: 30,
-                        heightPixels: 50,
-                        marginLeftPercentage: 5
-                    })
-                },
+                ),
         
                 loginButtonComponentStyle:
                 {
@@ -201,25 +190,13 @@ export class LoginPageStyle extends BasePageStyle
                     })
                 },
         
-                userButtonComponentStyle:
-                {
-                    displayStyle: new DisplayStyle({
-                        floatLeft: true,
-                        marginLeftPercentage: 5,
-                        widthPercentage: 45,
-                        heightPixels: 50
+                userGuestComboButtonComponentStyle: new ComboButtonComponentStyle(
+                    new DisplayStyle({
+                        widthPercentage: 60,
+                        heightPixels: 50,
+                        marginLeftPercentage: 5
                     })
-                },
-        
-                guestButtonComponentStyle:
-                {
-                    displayStyle: new DisplayStyle({
-                        floatLeft: true,
-                        marginLeftPercentage: 2.5,
-                        widthPercentage: 45,
-                        heightPixels: 50
-                    })
-                },
+                ),
         
                 loginButtonComponentStyle:
                 {
@@ -349,25 +326,13 @@ export class LoginPageStyle extends BasePageStyle
                     })
                 },
         
-                userButtonComponentStyle:
-                {
-                    displayStyle: new DisplayStyle({
-                        floatLeft: true,
-                        marginLeftPercentage: 5,
-                        widthPercentage: 45,
-                        heightPixels: 50
+                userGuestComboButtonComponentStyle: new ComboButtonComponentStyle(
+                    new DisplayStyle({
+                        widthPercentage: 60,
+                        heightPixels: 50,
+                        marginLeftPercentage: 5
                     })
-                },
-        
-                guestButtonComponentStyle:
-                {
-                    displayStyle: new DisplayStyle({
-                        floatLeft: true,
-                        marginLeftPercentage: 2.5,
-                        widthPercentage: 45,
-                        heightPixels: 50
-                    })
-                },
+                ),
         
                 loginButtonComponentStyle:
                 {
@@ -497,23 +462,13 @@ export class LoginPageStyle extends BasePageStyle
                     })
                 },
         
-                userButtonComponentStyle:
-                {
-                    displayStyle: new DisplayStyle({
-                        floatLeft: false,
-                        widthPercentage: 80,
-                        heightPixels: 50
+                userGuestComboButtonComponentStyle: new ComboButtonComponentStyle(
+                    new DisplayStyle({
+                        widthPercentage: 60,
+                        heightPixels: 50,
+                        marginLeftPercentage: 5
                     })
-                },
-        
-                guestButtonComponentStyle:
-                {
-                    displayStyle: new DisplayStyle({
-                        floatLeft: false,
-                        widthPercentage: 80,
-                        heightPixels: 50
-                    })
-                },
+                ),
         
                 loginButtonComponentStyle:
                 {

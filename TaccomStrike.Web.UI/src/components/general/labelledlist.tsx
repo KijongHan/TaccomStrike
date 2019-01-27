@@ -71,7 +71,7 @@ export class LabelledListComponent extends React.Component<LabelledListComponent
 	{
 		let listItemOptions = this.props
 			.listItems
-			.map((value: ListItem, index: number) => {
+			.map((value: ListItem) => {
 				return (
 					<option
 						key={value.itemValue}
@@ -94,5 +94,13 @@ export class LabelledListComponent extends React.Component<LabelledListComponent
 	listOnChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => 
 	{
 		this.props.listOnChangeHandler(event.target.value);
+	}
+
+	componentDidMount() 
+	{
+		if(!isNullOrUndefined(this.props.listItems) && this.props.listItems.length > 0) 
+		{
+			this.props.listOnChangeHandler(this.props.listItems[0].itemValue);
+		}
 	}
 }

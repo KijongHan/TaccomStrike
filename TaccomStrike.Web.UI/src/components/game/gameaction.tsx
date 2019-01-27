@@ -85,9 +85,9 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
                     heightPercentage: 10
                 }));
                 let comboButtons = [
-                    new ComboButtonItem(this.props.gameState.lowerBoundRank, null),
-                    new ComboButtonItem(this.props.gameState.middleBoundRank, null),
-                    new ComboButtonItem(this.props.gameState.upperBoundRank, null)
+                    new ComboButtonItem(this.props.gameState.lowerBoundRank, false, this.lowerBoundButtonClickHandler),
+                    new ComboButtonItem(this.props.gameState.middleBoundRank, false, this.middleBoundButtonClickHandler),
+                    new ComboButtonItem(this.props.gameState.upperBoundRank, false, this.upperBoundButtonClickHandler)
                 ]
                 claimOptions=(
                     <ComboButtonComponent
@@ -123,5 +123,20 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
 				rotationAnimation={null}>
 			</CardComponent>
 		);
+    }
+
+    lowerBoundButtonClickHandler = () => 
+    {
+        this.props.claimRankSelectedOnChangeHandler(this.props.gameState.lowerBoundRank);
+    }
+
+    middleBoundButtonClickHandler = () => 
+    {
+        this.props.claimRankSelectedOnChangeHandler(this.props.gameState.middleBoundRank);
+    }
+
+    upperBoundButtonClickHandler = () => 
+    {
+        this.props.claimRankSelectedOnChangeHandler(this.props.gameState.upperBoundRank);
     }
 }

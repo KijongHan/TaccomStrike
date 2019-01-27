@@ -182,7 +182,6 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
     {
         if(isNullOrUndefined(this.state.selectedClaimRank) || this.state.selectedCards.length===0) 
         {
-            console.log("A");
             return;
         }
 
