@@ -17,6 +17,10 @@ namespace TaccomStrike.Library.Data.ApiEntities
 
 		public List<GetGameClaim> Claims { get; set; }
 
+		public string LowerBoundRank { get; set; }
+		public string UpperBoundRank { get; set; }
+		public string MiddleBoundRank { get; set; }
+
 		public GetGameState()
 		{
 			Hand = new List<GetGameCard>();
@@ -30,6 +34,10 @@ namespace TaccomStrike.Library.Data.ApiEntities
 			Hand = gameState.User.Hand.ApiGetGameCard();
 			Players = gameState.Players.ApiGetGameUsers();
 			Claims = gameState.Claims.ApiGetGameClaims();
+
+			LowerBoundRank = gameState.LowerBoundRank;
+			UpperBoundRank = gameState.UpperBoundRank;
+			MiddleBoundRank = gameState.MiddleBoundRank;
 		}
 	}
 }

@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
+import { isNullOrUndefined } from "util";
 
 const LabelledInputComponentElement = styled.div`
 	width: ${(p: LabelledInputComponentStyle) => p.displayStyle.getWidthString()};
@@ -44,6 +45,11 @@ export class LabelledInputComponentState {}
 export class LabelledInputComponentStyle
 {
 	displayStyle: DisplayStyle;
+
+	constructor(displayStyle?: DisplayStyle) 
+	{
+		isNullOrUndefined(displayStyle) ? this.displayStyle=new DisplayStyle : this.displayStyle=displayStyle;
+	}
 }
 
 export class LabelledInputComponent extends React.Component<LabelledInputComponentProps, LabelledInputComponentState>

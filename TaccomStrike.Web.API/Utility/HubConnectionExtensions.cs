@@ -46,7 +46,7 @@ namespace TaccomStrike.Web.API
 
 		public static Task GameClaim(this IClientProxy hubConnection, GameClaim apiObject)
 		{
-			return hubConnection.SendAsync(GameHubApiKeys.GameClaim, apiObject);
+			return hubConnection.SendAsync(GameHubApiKeys.GameSubmitClaim, apiObject);
 		}
 
 		public static Task GameEndTurn(this IClientProxy hubConnection, GameEndTurn apiObject)

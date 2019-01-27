@@ -2,7 +2,7 @@ import { BasePageComponent, BasePageComponentState, BasePageComponentProps } fro
 import * as React from "react";
 import { GamePageStyle } from "../pagestyles/game";
 import { GetGameState } from "../../models/rest/getgamestate";
-import styled from "styled-components";
+import styled, { consolidateStreamedStyles } from "styled-components";
 import { GetGameCard } from "../../models/rest/getgamecard";
 import { CardComponent, CardSlideAnimation } from "../general/card";
 import { DisplayStyle, Position } from "../../styles/displaystyle";
@@ -12,6 +12,7 @@ import { GameCardComponent, GameCardComponentStyle } from "../game/gamecard";
 import { GameBoardComponent, GameBoardComponentStyle, GameBoardSeatComponentStyle } from "../game/gameboard";
 import { GameActionComponent, GameActionComponentStyle } from "../game/gameaction";
 import { stat } from "fs";
+import { isNullOrUndefined } from "util";
 
 const GamePage = styled.div`
     position: fixed;
@@ -43,6 +44,8 @@ export class GamePageComponentState extends BasePageComponentState
 export interface GamePageComponentProps extends BasePageComponentProps 
 {
     gameState: GetGameState;
+
+    submitClaimButtonClickHandler: (claims: GetGameCard[], actual: GetGameCard[]) => void;
 }
 
 export class GamePageComponent extends BasePageComponent<GamePageComponentProps, GamePageComponentState> 
@@ -134,7 +137,8 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                         loggedInUser={this.props.loggedInUser}
                         gameState={this.props.gameState}
                         gameActionComponentStyle={gameActionComponentStyle}
-                        submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}>
+                        submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}
+                        claimRankSelectedOnChangeHandler={this.claimRankSelectedOnChangeHandler}>
                     </GameActionComponent>
                 </GameBoardPanel>
                 <GameUserHandPanel>
@@ -168,9 +172,27 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
             return {selectedCards: state.selectedCards.concat(gameCard)}
         });
     }
+    
+    claimRankSelectedOnChangeHandler = (value: string) => 
+    {
+        this.setState({selectedClaimRank: value});
+    }
 
     submitClaimButtonClickHandler = () => 
     {
-        
+        if(isNullOrUndefined(this.state.selectedClaimRank) || this.state.selectedCards.length===0) 
+        {
+            console.log("A");
+            return;
+        }
+
+        let claims = this.state.selectedCards.map((value: GetGameCard) => {
+            let claim = new GetGameCard();
+            claim.rank = this.state.selectedClaimRank;
+            claim.suit = value.suit;
+            return claim;
+        });
+        let actual = this.state.selectedCards;
+        this.props.submitClaimButtonClickHandler(claims, actual);
     }
 }

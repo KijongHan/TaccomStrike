@@ -8,7 +8,7 @@ namespace TaccomStrike.Web.API.HubApi
 	public static class GameHubApiKeys
 	{
 		public static string GameCallCheat = "GameCallCheat";
-		public static string GameClaim = "GameClaim";
+		public static string GameSubmitClaim = "GameSubmitClaim";
 		public static string GameEndTurn = "GameEndTurn";
 		public static string GameLobbyStartGame = "GameLobbyStartGame";
 		public static string GameLobbyLeaveGame = "GameLobbyLeaveGame";

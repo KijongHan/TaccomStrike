@@ -2,8 +2,10 @@ import * as React from "react";
 
 import styled from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
+import { isNullOrUndefined } from "util";
 
 const LabelledListComponentElement = styled.div`
+	height: ${(p: LabelledListComponentStyle) => p.displayStyle.getHeightString()}; 
 	width: ${(p: LabelledListComponentStyle) => p.displayStyle.getWidthString()};
 	margin: ${(p: LabelledListComponentStyle) => p.displayStyle.getMarginString()};
 `;
@@ -16,7 +18,8 @@ const LabelComponentElement = styled.div`
 `;
 
 const ListComponentElement = styled.select`
-	width: 80%;
+	height: 100%;
+	width: 100%;
     background-color: rgba(255, 255, 255, 0.5);
     border-style: solid;
     border-width: 2px;
@@ -24,13 +27,13 @@ const ListComponentElement = styled.select`
     font-size: 1.2em;
 `;
 
-export class LabelledInputComponentProps
+export class LabelledListComponentProps
 {
 	listItems: ListItem[];
 	labelValue: string;
-	componentStyle: LabelledListComponentStyle;
+	labelledListComponentStyle: LabelledListComponentStyle;
 
-	listOnChangeHandler: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+	listOnChangeHandler: (value: string) => void;
 }
 
 export class LabelledListComponentState {}
@@ -38,17 +41,28 @@ export class LabelledListComponentState {}
 export class LabelledListComponentStyle
 {
 	displayStyle: DisplayStyle;
+
+	constructor(displayStyle?: DisplayStyle) 
+	{
+		isNullOrUndefined(displayStyle) ? this.displayStyle=new DisplayStyle : this.displayStyle=displayStyle;
+	}
 }
 
 export class ListItem 
 {
 	displayName: string;
 	itemValue: string;
+
+	constructor(displayName: string, itemValue: string) 
+	{
+		this.displayName=displayName;
+		this.itemValue=itemValue;
+	}
 }
 
-export class LabelledListComponent extends React.Component<LabelledInputComponentProps, LabelledListComponentState>
+export class LabelledListComponent extends React.Component<LabelledListComponentProps, LabelledListComponentState>
 {
-	constructor(props: LabelledInputComponentProps)
+	constructor(props: LabelledListComponentProps)
 	{
 		super(props);
 	}
@@ -68,13 +82,17 @@ export class LabelledListComponent extends React.Component<LabelledInputComponen
 			});
 		return (
 			<LabelledListComponentElement
-				displayStyle={this.props.componentStyle.displayStyle}>
-				<LabelComponentElement>{this.props.labelValue}</LabelComponentElement>
+				displayStyle={this.props.labelledListComponentStyle.displayStyle}>
 				<ListComponentElement
-					onChange={this.props.listOnChangeHandler}>
+					onChange={this.listOnChangeHandler}>
                     {listItemOptions}
                 </ListComponentElement>
 			</LabelledListComponentElement>
 		);
+	}
+
+	listOnChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => 
+	{
+		this.props.listOnChangeHandler(event.target.value);
 	}
 }

@@ -12,6 +12,9 @@ import { GameLobbyJoin } from "../../models/hub/gamelobbyjoin";
 import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
 import { CreateGameLobby } from "../../models/rest/creategamelobby";
 import { GameLobbiesService } from "../../services/rest/gamelobbies";
+import { GetGameClaim } from "../../models/rest/getgameclaim";
+import { GetGameCard } from "../../models/rest/getgamecard";
+import { GameClaim } from "../../models/hub/gameclaim";
 
 export interface PlayPageComponentProps extends BasePageComponentProps {}
 
@@ -51,6 +54,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                 GameConnectionsService.addGameLobbySendMessageHandler(this.gameLobbySendMessageHandler);
                 GameConnectionsService.addGameLobbyStartGameHandler(this.gameLobbyStartGameHandler);
                 GameConnectionsService.addGameLobbyLeaveGameHandler(this.gameLobbyLeaveGameHandler);
+                GameConnectionsService.addGameClaimHandler(this.gameClaimHandler);
             });
     }
 
@@ -90,7 +94,8 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     match={this.props.match}
                     
                     loggedInUser={this.props.loggedInUser}
-                    gameState={this.state.currentGameState}>
+                    gameState={this.state.currentGameState}
+                    submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}>
                 </GamePageComponent>
             );
         }
@@ -206,5 +211,15 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
     {
         let currentList = this.state.currentGameLobbyMessages;
         this.setState({currentGameLobbyMessages: currentList.concat(gameLobbySendMessage)});
+    }
+
+    submitClaimButtonClickHandler = (claims: GetGameCard[], actual: GetGameCard[]) =>
+    {
+        GameConnectionsService.gameSubmitClaim(this.state.currentGameLobby.gameLobbyID, claims, actual);
+    }
+
+    gameClaimHandler = (gameClaim: GameClaim) =>
+    {
+        this.setState({currentGameState: gameClaim.gameState});
     }
 }

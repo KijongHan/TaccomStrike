@@ -125,6 +125,8 @@ namespace TaccomStrike.Game.CallCheat.Services
 			{
 				gameUser.Hand.Remove(card);
 			}
+
+			EndTurn();
 			return true;
 		}
 

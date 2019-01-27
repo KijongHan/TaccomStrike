@@ -5,6 +5,8 @@ import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
 import { isNullOrUndefined } from "util";
 import { GameLobbyLeaveGame } from "../../models/hub/gamelobbyleave";
 import { GameLobbyStartGame } from "../../models/hub/gamelobbystart";
+import { GetGameCard } from "../../models/rest/getgamecard";
+import { GameClaim } from "../../models/hub/gameclaim";
 
 export class GameConnectionsService
 {
@@ -14,6 +16,8 @@ export class GameConnectionsService
     static gameLobbyLeaveGameHandlers: ((gameLobbyLeaveGame: GameLobbyLeaveGame) => void)[] = [];
     static gameLobbyJoinHandlers: ((gameLobbyJoin: GameLobbyJoin) => void)[] = [];
     static gameLobbySendMessageHandlers: ((gameLobbySendMessage: GameLobbySendMessage) => void)[] = [];
+
+    static gameClaimHandlers: ((gameClaim: GameClaim) => void)[] = [];
 
     static initializeGameConnections = () => 
     {
@@ -44,6 +48,8 @@ export class GameConnectionsService
         GameConnectionsService.gameLobbyLeaveGameHandlers = [];
         GameConnectionsService.gameLobbyJoinHandlers = [];
         GameConnectionsService.gameLobbySendMessageHandlers = [];
+
+        GameConnectionsService.gameClaimHandlers = [];
     }
 
     static initializeGameEventHandlers = () => 
@@ -77,6 +83,14 @@ export class GameConnectionsService
             GameConnectionsService
                 .gameLobbyLeaveGameHandlers
                 .forEach((handler: (gameLobbyLeaveGame: GameLobbyLeaveGame) => void, index: number) => {
+                    handler(apiObject);
+                });
+        });
+        GameConnectionsService.gameConnection.on("GameSubmitClaim", (apiObject: GameClaim) => {
+            console.log(apiObject);
+            GameConnectionsService
+                .gameClaimHandlers
+                .forEach((handler: (gameClaim: GameClaim) => void, index: number) => {
                     handler(apiObject);
                 });
         });
@@ -162,6 +176,20 @@ export class GameConnectionsService
             GameConnectionsService.gameLobbyLeaveGameHandlers.push(gameLobbyLeaveGameHandler);
     }
 
+    static addGameClaimHandler = (gameClaimHandler: (gameClaim: GameClaim) => void) => 
+    {
+        GameConnectionsService
+            .gameClaimHandlers
+            .forEach((handler: (gameClaim: GameClaim) => void, index: number) => {
+                if(handler === gameClaimHandler) 
+                {
+                    return;
+                }
+            });
+
+            GameConnectionsService.gameClaimHandlers.push(gameClaimHandler);
+    }
+
     static gameLobbyStartGame(gameLobbyId: number) 
     {
         GameConnectionsService.gameConnection.invoke("GameLobbyStartGame", gameLobbyId);
@@ -180,5 +208,10 @@ export class GameConnectionsService
     static gameLobbySendMessage(gameLobbyMessage: string, gameLobbyId: number)
     {
         GameConnectionsService.gameConnection.invoke("GameLobbySendMessage", gameLobbyMessage, gameLobbyId);
+    }
+
+    static gameSubmitClaim(gameLobbyId: number, claims: GetGameCard[], actual: GetGameCard[])
+    {
+        GameConnectionsService.gameConnection.invoke("GameSubmitClaim", gameLobbyId, claims, actual);
     }
 }

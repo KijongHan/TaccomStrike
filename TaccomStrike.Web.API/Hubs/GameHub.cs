@@ -11,6 +11,7 @@ using TaccomStrike.Library.Data.Model;
 using TaccomStrike.Web.API.HubApi;
 using TaccomStrike.Library.Data.ApiEntities;
 using TaccomStrike.Game.CallCheat;
+using TaccomStrike.Library.Data.Extensions;
 
 namespace TaccomStrike.Web.API.Hubs
 {
@@ -60,7 +61,7 @@ namespace TaccomStrike.Web.API.Hubs
 			});
 		}
 
-		public Task GameSubmitClaim(long gameLobbyID, List<GameCard> claims, List<GameCard> actual)
+		public Task GameSubmitClaim(long gameLobbyID, List<GetGameCard> claims, List<GetGameCard> actual)
 		{
 			return Task.Run(() => 
 			{
@@ -70,7 +71,7 @@ namespace TaccomStrike.Web.API.Hubs
 				{
 					if(gameLobby.GameLogicController.IsCurrentTurn(Context.User))
 					{
-						var successful = gameLobby.GameLogicController.SubmitClaim(Context.User, claims, actual);
+						var successful = gameLobby.GameLogicController.SubmitClaim(Context.User, claims.GetGameCards(), actual.GetGameCards());
 
 						if(successful)
 						{
