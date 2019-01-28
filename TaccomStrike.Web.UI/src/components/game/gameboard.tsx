@@ -4,9 +4,22 @@ import { DisplayStyle } from "../../styles/displaystyle";
 import { GetUser } from "../../models/rest/getuser";
 import { GetGameState } from "../../models/rest/getgamestate";
 import { GetGameUser } from "../../models/rest/getgameuser";
+import { isNullOrUndefined } from "util";
+import { GetGameClaim } from "../../models/rest/getgameclaim";
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 
 const PersonIcon = require("../../res/person.png");
 const CardHandIcon = require("../../res/card_hand.png");
+
+const ClaimPanel = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+`;
+
+const ClaimPanelItem = styled.div`
+    margin: auto;
+`;
 
 const GameBoard = styled.div`
     background-color: red;
@@ -179,6 +192,26 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
                 </GameBoardPlayerPanel>
             );
         }
+        let claims: JSX.Element;
+        if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0) 
+        {
+            let claimsCardCount = 0;
+            this.props.gameState.claims.forEach((item: GetGameClaim) => {
+                claimsCardCount += item.claims.length;
+            });
+
+            let lastClaim = this.props.gameState.claims[this.props.gameState.claims.length-1];
+            claims = (
+                <ClaimPanel>
+                    <ClaimPanelItem>
+                        <div>{claimsCardCount}</div>
+                        <div>{lastClaim.claims.length}</div>
+                        <div>{lastClaim.claims[0].rank}</div>
+                    </ClaimPanelItem>
+                </ClaimPanel>
+            );
+        }
+
         return (
             <GameBoard
                 displayStyle={this.props.gameBoardComponentStyle.displayStyle}>
@@ -202,6 +235,7 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
                     displayStyle={this.props.gameBoardSeatComponentStyle.displayStyle}>
                     {playerFour}
                 </GameBoardVacantSeat>
+                {claims}
             </GameBoard>
         );
     }

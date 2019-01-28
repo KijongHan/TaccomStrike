@@ -7,6 +7,7 @@ import { GameLobbyLeaveGame } from "../../models/hub/gamelobbyleave";
 import { GameLobbyStartGame } from "../../models/hub/gamelobbystart";
 import { GetGameCard } from "../../models/rest/getgamecard";
 import { GameClaim } from "../../models/hub/gameclaim";
+import { GameCallCheat } from "../../models/hub/gamecallcheat";
 
 export class GameConnectionsService
 {
@@ -18,6 +19,7 @@ export class GameConnectionsService
     static gameLobbySendMessageHandlers: ((gameLobbySendMessage: GameLobbySendMessage) => void)[] = [];
 
     static gameClaimHandlers: ((gameClaim: GameClaim) => void)[] = [];
+    static gameCallCheatHandlers: ((gameClaim: GameClaim) => void)[] = [];
 
     static initializeGameConnections = () => 
     {
@@ -50,6 +52,7 @@ export class GameConnectionsService
         GameConnectionsService.gameLobbySendMessageHandlers = [];
 
         GameConnectionsService.gameClaimHandlers = [];
+        GameConnectionsService.gameCallCheatHandlers = [];
     }
 
     static initializeGameEventHandlers = () => 
@@ -91,6 +94,14 @@ export class GameConnectionsService
             GameConnectionsService
                 .gameClaimHandlers
                 .forEach((handler: (gameClaim: GameClaim) => void, index: number) => {
+                    handler(apiObject);
+                });
+        });
+        GameConnectionsService.gameConnection.on("GameCallCheat", (apiObject: GameCallCheat) => {
+            console.log(apiObject);
+            GameConnectionsService
+                .gameCallCheatHandlers
+                .forEach((handler: (gameCallCheat: GameCallCheat) => void, index: number) => {
                     handler(apiObject);
                 });
         });
@@ -190,6 +201,20 @@ export class GameConnectionsService
             GameConnectionsService.gameClaimHandlers.push(gameClaimHandler);
     }
 
+    static addGameCallCheatHandler = (gameCallCheatHandler: (gameCallCheat: GameCallCheat) => void) => 
+    {
+        GameConnectionsService
+            .gameCallCheatHandlers
+            .forEach((handler: (gameCallCheat: GameCallCheat) => void, index: number) => {
+                if(handler === gameCallCheatHandler) 
+                {
+                    return;
+                }
+            });
+
+            GameConnectionsService.gameCallCheatHandlers.push(gameCallCheatHandler);
+    }
+
     static gameLobbyStartGame(gameLobbyId: number) 
     {
         GameConnectionsService.gameConnection.invoke("GameLobbyStartGame", gameLobbyId);
@@ -213,5 +238,10 @@ export class GameConnectionsService
     static gameSubmitClaim(gameLobbyId: number, claims: GetGameCard[], actual: GetGameCard[])
     {
         GameConnectionsService.gameConnection.invoke("GameSubmitClaim", gameLobbyId, claims, actual);
+    }
+
+    static gameCallCheat(gameLobbyId: number) 
+    {
+        GameConnectionsService.gameConnection.invoke("GameCallClaim", gameLobbyId);
     }
 }

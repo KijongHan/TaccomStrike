@@ -64,7 +64,6 @@ export class ComboButtonComponent extends React.Component<ComboButtonComponentPr
 
     render() 
     {
-
         let width = (1/this.props.comboButtons.length) * 100;
         let buttons = this.state.comboButtons.map((value: ComboButtonItem) => {
             let style = new ButtonComponentStyle();
@@ -85,6 +84,7 @@ export class ComboButtonComponent extends React.Component<ComboButtonComponentPr
                 this.setState({
                     comboButtons: newComboButtonItems
                 });
+                value.comboButtonClickHandler();
             };
 
             return (

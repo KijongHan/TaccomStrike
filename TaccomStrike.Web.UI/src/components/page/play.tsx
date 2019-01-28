@@ -15,6 +15,8 @@ import { GameLobbiesService } from "../../services/rest/gamelobbies";
 import { GetGameClaim } from "../../models/rest/getgameclaim";
 import { GetGameCard } from "../../models/rest/getgamecard";
 import { GameClaim } from "../../models/hub/gameclaim";
+import { GameCallCheat } from "../../models/hub/gamecallcheat";
+import { GetGameUser } from "../../models/rest/getgameuser";
 
 export interface PlayPageComponentProps extends BasePageComponentProps {}
 
@@ -27,6 +29,11 @@ export class PlayPageComponentState extends BasePageComponentState
     currentGameLobby: GetGameLobby;
     currentGameLobbyMessages: GameLobbySendMessage[];
     currentGameState: GetGameState;
+
+    cheatCaller: GetGameUser;
+    lastClaimUser: GetGameUser;
+    preCheatCallClaims: GetGameClaim[];
+    cheatCallSuccess: boolean;
 }
 
 export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps, PlayPageComponentState> 
@@ -43,7 +50,12 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
 
             gameLobbies: [],
             createGameLobby: new CreateGameLobby(),
-            currentGameLobbyMessage: null
+            currentGameLobbyMessage: null,
+
+            cheatCaller: null,
+            lastClaimUser: null,
+            preCheatCallClaims: null,
+            cheatCallSuccess: null
         };
         this.retrieveGameLobbies();
 
@@ -95,7 +107,13 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     
                     loggedInUser={this.props.loggedInUser}
                     gameState={this.state.currentGameState}
-                    submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}>
+                    submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}
+                    callCheatButtonClickHandler={this.callCheatButtonClickHandler}
+                    
+                    cheatCaller={this.state.cheatCaller}
+                    lastClaimUser={this.state.lastClaimUser}
+                    preCheatCallClaims={this.state.preCheatCallClaims}
+                    cheatCallSuccess={this.state.cheatCallSuccess}>
                 </GamePageComponent>
             );
         }
@@ -221,5 +239,20 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
     gameClaimHandler = (gameClaim: GameClaim) =>
     {
         this.setState({currentGameState: gameClaim.gameState});
+    }
+
+    callCheatButtonClickHandler = () => 
+    {
+        GameConnectionsService.gameCallCheat(this.state.currentGameLobby.gameLobbyID);
+    }
+
+    gameCallCheatHandler = (gameCallCheat: GameCallCheat) => 
+    {
+        this.setState({
+            cheatCaller: gameCallCheat.cheatCaller,
+            lastClaimUser: gameCallCheat.lastClaimUser,
+            preCheatCallClaims: gameCallCheat.preCheatCallClaims,
+            cheatCallSuccess: gameCallCheat.cheatCallSuccess
+        });
     }
 }

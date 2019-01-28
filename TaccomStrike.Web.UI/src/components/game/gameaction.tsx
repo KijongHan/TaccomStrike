@@ -27,6 +27,7 @@ export class GameActionComponentProps
 
     claimRankSelectedOnChangeHandler: (value: string) => void;
     submitClaimButtonClickHandler: () => void;
+    callCheatButtonClickHandler: () => void;
 }
 
 export class GameActionComponentState {}
@@ -104,6 +105,18 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
                         buttonText="Submit Claim"
                         buttonComponentStyle={style}
                         buttonClickHandler={this.props.submitClaimButtonClickHandler}>
+                    </ButtonComponent>
+                </GameActionElement>
+            );
+        }
+        else if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length>0) 
+        {
+            gameActionComponent = (
+                <GameActionElement>
+                    <ButtonComponent
+                        buttonText="Call Cheat"
+                        buttonComponentStyle={style}
+                        buttonClickHandler={this.props.callCheatButtonClickHandler}>
                     </ButtonComponent>
                 </GameActionElement>
             );

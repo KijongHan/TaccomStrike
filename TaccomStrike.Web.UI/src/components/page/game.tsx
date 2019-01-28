@@ -13,6 +13,7 @@ import { GameBoardComponent, GameBoardComponentStyle, GameBoardSeatComponentStyl
 import { GameActionComponent, GameActionComponentStyle } from "../game/gameaction";
 import { stat } from "fs";
 import { isNullOrUndefined } from "util";
+import { GetGameClaim } from "../../models/rest/getgameclaim";
 
 const GamePage = styled.div`
     position: fixed;
@@ -45,7 +46,12 @@ export interface GamePageComponentProps extends BasePageComponentProps
 {
     gameState: GetGameState;
 
+    cheatCaller: GetGameUser;
+    lastClaimUser: GetGameUser;
+    preCheatCallClaims: GetGameClaim[];
+    cheatCallSuccess: boolean;
     submitClaimButtonClickHandler: (claims: GetGameCard[], actual: GetGameCard[]) => void;
+    callCheatButtonClickHandler: () => void;
 }
 
 export class GamePageComponent extends BasePageComponent<GamePageComponentProps, GamePageComponentState> 
@@ -138,7 +144,8 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                         gameState={this.props.gameState}
                         gameActionComponentStyle={gameActionComponentStyle}
                         submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}
-                        claimRankSelectedOnChangeHandler={this.claimRankSelectedOnChangeHandler}>
+                        claimRankSelectedOnChangeHandler={this.claimRankSelectedOnChangeHandler}
+                        callCheatButtonClickHandler={this.props.callCheatButtonClickHandler}>
                     </GameActionComponent>
                 </GameBoardPanel>
                 <GameUserHandPanel>
@@ -192,6 +199,10 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
             return claim;
         });
         let actual = this.state.selectedCards;
+        this.setState({
+            selectedCards: [],
+            selectedClaimRank: null
+        });
         this.props.submitClaimButtonClickHandler(claims, actual);
     }
 }
