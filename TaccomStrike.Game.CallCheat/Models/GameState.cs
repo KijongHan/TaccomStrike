@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TaccomStrike.Game.CallCheat.Models;
 
 namespace TaccomStrike.Game.CallCheat
 {
@@ -15,6 +16,9 @@ namespace TaccomStrike.Game.CallCheat
 		public string LowerBoundRank { get; set; }
 		public string UpperBoundRank { get; set; }
 		public string MiddleBoundRank { get; set; }
+
+		public GamePhase CurrentGamePhase { get;set; }
+		public int CurrentPhaseDuration { get; set; }
 
 		public GameState()
 		{

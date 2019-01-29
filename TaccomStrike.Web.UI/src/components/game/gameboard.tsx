@@ -22,7 +22,6 @@ const ClaimPanelItem = styled.div`
 `;
 
 const GameBoard = styled.div`
-    background-color: red;
     margin: auto;
     position: relative;
     top: 35%;

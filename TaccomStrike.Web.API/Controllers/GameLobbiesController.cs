@@ -17,7 +17,6 @@ namespace TaccomStrike.Web.API.Controllers {
 	[EnableCors("AllowSpecificOrigin")]
 	public class GameLobbiesController : Controller
 	{
-
 		private GameLobbyService gameLobbyService;
 
 		public GameLobbiesController(GameLobbyService gameLobbyService)
