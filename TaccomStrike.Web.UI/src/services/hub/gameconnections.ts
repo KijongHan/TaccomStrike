@@ -242,6 +242,6 @@ export class GameConnectionsService
 
     static gameCallCheat(gameLobbyId: number) 
     {
-        GameConnectionsService.gameConnection.invoke("GameCallClaim", gameLobbyId);
+        GameConnectionsService.gameConnection.invoke("GameCallCheat", gameLobbyId);
     }
 }

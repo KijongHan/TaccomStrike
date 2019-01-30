@@ -82,7 +82,19 @@ namespace TaccomStrike.Web.API.Hubs
 
 		public void OnEndTurn(GameLogicController gameLogicController)
 		{
+			gameLogicController.StartTurn(null);
 
+			foreach (var gameUser in gameLogicController.GameUsers)
+			{
+				var gameState = gameLogicController.GetGameState(gameUser.UserPrincipal);
+				var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser.UserPrincipal);
+
+				var apiObject = new HubApi.GameClaim
+				{
+					GameState = new GetGameState(gameState)
+				};
+				gameHubContext.Clients.Client(connection).GameClaim(apiObject);
+			}
 		}
 
 		public Task GameLobbyStartGame(long gameLobbyID)
@@ -95,6 +107,7 @@ namespace TaccomStrike.Web.API.Hubs
 					if (gameLobby.HasUser(Context.User))
 					{
 						var gameStarted = gameLobby.StartGame();
+						gameLobby.GameLogicController.StartTurn(null);
 						if (!gameStarted)
 						{
 							return;

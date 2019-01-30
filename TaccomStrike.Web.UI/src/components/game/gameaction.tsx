@@ -10,7 +10,7 @@ import { string } from "prop-types";
 import { isNullOrUndefined } from "util";
 import { LabelledListComponent, ListItem, LabelledListComponentStyle } from "../general/labelledlist";
 import { LabelledInputComponentStyle } from "../general/labelledinput";
-import { CardRank } from "../../services/game/gameservice";
+import { CardRank, GamePhase } from "../../services/game/gameservice";
 
 const GameActionElement = styled.div`
     width: 100%;
@@ -56,7 +56,7 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
         style.displayStyle.heightPercentage = 10;
 
         let gameActionComponent: JSX.Element;
-        if(this.props.loggedInUser.userID===this.props.gameState.userTurn.user.userID) 
+        if(this.props.loggedInUser.userID===this.props.gameState.userTurn.user.userID && this.props.gameState.currentGamePhase===GamePhase.TurnPhase) 
         {
             let claimOptions: JSX.Element;
             if(isNullOrUndefined(this.props.gameState.lowerBoundRank)
@@ -109,7 +109,7 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
                 </GameActionElement>
             );
         }
-        else if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length>0) 
+        else if(this.props.gameState.currentGamePhase===GamePhase.CallPhase && this.props.loggedInUser.userID!==this.props.gameState.userTurn.user.userID) 
         {
             gameActionComponent = (
                 <GameActionElement>

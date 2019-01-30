@@ -110,73 +110,67 @@ namespace TaccomStrike.Web.API.Hubs {
 
 		public override Task OnConnectedAsync()
 		{
-			lock(userConnectionsService.ChatConnectionService.ConnectionLock)
+			return Task.Run(() =>
 			{
-				return Task.Run(() =>  
+				userConnectionsService.ChatConnectionService.Add(Context.User, Context.ConnectionId);
+				var apiObject = new ChatUserConnected
 				{
-					userConnectionsService.ChatConnectionService.Add(Context.User, Context.ConnectionId);
-					var apiObject = new ChatUserConnected
-					{
-						NewUser = Context.User.ApiGetUser(),
-						ConnectedUsers = userConnectionsService
-							.ChatConnectionService
-							.GetUsers()
-							.ApiGetUsers()
-					};
+					NewUser = Context.User.ApiGetUser(),
+					ConnectedUsers = userConnectionsService
+						.ChatConnectionService
+						.GetUsers()
+						.ApiGetUsers()
+				};
 
-					foreach(var connection in userConnectionsService.ChatConnectionService.GetUserConnections())
-					{
-						Clients.Client(connection).ChatUserConnected(apiObject);
-					}
-					return base.OnConnectedAsync();
-				});
-			}
+				foreach (var connection in userConnectionsService.ChatConnectionService.GetUserConnections())
+				{
+					Clients.Client(connection).ChatUserConnected(apiObject);
+				}
+				return base.OnConnectedAsync();
+			});
 		}
 
 		public override Task OnDisconnectedAsync(Exception exception)
 		{
-			lock(userConnectionsService.ChatConnectionService.ConnectionLock)
+			return Task.Run(() =>
 			{
-				return Task.Run(() => 
+				userConnectionsService.ChatConnectionService.Remove(Context.User, Context.ConnectionId);
+
+				foreach (var chatRoom in chatRoomService.GetChatRooms())
 				{
-					userConnectionsService.ChatConnectionService.Remove(Context.User, Context.ConnectionId);
-
-					foreach(var chatRoom in chatRoomService.GetChatRooms())
+					if (chatRoom.HasParticipant(Context.User))
 					{
-						if(chatRoom.HasParticipant(Context.User))
+						var apiObject = new ChatRoomLeave
 						{
-							var apiObject = new ChatRoomLeave
-							{
-								LeavingUser = Context.User.ApiGetUser(),
-								ChatRoom = chatRoom.ApiChatRoom()
-							};
+							LeavingUser = Context.User.ApiGetUser(),
+							ChatRoom = chatRoom.ApiChatRoom()
+						};
 
-							chatRoom.RemoveParticipant(Context.User);
-							foreach(var participant in chatRoom.GetParticipants())
+						chatRoom.RemoveParticipant(Context.User);
+						foreach (var participant in chatRoom.GetParticipants())
+						{
+							var connection = userConnectionsService.ChatConnectionService.GetConnection(participant);
+							if (connection == null)
 							{
-								var connection = userConnectionsService.ChatConnectionService.GetConnection(participant);
-								if(connection == null)
-								{
-									continue;
-								}
-
-								Clients.Client(connection).ChatRoomLeave(apiObject);
+								continue;
 							}
+
+							Clients.Client(connection).ChatRoomLeave(apiObject);
 						}
 					}
+				}
 
-					var disconnectedUserApiObject = new ChatUserDisconnected
-					{
-						DisconnectedUser = Context.User.ApiGetUser()
-					};
+				var disconnectedUserApiObject = new ChatUserDisconnected
+				{
+					DisconnectedUser = Context.User.ApiGetUser()
+				};
 
-					foreach (var connection in userConnectionsService.ChatConnectionService.GetUserConnections())
-					{
-						Clients.Client(connection).ChatUserDisconnected(disconnectedUserApiObject);
-					}
-					return base.OnDisconnectedAsync(exception);
-				});
-			}
+				foreach (var connection in userConnectionsService.ChatConnectionService.GetUserConnections())
+				{
+					Clients.Client(connection).ChatUserDisconnected(disconnectedUserApiObject);
+				}
+				return base.OnDisconnectedAsync(exception);
+			});
 		}
 	}
 }

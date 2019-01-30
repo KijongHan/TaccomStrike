@@ -18,7 +18,8 @@ namespace TaccomStrike.Game.CallCheat.Services
 		public List<GameUser> UsersCallingCheat { get; set; }
 
 		public GamePhase CurrentGamePhase { get; set; }
-		public int CurrentPhaseDuration { get; set; }
+		public Timer turnTimer { get; set; }
+		public Timer callTimer { get; set; }
 
 		public GameState GetGameState(ClaimsPrincipal user)
 		{
@@ -45,7 +46,14 @@ namespace TaccomStrike.Game.CallCheat.Services
 				}
 
 				gameState.CurrentGamePhase = CurrentGamePhase;
-				gameState.CurrentPhaseDuration = CurrentPhaseDuration;
+				if(turnTimer!=null)
+				{
+					gameState.TurnPhaseDuration = turnTimer.Interval;
+				}
+				if(callTimer!=null)
+				{
+					gameState.CallPhaseDuration = callTimer.Interval;
+				}
 				return gameState;
 			}
 		}
@@ -83,6 +91,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 				}
 			}
 			CurrentClaims = new List<GameClaim>();
+			UsersCallingCheat = new List<GameUser>();
 
 			return new GameCheat
 			{
@@ -120,6 +129,11 @@ namespace TaccomStrike.Game.CallCheat.Services
 				if (claims.Count != actual.Count)
 				{
 					throw new Exception("Somebody may be cheating");
+				}
+				if(turnTimer!=null)
+				{
+					turnTimer.Stop();
+					turnTimer.Dispose();
 				}
 
 				var referenceCard = claims[0];
@@ -175,11 +189,13 @@ namespace TaccomStrike.Game.CallCheat.Services
 		{
 			lock(gameLogicLock)
 			{
-				Timer timer = new Timer(5000);
-				timer.Elapsed += (object sender, ElapsedEventArgs e) => {
+				callTimer = new Timer(5000);
+				callTimer.Elapsed += (object sender, ElapsedEventArgs e) => {
 					lock(gameLogicLock)
 					{
-						if(CurrentGamePhase==GamePhase.TurnPhase)
+						callTimer.Stop();
+						callTimer.Dispose();
+						if (CurrentGamePhase==GamePhase.TurnPhase)
 						{
 							return;
 						}
@@ -195,11 +211,9 @@ namespace TaccomStrike.Game.CallCheat.Services
 							EndTurn();
 							onEndTurn(this);
 						}
-						timer.Stop();
-						timer.Dispose();
 					}
 				};
-				timer.Start();
+				callTimer.Start();
 				CurrentGamePhase = GamePhase.CallPhase;
 			}
 		}
@@ -213,9 +227,23 @@ namespace TaccomStrike.Game.CallCheat.Services
 			}
 		}
 
-		public void NextTurn(Action onTurnTimeout)
+		public void StartTurn(Action onTurnTimeout)
 		{
-
+			lock(gameLogicLock)
+			{
+				CurrentGamePhase = GamePhase.TurnPhase;
+				turnTimer = new Timer(20000);
+				turnTimer.Elapsed += (object sender, ElapsedEventArgs e) =>
+				{
+					lock(gameLogicLock)
+					{
+						turnTimer.Stop();
+						turnTimer.Dispose();
+						onTurnTimeout();
+					}
+				};
+				turnTimer.Start();
+			}
 		}
 
 		public void StartGame(List<ClaimsPrincipal> users)
@@ -245,9 +273,6 @@ namespace TaccomStrike.Game.CallCheat.Services
 					GameUsers.Add(new GameUser(i + 1, users[i], hand));
 				}
 			}
-
-			CurrentGamePhase = GamePhase.TurnPhase;
-			CurrentPhaseDuration = 20;
 		}
 
 		private string GetLowerBoundRank(int recentClaimIndex)

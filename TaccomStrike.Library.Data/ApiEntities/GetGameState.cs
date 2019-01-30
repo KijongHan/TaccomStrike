@@ -21,6 +21,10 @@ namespace TaccomStrike.Library.Data.ApiEntities
 		public string UpperBoundRank { get; set; }
 		public string MiddleBoundRank { get; set; }
 
+		public int CurrentGamePhase { get; set; }
+		public double TurnPhaseDuration { get; set; }
+		public double CallPhaseDuration { get; set; }
+
 		public GetGameState()
 		{
 			Hand = new List<GetGameCard>();
@@ -38,6 +42,10 @@ namespace TaccomStrike.Library.Data.ApiEntities
 			LowerBoundRank = gameState.LowerBoundRank;
 			UpperBoundRank = gameState.UpperBoundRank;
 			MiddleBoundRank = gameState.MiddleBoundRank;
+
+			CurrentGamePhase = (int)gameState.CurrentGamePhase;
+			TurnPhaseDuration = gameState.TurnPhaseDuration;
+			CallPhaseDuration = gameState.CallPhaseDuration;
 		}
 	}
 }

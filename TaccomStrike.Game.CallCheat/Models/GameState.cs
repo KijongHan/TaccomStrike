@@ -18,7 +18,8 @@ namespace TaccomStrike.Game.CallCheat
 		public string MiddleBoundRank { get; set; }
 
 		public GamePhase CurrentGamePhase { get;set; }
-		public int CurrentPhaseDuration { get; set; }
+		public double TurnPhaseDuration { get; set; }
+		public double CallPhaseDuration { get; set; }
 
 		public GameState()
 		{

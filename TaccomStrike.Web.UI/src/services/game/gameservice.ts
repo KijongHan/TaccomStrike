@@ -14,3 +14,9 @@ export enum CardRank
     King="K",
     Ace="A"
 }
+
+export enum GamePhase 
+{
+    TurnPhase = 1,
+	CallPhase = 2
+}
