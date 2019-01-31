@@ -66,6 +66,8 @@ namespace TaccomStrike.Web.API.Hubs
 
 		public void OnGameCheat(GameLogicController gameLogicController, GameCheat gameCheat)
 		{
+			gameLogicController.StartTurn(OnTurnTimeout);
+
 			foreach (var gameUser in gameLogicController.GameUsers)
 			{
 				var gameState = gameLogicController.GetGameState(gameUser.UserPrincipal);
@@ -76,13 +78,30 @@ namespace TaccomStrike.Web.API.Hubs
 					GameState = new GetGameState(gameState),
 					GameCheat = new GetGameCheat(gameCheat)
 				};
-				Clients.Client(connection).GameCallCheat(apiObject);
+				gameHubContext.Clients.Client(connection).GameCallCheat(apiObject);
 			}
 		}
 
 		public void OnEndTurn(GameLogicController gameLogicController)
 		{
-			gameLogicController.StartTurn(null);
+			gameLogicController.StartTurn(OnTurnTimeout);
+
+			foreach (var gameUser in gameLogicController.GameUsers)
+			{
+				var gameState = gameLogicController.GetGameState(gameUser.UserPrincipal);
+				var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser.UserPrincipal);
+
+				var apiObject = new HubApi.GameClaim
+				{
+					GameState = new GetGameState(gameState)
+				};
+				gameHubContext.Clients.Client(connection).GameClaim(apiObject);
+			}
+		}
+
+		public void OnTurnTimeout(GameLogicController gameLogicController)
+		{
+			gameLogicController.CallPhase(OnGameCheat, OnEndTurn);
 
 			foreach (var gameUser in gameLogicController.GameUsers)
 			{
@@ -107,7 +126,7 @@ namespace TaccomStrike.Web.API.Hubs
 					if (gameLobby.HasUser(Context.User))
 					{
 						var gameStarted = gameLobby.StartGame();
-						gameLobby.GameLogicController.StartTurn(null);
+						gameLobby.GameLogicController.StartTurn(OnTurnTimeout);
 						if (!gameStarted)
 						{
 							return;

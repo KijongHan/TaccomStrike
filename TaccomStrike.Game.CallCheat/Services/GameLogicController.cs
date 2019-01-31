@@ -62,6 +62,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 		{
 			var currentUser = GetCurrentPlayerTurn();
 
+			var cheatCallSuccessful = false;
 			var cheatCaller = UsersCallingCheat.First();
 			var lastClaimUser = CurrentClaims.Last().ClaimUser;
 			var preCheatClaims = CurrentClaims;
@@ -71,6 +72,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 			{
 				if (lastClaim.Claims[i].Rank != lastClaim.Actual[i].Rank)
 				{
+					cheatCallSuccessful = true;
 					foreach (var claim in CurrentClaims)
 					{
 						foreach (var actualCard in claim.Actual)
@@ -95,6 +97,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 
 			return new GameCheat
 			{
+				CheatCallSuccessful = cheatCallSuccessful,
 				CheatCaller = cheatCaller,
 				LastClaimUser = lastClaimUser,
 				PreCheatClaims = preCheatClaims
@@ -111,7 +114,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 				}
 
 				var gameUser = GetPlayer(user);
-				if(UsersCallingCheat.Contains(gameUser))
+				if(!UsersCallingCheat.Contains(gameUser))
 				{
 					UsersCallingCheat.Add(gameUser);
 				}
@@ -185,6 +188,41 @@ namespace TaccomStrike.Game.CallCheat.Services
 			}
 		}
 
+		public void SubmitDefaultClaim()
+		{
+			var currentTurnUser = GetCurrentPlayerTurn();
+			var defaultClaims = new List<GameCard>();
+			var defaultActual = new List<GameCard>();
+
+			var firstUserCard = currentTurnUser.Hand[0];
+			defaultActual.Add(new GameCard() {
+				Rank=firstUserCard.Rank,
+				Suit=firstUserCard.Suit
+			});
+			if(CurrentClaims.Count>0)
+			{
+				var recentClaimIndex = GameCard
+					.Ranks
+					.FindIndex((item) =>
+					{
+						return item == CurrentClaims.Last().Claims[0].Rank;
+					});
+				var middleRank = GetMiddleBoundRank(recentClaimIndex);
+				defaultClaims.Add(new GameCard() {
+					Rank=middleRank
+				});
+			}
+			else
+			{
+				var rank = GameCard.Ranks[0];
+				defaultClaims.Add(new GameCard() {
+					Rank=rank
+				});
+			}
+
+			SubmitClaim(currentTurnUser.UserPrincipal, defaultClaims, defaultActual);
+		}
+
 		public void CallPhase(Action<GameLogicController, GameCheat> onGameCheat, Action<GameLogicController> onEndTurn)
 		{
 			lock(gameLogicLock)
@@ -213,6 +251,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 						}
 					}
 				};
+				callTimer.AutoReset = false;
 				callTimer.Start();
 				CurrentGamePhase = GamePhase.CallPhase;
 			}
@@ -227,7 +266,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 			}
 		}
 
-		public void StartTurn(Action onTurnTimeout)
+		public void StartTurn(Action<GameLogicController> onTurnTimeout)
 		{
 			lock(gameLogicLock)
 			{
@@ -239,9 +278,12 @@ namespace TaccomStrike.Game.CallCheat.Services
 					{
 						turnTimer.Stop();
 						turnTimer.Dispose();
-						onTurnTimeout();
+
+						SubmitDefaultClaim();
+						onTurnTimeout(this);
 					}
 				};
+				turnTimer.AutoReset = false;
 				turnTimer.Start();
 			}
 		}

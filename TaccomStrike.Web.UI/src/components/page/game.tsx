@@ -14,6 +14,7 @@ import { GameActionComponent, GameActionComponentStyle } from "../game/gameactio
 import { stat } from "fs";
 import { isNullOrUndefined } from "util";
 import { GetGameClaim } from "../../models/rest/getgameclaim";
+import { GetGameCheat } from "../../models/rest/getgamecheat";
 
 const GamePage = styled.div`
     position: fixed;
@@ -45,11 +46,8 @@ export class GamePageComponentState extends BasePageComponentState
 export interface GamePageComponentProps extends BasePageComponentProps 
 {
     gameState: GetGameState;
-
-    cheatCaller: GetGameUser;
-    lastClaimUser: GetGameUser;
-    preCheatCallClaims: GetGameClaim[];
-    cheatCallSuccess: boolean;
+    gameCheat: GetGameCheat;
+    
     submitClaimButtonClickHandler: (claims: GetGameCard[], actual: GetGameCard[]) => void;
     callCheatButtonClickHandler: () => void;
 }
@@ -142,6 +140,7 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                     <GameActionComponent
                         loggedInUser={this.props.loggedInUser}
                         gameState={this.props.gameState}
+                        gameCheat={this.props.gameCheat}
                         gameActionComponentStyle={gameActionComponentStyle}
                         submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}
                         claimRankSelectedOnChangeHandler={this.claimRankSelectedOnChangeHandler}

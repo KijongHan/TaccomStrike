@@ -17,6 +17,7 @@ import { GetGameCard } from "../../models/rest/getgamecard";
 import { GameClaim } from "../../models/hub/gameclaim";
 import { GameCallCheat } from "../../models/hub/gamecallcheat";
 import { GetGameUser } from "../../models/rest/getgameuser";
+import { GetGameCheat } from "../../models/rest/getgamecheat";
 
 export interface PlayPageComponentProps extends BasePageComponentProps {}
 
@@ -29,11 +30,7 @@ export class PlayPageComponentState extends BasePageComponentState
     currentGameLobby: GetGameLobby;
     currentGameLobbyMessages: GameLobbySendMessage[];
     currentGameState: GetGameState;
-
-    cheatCaller: GetGameUser;
-    lastClaimUser: GetGameUser;
-    preCheatCallClaims: GetGameClaim[];
-    cheatCallSuccess: boolean;
+    currentGameCheat: GetGameCheat;
 }
 
 export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps, PlayPageComponentState> 
@@ -45,17 +42,13 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
         {
             currentGameLobby: null,
             currentGameState: null,
+            currentGameCheat: null,
             currentGameLobbyMessages: [],
             pageStyle: null,
 
             gameLobbies: [],
             createGameLobby: new CreateGameLobby(),
-            currentGameLobbyMessage: null,
-
-            cheatCaller: null,
-            lastClaimUser: null,
-            preCheatCallClaims: null,
-            cheatCallSuccess: null
+            currentGameLobbyMessage: null
         };
         this.retrieveGameLobbies();
 
@@ -67,6 +60,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                 GameConnectionsService.addGameLobbyStartGameHandler(this.gameLobbyStartGameHandler);
                 GameConnectionsService.addGameLobbyLeaveGameHandler(this.gameLobbyLeaveGameHandler);
                 GameConnectionsService.addGameClaimHandler(this.gameClaimHandler);
+                GameConnectionsService.addGameCallCheatHandler(this.gameCallCheatHandler);
             });
     }
 
@@ -107,13 +101,9 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     
                     loggedInUser={this.props.loggedInUser}
                     gameState={this.state.currentGameState}
+                    gameCheat={this.state.currentGameCheat}
                     submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}
-                    callCheatButtonClickHandler={this.callCheatButtonClickHandler}
-                    
-                    cheatCaller={this.state.cheatCaller}
-                    lastClaimUser={this.state.lastClaimUser}
-                    preCheatCallClaims={this.state.preCheatCallClaims}
-                    cheatCallSuccess={this.state.cheatCallSuccess}>
+                    callCheatButtonClickHandler={this.callCheatButtonClickHandler}>
                 </GamePageComponent>
             );
         }
@@ -249,10 +239,8 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
     gameCallCheatHandler = (gameCallCheat: GameCallCheat) => 
     {
         this.setState({
-            cheatCaller: gameCallCheat.cheatCaller,
-            lastClaimUser: gameCallCheat.lastClaimUser,
-            preCheatCallClaims: gameCallCheat.preCheatCallClaims,
-            cheatCallSuccess: gameCallCheat.cheatCallSuccess
+            currentGameCheat: gameCallCheat.gameCheat,
+            currentGameState: gameCallCheat.gameState
         });
     }
 }

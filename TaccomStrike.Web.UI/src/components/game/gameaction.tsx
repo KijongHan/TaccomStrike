@@ -7,10 +7,11 @@ import { GetUser } from "../../models/rest/getuser";
 import { GetGameState } from "../../models/rest/getgamestate";
 import { ComboButtonComponent, ComboButtonComponentStyle, ComboButtonItem } from "../general/combobutton";
 import { string } from "prop-types";
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined, isNull } from "util";
 import { LabelledListComponent, ListItem, LabelledListComponentStyle } from "../general/labelledlist";
 import { LabelledInputComponentStyle } from "../general/labelledinput";
 import { CardRank, GamePhase } from "../../services/game/gameservice";
+import { GetGameCheat } from "../../models/rest/getgamecheat";
 
 const GameActionElement = styled.div`
     width: 100%;
@@ -21,6 +22,7 @@ const GameActionElement = styled.div`
 export class GameActionComponentProps 
 {
     loggedInUser: GetUser;
+    gameCheat: GetGameCheat;
     gameState: GetGameState;
 
     gameActionComponentStyle: GameActionComponentStyle;
@@ -56,6 +58,7 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
         style.displayStyle.heightPercentage = 10;
 
         let gameActionComponent: JSX.Element;
+
         if(this.props.loggedInUser.userID===this.props.gameState.userTurn.user.userID && this.props.gameState.currentGamePhase===GamePhase.TurnPhase) 
         {
             let claimOptions: JSX.Element;
