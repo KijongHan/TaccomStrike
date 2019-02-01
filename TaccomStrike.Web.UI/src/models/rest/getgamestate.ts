@@ -17,4 +17,6 @@ export class GetGameState
     currentGamePhase: GamePhase;
     turnPhaseDuration: number;
     callPhaseDuration: number;
+
+    actionHistory: string[];
 }

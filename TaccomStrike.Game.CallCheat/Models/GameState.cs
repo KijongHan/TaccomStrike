@@ -21,6 +21,8 @@ namespace TaccomStrike.Game.CallCheat
 		public double TurnPhaseDuration { get; set; }
 		public double CallPhaseDuration { get; set; }
 
+		public List<string> ActionHistory { get; set; }
+
 		public GameState()
 		{
 			Players = new List<GameUser>();

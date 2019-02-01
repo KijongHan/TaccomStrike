@@ -25,6 +25,8 @@ namespace TaccomStrike.Library.Data.ApiEntities
 		public double TurnPhaseDuration { get; set; }
 		public double CallPhaseDuration { get; set; }
 
+		public List<string> ActionHistory { get; set; }
+
 		public GetGameState()
 		{
 			Hand = new List<GetGameCard>();
@@ -46,6 +48,8 @@ namespace TaccomStrike.Library.Data.ApiEntities
 			CurrentGamePhase = (int)gameState.CurrentGamePhase;
 			TurnPhaseDuration = gameState.TurnPhaseDuration;
 			CallPhaseDuration = gameState.CallPhaseDuration;
+
+			ActionHistory = gameState.ActionHistory;
 		}
 	}
 }

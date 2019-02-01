@@ -21,6 +21,8 @@ namespace TaccomStrike.Game.CallCheat.Services
 		public Timer turnTimer { get; set; }
 		public Timer callTimer { get; set; }
 
+		public List<string> ActionHistory { get; set; }
+
 		public GameState GetGameState(ClaimsPrincipal user)
 		{
 			lock(gameLogicLock)
@@ -54,6 +56,8 @@ namespace TaccomStrike.Game.CallCheat.Services
 				{
 					gameState.CallPhaseDuration = callTimer.Interval;
 				}
+
+				gameState.ActionHistory = ActionHistory;
 				return gameState;
 			}
 		}
@@ -73,24 +77,34 @@ namespace TaccomStrike.Game.CallCheat.Services
 				if (lastClaim.Claims[i].Rank != lastClaim.Actual[i].Rank)
 				{
 					cheatCallSuccessful = true;
-					foreach (var claim in CurrentClaims)
-					{
-						foreach (var actualCard in claim.Actual)
-						{
-							lastClaimUser.Hand.Add(actualCard);
-						}
-					}
-
-					CurrentClaims = new List<GameClaim>();
+					continue;
 				}
 			}
 
-			foreach (var claim in CurrentClaims)
+			if (cheatCallSuccessful)
 			{
-				foreach (var actualCard in claim.Actual)
+				var claimCardsCount = 0;
+				foreach (var claim in CurrentClaims)
 				{
-					cheatCaller.Hand.Add(actualCard);
+					foreach (var actualCard in claim.Actual)
+					{
+						lastClaimUser.Hand.Add(actualCard);
+					}
 				}
+				ActionHistory.Add($"{cheatCaller.UserPrincipal.GetUserName()} called cheat correctly! {lastClaimUser.UserPrincipal.GetUserName()} collected {claimCardsCount} cards");
+			}
+			else
+			{
+				var claimCardsCount = 0;
+				foreach (var claim in CurrentClaims)
+				{
+					foreach (var actualCard in claim.Actual)
+					{
+						claimCardsCount += 1;
+						cheatCaller.Hand.Add(actualCard);
+					}
+				}
+				ActionHistory.Add($"{lastClaimUser.UserPrincipal.GetUserName()} cheated! {cheatCaller.UserPrincipal.GetUserName()} collected {claimCardsCount} cards");
 			}
 			CurrentClaims = new List<GameClaim>();
 			UsersCallingCheat = new List<GameUser>();
@@ -118,6 +132,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 				{
 					UsersCallingCheat.Add(gameUser);
 				}
+				ActionHistory.Add($"{user.GetUserName()} has called cheat!");
 			}
 		}
 
@@ -185,6 +200,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 				{
 					gameUser.Hand.Remove(card);
 				}
+				ActionHistory.Add($"{user.GetUserName()} has submitted {claims.Count} cards, with claim {referenceCard.Rank}");
 			}
 		}
 
@@ -294,6 +310,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 			GameUsers = new List<GameUser>();
 			CurrentClaims = new List<GameClaim>();
 			UsersCallingCheat = new List<GameUser>();
+			ActionHistory = new List<string>();
 
 			int interval = deck.Count / users.Count;
 			for (int i = 0; i < users.Count; i++)
