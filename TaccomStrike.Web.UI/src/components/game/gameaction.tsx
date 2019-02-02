@@ -16,20 +16,33 @@ import { GetGameCheat } from "../../models/rest/getgamecheat";
 const GameAction = styled.div`
     width: 100%;
     height: 100%;
-    background-color: rgba(200, 200, 200);
+    background-color: rgba(0, 0, 0, 1);
 `;
 
 const GameActionHistory = styled.div`
     height: 60%;
-    width: 100%;
+    width: 98%;
+    margin: auto;
     overflow-y: auto;
-    background-color: white;
+    background-color: rgba(200, 200, 200);
+`;
+
+const GameActionHistoryItem = styled.p`
+    padding-left: 5%;
 `;
 
 const GamePhaseTimer = styled.div`
     height: 10%;
     width: 100%;
     margin-top: 10%;
+    display: flex;
+`;
+
+const GamePhaseTimerText = styled.p`
+    text-align: center;
+    margin: auto;
+    font-size: 1.3em;
+    color: white;
 `;
 
 export class GameActionComponentProps 
@@ -159,6 +172,7 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
         let buttonStyle = new ButtonComponentStyle();
         buttonStyle.displayStyle.widthPercentage = 80;
         buttonStyle.displayStyle.heightPercentage = 10;
+        buttonStyle.displayStyle.marginLeftPercentage = 10;
 
         if(this.props.loggedInUser.userID!==this.props.gameState.userTurn.user.userID) 
         {
@@ -191,6 +205,7 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
         let buttonStyle = new ButtonComponentStyle();
         buttonStyle.displayStyle.widthPercentage = 80;
         buttonStyle.displayStyle.heightPercentage = 10;
+        buttonStyle.displayStyle.marginLeftPercentage = 10;
 
         if(this.props.loggedInUser.userID===this.props.gameState.userTurn.user.userID) 
         {
@@ -203,7 +218,8 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
                 });
                 let labelledListComponentStyle = new LabelledListComponentStyle(new DisplayStyle({
                     heightPercentage: 10,
-                    widthPercentage: 80
+                    widthPercentage: 80,
+                    marginLeftPercentage: 10
                 }));
                 claimOptions=(
                     <LabelledListComponent
@@ -218,7 +234,8 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
             {
                 let comboButtonComponentStyle = new ComboButtonComponentStyle(new DisplayStyle({
                     widthPercentage: 80,
-                    heightPercentage: 10
+                    heightPercentage: 10,
+                    marginLeftPercentage: 10
                 }));
                 let comboButtons = [
                     new ComboButtonItem(this.props.gameState.lowerBoundRank, false, this.lowerBoundButtonClickHandler),
@@ -261,7 +278,7 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
     {
         let actionHistoryItems = this.props.gameState.actionHistory.map((item: string, index: number) => {
             return (
-                <p key={index}>{item}</p>
+                <GameActionHistoryItem key={index}>{item}</GameActionHistoryItem>
             );
         });
         return (
@@ -273,14 +290,13 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
 
     getPhaseTimerComponent = () => 
     {
-        let currentPhaseDurationSeconds = Math.floor(this.state.currentPhaseDuration / 1000);
-        let currentPhaseDurationMiliseconds = ((this.state.currentPhaseDuration / 1000) % 1).toFixed(2);
+        let currentPhaseDurationSeconds = Math.floor(this.state.currentPhaseDuration / 1000) + " Seconds";
         return (
             <GamePhaseTimer>
-                {currentPhaseDurationSeconds}:{currentPhaseDurationMiliseconds}
+                <GamePhaseTimerText>
+                    {currentPhaseDurationSeconds}
+                </GamePhaseTimerText>
             </GamePhaseTimer>
         );
     }
-
-
 }

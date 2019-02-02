@@ -88,7 +88,8 @@ namespace TaccomStrike.Game.CallCheat.Services
 				{
 					foreach (var actualCard in claim.Actual)
 					{
-						lastClaimUser.Hand.Add(actualCard);
+						claimCardsCount += 1;
+						lastClaimUser.Hand.Add(actualCard, actualCard);
 					}
 				}
 				ActionHistory.Add($"{cheatCaller.UserPrincipal.GetUserName()} called cheat correctly! {lastClaimUser.UserPrincipal.GetUserName()} collected {claimCardsCount} cards");
@@ -101,7 +102,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 					foreach (var actualCard in claim.Actual)
 					{
 						claimCardsCount += 1;
-						cheatCaller.Hand.Add(actualCard);
+						cheatCaller.Hand.Add(actualCard, actualCard);
 					}
 				}
 				ActionHistory.Add($"{lastClaimUser.UserPrincipal.GetUserName()} cheated! {cheatCaller.UserPrincipal.GetUserName()} collected {claimCardsCount} cards");
@@ -210,7 +211,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 			var defaultClaims = new List<GameCard>();
 			var defaultActual = new List<GameCard>();
 
-			var firstUserCard = currentTurnUser.Hand[0];
+			var firstUserCard = currentTurnUser.Hand.First().Value;
 			defaultActual.Add(new GameCard() {
 				Rank=firstUserCard.Rank,
 				Suit=firstUserCard.Suit
@@ -317,16 +318,20 @@ namespace TaccomStrike.Game.CallCheat.Services
 			{
 				if (i == users.Count - 1)
 				{
-					List<GameCard> hand = deck;
+					SortedList<GameCard, GameCard> hand = new SortedList<GameCard, GameCard>(new GameCardRankComparer());
+					foreach(var card in deck)
+					{
+						hand.Add(card, card);
+					}
 					GameUsers.Add(new GameUser(i + 1, users[i], hand));
 				}
 				else
 				{
-					List<GameCard> hand = new List<GameCard>();
+					SortedList<GameCard, GameCard> hand = new SortedList<GameCard, GameCard>(new GameCardRankComparer());
 					for (int j = 0; j < interval; j++)
 					{
 						GameCard lastCard = deck.Last();
-						hand.Add(lastCard);
+						hand.Add(lastCard, lastCard);
 						deck.RemoveAt(deck.Count - 1);
 					}
 					GameUsers.Add(new GameUser(i + 1, users[i], hand));

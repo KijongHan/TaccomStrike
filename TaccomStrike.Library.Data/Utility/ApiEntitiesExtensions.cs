@@ -103,6 +103,16 @@ namespace TaccomStrike.Library.Data.Utility
 				.ToList();
 		}
 
+		public static List<GetGameCard> ApiGetGameCard(this SortedList<GameCard, GameCard> gameCards)
+		{
+			return gameCards
+				.Select((gameCard) =>
+				{
+					return new GetGameCard(gameCard.Value);
+				})
+				.ToList();
+		}
+
 		public static List<GetGameUser> ApiGetGameUsers(this IEnumerable<GameUser> gameUsers)
 		{
 			return gameUsers

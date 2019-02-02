@@ -9,9 +9,11 @@ using TaccomStrike.Library.Data.ViewModel;
 using TaccomStrike.Library.Data.Utility;
 using TaccomStrike.Library.Data.Model;
 using TaccomStrike.Web.API.HubApi;
+using Microsoft.AspNetCore.Authorization;
 
-namespace TaccomStrike.Web.API.Hubs {
-
+namespace TaccomStrike.Web.API.Hubs
+{
+	[Authorize]
 	public class ChatHub : Hub
 	{
 		private ChatRoomService chatRoomService;

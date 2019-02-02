@@ -61,6 +61,9 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                 GameConnectionsService.addGameLobbyLeaveGameHandler(this.gameLobbyLeaveGameHandler);
                 GameConnectionsService.addGameClaimHandler(this.gameClaimHandler);
                 GameConnectionsService.addGameCallCheatHandler(this.gameCallCheatHandler);
+            })
+            .catch(() => {
+                this.props.history.push("/");
             });
     }
 

@@ -15,9 +15,11 @@ using TaccomStrike.Library.Data.Extensions;
 using System.Timers;
 using TaccomStrike.Game.CallCheat.Services;
 using TaccomStrike.Game.CallCheat.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TaccomStrike.Web.API.Hubs
 {
+	[Authorize]
 	public class GameHub : Hub
 	{
 		private IHubContext<GameHub> gameHubContext;

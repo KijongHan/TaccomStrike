@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,16 +27,43 @@ namespace TaccomStrike.Game.CallCheat
 			Suit = suit;
 			Rank = rank;
 		}
+	}
 
-		public override bool Equals(object obj)
+	public class GameCardRankComparer : Comparer<GameCard>
+	{
+		public override int Compare(GameCard x, GameCard y)
 		{
-			if (obj == null || GetType() != obj.GetType())
-			{
-				return false;
-			}
+			var xRankIndex = GameCard
+				.Ranks
+				.FindIndex((item) =>
+				{
+					return item == x.Rank;
+				});
+			var yRankIndex = GameCard
+				.Ranks
+				.FindIndex((item) =>
+				{
+					return item == y.Rank;
+				});
+			var rankComparison = xRankIndex.CompareTo(yRankIndex);
 
-			GameCard c = (GameCard)obj;
-			return (Suit==c.Suit) && (Rank==c.Rank);
+			if(rankComparison == 0)
+			{
+				var xSuitIndex = GameCard
+					.Suits
+					.FindIndex((item) =>
+					{
+						return item == x.Suit;
+					});
+				var ySuitIndex = GameCard
+					.Suits
+					.FindIndex((item) =>
+					{
+						return item == y.Suit;
+					});
+				return xSuitIndex.CompareTo(ySuitIndex);
+			}
+			return rankComparison;
 		}
 	}
 }

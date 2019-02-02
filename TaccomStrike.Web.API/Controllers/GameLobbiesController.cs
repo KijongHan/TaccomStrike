@@ -11,8 +11,8 @@ using TaccomStrike.Library.Data.Services;
 using TaccomStrike.Library.Data.ViewModel;
 using TaccomStrike.Library.Data.Utility;
 
-namespace TaccomStrike.Web.API.Controllers {
-	
+namespace TaccomStrike.Web.API.Controllers
+{
 	[Route("api/gamelobbies")]
 	[EnableCors("AllowSpecificOrigin")]
 	public class GameLobbiesController : Controller
@@ -24,6 +24,7 @@ namespace TaccomStrike.Web.API.Controllers {
 			this.gameLobbyService = gameLobbyService;
 		}
 
+		[Authorize]
 		[Route("")]
 		[HttpPost]
 		public IActionResult CreateGameLobby([FromBody] CreateGameLobby gameLobbyViewModel)

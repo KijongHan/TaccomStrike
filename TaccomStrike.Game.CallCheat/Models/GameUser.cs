@@ -9,9 +9,9 @@ namespace TaccomStrike.Game.CallCheat
 
 		public ClaimsPrincipal UserPrincipal { get; set; }
 
-		public List<GameCard> Hand { get; set; }
+		public SortedList<GameCard, GameCard> Hand { get; set; }
 
-		public GameUser(int gameUserID, ClaimsPrincipal userPrincipal, List<GameCard> hand)
+		public GameUser(int gameUserID, ClaimsPrincipal userPrincipal, SortedList<GameCard, GameCard> hand)
 		{
 			GameUserID = gameUserID;
 			UserPrincipal = userPrincipal;

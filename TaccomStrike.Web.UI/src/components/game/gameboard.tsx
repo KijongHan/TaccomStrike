@@ -215,22 +215,22 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
             <GameBoard
                 displayStyle={this.props.gameBoardComponentStyle.displayStyle}>
                 <GameBoardVacantSeat
-                    style={{top:-100, left:-100}}
+                    style={{top:-100, left:-120}}
                     displayStyle={this.props.gameBoardSeatComponentStyle.displayStyle}>
                     {playerOne}
                 </GameBoardVacantSeat>
                 <GameBoardVacantSeat
-                    style={{top:-100, right:-100}}
+                    style={{top:-100, right:-120}}
                     displayStyle={this.props.gameBoardSeatComponentStyle.displayStyle}>
                     {playerTwo}
                 </GameBoardVacantSeat>
                 <GameBoardVacantSeat
-                    style={{bottom:-100, left:-100}}
+                    style={{bottom:-100, left:-120}}
                     displayStyle={this.props.gameBoardSeatComponentStyle.displayStyle}>
                     {playerThree}
                 </GameBoardVacantSeat>
                 <GameBoardVacantSeat
-                    style={{bottom:-100, right:-100}}
+                    style={{bottom:-100, right:-120}}
                     displayStyle={this.props.gameBoardSeatComponentStyle.displayStyle}>
                     {playerFour}
                 </GameBoardVacantSeat>
