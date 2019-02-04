@@ -96,7 +96,7 @@ namespace TaccomStrike.Library.Data.Services
 				new Claim(Security.UserNameClaim, user.Username),
 				new Claim(Security.UserLoginIDClaim, user.UserLoginID.ToString())
 			};
-			var claimsIdentity = new ClaimsIdentity(claims);
+			var claimsIdentity = new ClaimsIdentity(claims, Security.AuthenticationScheme);
 			return new ClaimsPrincipal(claimsIdentity);
 		}
 	}

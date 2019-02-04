@@ -10,10 +10,11 @@ using TaccomStrike.Library.Data.Utility;
 using TaccomStrike.Library.Data.Model;
 using TaccomStrike.Web.API.HubApi;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace TaccomStrike.Web.API.Hubs
 {
-	[Authorize]
+	[EnableCors("AllowSpecificOrigin")]
 	public class ChatHub : Hub
 	{
 		private ChatRoomService chatRoomService;

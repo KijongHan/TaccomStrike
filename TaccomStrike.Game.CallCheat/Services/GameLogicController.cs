@@ -18,8 +18,8 @@ namespace TaccomStrike.Game.CallCheat.Services
 		public List<GameUser> UsersCallingCheat { get; set; }
 
 		public GamePhase CurrentGamePhase { get; set; }
-		public Timer turnTimer { get; set; }
-		public Timer callTimer { get; set; }
+		public Timer TurnTimer { get; set; }
+		public Timer CallTimer { get; set; }
 
 		public List<string> ActionHistory { get; set; }
 
@@ -48,13 +48,13 @@ namespace TaccomStrike.Game.CallCheat.Services
 				}
 
 				gameState.CurrentGamePhase = CurrentGamePhase;
-				if(turnTimer!=null)
+				if(TurnTimer!=null)
 				{
-					gameState.TurnPhaseDuration = turnTimer.Interval;
+					gameState.TurnPhaseDuration = TurnTimer.Interval;
 				}
-				if(callTimer!=null)
+				if(CallTimer!=null)
 				{
-					gameState.CallPhaseDuration = callTimer.Interval;
+					gameState.CallPhaseDuration = CallTimer.Interval;
 				}
 
 				gameState.ActionHistory = ActionHistory;
@@ -149,10 +149,10 @@ namespace TaccomStrike.Game.CallCheat.Services
 				{
 					throw new Exception("Somebody may be cheating");
 				}
-				if(turnTimer!=null)
+				if(TurnTimer!=null)
 				{
-					turnTimer.Stop();
-					turnTimer.Dispose();
+					TurnTimer.Stop();
+					TurnTimer.Dispose();
 				}
 
 				var referenceCard = claims[0];
@@ -244,12 +244,12 @@ namespace TaccomStrike.Game.CallCheat.Services
 		{
 			lock(gameLogicLock)
 			{
-				callTimer = new Timer(5000);
-				callTimer.Elapsed += (object sender, ElapsedEventArgs e) => {
+				CallTimer = new Timer(5000);
+				CallTimer.Elapsed += (object sender, ElapsedEventArgs e) => {
 					lock(gameLogicLock)
 					{
-						callTimer.Stop();
-						callTimer.Dispose();
+						CallTimer.Stop();
+						CallTimer.Dispose();
 						if (CurrentGamePhase==GamePhase.TurnPhase)
 						{
 							return;
@@ -268,8 +268,8 @@ namespace TaccomStrike.Game.CallCheat.Services
 						}
 					}
 				};
-				callTimer.AutoReset = false;
-				callTimer.Start();
+				CallTimer.AutoReset = false;
+				CallTimer.Start();
 				CurrentGamePhase = GamePhase.CallPhase;
 			}
 		}
@@ -288,20 +288,20 @@ namespace TaccomStrike.Game.CallCheat.Services
 			lock(gameLogicLock)
 			{
 				CurrentGamePhase = GamePhase.TurnPhase;
-				turnTimer = new Timer(20000);
-				turnTimer.Elapsed += (object sender, ElapsedEventArgs e) =>
+				TurnTimer = new Timer(20000);
+				TurnTimer.Elapsed += (object sender, ElapsedEventArgs e) =>
 				{
 					lock(gameLogicLock)
 					{
-						turnTimer.Stop();
-						turnTimer.Dispose();
+						TurnTimer.Stop();
+						TurnTimer.Dispose();
 
 						SubmitDefaultClaim();
 						onTurnTimeout(this);
 					}
 				};
-				turnTimer.AutoReset = false;
-				turnTimer.Start();
+				TurnTimer.AutoReset = false;
+				TurnTimer.Start();
 			}
 		}
 

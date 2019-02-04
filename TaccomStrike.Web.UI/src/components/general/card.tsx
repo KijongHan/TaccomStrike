@@ -109,6 +109,7 @@ export interface CardComponentProps
 	front: JSX.Element;
 	back?: JSX.Element;
 	cardStyle: CardComponentStyle;
+	isSelected?: boolean;
 
 	rotationAnimation?: CardRotationAnimation;
 	slideAnimation?: CardSlideAnimation;
@@ -140,6 +141,20 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 
 	getBack = (displayBack: boolean) => 
 	{
+		let topOffset: number;
+		let bottomOffset: number;
+
+		if(isNullOrUndefined(this.props.isSelected) || this.props.isSelected===false)
+		{
+			topOffset = this.state.currentTopOffset;
+			bottomOffset = -1 * this.state.currentTopOffset
+		}
+		else if(this.props.isSelected===true && this.props.hoverAnimation instanceof CardSlideAnimation)
+		{
+			window.clearInterval(this.state.animationHandlerID);
+			topOffset = this.props.hoverAnimation.slideTo;
+			bottomOffset = -1 * this.props.hoverAnimation.slideTo;
+		}
 		if(isNullOrUndefined(this.props.back)) 
 		{
 			return (
@@ -147,8 +162,8 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 					displayBack={displayBack}
 					style={{
 						transform: `rotateY(${180 + this.state.currentRotation}deg)`,
-						top: `${this.state.currentTopOffset}`,
-						bottom: `${-1 * this.state.currentTopOffset}%`
+						top: `${topOffset}%`,
+						bottom: `${bottomOffset}%`
 					}}>
 				</CardBackCover>
 			);
@@ -160,8 +175,8 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 					displayBack={displayBack}
 					style={{
 						transform: `rotateY(${180 + this.state.currentRotation}deg)`,
-						top: `${this.state.currentTopOffset}%`,
-						bottom: `${-1 * this.state.currentTopOffset}%`
+						top: `${topOffset}%`,
+						bottom: `${bottomOffset}%`
 					}}>
 					{this.props.back}
 				</CardBack>
@@ -171,13 +186,27 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 
 	getFront = (displayFront: boolean) => 
 	{
+		let topOffset: number;
+		let bottomOffset: number;
+
+		if(isNullOrUndefined(this.props.isSelected) || this.props.isSelected===false)
+		{
+			topOffset = this.state.currentTopOffset;
+			bottomOffset = -1 * this.state.currentTopOffset
+		}
+		else if(this.props.isSelected===true && this.props.hoverAnimation instanceof CardSlideAnimation)
+		{
+			window.clearInterval(this.state.animationHandlerID);
+			topOffset = this.props.hoverAnimation.slideTo;
+			bottomOffset = -1 * this.props.hoverAnimation.slideTo;
+		}
 		return (
 			<CardFront
 				displayFront={displayFront}
 				style={{
 					transform: `rotateY(${this.state.currentRotation}deg)`,
-					top: `${this.state.currentTopOffset}%`,
-					bottom: `${-1 * this.state.currentTopOffset}%`
+					top: `${topOffset}%`,
+					bottom: `${bottomOffset}%`
 				}}>
 				{this.props.front}
 			</CardFront>

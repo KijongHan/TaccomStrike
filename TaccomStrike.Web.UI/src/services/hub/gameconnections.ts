@@ -1,4 +1,4 @@
-import { HubConnection, HubConnectionBuilder, HubConnectionState } from "@aspnet/signalr";
+import { HubConnection, HubConnectionBuilder, HubConnectionState, IHttpConnectionOptions } from "@aspnet/signalr";
 import { GameLobbyJoin } from "../../models/hub/gamelobbyjoin";
 import { GetGameLobby } from "../../models/rest/getgamelobby";
 import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";

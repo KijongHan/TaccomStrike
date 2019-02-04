@@ -16,10 +16,12 @@ using System.Timers;
 using TaccomStrike.Game.CallCheat.Services;
 using TaccomStrike.Game.CallCheat.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace TaccomStrike.Web.API.Hubs
 {
 	[Authorize]
+	[EnableCors("AllowSpecificOrigin")]
 	public class GameHub : Hub
 	{
 		private IHubContext<GameHub> gameHubContext;

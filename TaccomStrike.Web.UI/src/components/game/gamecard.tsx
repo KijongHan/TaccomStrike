@@ -151,13 +151,10 @@ export class GameCardComponent extends React.Component<GameCardComponentProps, G
 
         let cardStyle = this.props.gameCardComponentStyle.cardComponentStyle
         let hoverAnimation = this.props.gameCardComponentStyle.cardHoverAnimation
-        if(this.props.isSelected) 
-        {
-            cardStyle.displayStyle.topPercentage = -10;
-            hoverAnimation = null;
-        }
+        
         return (
             <CardComponent
+                isSelected={this.props.isSelected}
                 front={gameCardFace}
                 cardStyle={cardStyle}
                 hoverAnimation={hoverAnimation}>
