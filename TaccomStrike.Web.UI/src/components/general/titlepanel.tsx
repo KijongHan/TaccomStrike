@@ -4,6 +4,7 @@ import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card
 import styled from "styled-components"
 import { DisplayStyle } from "../../styles/displaystyle";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
+import { ColorStyle } from "../../styles/colorstyle";
 
 export class TitlePanelComponentProps
 {
@@ -30,11 +31,11 @@ const TitleCharacter = styled.div`
 	line-height: ${(p: TitlePanelStyle) => p.displayStyle.getHeightString()}
 	text-align: center;
 
-	color: rgba(255, 255, 255, 0.95);
-	background-color: rgba(0, 0, 0, 0.35);
-	-webkit-box-shadow: -4px 4px 1px 0px rgba(0,0,0,0.55);
-	-moz-box-shadow: -4px 4px 1px 0px rgba(0,0,0,0.55);
-	box-shadow: -4px 4px 1px 0px rgba(0,0,0,0.55);
+	color: ${ColorStyle.pallet2};
+	background-color: ${ColorStyle.pallet5}
+	-webkit-box-shadow: -2px 2px 1px 0px ${ColorStyle.pallet1};
+	-moz-box-shadow: -2px 2px 1px 0px ${ColorStyle.pallet1};
+	box-shadow: -2px 2px 1px 0px ${ColorStyle.pallet1};
 `;
 
 const TitlePanel = styled.div`

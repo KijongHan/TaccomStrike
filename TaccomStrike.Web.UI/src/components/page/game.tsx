@@ -12,9 +12,10 @@ import { GameCardComponent, GameCardComponentStyle } from "../game/gamecard";
 import { GameBoardComponent, GameBoardComponentStyle, GameBoardSeatComponentStyle } from "../game/gameboard";
 import { GameActionComponent, GameActionComponentStyle } from "../game/gameaction";
 import { stat } from "fs";
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined, isNull } from "util";
 import { GetGameClaim } from "../../models/rest/getgameclaim";
 import { GetGameCheat } from "../../models/rest/getgamecheat";
+import { ButtonComponent, ButtonComponentStyle } from "../general/button";
 
 const GamePage = styled.div`
     position: fixed;
@@ -37,6 +38,17 @@ const GameUserHandPanel = styled.div`
     position: relative;
 `;
 
+const GameFinishPanel = styled.div`
+    position: fixed;
+    height: 30%;
+    width: 30%;
+    color: white;
+    background-color: rgba(0, 0, 0, 1);
+    margin-left: 35%;
+    top: 30%;
+    padding: 10px 10px 10px 10px;
+`;
+
 export class GamePageComponentState extends BasePageComponentState 
 {
     selectedCards: GetGameCard[];
@@ -47,9 +59,11 @@ export interface GamePageComponentProps extends BasePageComponentProps
 {
     gameState: GetGameState;
     gameCheat: GetGameCheat;
+    gameWinner: GetGameUser;
     
     submitClaimButtonClickHandler: (claims: GetGameCard[], actual: GetGameCard[]) => void;
     callCheatButtonClickHandler: () => void;
+    finishButtonClickHandler: () => void;
 }
 
 export class GamePageComponent extends BasePageComponent<GamePageComponentProps, GamePageComponentState> 
@@ -66,6 +80,91 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
     }
 
     render() 
+    {
+        let hand = this.getHandComponent();
+        let gameBoard = this.getBoardComponent();
+        let gameAction = this.getActionComponent();
+        let gameFinish = this.getFinishComponent();
+
+        return (
+            <GamePage>
+                <GameBoardPanel>
+                    {gameBoard}
+                    {gameAction}
+                </GameBoardPanel>
+                {hand}
+                {gameFinish}
+            </GamePage>
+        );
+    }
+
+    getFinishComponent = () => 
+    {
+        if(!isNullOrUndefined(this.props.gameWinner)) 
+        {
+            let style = new ButtonComponentStyle();
+            style.displayStyle = new DisplayStyle({
+                position: Position.absolute,
+                bottomPixels: 10,
+                widthPercentage: 80,
+                marginLeftPercentage: 10,
+                heightPercentage: 25
+            });
+            return (
+                <GameFinishPanel>
+                    {`The game has ended. The winner is ${this.props.gameWinner.user.username}`}
+                    <ButtonComponent
+                        buttonText="Finish"
+                        buttonComponentStyle={style}
+                        buttonClickHandler={this.props.finishButtonClickHandler}>
+                    </ButtonComponent>
+                </GameFinishPanel>
+            );
+        }
+    }
+
+    getActionComponent = () => 
+    {
+        let gameActionComponentStyle = new GameActionComponentStyle();
+        gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.fixed;
+        gameActionComponentStyle.cardComponentStyle.displayStyle.heightPercentage = 70;
+        gameActionComponentStyle.cardComponentStyle.displayStyle.widthPercentage = 25;
+        gameActionComponentStyle.cardComponentStyle.displayStyle.topPixels = 0;
+        gameActionComponentStyle.cardComponentStyle.displayStyle.rightPixels = 0;
+        return (
+            <GameActionComponent
+                loggedInUser={this.props.loggedInUser}
+                gameState={this.props.gameState}
+                gameCheat={this.props.gameCheat}
+                gameActionComponentStyle={gameActionComponentStyle}
+                submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}
+                claimRankSelectedOnChangeHandler={this.claimRankSelectedOnChangeHandler}
+                callCheatButtonClickHandler={this.props.callCheatButtonClickHandler}>
+            </GameActionComponent>
+        );
+    }
+
+    getBoardComponent = () => 
+    {
+        let gameBoardComponentStyle = new GameBoardComponentStyle();
+        gameBoardComponentStyle.displayStyle.widthPercentage = 12;
+        gameBoardComponentStyle.displayStyle.heightPercentage = 30;
+        let gameBoardSeatComponentStyle = new GameBoardSeatComponentStyle();
+        gameBoardSeatComponentStyle.displayStyle.widthPercentage = 90;
+        gameBoardSeatComponentStyle.displayStyle.heightPercentage = 75;
+
+        let gameBoard = (
+            <GameBoardComponent
+                loggedInUser={this.props.loggedInUser}
+                gameState={this.props.gameState}
+                gameBoardComponentStyle={gameBoardComponentStyle}
+                gameBoardSeatComponentStyle={gameBoardSeatComponentStyle}>
+            </GameBoardComponent>
+        );
+        return gameBoard;
+    }
+
+    getHandComponent = () => 
     {
         let leftPixels = 0;
         let hand = this.props.gameState.hand.map((value: GetGameCard, index: number) => {
@@ -114,44 +213,11 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                 </GameCardComponent>
             );
         });
-
-        let gameBoardComponentStyle = new GameBoardComponentStyle();
-        gameBoardComponentStyle.displayStyle.widthPercentage = 12;
-        gameBoardComponentStyle.displayStyle.heightPercentage = 30;
-        let gameBoardSeatComponentStyle = new GameBoardSeatComponentStyle();
-        gameBoardSeatComponentStyle.displayStyle.widthPercentage = 90;
-        gameBoardSeatComponentStyle.displayStyle.heightPercentage = 75;
-
-        let gameActionComponentStyle = new GameActionComponentStyle();
-        gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.fixed;
-        gameActionComponentStyle.cardComponentStyle.displayStyle.heightPercentage = 70;
-        gameActionComponentStyle.cardComponentStyle.displayStyle.widthPercentage = 25;
-        gameActionComponentStyle.cardComponentStyle.displayStyle.topPixels = 0;
-        gameActionComponentStyle.cardComponentStyle.displayStyle.rightPixels = 0;
         return (
-            <GamePage>
-                <GameBoardPanel>
-                    <GameBoardComponent
-                        loggedInUser={this.props.loggedInUser}
-                        gameState={this.props.gameState}
-                        gameBoardComponentStyle={gameBoardComponentStyle}
-                        gameBoardSeatComponentStyle={gameBoardSeatComponentStyle}>
-                    </GameBoardComponent>
-                    <GameActionComponent
-                        loggedInUser={this.props.loggedInUser}
-                        gameState={this.props.gameState}
-                        gameCheat={this.props.gameCheat}
-                        gameActionComponentStyle={gameActionComponentStyle}
-                        submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}
-                        claimRankSelectedOnChangeHandler={this.claimRankSelectedOnChangeHandler}
-                        callCheatButtonClickHandler={this.props.callCheatButtonClickHandler}>
-                    </GameActionComponent>
-                </GameBoardPanel>
-                <GameUserHandPanel>
-                    {hand}
-                </GameUserHandPanel>
-            </GamePage>
-        );
+            <GameUserHandPanel>
+                {hand}
+            </GameUserHandPanel>
+        )
     }
 
     gameCardClickHandler = (gameCard: GetGameCard) => 

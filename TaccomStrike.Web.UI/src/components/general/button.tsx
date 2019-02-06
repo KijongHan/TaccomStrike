@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
 import { instanceOf } from "prop-types";
 import { isNullOrUndefined } from "util";
+import { ColorStyle } from "../../styles/colorstyle";
 
 const ButtonText = styled.p`
 	margin: auto;
@@ -12,11 +13,11 @@ const ButtonText = styled.p`
 const ButtonElement = styled.div`
 	font-weight: bold;
 	text-align: center;
-	background-color: rgba(255, 255, 255, 0.1);
-	color: rgba(255, 255, 255, 0.75);
-	-webkit-box-shadow: 0px 0px 1px 1px rgba(255,255,255,0.7);
-	-moz-box-shadow: 0px 0px 1px 1px rgba(255,255,255,0.7);
-	box-shadow: 0px 0px 1px 1px rgba(255,255,255,0.7);
+	background-color: ${ColorStyle.pallet4};
+	color: ${ColorStyle.pallet2};
+	-webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet2};
+	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet2};
+	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet2};
 	border-radius: 2px;
 
 	float: ${(p: ButtonComponentStyle) => p.displayStyle.getFloatString()};
@@ -30,7 +31,7 @@ const ButtonElement = styled.div`
 	display: flex;
 
 	&:hover {
-		background-color: rgba(255, 255, 255, 0.25);
+		background-color: ${ColorStyle.pallet5};
 		cursor: pointer;
 	}
 `;
@@ -38,11 +39,11 @@ const ButtonElement = styled.div`
 const DisabledButton = styled.div`
 	font-weight: bold;
 	text-align: center;
-	background-color: rgba(255, 255, 255, 0.25);
-	color: rgba(255, 255, 255, 0.75);
-	-webkit-box-shadow: 0px 0px 1px 1px rgba(255,255,255,0.7);
-	-moz-box-shadow: 0px 0px 1px 1px rgba(255,255,255,0.7);
-	box-shadow: 0px 0px 1px 1px rgba(255,255,255,0.7);
+	background-color: ${ColorStyle.pallet5};
+	color: ${ColorStyle.pallet2};
+	-webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet2};
+	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet2};
+	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet2};
 	border-radius: 2px;
 
 	float: ${(p: ButtonComponentStyle) => p.displayStyle.getFloatString()};

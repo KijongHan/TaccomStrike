@@ -52,7 +52,7 @@ namespace TaccomStrike.Web.API.Hubs
 				var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
 
 				gameLobby.GameLogicController.SubmitClaim(Context.User, claims.GetGameCards(), actual.GetGameCards());
-				gameLobby.GameLogicController.CallPhase(OnGameCheat, OnEndTurn);
+				gameLobby.GameLogicController.CallPhase(OnGameCheat, OnEndTurn, OnGameFinish);
 
 				foreach (var gameUser in gameLobby.Players)
 				{
@@ -105,7 +105,7 @@ namespace TaccomStrike.Web.API.Hubs
 
 		public void OnTurnTimeout(GameLogicController gameLogicController)
 		{
-			gameLogicController.CallPhase(OnGameCheat, OnEndTurn);
+			gameLogicController.CallPhase(OnGameCheat, OnEndTurn, OnGameFinish);
 
 			foreach (var gameUser in gameLogicController.GameUsers)
 			{
@@ -117,6 +117,21 @@ namespace TaccomStrike.Web.API.Hubs
 					GameState = new GetGameState(gameState)
 				};
 				gameHubContext.Clients.Client(connection).GameClaim(apiObject);
+			}
+		}
+
+		public void OnGameFinish(GameLogicController gameLogicController, GameUser winner)
+		{
+			foreach (var gameUser in gameLogicController.GameUsers)
+			{
+				var gameState = gameLogicController.GetGameState(gameUser.UserPrincipal);
+				var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser.UserPrincipal);
+
+				var apiObject = new HubApi.GameFinish
+				{
+					Winner = new GetGameUser(winner)
+				};
+				gameHubContext.Clients.Client(connection).GameFinish(apiObject);
 			}
 		}
 

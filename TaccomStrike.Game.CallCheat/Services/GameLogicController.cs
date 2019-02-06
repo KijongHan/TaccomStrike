@@ -240,7 +240,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 			SubmitClaim(currentTurnUser.UserPrincipal, defaultClaims, defaultActual);
 		}
 
-		public void CallPhase(Action<GameLogicController, GameCheat> onGameCheat, Action<GameLogicController> onEndTurn)
+		public void CallPhase(Action<GameLogicController, GameCheat> onGameCheat, Action<GameLogicController> onEndTurn, Action<GameLogicController, GameUser> onGameFinish)
 		{
 			lock(gameLogicLock)
 			{
@@ -258,13 +258,27 @@ namespace TaccomStrike.Game.CallCheat.Services
 						if(UsersCallingCheat.Count>0)
 						{
 							var gameCheat = GameCheat();
-							EndTurn();
-							onGameCheat(this, gameCheat);
+							if(IsVictory())
+							{
+								onGameFinish(this, GetCurrentPlayerTurn());
+							}
+							else
+							{
+								EndTurn();
+								onGameCheat(this, gameCheat);
+							}
 						}
 						else
 						{
-							EndTurn();
-							onEndTurn(this);
+							if (IsVictory())
+							{
+								onGameFinish(this, GetCurrentPlayerTurn());
+							}
+							else
+							{
+								EndTurn();
+								onEndTurn(this);
+							}
 						}
 					}
 				};

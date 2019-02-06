@@ -49,6 +49,11 @@ namespace TaccomStrike.Web.API
 			return hubConnection.SendAsync(GameHubApiKeys.GameSubmitClaim, apiObject);
 		}
 
+		public static Task GameFinish(this IClientProxy hubConnection, GameFinish apiObject)
+		{
+			return hubConnection.SendAsync(GameHubApiKeys.GameFinish, apiObject);
+		}
+
 		public static Task GameEndTurn(this IClientProxy hubConnection, GameEndTurn apiObject)
 		{
 			return hubConnection.SendAsync(GameHubApiKeys.GameEndTurn, apiObject);

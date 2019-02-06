@@ -8,6 +8,7 @@ import { GameLobbyStartGame } from "../../models/hub/gamelobbystart";
 import { GetGameCard } from "../../models/rest/getgamecard";
 import { GameClaim } from "../../models/hub/gameclaim";
 import { GameCallCheat } from "../../models/hub/gamecallcheat";
+import { GameFinish } from "../../models/hub/gamefinish";
 
 export class GameConnectionsService
 {
@@ -18,6 +19,7 @@ export class GameConnectionsService
     static gameLobbyJoinHandlers: ((gameLobbyJoin: GameLobbyJoin) => void)[] = [];
     static gameLobbySendMessageHandlers: ((gameLobbySendMessage: GameLobbySendMessage) => void)[] = [];
 
+    static gameFinishHandlers: ((gameFinish: GameFinish) => void)[] = [];
     static gameClaimHandlers: ((gameClaim: GameClaim) => void)[] = [];
     static gameCallCheatHandlers: ((gameClaim: GameClaim) => void)[] = [];
 
@@ -53,6 +55,7 @@ export class GameConnectionsService
 
         GameConnectionsService.gameClaimHandlers = [];
         GameConnectionsService.gameCallCheatHandlers = [];
+        GameConnectionsService.gameFinishHandlers = [];
     }
 
     static initializeGameEventHandlers = () => 
@@ -102,6 +105,14 @@ export class GameConnectionsService
             GameConnectionsService
                 .gameCallCheatHandlers
                 .forEach((handler: (gameCallCheat: GameCallCheat) => void, index: number) => {
+                    handler(apiObject);
+                });
+        });
+        GameConnectionsService.gameConnection.on("GameFinish", (apiObject: GameFinish) => {
+            console.log(apiObject);
+            GameConnectionsService
+                .gameFinishHandlers
+                .forEach((handler: (gameFinish: GameFinish) => void, index: number) => {
                     handler(apiObject);
                 });
         });
@@ -213,6 +224,20 @@ export class GameConnectionsService
             });
 
             GameConnectionsService.gameCallCheatHandlers.push(gameCallCheatHandler);
+    }
+
+    static addGameFinishHandler = (gameFinishHandler: (gameFinish: GameFinish) => void) => 
+    {
+        GameConnectionsService
+            .gameFinishHandlers
+            .forEach((handler: (gameFinish: GameFinish) => void, index: number) => {
+                if(handler === gameFinishHandler) 
+                {
+                    return;
+                }
+            });
+
+            GameConnectionsService.gameFinishHandlers.push(gameFinishHandler);
     }
 
     static gameLobbyStartGame(gameLobbyId: number) 

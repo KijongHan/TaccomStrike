@@ -7,6 +7,7 @@ import { debug } from "util";
 import { LabelledInputComponent, LabelledInputComponentStyle } from "./labelledinput";
 import { PostUserLogin } from "../../models/rest/postuserlogin";
 import { ComboButtonComponent, ComboButtonItem, ComboButtonComponentStyle } from "./combobutton";
+import { ColorStyle } from "../../styles/colorstyle";
 
 export class LoginComponentProps
 {
@@ -36,7 +37,7 @@ export class LoginComponentStyle
 const LoginComponentElement = styled.div`
 	height: 100%;
 	width: 100%;
-	background-color: rgba(0, 0, 0, 0.88);
+	background-color: ${ColorStyle.pallet3};
 `;
 
 const ButtonsPanel = styled.div`

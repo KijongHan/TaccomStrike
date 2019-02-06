@@ -3,6 +3,7 @@
 import styled from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
 import { isNullOrUndefined } from "util";
+import { ColorStyle } from "../../styles/colorstyle";
 
 const LabelledInputComponentElement = styled.div`
 	width: ${(p: LabelledInputComponentStyle) => p.displayStyle.getWidthString()};
@@ -12,7 +13,8 @@ const LabelledInputComponentElement = styled.div`
 const LabelComponentElement = styled.div`
 	width: 40%;
 	padding-left: 5px;
-	background-color: rgba(255, 255, 255, 0.65);
+	background-color: ${ColorStyle.pallet2};;
+	color: ${ColorStyle.pallet1};
 	font-size: 1.25em;
 `;
 
@@ -21,7 +23,8 @@ const InputComponentElement = styled.input`
     background-color: rgba(255, 255, 255, 0.5);
     border-style: solid;
     border-width: 2px;
-    border-color: rgba(255, 255, 255, 0.65);
+	border-color: ${ColorStyle.pallet2};
+	color: ${ColorStyle.pallet1};
     font-size: 1.2em;
 `;
 

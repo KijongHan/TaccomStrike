@@ -18,6 +18,7 @@ import { GameClaim } from "../../models/hub/gameclaim";
 import { GameCallCheat } from "../../models/hub/gamecallcheat";
 import { GetGameUser } from "../../models/rest/getgameuser";
 import { GetGameCheat } from "../../models/rest/getgamecheat";
+import { GameFinish } from "../../models/hub/gamefinish";
 
 export interface PlayPageComponentProps extends BasePageComponentProps {}
 
@@ -31,6 +32,7 @@ export class PlayPageComponentState extends BasePageComponentState
     currentGameLobbyMessages: GameLobbySendMessage[];
     currentGameState: GetGameState;
     currentGameCheat: GetGameCheat;
+    currentGameWinner: GetGameUser;
 }
 
 export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps, PlayPageComponentState> 
@@ -43,6 +45,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
             currentGameLobby: null,
             currentGameState: null,
             currentGameCheat: null,
+            currentGameWinner: null,
             currentGameLobbyMessages: [],
             pageStyle: null,
 
@@ -61,6 +64,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                 GameConnectionsService.addGameLobbyLeaveGameHandler(this.gameLobbyLeaveGameHandler);
                 GameConnectionsService.addGameClaimHandler(this.gameClaimHandler);
                 GameConnectionsService.addGameCallCheatHandler(this.gameCallCheatHandler);
+                GameConnectionsService.addGameFinishHandler(this.gameFinishHandler);
             })
             .catch(() => {
                 this.props.history.push("/");
@@ -105,8 +109,10 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     loggedInUser={this.props.loggedInUser}
                     gameState={this.state.currentGameState}
                     gameCheat={this.state.currentGameCheat}
+                    gameWinner={this.state.currentGameWinner}
                     submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}
-                    callCheatButtonClickHandler={this.callCheatButtonClickHandler}>
+                    callCheatButtonClickHandler={this.callCheatButtonClickHandler}
+                    finishButtonClickHandler={this.finishButtonClickHandler}>
                 </GamePageComponent>
             );
         }
@@ -244,6 +250,20 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
         this.setState({
             currentGameCheat: gameCallCheat.gameCheat,
             currentGameState: gameCallCheat.gameState
+        });
+    }
+
+    gameFinishHandler = (gameFinish: GameFinish) => 
+    {
+        this.setState({
+            currentGameWinner: gameFinish.winner
+        });
+    }
+
+    finishButtonClickHandler = () => 
+    {
+        this.setState({
+            currentGameState: null
         });
     }
 }
