@@ -17,6 +17,7 @@ import { GameLobbyStartGame } from "../../models/hub/gamelobbystart";
 import { NavbarComponent } from "../general/navbar";
 
 const LobbyPage = styled.div`
+    width: 100%;
 	height: 100%;
 	font-family: 'Cormorant Upright', serif;
 `;

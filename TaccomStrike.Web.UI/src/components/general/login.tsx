@@ -38,6 +38,9 @@ const LoginComponentElement = styled.div`
 	height: 100%;
 	width: 100%;
 	background-color: ${ColorStyle.pallet3};
+	-webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
 `;
 
 const ButtonsPanel = styled.div`

@@ -2,9 +2,9 @@ import * as React from "react";
 import styled from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
 import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
+import { ColorStyle } from "../../styles/colorstyle";
 
 const Navbar = styled.div`
-    overflow: hidden;
     display: inline-block;
     width: ${(props: NavbarComponentStyle) => props.displayStyle.getWidthString()};
     height: ${(props: NavbarComponentStyle) => props.displayStyle.getHeightString()};
@@ -16,9 +16,12 @@ const PlayNavbarItem = styled.div`
     width: 100%;
     height: 100%;
     font-size: 1.5em;
-    color: white;
-    background-color: black;
+    color: ${ColorStyle.pallet2};
+    background-color: ${ColorStyle.pallet5};
     text-align: center;
+    -webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
+	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
+	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
     line-height: ${(prop: CardComponentStyle) => prop.displayStyle.getHeightString()}
 `;
 
@@ -26,9 +29,12 @@ const CommunityNavbarItem = styled.div`
     width: 100%;
     height: 100%;
     font-size: 1.5em;
-    color: white;
-    background-color: black;
+    color: ${ColorStyle.pallet2};
+    background-color: ${ColorStyle.pallet5};
     text-align: center;
+    -webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
+	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
+	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
     line-height: ${(prop: CardComponentStyle) => prop.displayStyle.getHeightString()}
 `;
 
@@ -36,9 +42,12 @@ const NewsNavbarItem = styled.div`
     width: 100%;
     height: 100%;
     font-size: 1.5em;
-    color: white;
-    background-color: black;
+    color: ${ColorStyle.pallet2};
+    background-color: ${ColorStyle.pallet5};
     text-align: center;
+    -webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
+	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
+	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
     line-height: ${(prop: CardComponentStyle) => prop.displayStyle.getHeightString()}
 `;
 

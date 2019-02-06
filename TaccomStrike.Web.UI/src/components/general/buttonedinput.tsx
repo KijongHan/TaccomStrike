@@ -3,6 +3,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
 import { ButtonComponent, ButtonComponentStyle } from "./button";
+import { ColorStyle } from "../../styles/colorstyle";
 
 const ButtonedInputComponentElement = styled.div`
 	width: ${(p: ButtonedInputComponentPanelStyle) => p.displayStyle.getWidthString()};
@@ -12,7 +13,7 @@ const ButtonedInputComponentElement = styled.div`
     overflow: auto;
     border-style: solid;
     border-width: 2px;
-    border-color: rgba(255, 255, 255, 0.65);
+    border-color: ${ColorStyle.pallet2};
 `;
 
 const InputComponentElement = styled.input`
@@ -20,6 +21,7 @@ const InputComponentElement = styled.input`
     float: ${(p: InputComponentStyle) => p.displayStyle.getFloatString()};
     height: ${(p: ButtonedInputComponentPanelStyle) => p.displayStyle.getHeightString()};
     background-color: rgba(255, 255, 255, 0.5);
+    color: ${ColorStyle.pallet1};
     font-size: 1.2em;
     border: none;
 	padding: 0 0 0 0;

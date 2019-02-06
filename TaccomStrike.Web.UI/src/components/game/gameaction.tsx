@@ -12,11 +12,12 @@ import { LabelledListComponent, ListItem, LabelledListComponentStyle } from "../
 import { LabelledInputComponentStyle } from "../general/labelledinput";
 import { CardRank, GamePhase } from "../../services/game/gameservice";
 import { GetGameCheat } from "../../models/rest/getgamecheat";
+import { ColorStyle } from "../../styles/colorstyle";
 
 const GameAction = styled.div`
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 1);
+    background-color: ${ColorStyle.pallet3};
 `;
 
 const GameActionHistory = styled.div`
@@ -24,11 +25,12 @@ const GameActionHistory = styled.div`
     width: 98%;
     margin: auto;
     overflow-y: auto;
-    background-color: rgba(200, 200, 200);
+    background-color: rgba(255, 255, 255, 0.2);
 `;
 
 const GameActionHistoryItem = styled.p`
     padding-left: 5%;
+    color: ${ColorStyle.pallet1};
 `;
 
 const GamePhaseTimer = styled.div`
@@ -42,7 +44,7 @@ const GamePhaseTimerText = styled.p`
     text-align: center;
     margin: auto;
     font-size: 1.3em;
-    color: white;
+    color: ${ColorStyle.pallet2};
 `;
 
 export class GameActionComponentProps 

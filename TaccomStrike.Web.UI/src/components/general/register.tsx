@@ -4,6 +4,7 @@ import { ButtonComponent, ButtonComponentStyle } from "./button";
 import styled from "styled-components";
 import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
 import { LabelledInputComponentStyle, LabelledInputComponent } from "./labelledinput";
+import { ColorStyle } from "../../styles/colorstyle";
 
 export interface RegisterComponentProps
 {
@@ -27,7 +28,10 @@ export class RegisterComponentStyle
 const RegisterComponentElement = styled.div`
 	height: 100%;
 	width: 100%;
-	background-color: rgba(0, 0, 0, 0.88);
+	background-color: ${ColorStyle.pallet3};
+	-webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
 `;
 
 export class RegisterComponent extends React.Component<RegisterComponentProps, RegisterComponentState>

@@ -4,11 +4,15 @@ import { ButtonComponent, ButtonComponentStyle } from "./button";
 import styled from "styled-components";
 import { GetGameLobby } from "../../models/rest/getgamelobby";
 import { DisplayStyle } from "../../styles/displaystyle";
+import { ColorStyle } from "../../styles/colorstyle";
 
 const GameLobbies = styled.div`
     height: 100%;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.88);
+    background-color: ${ColorStyle.pallet3};
+    -webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
 `;
 
 const ButtonsPanel = styled.div`
@@ -23,21 +27,22 @@ const LobbyListItemsPanel = styled.div`
     height: ${(p: LobbyListItemsPanelStyle) => p.displayStyle.getHeightString()};
     padding: ${(p: LobbyListItemsPanelStyle) => p.displayStyle.getPaddingString()};
     overflow-y: scroll;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
 `;
 
 const LobbyListItem = styled.div`
     height: 50px;
     width: 98%;
     margin-left: 1%;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: ${ColorStyle.pallet2};
     border-style: solid;
     border-width: 1px;
-    border-color: rgba(0, 0, 0, 0.1);
+    border-color: ${ColorStyle.pallet2};
     display: inline-block
+    color: ${ColorStyle.pallet1};
 
     &:hover {
-		background-color: rgba(255, 255, 255, 0.25);
+		background-color: rgba(255, 255, 255, 0.2);
 		cursor: pointer;
 	}
 `;

@@ -16,17 +16,27 @@ import { isNullOrUndefined, isNull } from "util";
 import { GetGameClaim } from "../../models/rest/getgameclaim";
 import { GetGameCheat } from "../../models/rest/getgamecheat";
 import { ButtonComponent, ButtonComponentStyle } from "../general/button";
+import { ColorStyle } from "../../styles/colorstyle";
 
 const GamePage = styled.div`
     position: fixed;
     height: 100%;
     width: 100%;
-	font-family: 'Cormorant Upright', serif;
+    font-family: 'Cormorant Upright', serif;
+`;
+
+const GamePageInner = styled.div`
+    height: 96%;
+    width: 98%;
+    margin-top: 1%;
+    margin-left: 1%;
+    background-color: ${ColorStyle.pallet2};
 `;
 
 const GameBoardPanel = styled.div`
     width: 100%;
     height: 75%;
+    position: relative;
 `;
 
 const GameUserHandPanel = styled.div`
@@ -88,12 +98,14 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
 
         return (
             <GamePage>
-                <GameBoardPanel>
-                    {gameBoard}
-                    {gameAction}
-                </GameBoardPanel>
-                {hand}
-                {gameFinish}
+                <GamePageInner>
+                    <GameBoardPanel>
+                        {gameBoard}
+                        {gameAction}
+                    </GameBoardPanel>
+                    {hand}
+                    {gameFinish}
+                </GamePageInner>
             </GamePage>
         );
     }
@@ -126,8 +138,8 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
     getActionComponent = () => 
     {
         let gameActionComponentStyle = new GameActionComponentStyle();
-        gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.fixed;
-        gameActionComponentStyle.cardComponentStyle.displayStyle.heightPercentage = 70;
+        gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.absolute;
+        gameActionComponentStyle.cardComponentStyle.displayStyle.heightPercentage = 100;
         gameActionComponentStyle.cardComponentStyle.displayStyle.widthPercentage = 25;
         gameActionComponentStyle.cardComponentStyle.displayStyle.topPixels = 0;
         gameActionComponentStyle.cardComponentStyle.displayStyle.rightPixels = 0;

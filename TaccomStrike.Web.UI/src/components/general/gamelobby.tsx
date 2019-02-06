@@ -11,6 +11,7 @@ import { ButtonedInputComponentStyle, ButtonedInputComponent } from "./buttonedi
 import { DisplayStyle } from "../../styles/displaystyle";
 import { GetChatMessage } from "../../models/rest/getchatmessage";
 import { GetUser } from "../../models/rest/getuser";
+import { ColorStyle } from "../../styles/colorstyle";
 
 const ButtonsPanel = styled.div`
     overflow: auto;
@@ -24,16 +25,22 @@ const ButtonsPanel = styled.div`
 const CreateGameLobbyElement = styled.div`
     height: 100%;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.88);
+    background-color: ${ColorStyle.pallet3};
     overflow: auto;
+    -webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
 `;
 
 const CurrentGameLobbyElement = styled.div`
     height: 100%;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.88);
+    background-color: ${ColorStyle.pallet3};
     padding: 5px 5px 5px 5px;
     overflow: auto;
+    -webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
 `;
 
 const GameLobbyContentPanel = styled.div`
@@ -44,33 +51,35 @@ const GameLobbyContentPanel = styled.div`
 `;
 
 const GameLobbyPlayersPanel = styled.div`
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.2);
     float: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getFloatString()};
     height: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getHeightString()};
     width: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getWidthString()};
     border-style: solid;
     border-width: 1px;
-    border-color: rgba(0, 0, 0, 0.88);
+    border-color: ${ColorStyle.pallet2};
     overflow-y: scroll;
 `;
 
 const GameLobbyPlayerItem = styled.div`
-    font-size: 1.2em;
+    font-size: 1.25em;
+    font-weight: bold;
     height: 40px;
     padding: 5px 5px 5px 5px;
     border-style: solid;
     border-width: 1px;
-    border-color: rgba(100, 100, 100, 0.88);
+    color: ${ColorStyle.pallet1};
+    border-color: ${ColorStyle.pallet2};
 `;
 
 const GameLobbyMessagesPanel = styled.div`
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.2);
     float: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getFloatString()};
     height: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getHeightString()};
     width: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getWidthString()};
     border-style: solid;
     border-width: 1px;
-    border-color: rgba(0, 0, 0, 0.88);
+    border-color: ${ColorStyle.pallet2};
 `;
 
 const GameLobbyMessageItem = styled.div`
@@ -78,6 +87,7 @@ const GameLobbyMessageItem = styled.div`
     width: 100%;
     font-size: 1.1em;
     padding: 1px 7px 1px 7px;
+    color: ${ColorStyle.pallet1};
 `;
 
 const GameLobbyMessagePlayerItem = styled.div`

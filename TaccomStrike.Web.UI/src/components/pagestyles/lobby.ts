@@ -73,8 +73,9 @@ export class LobbyPageStyle extends BasePageStyle
         
         style.navbarComponentStyle = {
             displayStyle: new DisplayStyle({
-                widthPercentage: 100,
+                widthPercentage: 95,
                 marginLeftPercentage: 2,
+                paddingLeftPixels: 10,
                 paddingTopPixels: 17,
                 paddingBottomPixels: 17
             })
