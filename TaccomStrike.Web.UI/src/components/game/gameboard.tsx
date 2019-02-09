@@ -6,9 +6,12 @@ import { GetGameState } from "../../models/rest/getgamestate";
 import { GetGameUser } from "../../models/rest/getgameuser";
 import { isNullOrUndefined } from "util";
 import { GetGameClaim } from "../../models/rest/getgameclaim";
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 
-const PersonIcon = require("../../res/person.png");
+const BlueGameUserIcon = require("../../res/blue_gameuser.svg");
+const YellowGameUserIcon = require("../../res/yellow_gameuser.svg");
+const GreenGameUserIcon = require("../../res/green_gameuser.svg");
+const PurpleGameUserIcon = require("../../res/purple_gameuser.svg");
+const ArrowDownIcon = require("../../res/arrowdown.png");
 const CardHandIcon = require("../../res/card_hand.png");
 
 const ClaimPanel = styled.div`
@@ -39,7 +42,6 @@ const GameBoardPlayerPanel = styled.div`
 const GameBoardPlayer = styled.div`
     background-color: white;
     background-size: 100% 100%;
-    background-image: url(${PersonIcon});
     width: 100%;
     height: 100%;
 `;
@@ -64,10 +66,92 @@ const GameBoardPlayerCardHandText = styled.p`
     text-align: center;
 `;
 
+const GameBoardPlayerCardCountChangeAnimation1 = keyframes`
+    0% {
+        bottom: 20%;
+        visibility: visible;
+    }
+
+    60% {
+        bottom: 35%;
+    }
+
+    80% {
+        bottom: 35%;
+        opacity: 1;
+    }
+
+    100% {
+        bottom: 35%;
+        opacity: 0;
+        visibility: hidden;
+    }
+`;
+
+const GameBoardPlayerCardCountChange1 = styled.div`
+    position: absolute;
+    text-align: center;
+    bottom: 20%;
+    animation: ${GameBoardPlayerCardCountChangeAnimation1} 1.5s linear forwards;
+`;
+
+const GameBoardPlayerCardCountChangeAnimation2 = keyframes`
+    0% {
+        top: -10%;
+        visibility: visible;
+    }
+
+    60% {
+        top: -25%;
+    }
+
+    80% {
+        top: -25%;
+        opacity: 1;
+    }
+
+    100% {
+        top: -25%;
+        opacity: 0;
+        visibility: hidden;
+    }
+`;
+
+const GameBoardPlayerCardCountChange2 = styled.div`
+    position: absolute;
+    text-align: center;
+    top: -10%;
+    animation: ${GameBoardPlayerCardCountChangeAnimation2} 1.5s linear forwards;
+`;
+
 const GameBoardVacantSeat = styled.div`
     position: absolute;
     width: ${(p: GameBoardSeatComponentStyle) => p.displayStyle.getWidthString()};
     height: ${(p: GameBoardSeatComponentStyle) => p.displayStyle.getHeightString()};
+`;
+
+const GameUserSelectionAnimation = keyframes`
+    0% {
+        top: -27%;
+    }
+
+    50% {
+        top: -34%;
+    }
+
+    100% {
+        top: -27%;
+    }
+`;
+
+const GameUserSelectedIcon = styled.div`
+    position: absolute;
+    top: -27%;
+    height: 25%;
+    width: 25%;
+    background-size: 100% 100%;
+    background-image: url(${ArrowDownIcon});
+    animation: ${GameUserSelectionAnimation} 1s linear infinite;
 `;
 
 export class GameBoardComponentProps 
@@ -118,15 +202,36 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
         let playerOne: JSX.Element;
         if(gameUserIDToGameUserMapping.has(1))
         {
+            let selection: JSX.Element;
+            if(this.props.gameState.userTurn.gameUserID===1) 
+            {
+                selection = (
+                    <GameUserSelectedIcon></GameUserSelectedIcon>
+                );
+            }
+
+            let handCountChange: JSX.Element;
+            if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0 && this.props.gameState.claims[this.props.gameState.claims.length-1].claimUser.gameUserID===1) 
+            {
+                handCountChange = (
+                    <GameBoardPlayerCardCountChange1>
+                        - {this.props.gameState.claims[this.props.gameState.claims.length-1].claims.length}
+                    </GameBoardPlayerCardCountChange1>
+                );
+            }
+
             playerOne = (
                 <GameBoardPlayerPanel>
                     <GameBoardPlayerName>
                         {gameUserIDToGameUserMapping.get(1).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(1).user.username}
                     </GameBoardPlayerName>
-                    <GameBoardPlayer>                     
+                    <GameBoardPlayer
+                        style={{backgroundImage: `url(${BlueGameUserIcon})`}}>                     
+                        {selection}
                     </GameBoardPlayer>
                     <GameBoardPlayerCardHand
                         style={{marginTop: '50%'}}>
+                        {handCountChange}
                         <GameBoardPlayerCardHandText>
                             {gameUserIDToGameUserMapping.get(1).handCount}
                         </GameBoardPlayerCardHandText>
@@ -137,15 +242,36 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
         let playerTwo: JSX.Element;
         if(gameUserIDToGameUserMapping.has(2))
         {
+            let selection: JSX.Element;
+            if(this.props.gameState.userTurn.gameUserID===2) 
+            {
+                selection = (
+                    <GameUserSelectedIcon></GameUserSelectedIcon>
+                );
+            }
+
+            let handCountChange: JSX.Element;
+            if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0 && this.props.gameState.claims[this.props.gameState.claims.length-1].claimUser.gameUserID===2) 
+            {
+                handCountChange = (
+                    <GameBoardPlayerCardCountChange1>
+                        - {this.props.gameState.claims[this.props.gameState.claims.length-1].claims.length}
+                    </GameBoardPlayerCardCountChange1>
+                );
+            }
+
             playerTwo = (
                 <GameBoardPlayerPanel>
                     <GameBoardPlayerCardHand
                         style={{marginTop: '50%'}}>
+                        {handCountChange}
                         <GameBoardPlayerCardHandText>
                             {gameUserIDToGameUserMapping.get(2).handCount}
                         </GameBoardPlayerCardHandText>
                     </GameBoardPlayerCardHand>
-                    <GameBoardPlayer>                     
+                    <GameBoardPlayer
+                        style={{backgroundImage: `url(${GreenGameUserIcon})`}}>
+                        {selection}                     
                     </GameBoardPlayer>
                     <GameBoardPlayerName>
                         {gameUserIDToGameUserMapping.get(2).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(2).user.username}
@@ -156,15 +282,36 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
         let playerThree: JSX.Element;
         if(gameUserIDToGameUserMapping.has(3))
         {
+            let selection: JSX.Element;
+            if(this.props.gameState.userTurn.gameUserID===3) 
+            {
+                selection = (
+                    <GameUserSelectedIcon></GameUserSelectedIcon>
+                );
+            }
+
+            let handCountChange: JSX.Element;
+            if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0 && this.props.gameState.claims[this.props.gameState.claims.length-1].claimUser.gameUserID===3) 
+            {
+                handCountChange = (
+                    <GameBoardPlayerCardCountChange2>
+                        - {this.props.gameState.claims[this.props.gameState.claims.length-1].claims.length}
+                    </GameBoardPlayerCardCountChange2>
+                );
+            }
+
             playerThree = (
                 <GameBoardPlayerPanel>
                     <GameBoardPlayerName>
                         {gameUserIDToGameUserMapping.get(3).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(3).user.username}
                     </GameBoardPlayerName>
-                    <GameBoardPlayer>                     
+                    <GameBoardPlayer
+                        style={{backgroundImage: `url(${YellowGameUserIcon})`}}>
+                        {selection}
                     </GameBoardPlayer>
                     <GameBoardPlayerCardHand
                         style={{marginBottom: '50%'}}>
+                        {handCountChange}
                         <GameBoardPlayerCardHandText>
                             {gameUserIDToGameUserMapping.get(3).handCount}
                         </GameBoardPlayerCardHandText>
@@ -175,15 +322,36 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
         let playerFour: JSX.Element;
         if(gameUserIDToGameUserMapping.has(4))
         {
+            let selection: JSX.Element;
+            if(this.props.gameState.userTurn.gameUserID===4) 
+            {
+                selection = (
+                    <GameUserSelectedIcon></GameUserSelectedIcon>
+                );
+            }
+
+            let handCountChange: JSX.Element;
+            if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0 && this.props.gameState.claims[this.props.gameState.claims.length-1].claimUser.gameUserID===4) 
+            {
+                handCountChange = (
+                    <GameBoardPlayerCardCountChange2>
+                        - {this.props.gameState.claims[this.props.gameState.claims.length-1].claims.length}
+                    </GameBoardPlayerCardCountChange2>
+                );
+            }
+
             playerFour = (
                 <GameBoardPlayerPanel>
                     <GameBoardPlayerCardHand
                         style={{marginBottom: '50%'}}>
+                        {handCountChange}
                         <GameBoardPlayerCardHandText>
                             {gameUserIDToGameUserMapping.get(4).handCount}
                         </GameBoardPlayerCardHandText>
                     </GameBoardPlayerCardHand>
-                    <GameBoardPlayer>                     
+                    <GameBoardPlayer
+                        style={{backgroundImage: `url(${PurpleGameUserIcon})`}}>
+                        {selection}                     
                     </GameBoardPlayer>
                     <GameBoardPlayerName>
                         {gameUserIDToGameUserMapping.get(4).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(4).user.username}

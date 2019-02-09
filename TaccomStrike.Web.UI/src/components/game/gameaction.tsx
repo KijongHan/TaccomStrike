@@ -29,6 +29,7 @@ const GameActionHistory = styled.div`
 `;
 
 const GameActionHistoryItem = styled.p`
+    margin: 5px 0px 5px 0px;
     padding-left: 5%;
     color: ${ColorStyle.pallet1};
 `;
