@@ -40,8 +40,14 @@ namespace TaccomStrike.Web.API.Hubs
 			return Task.Run(() => 
 			{
 				var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
-
-				gameLobby.GameLogicController.CallCheat(Context.User);
+				if(gameLobby==null)
+				{
+					return;
+				}
+				gameLobby.UseLobbyLock(() =>
+				{
+					gameLobby.GameLogicController.CallCheat(Context.User);
+				});
 			});
 		}
 
@@ -50,11 +56,68 @@ namespace TaccomStrike.Web.API.Hubs
 			return Task.Run(() => 
 			{
 				var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
+				if (gameLobby == null)
+				{
+					return;
+				}
+				gameLobby.UseLobbyLock(() =>
+				{
+					gameLobby.GameLogicController.SubmitClaim(Context.User, claims.GetGameCards(), actual.GetGameCards());
+					gameLobby.GameLogicController.CallPhase(OnGameCheat, OnEndTurn, OnGameFinish);
 
-				gameLobby.GameLogicController.SubmitClaim(Context.User, claims.GetGameCards(), actual.GetGameCards());
-				gameLobby.GameLogicController.CallPhase(OnGameCheat, OnEndTurn, OnGameFinish);
+					foreach (var gameUser in gameLobby.GetUsers())
+					{
+						var gameState = gameLobby.GameLogicController.GetGameState(gameUser);
+						var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser);
 
-				foreach (var gameUser in gameLobby.Players)
+						var apiObject = new HubApi.GameClaim
+						{
+							GameState = new GetGameState(gameState)
+						};
+						gameHubContext.Clients.Client(connection).GameClaim(apiObject);
+					}
+				});
+			});
+		}
+
+		public void OnGameCheat(long gameLobbyID, GameCheat gameCheat)
+		{
+			var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
+			if (gameLobby == null)
+			{
+				return;
+			}
+			gameLobby.UseLobbyLock(() =>
+			{
+				gameLobby.GameLogicController.StartTurn(OnTurnTimeout);
+
+				foreach (var gameUser in gameLobby.GetUsers())
+				{
+					var gameState = gameLobby.GameLogicController.GetGameState(gameUser);
+					var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser);
+
+					var apiObject = new GameCallCheat
+					{
+						GameState = new GetGameState(gameState),
+						GameCheat = new GetGameCheat(gameCheat)
+					};
+					gameHubContext.Clients.Client(connection).GameCallCheat(apiObject);
+				}
+			});
+		}
+
+		public void OnEndTurn(long gameLobbyID)
+		{
+			var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
+			if (gameLobby == null)
+			{
+				return;
+			}
+			gameLobby.UseLobbyLock(() =>
+			{
+				gameLobby.GameLogicController.StartTurn(OnTurnTimeout);
+
+				foreach (var gameUser in gameLobby.GetUsers())
 				{
 					var gameState = gameLobby.GameLogicController.GetGameState(gameUser);
 					var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser);
@@ -68,71 +131,52 @@ namespace TaccomStrike.Web.API.Hubs
 			});
 		}
 
-		public void OnGameCheat(GameLogicController gameLogicController, GameCheat gameCheat)
+		public void OnTurnTimeout(long gameLobbyID)
 		{
-			gameLogicController.StartTurn(OnTurnTimeout);
-
-			foreach (var gameUser in gameLogicController.GameUsers)
+			var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
+			if (gameLobby == null)
 			{
-				var gameState = gameLogicController.GetGameState(gameUser.UserPrincipal);
-				var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser.UserPrincipal);
-
-				var apiObject = new GameCallCheat
-				{
-					GameState = new GetGameState(gameState),
-					GameCheat = new GetGameCheat(gameCheat)
-				};
-				gameHubContext.Clients.Client(connection).GameCallCheat(apiObject);
+				return;
 			}
+			gameLobby.UseLobbyLock(() =>
+			{
+				gameLobby.GameLogicController.CallPhase(OnGameCheat, OnEndTurn, OnGameFinish);
+
+				foreach (var gameUser in gameLobby.GetUsers())
+				{
+					var gameState = gameLobby.GameLogicController.GetGameState(gameUser);
+					var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser);
+
+					var apiObject = new HubApi.GameClaim
+					{
+						GameState = new GetGameState(gameState)
+					};
+					gameHubContext.Clients.Client(connection).GameClaim(apiObject);
+				}
+			});
 		}
 
-		public void OnEndTurn(GameLogicController gameLogicController)
+		public void OnGameFinish(long gameLobbyID, GameUser winner)
 		{
-			gameLogicController.StartTurn(OnTurnTimeout);
-
-			foreach (var gameUser in gameLogicController.GameUsers)
+			var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
+			if (gameLobby == null)
 			{
-				var gameState = gameLogicController.GetGameState(gameUser.UserPrincipal);
-				var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser.UserPrincipal);
-
-				var apiObject = new HubApi.GameClaim
-				{
-					GameState = new GetGameState(gameState)
-				};
-				gameHubContext.Clients.Client(connection).GameClaim(apiObject);
+				return;
 			}
-		}
-
-		public void OnTurnTimeout(GameLogicController gameLogicController)
-		{
-			gameLogicController.CallPhase(OnGameCheat, OnEndTurn, OnGameFinish);
-
-			foreach (var gameUser in gameLogicController.GameUsers)
+			gameLobby.UseLobbyLock(() =>
 			{
-				var gameState = gameLogicController.GetGameState(gameUser.UserPrincipal);
-				var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser.UserPrincipal);
-
-				var apiObject = new HubApi.GameClaim
+				foreach (var gameUser in gameLobby.GetUsers())
 				{
-					GameState = new GetGameState(gameState)
-				};
-				gameHubContext.Clients.Client(connection).GameClaim(apiObject);
-			}
-		}
+					var gameState = gameLobby.GameLogicController.GetGameState(gameUser);
+					var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser);
 
-		public void OnGameFinish(GameLogicController gameLogicController, GameUser winner)
-		{
-			foreach (var gameUser in gameLogicController.GameUsers)
-			{
-				var gameState = gameLogicController.GetGameState(gameUser.UserPrincipal);
-				var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser.UserPrincipal);
-
-				var apiObject = new HubApi.GameFinish
-				{
-					Winner = new GetGameUser(winner)
-				};
-				gameHubContext.Clients.Client(connection).GameFinish(apiObject);
-			}
+					var apiObject = new HubApi.GameFinish
+					{
+						Winner = new GetGameUser(winner)
+					};
+					gameHubContext.Clients.Client(connection).GameFinish(apiObject);
+				}
+			});
 		}
 
 		public Task GameLobbyStartGame(long gameLobbyID)
@@ -140,7 +184,11 @@ namespace TaccomStrike.Web.API.Hubs
 			return Task.Run(() => 
 			{
 				var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
-				lock(gameLobby)
+				if (gameLobby == null)
+				{
+					return;
+				}
+				gameLobby.UseLobbyLock(() =>
 				{
 					if (gameLobby.HasUser(Context.User))
 					{
@@ -151,7 +199,7 @@ namespace TaccomStrike.Web.API.Hubs
 							return;
 						}
 
-						foreach (var user in gameLobby.Players)
+						foreach (var user in gameLobby.GetUsers())
 						{
 							var connection = userConnectionsService.GameConnectionService.GetConnection(user);
 							var gameState = gameLobby.GameLogicController.GetGameState(user);
@@ -163,7 +211,7 @@ namespace TaccomStrike.Web.API.Hubs
 							Clients.Client(connection).GameLobbyStartGame(apiObject);
 						}
 					}
-				}
+				});
 			});
 		}
 
@@ -172,12 +220,15 @@ namespace TaccomStrike.Web.API.Hubs
 			return Task.Run(() => 
 			{
 				var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
-				lock(gameLobby)
+				if (gameLobby == null)
+				{
+					return;
+				}
+				gameLobby.UseLobbyLock(() =>
 				{
 					if (gameLobby.HasUser(Context.User))
 					{
 						gameLobby.RemoveUser(Context.User);
-						Context.User.SetCurrentGameLobbyID(null);
 
 						var playerLeaving = Context
 							.User
@@ -211,8 +262,9 @@ namespace TaccomStrike.Web.API.Hubs
 							var userConnection = userConnectionsService.GameConnectionService.GetConnection(Context.User);
 							Clients.Client(userConnection).GameLobbyLeaveGame(apiObject);
 						}
+						Context.User.SetCurrentGameLobbyID(null);
 					}
-				}
+				});
 			});
 		}
 
@@ -220,12 +272,16 @@ namespace TaccomStrike.Web.API.Hubs
 		{
 			return Task.Run(() =>
 			{
-				var userConnection = userConnectionsService.GameConnectionService.GetConnection(Context.User);
 				var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
-				var newUser = Context.User.ApiGetUser();
-
-				lock(gameLobby)
+				if (gameLobby == null)
 				{
+					return;
+				}
+				gameLobby.UseLobbyLock(() =>
+				{
+					var userConnection = userConnectionsService.GameConnectionService.GetConnection(Context.User);
+					var newUser = Context.User.ApiGetUser();
+					
 					if (gameLobby.GameLobbyType == GameLobby.LobbyType.Public)
 					{
 						if (gameLobby.GetUsersCount() >= gameLobby.MaxRoomLimit)
@@ -244,7 +300,6 @@ namespace TaccomStrike.Web.API.Hubs
 							{
 								gameLobby.AddUser(Context.User);
 							}
-							Context.User.SetCurrentGameLobbyID(gameLobbyID);
 
 							var apiObject = new GameLobbyJoin
 							{
@@ -257,9 +312,10 @@ namespace TaccomStrike.Web.API.Hubs
 								var connection = userConnectionsService.GameConnectionService.GetConnection(user);
 								Clients.Client(connection).GameLobbyJoin(apiObject);
 							}
+							Context.User.SetCurrentGameLobbyID(gameLobbyID);
 						}
 					}
-				}
+				});
 			});
 		}
 
@@ -268,26 +324,32 @@ namespace TaccomStrike.Web.API.Hubs
 			return Task.Run(() => 
 			{
 				var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
-
-				if(gameLobby.HasUser(Context.User))
+				if (gameLobby == null)
 				{
-					ChatMessage chatMessage = new ChatMessage
-					{
-						User = Context.User,
-						Message = message,
-						WhenCreated = DateTime.Now
-					};
-					var apiObject = new GameLobbySendMessage
-					{
-						ChatMessage = chatMessage.ApiGetChatMessage()
-					};
-
-					foreach(var participant in gameLobby.GetUsers())
-					{
-						var connection = userConnectionsService.GameConnectionService.GetConnection(participant);
-						Clients.Client(connection).GameLobbySendMessage(apiObject);
-					}
+					return;
 				}
+				gameLobby.UseLobbyLock(() =>
+				{
+					if (gameLobby.HasUser(Context.User))
+					{
+						ChatMessage chatMessage = new ChatMessage
+						{
+							User = Context.User,
+							Message = message,
+							WhenCreated = DateTime.Now
+						};
+						var apiObject = new GameLobbySendMessage
+						{
+							ChatMessage = chatMessage.ApiGetChatMessage()
+						};
+
+						foreach (var participant in gameLobby.GetUsers())
+						{
+							var connection = userConnectionsService.GameConnectionService.GetConnection(participant);
+							Clients.Client(connection).GameLobbySendMessage(apiObject);
+						}
+					}
+				});
 			});
 		}
 
@@ -297,51 +359,17 @@ namespace TaccomStrike.Web.API.Hubs
 			return base.OnConnectedAsync();
 		}
 
-		public override Task OnDisconnectedAsync(Exception exception)
+		public override async Task OnDisconnectedAsync(Exception exception)
 		{
 			var currentGameLobbyID = Context.User.GetCurrentGameLobbyID();
 
 			if (currentGameLobbyID != null)
 			{
-				var gameLobby = gameLobbyService.GetGameLobby(currentGameLobbyID.Value);
-				gameLobby.RemoveUser(Context.User);
-				Context.User.SetCurrentGameLobbyID(null);
-
-				var playerLeaving = Context
-					.User
-					.ApiGetUser();
-				var host = gameLobby
-					.GetHost()
-					.ApiGetUser();
-				var players = gameLobby
-					.GetUsers()
-					.ApiGetUsers();
-				var apiObject = new GameLobbyLeaveGame
-				{
-					PlayerLeaving = playerLeaving,
-					Host = host,
-					Players = players
-				};
-
-				foreach (var user in gameLobby.GetUsers())
-				{
-					var connection = userConnectionsService.GameConnectionService.GetConnection(user);
-					if (connection == null)
-					{
-						continue;
-					}
-
-					Clients.Client(connection).GameLobbyLeaveGame(apiObject);
-				}
-
-				if (gameLobby.GetUsers().Count <= 0)
-				{
-					gameLobbyService.RemoveGameLobby(currentGameLobbyID.Value);
-				}
+				await GameLobbyLeaveGame(currentGameLobbyID.Value);
 			}
 
 			userConnectionsService.GameConnectionService.Remove(Context.User, Context.ConnectionId);
-			return base.OnDisconnectedAsync(exception);
+			await base.OnDisconnectedAsync(exception);
 		}
 	}
 }

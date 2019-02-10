@@ -13,6 +13,8 @@ namespace TaccomStrike.Game.CallCheat.Services
 		private int turnsIndex;
 		private object gameLogicLock = new object();
 
+		public long GameLobbyID { get; set; }
+
 		public List<GameUser> GameUsers { get; set; }
 		public List<GameClaim> CurrentClaims { get; set; }
 		public List<GameUser> UsersCallingCheat { get; set; }
@@ -240,7 +242,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 			SubmitClaim(currentTurnUser.UserPrincipal, defaultClaims, defaultActual);
 		}
 
-		public void CallPhase(Action<GameLogicController, GameCheat> onGameCheat, Action<GameLogicController> onEndTurn, Action<GameLogicController, GameUser> onGameFinish)
+		public void CallPhase(Action<long, GameCheat> onGameCheat, Action<long> onEndTurn, Action<long, GameUser> onGameFinish)
 		{
 			lock(gameLogicLock)
 			{
@@ -260,24 +262,24 @@ namespace TaccomStrike.Game.CallCheat.Services
 							var gameCheat = GameCheat();
 							if(IsVictory())
 							{
-								onGameFinish(this, GetCurrentPlayerTurn());
+								onGameFinish(GameLobbyID, GetCurrentPlayerTurn());
 							}
 							else
 							{
 								EndTurn();
-								onGameCheat(this, gameCheat);
+								onGameCheat(GameLobbyID, gameCheat);
 							}
 						}
 						else
 						{
 							if (IsVictory())
 							{
-								onGameFinish(this, GetCurrentPlayerTurn());
+								onGameFinish(GameLobbyID, GetCurrentPlayerTurn());
 							}
 							else
 							{
 								EndTurn();
-								onEndTurn(this);
+								onEndTurn(GameLobbyID);
 							}
 						}
 					}
@@ -297,7 +299,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 			}
 		}
 
-		public void StartTurn(Action<GameLogicController> onTurnTimeout)
+		public void StartTurn(Action<long> onTurnTimeout)
 		{
 			lock(gameLogicLock)
 			{
@@ -311,7 +313,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 						TurnTimer.Dispose();
 
 						SubmitDefaultClaim();
-						onTurnTimeout(this);
+						onTurnTimeout(GameLobbyID);
 					}
 				};
 				TurnTimer.AutoReset = false;
@@ -319,13 +321,14 @@ namespace TaccomStrike.Game.CallCheat.Services
 			}
 		}
 
-		public void StartGame(List<ClaimsPrincipal> users)
+		public void StartGame(List<ClaimsPrincipal> users, long gameLobbyID)
 		{
 			List<GameCard> deck = instantiateDeck();
 			GameUsers = new List<GameUser>();
 			CurrentClaims = new List<GameClaim>();
 			UsersCallingCheat = new List<GameUser>();
 			ActionHistory = new List<string>();
+			GameLobbyID = gameLobbyID;
 
 			int interval = deck.Count / users.Count;
 			for (int i = 0; i < users.Count; i++)

@@ -91,6 +91,7 @@ const GameBoardPlayerCardCountChangeAnimation1 = keyframes`
 const GameBoardPlayerCardCountChange1 = styled.div`
     position: absolute;
     text-align: center;
+    font-size: 1.5em;
     bottom: 20%;
     animation: ${GameBoardPlayerCardCountChangeAnimation1} 1.5s linear forwards;
 `;
@@ -120,6 +121,7 @@ const GameBoardPlayerCardCountChangeAnimation2 = keyframes`
 const GameBoardPlayerCardCountChange2 = styled.div`
     position: absolute;
     text-align: center;
+    font-size: 1.5em;
     top: -10%;
     animation: ${GameBoardPlayerCardCountChangeAnimation2} 1.5s linear forwards;
 `;

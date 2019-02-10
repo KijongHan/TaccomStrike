@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using TaccomStrike.Library.Utility.Security;
 using TaccomStrike.Game.CallCheat.Services;
+using System;
 
 namespace TaccomStrike.Library.Data.ViewModel
 {
@@ -23,8 +24,9 @@ namespace TaccomStrike.Library.Data.ViewModel
 		public long GameLobbyID {get;set;}
 		public string GameLobbyPassword {get;set;}
 
-		public List<ClaimsPrincipal> Hosts {get;set;}
-		public List<ClaimsPrincipal> Players {get;set;}
+		private List<ClaimsPrincipal> hosts {get;set;}
+		private object lobbyLock = new object();
+		private List<ClaimsPrincipal> players {get;set;}
 
 		public GameLobby.LobbyType GameLobbyType {get;set;}
 		public GameLobby.GameType GameLobbyGameType {get;set;}
@@ -35,8 +37,8 @@ namespace TaccomStrike.Library.Data.ViewModel
 
 		public GameLobby()
 		{
-			Hosts = new List<ClaimsPrincipal>();
-			Players = new List<ClaimsPrincipal>();
+			hosts = new List<ClaimsPrincipal>();
+			players = new List<ClaimsPrincipal>();
 		}
 
 		public bool InGame()
@@ -50,81 +52,110 @@ namespace TaccomStrike.Library.Data.ViewModel
 
 		public bool StartGame()
 		{
-			if(Players.Count < 2)
+			lock(lobbyLock)
 			{
-				return false;
-			}
+				if (players.Count < 2)
+				{
+					return false;
+				}
 
-			GameLogicController = new GameLogicController();
-			GameLogicController.StartGame(Players);
-			return true;
+				GameLogicController = new GameLogicController();
+				GameLogicController.StartGame(players, GameLobbyID);
+				return true;
+			}
 		 }
 
 		public ClaimsPrincipal GetHost()
 		{
-			if(Hosts.Count<=0)
+			lock(lobbyLock)
 			{
-				return null;
+				if (hosts.Count <= 0)
+				{
+					return null;
+				}
+				return hosts[0];
 			}
-			return Hosts[0];
 		}
 
 		public List<ClaimsPrincipal> GetUsers()
 		{
-			return Players;
+			lock(lobbyLock)
+			{
+				return players;
+			}
 		}
 
 		public int GetUsersCount()
 		{
-			int count = 0;
-			
-			count += Players.Count;
-			return count;
+			lock(lobbyLock)
+			{
+				int count = 0;
+
+				count += players.Count;
+				return count;
+			}
 		}
 
 		public void AddUser(ClaimsPrincipal user)
 		{
-			if(HasUser(user))
+			lock(lobbyLock)
 			{
-				return;
-			}
+				if (HasUser(user))
+				{
+					return;
+				}
 
-			if(Hosts.Count == 0)
-			{
-				Hosts.Add(user);
+				if (hosts.Count == 0)
+				{
+					hosts.Add(user);
+				}
+				players.Add(user);
 			}
-			Players.Add(user);
 		}
 
 		public void RemoveUser(ClaimsPrincipal user)
 		{
-			if(!HasUser(user))
+			lock (lobbyLock)
 			{
-				return;
-			}
+				if (!HasUser(user))
+				{
+					return;
+				}
 
-			var removeUser = Players
-			.Where((item) => item.GetUserLoginID() == user.GetUserLoginID())
-			.FirstOrDefault();
+				var removeUser = players
+				.Where((item) => item.GetUserLoginID() == user.GetUserLoginID())
+				.FirstOrDefault();
 
-			Players.Remove(removeUser);
-			Hosts.Remove(removeUser);
-			if(Hosts.Count==0 && Players.Count>0)
-			{
-				Hosts.Add(Players[0]);
+				players.Remove(removeUser);
+				hosts.Remove(removeUser);
+				if (hosts.Count == 0 && players.Count > 0)
+				{
+					hosts.Add(players[0]);
+				}
 			}
 		}
 
 		public bool HasUser(ClaimsPrincipal user)
 		{
-			foreach(var u in GetUsers())
+			lock(lobbyLock)
 			{
-				if(u.GetUserLoginID() == user.GetUserLoginID())
+				foreach (var u in GetUsers())
 				{
-					return true;
+					if (u.GetUserLoginID() == user.GetUserLoginID())
+					{
+						return true;
+					}
 				}
+				return false;
 			}
-			return false;
+		}
+
+		public void UseLobbyLock(Action protectedAction)
+		{
+			lock(lobbyLock)
+			{
+				protectedAction();
+			}
 		}
 	}
 }
