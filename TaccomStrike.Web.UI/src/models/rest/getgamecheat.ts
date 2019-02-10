@@ -6,5 +6,5 @@ export class GetGameCheat
     cheatCallSuccessful: boolean;
     cheatCaller: GetGameUser;
     lastClaimUser: GetGameUser;
-    preCheatClaims: GetGameClaim;
+    preCheatClaims: GetGameClaim[];
 }

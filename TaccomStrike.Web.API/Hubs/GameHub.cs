@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
@@ -12,8 +11,6 @@ using TaccomStrike.Web.API.HubApi;
 using TaccomStrike.Library.Data.ApiEntities;
 using TaccomStrike.Game.CallCheat;
 using TaccomStrike.Library.Data.Extensions;
-using System.Timers;
-using TaccomStrike.Game.CallCheat.Services;
 using TaccomStrike.Game.CallCheat.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;

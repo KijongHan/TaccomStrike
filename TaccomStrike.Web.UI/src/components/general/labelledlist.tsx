@@ -24,7 +24,8 @@ const ListComponentElement = styled.select`
     border-style: solid;
     border-width: 2px;
     border-color: rgba(255, 255, 255, 0.65);
-    font-size: 1.2em;
+	font-size: 1.2em;
+	text-align-last:center;
 `;
 
 export class LabelledListComponentProps

@@ -25,25 +25,25 @@ const GameCardIcon = styled.div`
     background-size: 100% 100%;
 `;
 
-export class GameCardComponentProps 
+export class GameHandCardComponentProps 
 {
     gameCard: GetGameCard;
-    gameCardComponentStyle: GameCardComponentStyle;
+    gameCardComponentStyle: GameHandCardComponentStyle;
     gameCardClickHandler: (gameCard: GetGameCard) => void;
     isSelected: boolean;
 }
 
-export class GameCardComponentState {}
+export class GameHandCardComponentState {}
 
-export class GameCardComponentStyle 
+export class GameHandCardComponentStyle 
 {
     cardComponentStyle: CardComponentStyle;
     cardHoverAnimation: CardSlideAnimation | CardRotationAnimation;
 }
 
-export class GameCardComponent extends React.Component<GameCardComponentProps, GameCardComponentState> 
+export class GameHandCardComponent extends React.Component<GameHandCardComponentProps, GameHandCardComponentState> 
 {
-    constructor(props: GameCardComponentProps) 
+    constructor(props: GameHandCardComponentProps) 
     {
         super(props);
     }

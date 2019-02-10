@@ -6,6 +6,9 @@ import { GetGameState } from "../../models/rest/getgamestate";
 import { GetGameUser } from "../../models/rest/getgameuser";
 import { isNullOrUndefined } from "util";
 import { GetGameClaim } from "../../models/rest/getgameclaim";
+import { GameClaimCardComponent } from "./gameclaimcard";
+import { GetGameCheat } from "../../models/rest/getgamecheat";
+import { GetGameCard } from "../../models/rest/getgamecard";
 
 const BlueGameUserIcon = require("../../res/blue_gameuser.svg");
 const YellowGameUserIcon = require("../../res/yellow_gameuser.svg");
@@ -13,15 +16,12 @@ const GreenGameUserIcon = require("../../res/green_gameuser.svg");
 const PurpleGameUserIcon = require("../../res/purple_gameuser.svg");
 const ArrowDownIcon = require("../../res/arrowdown.png");
 const CardHandIcon = require("../../res/card_hand.png");
+const CardDeckIcon = require("../../res/card_deck.png");
 
 const ClaimPanel = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
-`;
-
-const ClaimPanelItem = styled.div`
-    margin: auto;
 `;
 
 const GameBoard = styled.div`
@@ -61,6 +61,21 @@ const GameBoardPlayerCardHand = styled.div`
 
 const GameBoardPlayerCardHandText = styled.p`
     height: 100%;
+    margin: auto;
+    color: white;
+    text-align: center;
+`;
+
+const GameBoardClaimsCount = styled.div`
+    width: 30%;
+    height: 60%;
+    background-size: 100% 100%;
+    background-image: url(${CardDeckIcon});
+    display: flex;
+    margin: auto;
+`;
+
+const GameBoardClaimsCountText = styled.p`
     margin: auto;
     color: white;
     text-align: center;
@@ -160,6 +175,7 @@ export class GameBoardComponentProps
 {
     loggedInUser: GetUser;
     gameState: GetGameState;
+    gameCheat: GetGameCheat;
 
     gameBoardComponentStyle: GameBoardComponentStyle;
     gameBoardSeatComponentStyle: GameBoardSeatComponentStyle;
@@ -361,7 +377,21 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
                 </GameBoardPlayerPanel>
             );
         }
-        let claims: JSX.Element;
+        let claimsCount: JSX.Element;
+        let claimCard: JSX.Element;
+        
+        if(!isNullOrUndefined(this.props.gameCheat)) 
+        {
+            let claimsCount = this.props.gameCheat.preCheatClaims.length;
+            claimCard = (
+                <GameClaimCardComponent
+                    actualCards={this.props.gameCheat.preCheatClaims[claimsCount-1].actual}
+                    claimCount={this.props.gameCheat.preCheatClaims[claimsCount-1].claims.length}
+                    claimRank={this.props.gameCheat.preCheatClaims[claimsCount-1].claims[0].rank}>
+                </GameClaimCardComponent>
+            );
+        }
+
         if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0) 
         {
             let claimsCardCount = 0;
@@ -370,16 +400,28 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
             });
 
             let lastClaim = this.props.gameState.claims[this.props.gameState.claims.length-1];
-            claims = (
-                <ClaimPanel>
-                    <ClaimPanelItem>
-                        <div>{claimsCardCount}</div>
-                        <div>{lastClaim.claims.length}</div>
-                        <div>{lastClaim.claims[0].rank}</div>
-                    </ClaimPanelItem>
-                </ClaimPanel>
+
+            claimsCount = (
+                <GameBoardClaimsCount>
+                    <GameBoardClaimsCountText>
+                        {claimsCardCount}
+                    </GameBoardClaimsCountText>
+                </GameBoardClaimsCount>
+            );
+            claimCard = (
+                <GameClaimCardComponent
+                    claimCount={lastClaim.claims.length}
+                    claimRank={lastClaim.claims[0].rank}>
+                </GameClaimCardComponent>
             );
         }
+        
+        let claims = (
+            <ClaimPanel>
+                {claimsCount}
+                {claimCard}
+            </ClaimPanel>
+        );
 
         return (
             <GameBoard

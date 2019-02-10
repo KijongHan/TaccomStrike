@@ -8,7 +8,7 @@ import { CardComponent, CardSlideAnimation } from "../general/card";
 import { DisplayStyle, Position } from "../../styles/displaystyle";
 import { GetGameUser } from "../../models/rest/getgameuser";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
-import { GameCardComponent, GameCardComponentStyle } from "../game/gamecard";
+import { GameHandCardComponent, GameHandCardComponentStyle } from "../game/gamehandcard";
 import { GameBoardComponent, GameBoardComponentStyle, GameBoardSeatComponentStyle } from "../game/gameboard";
 import { GameActionComponent, GameActionComponentStyle } from "../game/gameaction";
 import { stat } from "fs";
@@ -168,6 +168,7 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
         let gameBoard = (
             <GameBoardComponent
                 loggedInUser={this.props.loggedInUser}
+                gameCheat={this.props.gameCheat}
                 gameState={this.props.gameState}
                 gameBoardComponentStyle={gameBoardComponentStyle}
                 gameBoardSeatComponentStyle={gameBoardSeatComponentStyle}>
@@ -204,7 +205,7 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                 slideDuration: 250,
                 slideDelay: 0
             });
-            let gameCardStyle = new GameCardComponentStyle();
+            let gameCardStyle = new GameHandCardComponentStyle();
             gameCardStyle.cardComponentStyle = cardStyle;
             gameCardStyle.cardHoverAnimation = hoverAnimation;
             
@@ -216,13 +217,13 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                 selected = true;
             }
             return (
-                <GameCardComponent
+                <GameHandCardComponent
                     gameCardClickHandler={this.gameCardClickHandler}
                     isSelected={selected}
                     key={value.rank+value.suit}
                     gameCard={value}
                     gameCardComponentStyle={gameCardStyle}>
-                </GameCardComponent>
+                </GameHandCardComponent>
             );
         });
         return (

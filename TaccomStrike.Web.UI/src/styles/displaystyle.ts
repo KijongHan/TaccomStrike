@@ -1,5 +1,5 @@
 ﻿import styled from "styled-components";
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined, isNull } from "util";
 
 export enum Position
 {
@@ -16,6 +16,7 @@ export class DisplayStyle
 	floatLeft?: boolean;
 	floatRight?: boolean;
 
+	marginString?: string;
 	marginTopPixels?: number;
 	marginTopPercentage?: number;
 	marginBottomPixels?: number;
@@ -50,6 +51,11 @@ export class DisplayStyle
 		let marginRight = "0";
 		let marginTop = "0";
 		let marginBottom = "0";
+
+		if(!isNullOrUndefined(this.marginString)) 
+		{
+			return this.marginString;
+		}
 
 		if (!isNullOrUndefined(this.marginLeftPixels))
 		{
