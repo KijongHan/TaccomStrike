@@ -30,7 +30,7 @@ namespace TaccomStrike.Library.Utility.Security {
 				if(claim.Type == Security.CurrentGameLobbyIDClaim) {
 					if(string.IsNullOrEmpty(claim.Value))
 					{
-						return null;
+						return -1;
 					}
 					return Convert.ToInt64(claim.Value);
 				}
@@ -53,6 +53,15 @@ namespace TaccomStrike.Library.Utility.Security {
 				}
 			}
 			identity.AddClaim(new Claim(Security.CurrentGameLobbyIDClaim, currentGameLobbyID.ToString()));
+		}
+
+		public static bool InGameLobby(this ClaimsPrincipal claimsPrincipal)
+		{
+			if(claimsPrincipal.GetCurrentGameLobbyID()==null || claimsPrincipal.GetCurrentGameLobbyID()==-1)
+			{
+				return false;
+			}
+			return true;
 		}
 	}
 }

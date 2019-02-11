@@ -35,7 +35,7 @@ namespace TaccomStrike.Web.API.Controllers
 				MaxRoomLimit = 4
 			};
 			
-			if(HttpContext.User.GetCurrentGameLobbyID() != null)
+			if(HttpContext.User.InGameLobby())
 			{
 				return BadRequest();
 			}
