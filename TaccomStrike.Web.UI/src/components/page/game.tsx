@@ -5,7 +5,7 @@ import { GetGameState } from "../../models/rest/getgamestate";
 import styled, { consolidateStreamedStyles } from "styled-components";
 import { GetGameCard } from "../../models/rest/getgamecard";
 import { CardComponent, CardSlideAnimation } from "../general/card";
-import { DisplayStyle, Position } from "../../styles/displaystyle";
+import { DisplayStyle, Position, Display } from "../../styles/displaystyle";
 import { GetGameUser } from "../../models/rest/getgameuser";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
 import { GameHandCardComponent, GameHandCardComponentStyle } from "../game/gamehandcard";
@@ -17,6 +17,9 @@ import { GetGameClaim } from "../../models/rest/getgameclaim";
 import { GetGameCheat } from "../../models/rest/getgamecheat";
 import { ButtonComponent, ButtonComponentStyle } from "../general/button";
 import { ColorStyle } from "../../styles/colorstyle";
+import { GetGameLobby } from "../../models/rest/getgamelobby";
+import { GameLobbyComponent, GameLobbyComponentStyle } from "../general/gamelobby";
+import { GetChatMessage } from "../../models/rest/getchatmessage";
 
 const GamePage = styled.div`
     position: fixed;
@@ -67,10 +70,13 @@ export class GamePageComponentState extends BasePageComponentState
 
 export interface GamePageComponentProps extends BasePageComponentProps 
 {
+    gameLobbyMessages: GetChatMessage[];
+    gameLobby: GetGameLobby;
     gameState: GetGameState;
     gameCheat: GetGameCheat;
     gameWinner: GetGameUser;
     
+    sendMessageButtonClickHandler: (message: string) => void;
     submitClaimButtonClickHandler: (claims: GetGameCard[], actual: GetGameCard[]) => void;
     callCheatButtonClickHandler: () => void;
     finishButtonClickHandler: () => void;
@@ -95,11 +101,13 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
         let gameBoard = this.getBoardComponent();
         let gameAction = this.getActionComponent();
         let gameFinish = this.getFinishComponent();
+        let gameChat = this.getGameChat();
 
         return (
             <GamePage>
                 <GamePageInner>
                     <GameBoardPanel>
+                        {gameChat}
                         {gameBoard}
                         {gameAction}
                     </GameBoardPanel>
@@ -107,6 +115,118 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                     {gameFinish}
                 </GamePageInner>
             </GamePage>
+        );
+    }
+
+    getGameChat = () => 
+    {
+        let style = new GameLobbyComponentStyle();
+        style.cardComponentStyle = {
+            displayStyle: new DisplayStyle({
+                position: Position.absolute,
+                widthPercentage: 25,
+                heightPercentage: 70,
+                topPixels: 0,
+                leftPixels: 0
+            }),
+            perspectiveStyle: new PerspectiveStyle()
+        };
+        style.gameLobbyNameLabelledInputStyle = {
+            displayStyle: new DisplayStyle({
+                display: Display.none
+            })
+        };
+        style.maxLobbyLimitLabelledListStyle = {
+            displayStyle: new DisplayStyle({
+                display: Display.none
+            })
+        };
+        style.createGameButtonStyle = {
+            displayStyle: new DisplayStyle({
+                display: Display.none
+            })
+        };
+        style.gameLobbyContentPanelStyle = {
+            displayStyle: new DisplayStyle({
+                heightPercentage: 70,
+                widthPercentage: 100
+            })
+        };
+        style.gameLobbyPlayersPanelStyle = {
+            displayStyle: new DisplayStyle({
+                display: Display.none
+            })
+        };
+        style.gameLobbyMessagesPanelStyle = {
+            displayStyle: new DisplayStyle({
+                heightPercentage: 98,
+                widthPercentage: 99
+            })
+        };
+        style.gameLobbyMessageButtonedInputStyle = {
+            buttonedInputComponentPanelStyle: {
+                displayStyle: new DisplayStyle({
+                    widthPercentage: 99,
+                    marginTopPixels: 35,
+                    heightPixels: 40
+                })
+            },
+
+            buttonComponentStyle: {
+                displayStyle: new DisplayStyle({
+                    floatLeft: true,
+                    widthPercentage: 25,
+                    heightPixels: 40
+                })
+            },
+
+            inputComponentStyle: {
+                displayStyle: new DisplayStyle({
+                    floatLeft: true,
+                    widthPercentage: 75,
+                    heightPixels: 40
+                })
+            }
+        };
+        style.startGameButtonStyle = {
+            displayStyle: new DisplayStyle({
+                display: Display.none
+            })
+        };
+        style.leaveGameButtonStyle = {
+            displayStyle: new DisplayStyle({
+                display: Display.none
+            })
+        };
+
+        style.createGameLobbyFlipAnimation = {
+            rotationFrom: 180,
+            rotationTo: 359.9,
+            rotationDirection: 1,
+            rotationDelay: 0,
+            rotationDuration: 1000
+        };
+
+        style.currentGameLobbyFlipAnimation ={
+            rotationFrom: 180,
+            rotationTo: 180,
+            rotationDirection: 1,
+            rotationDelay: 0,
+            rotationDuration: 1000
+        };
+
+        return (
+            <GameLobbyComponent
+                gameLobbyComponentStyle={style}
+                currentGameLobby={this.props.gameLobby}
+                currentGameLobbyMessages={this.props.gameLobbyMessages}
+                createGameLobby={null}
+                gameLobbyNameInputOnChangeHandler={null}
+                startGameButtonClickHandler={null}
+                leaveGameButtonClickHandler={null}
+                createGameButtonClickHandler={null}
+                sendMessageButtonHandler={this.props.sendMessageButtonClickHandler}>
+            </GameLobbyComponent>
         );
     }
 

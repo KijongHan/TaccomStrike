@@ -100,6 +100,9 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
         }
         else 
         {
+            let gameLobbyMessages = this.state.currentGameLobbyMessages.map((value: GameLobbySendMessage) => {
+                return value.chatMessage;
+            });
             return (
                 <GamePageComponent
                     history={this.props.history}
@@ -107,9 +110,13 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     match={this.props.match}
                     
                     loggedInUser={this.props.loggedInUser}
+                    gameLobbyMessages={gameLobbyMessages}
+                    gameLobby={this.state.currentGameLobby}
                     gameState={this.state.currentGameState}
                     gameCheat={this.state.currentGameCheat}
                     gameWinner={this.state.currentGameWinner}
+
+                    sendMessageButtonClickHandler={this.sendMessageButtonClickHandler}
                     submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}
                     callCheatButtonClickHandler={this.callCheatButtonClickHandler}
                     finishButtonClickHandler={this.finishButtonClickHandler}>
@@ -263,6 +270,11 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
     finishButtonClickHandler = () => 
     {
         this.setState({
+            currentGameLobbyMessages: [],
+            currentGameLobbyMessage: null,
+            currentGameWinner: null,
+            currentGameCheat: null,
+            currentGameLobby: null,
             currentGameState: null
         });
     }

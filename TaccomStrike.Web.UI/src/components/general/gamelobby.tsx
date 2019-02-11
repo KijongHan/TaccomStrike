@@ -55,6 +55,7 @@ const GameLobbyPlayersPanel = styled.div`
     float: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getFloatString()};
     height: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getHeightString()};
     width: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getWidthString()};
+    display: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getDisplayString()};
     border-style: solid;
     border-width: 1px;
     border-color: ${ColorStyle.pallet2};
@@ -86,13 +87,13 @@ const GameLobbyMessageItem = styled.div`
     display: inline-block;
     width: 100%;
     font-size: 1.1em;
-    padding: 1px 7px 1px 7px;
     color: ${ColorStyle.pallet1};
 `;
 
 const GameLobbyMessagePlayerItem = styled.div`
     float: left;
     font-weight: bold;
+    padding-left: 7px;
 `;
 
 const GameLobbyMessageMessageItem = styled.div`
@@ -175,6 +176,7 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
     render() 
     {
         let currentGameLobbyComponent: JSX.Element;
+        let createGameLobbyComponent: JSX.Element;
         let flipAnimation: CardRotationAnimation;
         if(isNullOrUndefined(this.props.currentGameLobby)) 
         {
@@ -186,9 +188,18 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
             currentGameLobbyComponent = this.getCurrentGameLobbyComponent();
             flipAnimation = this.props.gameLobbyComponentStyle.currentGameLobbyFlipAnimation;
         }
+
+        if(isNullOrUndefined(this.props.createGameLobby)) 
+        {
+            createGameLobbyComponent = null;
+        }
+        else 
+        {
+            createGameLobbyComponent = this.getCreateGameLobbyComponent();
+        }
         return (
 			<CardComponent
-                front={this.getCreateGameLobbyComponent()}
+                front={createGameLobbyComponent}
                 back={currentGameLobbyComponent}
 				cardStyle={this.props.gameLobbyComponentStyle.cardComponentStyle}
 				rotationAnimation={flipAnimation}>

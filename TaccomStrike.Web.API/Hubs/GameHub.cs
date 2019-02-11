@@ -164,6 +164,7 @@ namespace TaccomStrike.Web.API.Hubs
 			{
 				foreach (var gameUser in gameLobby.GetUsers())
 				{
+					gameUser.SetCurrentGameLobbyID(null);
 					var gameState = gameLobby.GameLogicController.GetGameState(gameUser);
 					var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser);
 
@@ -173,6 +174,8 @@ namespace TaccomStrike.Web.API.Hubs
 					};
 					gameHubContext.Clients.Client(connection).GameFinish(apiObject);
 				}
+
+				gameLobbyService.RemoveGameLobby(gameLobbyID);
 			});
 		}
 

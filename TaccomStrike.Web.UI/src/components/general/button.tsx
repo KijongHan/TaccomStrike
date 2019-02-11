@@ -28,7 +28,7 @@ const ButtonElement = styled.div`
 	position: ${(p: ButtonComponentStyle) => p.displayStyle.getPositionString()};
 
 	bottom: ${(p: ButtonComponentStyle) => p.displayStyle.getBottomString()};
-	display: flex;
+	display: ${(p: ButtonComponentStyle) => p.displayStyle.getDisplayString()==='none' ? 'none' : 'flex'}
 
 	&:hover {
 		background-color: ${ColorStyle.pallet5};

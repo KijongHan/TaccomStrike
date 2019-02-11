@@ -6,6 +6,11 @@ export enum Position
 	static, absolute, fixed, relative, sticky, initial, inherit
 }
 
+export enum Display 
+{
+	none, initial
+}
+
 export class DisplayStyle
 {
 	widthPxiels?: number;
@@ -37,11 +42,14 @@ export class DisplayStyle
 	leftPixels?: number;
 	bottomPixels?: number;
 	bottomPercentage?: number;
+	
 	position?: Position;
+	display?: Display;
 
 	public constructor(init?: Partial<DisplayStyle>)
 	{
 		this.position = Position.static;
+		this.display = Display.initial;
 		Object.assign(this, init);
 	}
 
@@ -174,6 +182,11 @@ export class DisplayStyle
 	getPositionString = (): string =>
 	{
 		return Position[this.position];
+	};
+
+	getDisplayString = (): string =>
+	{
+		return Display[this.display];
 	};
 
 	getBottomString = (): string =>
