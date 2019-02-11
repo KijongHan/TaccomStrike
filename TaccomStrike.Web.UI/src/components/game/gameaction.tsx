@@ -343,10 +343,13 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
 
     getSnapshotBeforeUpdate(prevProps: GameActionComponentProps) 
     {
-        if(prevProps.gameState.lowerBoundRank!==this.props.gameState.lowerBoundRank ||
-            prevProps.gameState.middleBoundRank!==this.props.gameState.middleBoundRank ||
-            prevProps.gameState.upperBoundRank!==this.props.gameState.upperBoundRank) 
+        if(prevProps.gameState.currentGamePhase!==this.props.gameState.currentGamePhase)
         {
+            this.setState({
+                callCheatComboBox: [
+                    new ComboButtonItem("Call Cheat", false, this.callCheatButtonClickHandler)
+                ]
+            });
             this.setState({
                 submitClaimOptionsComboBox: [
                     new ComboButtonItem(this.props.gameState.lowerBoundRank, false, this.lowerBoundButtonClickHandler),
