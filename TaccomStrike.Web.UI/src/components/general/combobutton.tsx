@@ -41,10 +41,7 @@ export class ComboButtonComponentStyle
     }
 }
 
-export class ComboButtonComponentState 
-{
-    comboButtons: ComboButtonItem[];
-}
+export class ComboButtonComponentState {}
 
 export class ComboButtonComponentProps 
 {
@@ -57,15 +54,12 @@ export class ComboButtonComponent extends React.Component<ComboButtonComponentPr
     constructor(props: ComboButtonComponentProps) 
     {
         super(props);
-        this.state = {
-            comboButtons: this.props.comboButtons
-        }
     }
 
     render() 
     {
         let width = (1/this.props.comboButtons.length) * 100;
-        let buttons = this.state.comboButtons.map((value: ComboButtonItem) => {
+        let buttons = this.props.comboButtons.map((value: ComboButtonItem) => {
             let style = new ButtonComponentStyle();
             style.displayStyle = new DisplayStyle({
                 heightPercentage: 100,
@@ -73,17 +67,6 @@ export class ComboButtonComponent extends React.Component<ComboButtonComponentPr
                 floatLeft: true
             });
             let buttonClickHandler = () => {
-                let newComboButtonItems = this.state.comboButtons.map(item => Object.assign({}, item));
-                newComboButtonItems.forEach((item: ComboButtonItem) => {
-                    item.enabled = false;
-                });
-                let clickedButton = newComboButtonItems.find((item: ComboButtonItem, index: number, obj: ComboButtonItem[]) => {
-                    return value.displayName===item.displayName;
-                });
-                clickedButton.enabled = true;
-                this.setState({
-                    comboButtons: newComboButtonItems
-                });
                 value.comboButtonClickHandler();
             };
 
@@ -104,6 +87,4 @@ export class ComboButtonComponent extends React.Component<ComboButtonComponentPr
             </ComboButton>
         )
     }
-
-
 }

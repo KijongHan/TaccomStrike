@@ -39,7 +39,7 @@ const ButtonElement = styled.div`
 const DisabledButton = styled.div`
 	font-weight: bold;
 	text-align: center;
-	background-color: ${ColorStyle.pallet5};
+	background-color: rgba(255, 255, 255, 0.3);
 	color: ${ColorStyle.pallet2};
 	-webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet2};
 	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet2};

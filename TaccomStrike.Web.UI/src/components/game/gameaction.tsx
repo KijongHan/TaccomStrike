@@ -65,6 +65,9 @@ export class GameActionComponentState
 {
     currentPhaseDuration: number;
     timerID: number;
+
+    callCheatComboBox: ComboButtonItem[];
+    submitClaimOptionsComboBox: ComboButtonItem[];
 }
 
 export class GameActionComponentStyle 
@@ -84,7 +87,17 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
         super(props);
         this.state = {
             currentPhaseDuration: null,
-            timerID: null
+            timerID: null,
+
+            submitClaimOptionsComboBox: [
+                new ComboButtonItem(this.props.gameState.lowerBoundRank, false, this.lowerBoundButtonClickHandler),
+                new ComboButtonItem(this.props.gameState.middleBoundRank, false, this.middleBoundButtonClickHandler),
+                new ComboButtonItem(this.props.gameState.upperBoundRank, false, this.upperBoundButtonClickHandler)
+            ],
+
+            callCheatComboBox: [
+                new ComboButtonItem("Call Cheat", false, this.callCheatButtonClickHandler)
+            ]
         };
     }
 
@@ -157,22 +170,53 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
 
     lowerBoundButtonClickHandler = () => 
     {
+        this.setState({
+            submitClaimOptionsComboBox: [
+                new ComboButtonItem(this.props.gameState.lowerBoundRank, true, this.lowerBoundButtonClickHandler),
+                new ComboButtonItem(this.props.gameState.middleBoundRank, false, this.middleBoundButtonClickHandler),
+                new ComboButtonItem(this.props.gameState.upperBoundRank, false, this.upperBoundButtonClickHandler)
+            ]
+        });
         this.props.claimRankSelectedOnChangeHandler(this.props.gameState.lowerBoundRank);
     }
 
     middleBoundButtonClickHandler = () => 
     {
+        this.setState({
+            submitClaimOptionsComboBox: [
+                new ComboButtonItem(this.props.gameState.lowerBoundRank, false, this.lowerBoundButtonClickHandler),
+                new ComboButtonItem(this.props.gameState.middleBoundRank, true, this.middleBoundButtonClickHandler),
+                new ComboButtonItem(this.props.gameState.upperBoundRank, false, this.upperBoundButtonClickHandler)
+            ]
+        });
         this.props.claimRankSelectedOnChangeHandler(this.props.gameState.middleBoundRank);
     }
 
     upperBoundButtonClickHandler = () => 
     {
+        this.setState({
+            submitClaimOptionsComboBox: [
+                new ComboButtonItem(this.props.gameState.lowerBoundRank, false, this.lowerBoundButtonClickHandler),
+                new ComboButtonItem(this.props.gameState.middleBoundRank, false, this.middleBoundButtonClickHandler),
+                new ComboButtonItem(this.props.gameState.upperBoundRank, true, this.upperBoundButtonClickHandler)
+            ]
+        });
         this.props.claimRankSelectedOnChangeHandler(this.props.gameState.upperBoundRank);
+    }
+
+    callCheatButtonClickHandler = () => 
+    {
+        this.setState({
+            callCheatComboBox: [
+                new ComboButtonItem("Call Cheat", true, this.callCheatButtonClickHandler)
+            ]
+        });
+        this.props.callCheatButtonClickHandler();
     }
 
     getCallPhaseActionComponent = () => 
     {
-        let buttonStyle = new ButtonComponentStyle();
+        let buttonStyle = new ComboButtonComponentStyle();
         buttonStyle.displayStyle.widthPercentage = 80;
         buttonStyle.displayStyle.heightPercentage = 10;
         buttonStyle.displayStyle.marginLeftPercentage = 10;
@@ -183,11 +227,10 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
                 <GameAction>
                     {this.getGameHistoryListComponent()}
                     {this.getPhaseTimerComponent()}
-                    <ButtonComponent
-                        buttonText="Call Cheat"
-                        buttonComponentStyle={buttonStyle}
-                        buttonClickHandler={this.props.callCheatButtonClickHandler}>
-                    </ButtonComponent>
+                    <ComboButtonComponent
+                        comboButtonComponentStyle={buttonStyle}
+                        comboButtons={this.state.callCheatComboBox}>
+                    </ComboButtonComponent>
                 </GameAction>
             );
         }
@@ -240,14 +283,9 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
                     heightPercentage: 10,
                     marginLeftPercentage: 10
                 }));
-                let comboButtons = [
-                    new ComboButtonItem(this.props.gameState.lowerBoundRank, false, this.lowerBoundButtonClickHandler),
-                    new ComboButtonItem(this.props.gameState.middleBoundRank, false, this.middleBoundButtonClickHandler),
-                    new ComboButtonItem(this.props.gameState.upperBoundRank, false, this.upperBoundButtonClickHandler)
-                ]
                 claimOptions=(
                     <ComboButtonComponent
-                        comboButtons={comboButtons}
+                        comboButtons={this.state.submitClaimOptionsComboBox}
                         comboButtonComponentStyle={comboButtonComponentStyle}>
                     </ComboButtonComponent>
                 );
@@ -301,5 +339,21 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
                 </GamePhaseTimerText>
             </GamePhaseTimer>
         );
+    }
+
+    getSnapshotBeforeUpdate(prevProps: GameActionComponentProps) 
+    {
+        if(prevProps.gameState.lowerBoundRank!==this.props.gameState.lowerBoundRank ||
+            prevProps.gameState.middleBoundRank!==this.props.gameState.middleBoundRank ||
+            prevProps.gameState.upperBoundRank!==this.props.gameState.upperBoundRank) 
+        {
+            this.setState({
+                submitClaimOptionsComboBox: [
+                    new ComboButtonItem(this.props.gameState.lowerBoundRank, false, this.lowerBoundButtonClickHandler),
+                    new ComboButtonItem(this.props.gameState.middleBoundRank, false, this.middleBoundButtonClickHandler),
+                    new ComboButtonItem(this.props.gameState.upperBoundRank, false, this.upperBoundButtonClickHandler)
+                ]
+            });
+        }
     }
 }

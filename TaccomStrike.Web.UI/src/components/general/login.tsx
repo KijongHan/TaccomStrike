@@ -21,7 +21,10 @@ export class LoginComponentProps
 	passwordInputOnChangeHandler: (input: string) => void;
 }
 
-export class LoginComponentState {}
+export class LoginComponentState 
+{
+	userGuestComboButton: ComboButtonItem[];
+}
 
 export class LoginComponentStyle
 {
@@ -43,29 +46,25 @@ const LoginComponentElement = styled.div`
 	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
 `;
 
-const ButtonsPanel = styled.div`
-	overflow: auto;
-	padding-top: 2px;
-    padding-bottom: 1px;
-`;
-
 export class LoginComponent extends React.Component<LoginComponentProps, LoginComponentState>
 {
 	constructor(props: LoginComponentProps)
 	{
 		super(props);
+		this.state = {
+			userGuestComboButton: [
+				new ComboButtonItem("User", true, this.userButtonClickHandler),
+				new ComboButtonItem("Guest", false, this.guestButtonClickHandler)
+			]
+		}
 	}
 
 	render()
 	{
-		let comboButtons = [
-			new ComboButtonItem("User", true, this.userButtonClickHandler),
-			new ComboButtonItem("Guest", false, this.guestButtonClickHandler)
-		];
 		let loginComponent = (
 			<LoginComponentElement>
 				<ComboButtonComponent
-					comboButtons={comboButtons}
+					comboButtons={this.state.userGuestComboButton}
 					comboButtonComponentStyle={this.props.loginComponentStyle.userGuestComboButtonComponentStyle}>
 				</ComboButtonComponent>
 				<LabelledInputComponent
@@ -115,23 +114,21 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 
 	guestButtonClickHandler= () =>  
 	{
-
+		this.setState({
+			userGuestComboButton: [
+				new ComboButtonItem("User", false, this.userButtonClickHandler),
+				new ComboButtonItem("Guest", true, this.guestButtonClickHandler)
+			]
+		});
 	}
 
 	userButtonClickHandler= () => 
 	{
-
-	}
-
-	componentDidUpdate(prevProps: LoginComponentProps, prevState: LoginComponentState)
-	{
-		if (this.props.loginComponentStyle !== prevProps.loginComponentStyle)
-		{
-			this.setState({ loginComponentStyle: this.props.loginComponentStyle });
-		}
-		if(this.props.userLogin !== prevProps.userLogin) 
-		{
-			this.setState({ userLogin: this.props.userLogin });
-		}
+		this.setState({
+			userGuestComboButton: [
+				new ComboButtonItem("User", true, this.userButtonClickHandler),
+				new ComboButtonItem("Guest", false, this.guestButtonClickHandler)
+			]
+		});
 	}
 }
