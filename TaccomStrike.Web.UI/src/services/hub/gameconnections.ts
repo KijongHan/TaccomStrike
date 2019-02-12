@@ -23,6 +23,8 @@ export class GameConnectionsService
     static gameClaimHandlers: ((gameClaim: GameClaim) => void)[] = [];
     static gameCallCheatHandlers: ((gameClaim: GameClaim) => void)[] = [];
 
+    static onCloseHandler: () => void;
+
     static initializeGameConnections = () => 
     {
         GameConnectionsService.gameConnection = new HubConnectionBuilder()
@@ -116,6 +118,13 @@ export class GameConnectionsService
                     handler(apiObject);
                 });
         });
+        GameConnectionsService.gameConnection.onclose(() => {
+            prompt("You have been disconnected from the server");
+            if(!isNullOrUndefined(GameConnectionsService.onCloseHandler)) 
+            {
+                GameConnectionsService.onCloseHandler();
+            }
+        });
     }
 
     static addGameLobbyJoinHandler = (gameLobbyJoinHandler: (gameLobbyJoin: GameLobbyJoin) => void) => 
@@ -132,18 +141,6 @@ export class GameConnectionsService
             GameConnectionsService.gameLobbyJoinHandlers.push(gameLobbyJoinHandler);
     }
 
-    static removeGameLobbyJoinHandler = (gameLobbyJoinHandler: (gameLobbyJoin: GameLobbyJoin) => void) => 
-    {
-        GameConnectionsService
-            .gameLobbyJoinHandlers
-            .forEach((handler: (gameLobbyJoin: GameLobbyJoin) => void, index: number) => {
-                if(handler === gameLobbyJoinHandler) 
-                {
-                    GameConnectionsService.gameLobbyJoinHandlers.splice(index, 1);
-                }
-            });
-    }
-
     static addGameLobbySendMessageHandler = (gameLobbySendMessageHandler: (gameLobbySendMessage: GameLobbySendMessage) => void) => 
     {
         GameConnectionsService
@@ -156,18 +153,6 @@ export class GameConnectionsService
             });
 
             GameConnectionsService.gameLobbySendMessageHandlers.push(gameLobbySendMessageHandler);
-    }
-
-    static removeGameLobbySendMessageHandler = (gameLobbySendMessageHandler: (gameLobbySendMessage: GameLobbySendMessage) => void) => 
-    {
-        GameConnectionsService
-            .gameLobbySendMessageHandlers
-            .forEach((handler: (gameLobbySendMessage: GameLobbySendMessage) => void, index: number) => {
-                if(handler === gameLobbySendMessageHandler) 
-                {
-                    GameConnectionsService.gameLobbySendMessageHandlers.splice(index, 1);
-                }
-            });
     }
 
     static addGameLobbyStartGameHandler = (gameLobbyStartGameHandler: (gameLobbyStartGame: GameLobbyStartGame) => void) => 
@@ -268,5 +253,16 @@ export class GameConnectionsService
     static gameCallCheat(gameLobbyId: number) 
     {
         GameConnectionsService.gameConnection.invoke("GameCallCheat", gameLobbyId);
+    }
+
+    static removeHandlers() 
+    {
+        GameConnectionsService.gameConnection.off("GameLobbyJoin");
+        GameConnectionsService.gameConnection.off("GameLobbySendMessage");
+        GameConnectionsService.gameConnection.off("GameLobbyStartGame");
+        GameConnectionsService.gameConnection.off("GameLobbyLeaveGame");
+        GameConnectionsService.gameConnection.off("GameSubmitClaim");
+        GameConnectionsService.gameConnection.off("GameCallCheat");
+        GameConnectionsService.gameConnection.off("GameFinish");
     }
 }

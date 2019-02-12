@@ -40,6 +40,12 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
     constructor(props: PlayPageComponentProps) 
     {
         super(props);
+        if(isNullOrUndefined(props.loggedInUser)) 
+        {
+            props.history.push("/");
+            return;
+        }
+
         this.state = 
         {
             currentGameLobby: null,
@@ -65,6 +71,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                 GameConnectionsService.addGameClaimHandler(this.gameClaimHandler);
                 GameConnectionsService.addGameCallCheatHandler(this.gameCallCheatHandler);
                 GameConnectionsService.addGameFinishHandler(this.gameFinishHandler);
+                GameConnectionsService.onCloseHandler = this.gameConnectionOnCloseHandler;
             })
             .catch(() => {
                 this.props.history.push("/");
@@ -277,5 +284,15 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
             currentGameLobby: null,
             currentGameState: null
         });
+    }
+
+    gameConnectionOnCloseHandler = () => 
+    {
+        this.props.history.push("/");
+    }
+
+    componentWillUnmount() 
+    {
+        GameConnectionsService.removeHandlers();
     }
 }

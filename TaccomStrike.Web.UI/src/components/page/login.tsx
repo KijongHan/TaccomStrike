@@ -13,6 +13,9 @@ import { LoginPageStyle } from "../pagestyles/login";
 import { GetUser } from "../../models/rest/getuser";
 import { ChatConnectionsService } from "../../services/hub/chatconnections";
 import { GameConnectionsService } from "../../services/hub/gameconnections";
+import { PostGuestLogin } from "../../models/rest/postguestlogin";
+import { CreateUserLogin } from "../../models/rest/createuserlogin";
+import { InputValidationResult } from "../general/labelledinput";
 
 const LoginPage = styled.div`
 	height: 100%;
@@ -21,7 +24,7 @@ const LoginPage = styled.div`
 
 const PanelsContainer = styled.div`
 	overflow: auto;
-	padding-top: 10px;
+	padding-top: 25px;
 	padding-bottom: 50px;
 `;
 
@@ -30,9 +33,11 @@ export interface LoginPageComponentProps extends BasePageComponentProps
 	userLoggedIn: (user: GetUser) => void;
 }
 
-export interface LoginPageComponentState extends BasePageComponentState
+export class LoginPageComponentState extends BasePageComponentState
 {
+	createUser: CreateUserLogin;
 	userLogin: PostUserLogin;
+	guestLogin: PostGuestLogin;
 }
 
 export class LoginPageComponent extends BasePageComponent<LoginPageComponentProps, LoginPageComponentState>
@@ -43,7 +48,9 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 		this.state =
 		{
 			pageStyle: new LoginPageStyle().large(),
-			userLogin: new PostUserLogin()
+			createUser: new CreateUserLogin(),
+			userLogin: new PostUserLogin(),
+			guestLogin: new PostGuestLogin()
 		};
 		GameConnectionsService.deinitializeGameConnections();
 		ChatConnectionsService.deinitializeChatConnections();
@@ -65,19 +72,41 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 
 				<PanelsContainer>
 					<LoginComponent
+						guestLogin={this.state.guestLogin}
 						userLogin={this.state.userLogin}
 						loginComponentStyle={loginPageStyle.loginComponentStyle}
 						userLoginButtonClickHandler={this.userLoginButtonClickHandler}
 						guestLoginButtonClickHandler={this.guestLoginButtonClickHandler}
+						guestnameInputOnChangeHandler={this.guestnameInputOnChangeHandler}
 						usernameInputOnChangeHandler={this.usernameInputOnChangeHandler}
 						passwordInputOnChangeHandler={this.passwordInputOnChangeHandler}>
 					</LoginComponent>
 					<RegisterComponent
-						registerComponentStyle={loginPageStyle.registerComponentStyle}>
+						createUser={this.state.createUser}
+						registerComponentStyle={loginPageStyle.registerComponentStyle}
+						usernameInputValidation={this.usernameInputValidation}
+						usernameInputValidationWait={1000}
+						emailInputValidation={null}
+						emailInputValidationWait={null}
+						passwordInputValidation={null}
+						passwordInputValidationWait={null}
+						confirmPasswordInputValidation={null}
+						confirmPasswordInputValidationWait={null}
+						usernameInputOnChangeHandler={this.registerUsernameInputOnChangeHandler}
+						emailInputOnChangeHandler={this.registerEmailInputOnChangeHandler}
+						passwordInputOnChangeHandler={this.registerPasswordInputOnChangeHandler}
+						confirmPasswordInputOnChangeHandler={this.registerConfirmPasswordInputOnChangeHandler}>
 					</RegisterComponent>
 				</PanelsContainer>
 			</LoginPage>
 		);
+	}
+
+	guestnameInputOnChangeHandler = (input: string) =>
+	{
+		let newGuestLogin = Object.assign({}, this.state.guestLogin);
+		newGuestLogin.guestname = input;
+		this.setState({guestLogin: newGuestLogin});
 	}
 
 	usernameInputOnChangeHandler = (input: string) =>
@@ -107,5 +136,43 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 	guestLoginButtonClickHandler = () => 
 	{
 		
+	}
+
+	registerUsernameInputOnChangeHandler = (input: string) => 
+	{
+		let newCreateUser = Object.assign({}, this.state.createUser);
+		newCreateUser.username = input;
+		this.setState({createUser: newCreateUser});
+	}
+
+	registerEmailInputOnChangeHandler = (input: string) => 
+	{
+		let newCreateUser = Object.assign({}, this.state.createUser);
+		newCreateUser.email = input;
+		this.setState({createUser: newCreateUser});
+	}
+
+	registerPasswordInputOnChangeHandler = (input: string) => 
+	{
+		let newCreateUser = Object.assign({}, this.state.createUser);
+		newCreateUser.password = input;
+		this.setState({createUser: newCreateUser});
+	}
+
+	registerConfirmPasswordInputOnChangeHandler = (input: string) => 
+	{
+		let newCreateUser = Object.assign({}, this.state.createUser);
+		newCreateUser.confirmPassword = input;
+		this.setState({createUser: newCreateUser});
+	}
+
+	usernameInputValidation = () => 
+	{
+		let invalidCharacter = /\W/.test(this.state.createUser.username);
+		if(invalidCharacter) 
+		{
+			return new InputValidationResult(false, "Not allowable characters");
+		}
+		return new InputValidationResult(true, "");
 	}
 }

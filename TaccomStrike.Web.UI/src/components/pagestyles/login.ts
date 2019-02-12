@@ -48,7 +48,7 @@ export class LoginPageStyle extends BasePageStyle
                         marginLeftPixels: 20
                     }),
                     perspectiveStyle: new PerspectiveStyle({
-                        perspective: 1200
+                        perspective: 3000
                     })
                 },
                 

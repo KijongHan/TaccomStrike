@@ -28,9 +28,31 @@ const InputComponentElement = styled.input`
     font-size: 1.2em;
 `;
 
+const InputValidationSuccess = styled.div`
+	background-color: green;
+`;
+
+const InputValidationFail = styled.div`
+	background-color: red;
+`;
+
+export class InputValidationResult 
+{
+	success: boolean;
+	message: string;
+
+	constructor(success: boolean, message: string) 
+	{
+		this.success = success;
+		this.message = message;
+	}
+}
+
 export class LabelledInputComponentProps
 {
 	inputType?: string;
+	validationWait?: number;
+	inputValidation?: () => InputValidationResult;
 	inputValue: string;
 	labelValue: string;
 	componentStyle: LabelledInputComponentStyle;
@@ -43,7 +65,11 @@ export class LabelledInputComponentProps
 	}
 }
 
-export class LabelledInputComponentState {}
+export class LabelledInputComponentState 
+{
+	inputValidationResult: InputValidationResult;
+	inputValidationTimer: number;
+}
 
 export class LabelledInputComponentStyle
 {
@@ -60,19 +86,65 @@ export class LabelledInputComponent extends React.Component<LabelledInputCompone
 	constructor(props: LabelledInputComponentProps)
 	{
 		super(props);
+		this.state = {
+			inputValidationResult: null,
+			inputValidationTimer: null
+		}
 	}
 
 	render()
 	{
+		let validationElement: JSX.Element;
+		if(!isNullOrUndefined(this.props.inputValidation) && !isNullOrUndefined(this.state.inputValidationResult)) 
+		{
+			if(this.state.inputValidationResult.success) 
+			{
+				validationElement = (
+					<InputValidationSuccess>
+						Success
+					</InputValidationSuccess>
+				)
+			}
+			else 
+			{
+				validationElement = (
+					<InputValidationFail>
+						{this.state.inputValidationResult.message}
+					</InputValidationFail>
+				);
+			}
+		}
+
 		return (
 			<LabelledInputComponentElement
 				displayStyle={this.props.componentStyle.displayStyle}>
-				<LabelComponentElement>{this.props.labelValue}</LabelComponentElement>
-				<InputComponentElement 
+				<LabelComponentElement>
+					{this.props.labelValue}
+				</LabelComponentElement>
+				<InputComponentElement
 					type={this.props.inputType}
 					value={this.props.inputValue}
-					onChange={this.props.inputOnChangeHandler}></InputComponentElement>
+					onChange={this.inputOnChangeHandler}>
+				</InputComponentElement>
+				{validationElement}
 			</LabelledInputComponentElement>
 		);
+	}
+
+	inputOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => 
+	{
+		this.props.inputOnChangeHandler(event);
+		if(!isNullOrUndefined(this.props.inputValidation)) 
+		{
+			window.clearTimeout(this.state.inputValidationTimer)
+			let handlerID = window.setTimeout(() => {
+				this.setState({
+					inputValidationResult: this.props.inputValidation()
+				});
+			}, this.props.validationWait);
+			this.setState({
+				inputValidationTimer: handlerID
+			})
+		}
 	}
 }

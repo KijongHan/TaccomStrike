@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import * as React from "react";
 import { LoginPageComponent, LoginPageComponentProps } from "./components/page/login";
 import { MainPageComponent, MainPageComponentProps } from "./components/page/main";
@@ -27,7 +27,7 @@ export class AppComponent extends React.Component<{}, AppComponentState>
 			<BrowserRouter>
 				<Switch>
                     <Route 
-                        exact path="/"
+                        path="/login"
                         render={
                             (props: LoginPageComponentProps) => 
                             <LoginPageComponent
@@ -57,6 +57,7 @@ export class AppComponent extends React.Component<{}, AppComponentState>
                                 location={props.location}
                                 match={props.match}>    
                             </PlayPageComponent>}/>
+                    <Redirect from="/" to="/login"/>
 				</Switch>
 			</BrowserRouter>
 		);

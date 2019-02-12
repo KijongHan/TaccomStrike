@@ -13,11 +13,16 @@ namespace TaccomStrike.Library.Data.Services
 	{
 		private readonly UserLoginRepository userRepository;
 		private readonly ForumUserRepository forumUserRepository;
+		private readonly UserConnectionsService userConnectionsService;
 		private object authenticationServiceLock;
 
-		public UserAuthenticationService(UserLoginRepository userRepository, ForumUserRepository forumUserRepository)
+		public UserAuthenticationService(
+			UserLoginRepository userRepository, 
+			ForumUserRepository forumUserRepository,
+			UserConnectionsService userConnectionsService)
 		{
 			authenticationServiceLock = new object();
+			this.userConnectionsService = userConnectionsService;
 			this.userRepository = userRepository;
 			this.forumUserRepository = forumUserRepository;
 		}
@@ -66,8 +71,14 @@ namespace TaccomStrike.Library.Data.Services
 			{
 				return Task.Run(() => {
 					var user = userRepository.GetUserLogin(loginEntity.Username);
-
+					
 					if(user == null)
+					{
+						return null;
+					}
+
+					if(userConnectionsService.GameConnectionService.GetConnection(user.UserLoginID)!=null
+					|| userConnectionsService.ChatConnectionService.GetConnection(user.UserLoginID) != null)
 					{
 						return null;
 					}
