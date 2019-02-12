@@ -24,18 +24,6 @@ namespace TaccomStrike.Web.API.Controllers
 			this.authenticationService = authenticationService;
 		}
 
-		[Route("")]
-		[HttpPost]
-		public async Task<IActionResult> CreateAsync([FromBody] CreateUserLogin userEntity)
-		{
-			if(await authenticationService.CreateLoginAsync(userEntity) == null)
-			{
-				return NotFound();
-			}
-
-			return Ok();
-		}
-
 		[Route("login")]
 		[HttpPost]
 		public async Task<IActionResult> PostAsync([FromBody] PostUserLogin loginEntity)

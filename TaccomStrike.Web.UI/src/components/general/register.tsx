@@ -11,20 +11,22 @@ export class RegisterComponentProps
 {
 	registerComponentStyle: RegisterComponentStyle;
 	createUser: CreateUserLogin;
+	registerButtonEnabled: boolean;
 
-	usernameInputValidation: () => InputValidationResult;
+	usernameInputValidation: () => Promise<InputValidationResult>;
 	usernameInputValidationWait: number;
-	emailInputValidation: () => InputValidationResult;
+	emailInputValidation: () => Promise<InputValidationResult>;
 	emailInputValidationWait: number;
-	passwordInputValidation: () => InputValidationResult;
+	passwordInputValidation: () => Promise<InputValidationResult>;
 	passwordInputValidationWait: number;
-	confirmPasswordInputValidation: () => InputValidationResult;
+	confirmPasswordInputValidation: () => Promise<InputValidationResult>;
 	confirmPasswordInputValidationWait: number;
 
 	usernameInputOnChangeHandler: (input: string) => void;
 	emailInputOnChangeHandler: (input: string) => void;
 	passwordInputOnChangeHandler: (input: string) => void;
 	confirmPasswordInputOnChangeHandler: (input: string) => void;
+	registerButtonClickHandler: () => void;
 }
 
 export class RegisterComponentState {}
@@ -76,22 +78,17 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 					inputOnChangeHandler={this.emailOnChangeHandler}
 					componentStyle={this.props.registerComponentStyle.emailLabelledInputStyle} />
 				<LabelledInputComponent
+					inputType={"password"}
 					inputValue={this.props.createUser.password}
 					labelValue={"Password"}
 					inputValidation={this.props.passwordInputValidation}
 					validationWait={this.props.passwordInputValidationWait}
 					inputOnChangeHandler={this.passwordOnChangeHandler}
 					componentStyle={this.props.registerComponentStyle.passwordLabelledInputStyle} />
-				<LabelledInputComponent
-					inputValue={this.props.createUser.confirmPassword}
-					labelValue={"Confirm Password"}
-					inputValidation={this.props.confirmPasswordInputValidation}
-					validationWait={this.props.confirmPasswordInputValidationWait}
-					inputOnChangeHandler={this.confirmPasswordOnChangeHandler}
-					componentStyle={this.props.registerComponentStyle.confirmPasswordLabelledInputStyle} />
 				<ButtonComponent
+					enabled={!this.props.registerButtonEnabled}
 					buttonText="Register"
-					buttonClickHandler={this.registerButtonClickHandler}
+					buttonClickHandler={this.props.registerButtonClickHandler}
 					buttonComponentStyle={this.props.registerComponentStyle.registerButtonComponentStyle} />
 			</RegisterComponentElement>);
 
@@ -121,14 +118,4 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 	{
 		this.props.passwordInputOnChangeHandler(event.target.value);
 	}
-
-	confirmPasswordOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => 
-	{
-		this.props.confirmPasswordInputOnChangeHandler(event.target.value);
-	}
-
-	registerButtonClickHandler = () =>
-	{
-
-	};
 }

@@ -42,29 +42,6 @@ namespace TaccomStrike.Library.Data.Services
 			return userEntity;
 		}
 
-		public Task<CreateUserLogin> CreateLoginAsync(CreateUserLogin userEntity)
-		{
-			lock(authenticationServiceLock) {
-				return Task.Run(() => {
-					if(userRepository.GetUserLogin(userEntity.Username) != null)
-					{
-						return null;
-					}
-					if(userRepository.GetUserLoginByEmail(userEntity.Email) != null)
-					{
-						return null;
-					}
-
-					string passwordSalt = Authentication.GenerateSalt();
-					string hashPassword = Authentication.HashPassword(userEntity.Password, passwordSalt);
-
-					var forumUserID = forumUserRepository.CreateForumUser();
-					userRepository.CreateUserLogin(userEntity, passwordSalt, hashPassword, forumUserID);
-					return userEntity;
-				});
-			}
-		}
-
 		public Task<ClaimsPrincipal> AuthenticateLoginAsync(PostUserLogin loginEntity)
 		{
 			lock(authenticationServiceLock)

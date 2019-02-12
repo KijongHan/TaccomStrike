@@ -257,12 +257,15 @@ export class GameConnectionsService
 
     static removeHandlers() 
     {
-        GameConnectionsService.gameConnection.off("GameLobbyJoin");
-        GameConnectionsService.gameConnection.off("GameLobbySendMessage");
-        GameConnectionsService.gameConnection.off("GameLobbyStartGame");
-        GameConnectionsService.gameConnection.off("GameLobbyLeaveGame");
-        GameConnectionsService.gameConnection.off("GameSubmitClaim");
-        GameConnectionsService.gameConnection.off("GameCallCheat");
-        GameConnectionsService.gameConnection.off("GameFinish");
+        if(!isNullOrUndefined(GameConnectionsService.gameConnection)) 
+        {
+            GameConnectionsService.gameConnection.off("GameLobbyJoin");
+            GameConnectionsService.gameConnection.off("GameLobbySendMessage");
+            GameConnectionsService.gameConnection.off("GameLobbyStartGame");
+            GameConnectionsService.gameConnection.off("GameLobbyLeaveGame");
+            GameConnectionsService.gameConnection.off("GameSubmitClaim");
+            GameConnectionsService.gameConnection.off("GameCallCheat");
+            GameConnectionsService.gameConnection.off("GameFinish");
+        }
     }
 }

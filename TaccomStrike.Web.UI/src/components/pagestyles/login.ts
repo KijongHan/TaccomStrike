@@ -44,7 +44,7 @@ export class LoginPageStyle extends BasePageStyle
                     displayStyle: new DisplayStyle({
                         floatLeft: true,
                         widthPercentage: 30,
-                        heightPixels: 400,
+                        heightPixels: 450,
                         marginLeftPixels: 20
                     }),
                     perspectiveStyle: new PerspectiveStyle({
@@ -94,8 +94,8 @@ export class LoginPageStyle extends BasePageStyle
                 {
                     displayStyle: new DisplayStyle({
                         floatLeft: true,
-                        widthPercentage: 30,
-                        heightPixels: 400,
+                        widthPercentage: 35,
+                        heightPixels: 450,
                         marginLeftPixels: 10
                     }),
                     perspectiveStyle: new PerspectiveStyle({

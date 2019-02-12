@@ -1,9 +1,12 @@
 ﻿import * as React from "react";
 
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
 import { isNullOrUndefined } from "util";
 import { ColorStyle } from "../../styles/colorstyle";
+
+const ValidationSuccessIcon = require("../../res/tick.png");
+const ValidationFailIcon = require("../../res/cross.png");
 
 const LabelledInputComponentElement = styled.div`
 	width: ${(p: LabelledInputComponentStyle) => p.displayStyle.getWidthString()};
@@ -28,12 +31,58 @@ const InputComponentElement = styled.input`
     font-size: 1.2em;
 `;
 
+const InputValidationPanel = styled.div`
+	margin-top: 5px;
+	margin-bottom: 15px;
+	width: 80%;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+`;
+
+const InputValidationIconAnimation = keyframes`
+	0% {
+		opacity: 0;
+	}
+	100%{
+		opacity: 1;
+	}
+`;
+
+const InputValidationTextAnimation = keyframes`
+	0% {
+		opacity: 0;
+	}
+	100%{
+		opacity: 1;
+	}
+`;
+
+
 const InputValidationSuccess = styled.div`
-	background-color: green;
+	height: 20px;
+	width: 20px;
+	background-color: #008000;
+	animation: ${InputValidationIconAnimation} 0.5s linear forwards;
 `;
 
 const InputValidationFail = styled.div`
-	background-color: red;
+	height: 20px;
+	width: 20px;
+	background-color: #ff0000;
+	animation: ${InputValidationIconAnimation} 0.5s linear forwards;
+`;
+
+const InputValidationSuccessText = styled.div`
+	color: #008000;
+	margin-left: 5px;
+	animation: ${InputValidationTextAnimation} 1s linear forwards;
+`;
+
+const InputValidationFailText = styled.div`
+	color: #ff0000;
+	margin-left: 5px;
+	animation: ${InputValidationTextAnimation} 1s linear forwards;
 `;
 
 export class InputValidationResult 
@@ -52,7 +101,7 @@ export class LabelledInputComponentProps
 {
 	inputType?: string;
 	validationWait?: number;
-	inputValidation?: () => InputValidationResult;
+	inputValidation?: () => Promise<InputValidationResult>;
 	inputValue: string;
 	labelValue: string;
 	componentStyle: LabelledInputComponentStyle;
@@ -100,17 +149,19 @@ export class LabelledInputComponent extends React.Component<LabelledInputCompone
 			if(this.state.inputValidationResult.success) 
 			{
 				validationElement = (
-					<InputValidationSuccess>
-						Success
-					</InputValidationSuccess>
+					<InputValidationPanel>
+						<InputValidationSuccess></InputValidationSuccess>
+						<InputValidationSuccessText>{this.state.inputValidationResult.message}</InputValidationSuccessText>
+					</InputValidationPanel>
 				)
 			}
 			else 
 			{
 				validationElement = (
-					<InputValidationFail>
-						{this.state.inputValidationResult.message}
-					</InputValidationFail>
+					<InputValidationPanel>
+						<InputValidationFail></InputValidationFail>
+						<InputValidationFailText>{this.state.inputValidationResult.message}</InputValidationFailText>
+					</InputValidationPanel>
 				);
 			}
 		}
@@ -138,8 +189,10 @@ export class LabelledInputComponent extends React.Component<LabelledInputCompone
 		{
 			window.clearTimeout(this.state.inputValidationTimer)
 			let handlerID = window.setTimeout(() => {
-				this.setState({
-					inputValidationResult: this.props.inputValidation()
+				this.props.inputValidation().then((value: InputValidationResult) => {
+					this.setState({
+						inputValidationResult: value
+					});
 				});
 			}, this.props.validationWait);
 			this.setState({

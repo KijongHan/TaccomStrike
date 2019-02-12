@@ -16,6 +16,7 @@ import { GameConnectionsService } from "../../services/hub/gameconnections";
 import { PostGuestLogin } from "../../models/rest/postguestlogin";
 import { CreateUserLogin } from "../../models/rest/createuserlogin";
 import { InputValidationResult } from "../general/labelledinput";
+import { UserLoginsService } from "../../services/rest/userlogins";
 
 const LoginPage = styled.div`
 	height: 100%;
@@ -38,6 +39,10 @@ export class LoginPageComponentState extends BasePageComponentState
 	createUser: CreateUserLogin;
 	userLogin: PostUserLogin;
 	guestLogin: PostGuestLogin;
+
+	usernameValidated: boolean;
+	emailValidated: boolean;
+	passwordValidated: boolean;
 }
 
 export class LoginPageComponent extends BasePageComponent<LoginPageComponentProps, LoginPageComponentState>
@@ -50,10 +55,19 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 			pageStyle: new LoginPageStyle().large(),
 			createUser: new CreateUserLogin(),
 			userLogin: new PostUserLogin(),
-			guestLogin: new PostGuestLogin()
+			guestLogin: new PostGuestLogin(),
+
+			usernameValidated: false,
+			emailValidated: false,
+			passwordValidated: false
 		};
 		GameConnectionsService.deinitializeGameConnections();
+		GameConnectionsService.removeHandlers();
 		ChatConnectionsService.deinitializeChatConnections();
+
+		this.usernameInputValidation = this.usernameInputValidation.bind(this);
+		this.emailInputValidation = this.emailInputValidation.bind(this);
+		this.passwordInputValidation = this.passwordInputValidation.bind(this);
 	}
 
 	render()
@@ -62,6 +76,12 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 		let titleWords = ["Call", "Cheat"];
 		let titlePanelStylings = [loginPageStyle.callTitlePanelStyle, loginPageStyle.cheatTitlePanelStyle];
 
+		let registerButtonEnabled = false;
+		if(this.state.usernameValidated && this.state.emailValidated && this.state.passwordValidated
+		&& this.state.createUser.username.length>0 && this.state.createUser.email.length>0 && this.state.createUser.password.length>0) 
+		{
+			registerButtonEnabled = true;
+		}
 		return (
 			<LoginPage>
 				<TitlePanelsComponent
@@ -82,20 +102,22 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 						passwordInputOnChangeHandler={this.passwordInputOnChangeHandler}>
 					</LoginComponent>
 					<RegisterComponent
+						registerButtonEnabled={registerButtonEnabled}
 						createUser={this.state.createUser}
 						registerComponentStyle={loginPageStyle.registerComponentStyle}
 						usernameInputValidation={this.usernameInputValidation}
-						usernameInputValidationWait={1000}
-						emailInputValidation={null}
-						emailInputValidationWait={null}
-						passwordInputValidation={null}
-						passwordInputValidationWait={null}
+						usernameInputValidationWait={200}
+						emailInputValidation={this.emailInputValidation}
+						emailInputValidationWait={200}
+						passwordInputValidation={this.passwordInputValidation}
+						passwordInputValidationWait={200}
 						confirmPasswordInputValidation={null}
 						confirmPasswordInputValidationWait={null}
 						usernameInputOnChangeHandler={this.registerUsernameInputOnChangeHandler}
 						emailInputOnChangeHandler={this.registerEmailInputOnChangeHandler}
 						passwordInputOnChangeHandler={this.registerPasswordInputOnChangeHandler}
-						confirmPasswordInputOnChangeHandler={this.registerConfirmPasswordInputOnChangeHandler}>
+						confirmPasswordInputOnChangeHandler={this.registerConfirmPasswordInputOnChangeHandler}
+						registerButtonClickHandler={this.registerButtonClickHandler}>
 					</RegisterComponent>
 				</PanelsContainer>
 			</LoginPage>
@@ -138,6 +160,24 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 		
 	}
 
+	registerButtonClickHandler = () => 
+	{
+		UserLoginsService.createUserLogin(this.state.createUser)
+			.then((value: GetUser) => {
+				let userLogin = Object.assign({}, this.state.userLogin);
+				userLogin.username = value.username;
+				userLogin.password = this.state.createUser.password;
+
+				this.setState({
+					userLogin: userLogin,
+					createUser: new CreateUserLogin()
+				});
+			})
+			.catch((reason: any) => {
+				prompt("Register failed: " + reason);
+			});
+	}
+
 	registerUsernameInputOnChangeHandler = (input: string) => 
 	{
 		let newCreateUser = Object.assign({}, this.state.createUser);
@@ -166,13 +206,50 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 		this.setState({createUser: newCreateUser});
 	}
 
-	usernameInputValidation = () => 
+	async usernameInputValidation() 
 	{
 		let invalidCharacter = /\W/.test(this.state.createUser.username);
 		if(invalidCharacter) 
 		{
-			return new InputValidationResult(false, "Not allowable characters");
+			this.setState({usernameValidated: false});
+			return new InputValidationResult(false, "Only letters [a-z] numbers [1-9] or underscore [_]");
 		}
-		return new InputValidationResult(true, "");
+		if(this.state.createUser.username.length<4 || this.state.createUser.username.length>20) 
+		{
+			this.setState({usernameValidated: false});
+			return new InputValidationResult(false, "Username must be between 5 and 20");
+		}
+
+		let users = await UserLoginsService.getUsers(this.state.createUser.username, null);
+		if(users.length>0) 
+		{
+			this.setState({usernameValidated: false});
+			return new InputValidationResult(false, "Username already exists");
+		}
+		this.setState({usernameValidated: true});
+		return new InputValidationResult(true, "Username okay to use");
+	}
+
+	async emailInputValidation() 
+	{
+		let users = await UserLoginsService.getUsers(null, this.state.createUser.email);
+		if(users.length>0) 
+		{
+			this.setState({emailValidated: false});
+			return new InputValidationResult(false, "Email already exists");
+		}
+		this.setState({emailValidated: true});
+		return new InputValidationResult(true, "Email okay to use");
+	}
+
+	async passwordInputValidation() 
+	{
+		if(this.state.createUser.password.length<8) 
+		{
+			this.setState({passwordValidated: false});
+			return new InputValidationResult(false, "Must be at least 8 characters");
+		}
+		this.setState({passwordValidated: true});
+		return new InputValidationResult(true, "Password okay to use");
 	}
 }

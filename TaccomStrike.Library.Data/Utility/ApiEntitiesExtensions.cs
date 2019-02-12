@@ -48,6 +48,20 @@ namespace TaccomStrike.Library.Data.Utility
 				.ToList();
 		}
 
+		public static List<GetUser> ApiGetUsers(this IEnumerable<UserLogin> users)
+		{
+			return users
+				.Select((user) =>
+				{
+					return new GetUser
+					{
+						UserID = user.UserLoginID,
+						Username = user.Username
+					};
+				})
+				.ToList();
+		}
+
 		public static GetUser ApiGetUser(this ClaimsPrincipal principal)
 		{
 			if(principal == null)
@@ -58,6 +72,19 @@ namespace TaccomStrike.Library.Data.Utility
 			{
 				UserID = principal.GetUserLoginID(),
 				Username = principal.GetUserName()
+			};
+		}
+
+		public static GetUser ApiGetUser(this UserLogin userLogin)
+		{
+			if (userLogin == null)
+			{
+				return null;
+			}
+			return new GetUser
+			{
+				UserID = userLogin.UserLoginID,
+				Username = userLogin.Username
 			};
 		}
 
