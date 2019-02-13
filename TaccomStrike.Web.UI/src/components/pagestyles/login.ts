@@ -74,7 +74,7 @@ export class LoginPageStyle extends BasePageStyle
                 usernameLabelledInputStyle:
                 {
                     displayStyle: new DisplayStyle({
-                        widthPercentage: 90,
+                        widthPercentage: 70,
                         marginLeftPercentage: 5,
                         marginTopPixels: 20
                     })
@@ -83,7 +83,7 @@ export class LoginPageStyle extends BasePageStyle
                 passwordLabelledInputStyle:
                 {
                     displayStyle: new DisplayStyle({
-                        widthPercentage: 90,
+                        widthPercentage: 70,
                         marginLeftPercentage: 5,
                         marginTopPixels: 10
                     })
@@ -106,7 +106,7 @@ export class LoginPageStyle extends BasePageStyle
                 usernameLabelledInputStyle:
                 {
                     displayStyle: new DisplayStyle({
-                        widthPercentage: 90,
+                        widthPercentage: 70,
                         marginLeftPercentage: 5
                     })
                 },
@@ -114,7 +114,7 @@ export class LoginPageStyle extends BasePageStyle
                 emailLabelledInputStyle:
                 {
                     displayStyle: new DisplayStyle({
-                        widthPercentage: 90,
+                        widthPercentage: 70,
                         marginLeftPercentage: 5,
                         marginTopPixels: 10
                     })
@@ -123,7 +123,7 @@ export class LoginPageStyle extends BasePageStyle
                 passwordLabelledInputStyle:
                 {
                     displayStyle: new DisplayStyle({
-                        widthPercentage: 90,
+                        widthPercentage: 70,
                         marginLeftPercentage: 5,
                         marginTopPixels: 10
                     })
@@ -132,7 +132,7 @@ export class LoginPageStyle extends BasePageStyle
                 confirmPasswordLabelledInputStyle:
                 {
                     displayStyle: new DisplayStyle({
-                        widthPercentage: 90,
+                        widthPercentage: 70,
                         marginLeftPercentage: 5,
                         marginTopPixels: 10
                     })

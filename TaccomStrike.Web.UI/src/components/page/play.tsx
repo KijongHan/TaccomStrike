@@ -101,6 +101,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     leaveGameButtonClickHandler={this.leaveGameButtonClickHandler}
                     createGameButtonClickHandler={this.createGameButtonClickHandler}
                     gameLobbyNameInputOnChangeHandler={this.gameLobbyNameInputOnChangeHandler}
+                    gameModeListOnChangeHandler={this.gameModeListOnChangeHandler}
                     refreshButtonClickHandler={this.refreshButtonClickHandler}>
                 </LobbyPageComponent>
             );
@@ -284,11 +285,22 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
             currentGameLobby: null,
             currentGameState: null
         });
+        this.refreshButtonClickHandler();
     }
 
     gameConnectionOnCloseHandler = () => 
     {
         this.props.history.push("/");
+    }
+
+    gameModeListOnChangeHandler = (input: string) => 
+    {
+        let newCreateGameLobby = Object.assign({}, this.state.createGameLobby);
+        newCreateGameLobby.gameMode = Number.parseInt(input);
+
+        this.setState({
+            createGameLobby: newCreateGameLobby
+        });
     }
 
     componentWillUnmount() 

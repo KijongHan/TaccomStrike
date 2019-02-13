@@ -29,9 +29,10 @@ namespace TaccomStrike.Web.API.Controllers
 		[HttpPost]
 		public IActionResult CreateGameLobby([FromBody] CreateGameLobby gameLobbyViewModel)
 		{
-			GameLobby gameLobby = new GameLobby 
+			GameLobby gameLobby = new GameLobby
 			{
 				GameLobbyName = gameLobbyViewModel.GameLobbyName,
+				GameMode = gameLobbyViewModel.GameMode,
 				MaxRoomLimit = 4
 			};
 			

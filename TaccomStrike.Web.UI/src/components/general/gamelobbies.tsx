@@ -2,7 +2,7 @@ import * as React from "react";
 import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
 import { ButtonComponent, ButtonComponentStyle } from "./button";
 import styled from "styled-components";
-import { GetGameLobby } from "../../models/rest/getgamelobby";
+import { GetGameLobby, GameMode } from "../../models/rest/getgamelobby";
 import { DisplayStyle } from "../../styles/displaystyle";
 import { ColorStyle } from "../../styles/colorstyle";
 
@@ -56,6 +56,11 @@ const LobbyListItemLobbyName = styled.div`
 const LobbyListItemHost = styled.div`
     float: left;
     padding-left: 10px;
+`;
+
+const LobbyListItemGameMode = styled.div`
+    float: left;
+    margin-left: 20px;
 `;
 
 const LobbyListItemPlayers = styled.div`
@@ -112,6 +117,7 @@ class LobbyListItemComponent extends React.Component<LobbyListItemComponentProps
                     {this.props.gameLobby.gameLobbyName}
                 </LobbyListItemLobbyName>
                 <LobbyListItemHost>Host: {this.props.gameLobby.host.username}</LobbyListItemHost>
+                <LobbyListItemGameMode>Mode: {GameMode[this.props.gameLobby.gameMode]}</LobbyListItemGameMode>
                 <LobbyListItemPlayers>Players: {this.props.gameLobby.players.length}/{this.props.gameLobby.maxRoomLimit}</LobbyListItemPlayers>
             </LobbyListItem>
         );

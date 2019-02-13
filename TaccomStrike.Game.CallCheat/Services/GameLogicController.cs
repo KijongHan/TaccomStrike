@@ -13,6 +13,9 @@ namespace TaccomStrike.Game.CallCheat.Services
 		private int turnsIndex;
 		private object gameLogicLock = new object();
 
+		private int callPhaseDuration;
+		private int turnPhaseDuration;
+
 		public long GameLobbyID { get; set; }
 
 		public List<GameUser> GameUsers { get; set; }
@@ -246,7 +249,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 		{
 			lock(gameLogicLock)
 			{
-				CallTimer = new Timer(5000);
+				CallTimer = new Timer(callPhaseDuration);
 				CallTimer.Elapsed += (object sender, ElapsedEventArgs e) => {
 					lock(gameLogicLock)
 					{
@@ -304,7 +307,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 			lock(gameLogicLock)
 			{
 				CurrentGamePhase = GamePhase.TurnPhase;
-				TurnTimer = new Timer(20000);
+				TurnTimer = new Timer(turnPhaseDuration);
 				TurnTimer.Elapsed += (object sender, ElapsedEventArgs e) =>
 				{
 					lock(gameLogicLock)
@@ -321,7 +324,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 			}
 		}
 
-		public void StartGame(List<ClaimsPrincipal> users, long gameLobbyID)
+		public void StartGame(List<ClaimsPrincipal> users, long gameLobbyID, int callPhaseDuration, int turnPhaseDuration)
 		{
 			List<GameCard> deck = instantiateDeck();
 			GameUsers = new List<GameUser>();
@@ -329,6 +332,9 @@ namespace TaccomStrike.Game.CallCheat.Services
 			UsersCallingCheat = new List<GameUser>();
 			ActionHistory = new List<string>();
 			GameLobbyID = gameLobbyID;
+
+			this.callPhaseDuration = callPhaseDuration;
+			this.turnPhaseDuration = turnPhaseDuration;
 
 			int interval = deck.Count / users.Count;
 			for (int i = 0; i < users.Count; i++)

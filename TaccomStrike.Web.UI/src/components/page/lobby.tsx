@@ -44,6 +44,7 @@ export interface LobbyPageComponentProps extends BasePageComponentProps
     refreshButtonClickHandler: () => void;
     createGameButtonClickHandler: () => void;
     gameLobbyNameInputOnChangeHandler: (input: string) => void;
+    gameModeListOnChangeHandler: (input: string) => void;
 }
 
 export class LobbyPageComponentState extends BasePageComponentState {}
@@ -90,10 +91,12 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                         refreshButtonClickHandler={this.props.refreshButtonClickHandler}>
                     </GameLobbiesComponent>
                     <GameLobbyComponent
+                        loggedInUser={this.props.loggedInUser}
                         currentGameLobby={this.props.currentGameLobby}
                         createGameLobby={this.props.createGameLobby}
                         gameLobbyComponentStyle={lobbyPageStyle.gameLobbyComponentStyle}
                         gameLobbyNameInputOnChangeHandler={this.props.gameLobbyNameInputOnChangeHandler}
+                        gameModeListOnChangeHandler={this.props.gameModeListOnChangeHandler}
                         createGameButtonClickHandler={this.props.createGameButtonClickHandler}
                         startGameButtonClickHandler={this.props.startGameButtonClickHandler}
                         leaveGameButtonClickHandler={this.props.leaveGameButtonClickHandler}

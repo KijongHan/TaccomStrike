@@ -271,7 +271,6 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
                     <LabelledListComponent
                         labelledListComponentStyle={labelledListComponentStyle}
                         listOnChangeHandler={this.props.claimRankSelectedOnChangeHandler}
-                        labelValue={""}
                         listItems={listItems}>
                     </LabelledListComponent>
                 )

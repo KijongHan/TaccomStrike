@@ -10,9 +10,14 @@ namespace TaccomStrike.Library.Data.ViewModel
 	public class GameLobby
 	{
 
-		public enum LobbyType
+		public enum Lobby
 		{
 			Public, Private, Competitive
+		}
+
+		public enum Mode
+		{
+			Casual=1, Competitive=2
 		}
 
 		public enum GameType
@@ -28,7 +33,8 @@ namespace TaccomStrike.Library.Data.ViewModel
 		private object lobbyLock = new object();
 		private List<ClaimsPrincipal> players {get;set;}
 
-		public GameLobby.LobbyType GameLobbyType {get;set;}
+		public GameLobby.Mode GameMode { get; set; }
+		public GameLobby.Lobby GameLobbyType {get;set;}
 		public GameLobby.GameType GameLobbyGameType {get;set;}
 
 		public GameLogicController GameLogicController {get;set;}
@@ -59,8 +65,11 @@ namespace TaccomStrike.Library.Data.ViewModel
 					return false;
 				}
 
+				var callPhaseDuration = GetCallPhaseDuration(GameMode);
+				var turnPhaseDuration = GetTurnPhaseDuration(GameMode);
+
 				GameLogicController = new GameLogicController();
-				GameLogicController.StartGame(players, GameLobbyID);
+				GameLogicController.StartGame(players, GameLobbyID, callPhaseDuration, turnPhaseDuration);
 				return true;
 			}
 		 }
@@ -155,6 +164,38 @@ namespace TaccomStrike.Library.Data.ViewModel
 			lock(lobbyLock)
 			{
 				protectedAction();
+			}
+		}
+
+		private int GetCallPhaseDuration(GameLobby.Mode gameMode)
+		{
+			if(gameMode==GameLobby.Mode.Casual)
+			{
+				return 10000;
+			}
+			if(gameMode==GameLobby.Mode.Competitive)
+			{
+				return 5000;
+			}
+			else
+			{
+				return 10000;
+			}
+		}
+
+		private int GetTurnPhaseDuration(GameLobby.Mode gameMode)
+		{
+			if (gameMode == GameLobby.Mode.Casual)
+			{
+				return 40000;
+			}
+			if (gameMode == GameLobby.Mode.Competitive)
+			{
+				return 20000;
+			}
+			else
+			{
+				return 40000;
 			}
 		}
 	}

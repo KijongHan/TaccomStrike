@@ -103,12 +103,15 @@ const GameLobbyMessageMessageItem = styled.div`
 
 export class GameLobbyComponentProps 
 {
+    loggedInUser: GetUser;
+
     gameLobbyComponentStyle: GameLobbyComponentStyle;
     currentGameLobby: GetGameLobby;
     currentGameLobbyMessages: GetChatMessage[];
     createGameLobby: CreateGameLobby;
 
     gameLobbyNameInputOnChangeHandler: (input: string) => void;
+    gameModeListOnChangeHandler: (input: string) => void;
     startGameButtonClickHandler: () => void;
     leaveGameButtonClickHandler: () => void;
     createGameButtonClickHandler: () => void;
@@ -118,6 +121,7 @@ export class GameLobbyComponentProps
 export class GameLobbyComponentState 
 {
     listItems: ListItem[];
+    gameModeListItems: ListItem[];
     gameLobbyMessage: string;
 }
 
@@ -127,6 +131,7 @@ export class GameLobbyComponentStyle
 
     gameLobbyNameLabelledInputStyle: LabelledInputComponentStyle;
     maxLobbyLimitLabelledListStyle: LabelledListComponentStyle;
+    gameModeLabelledListStyle: LabelledListComponentStyle;
     createGameButtonStyle: ButtonComponentStyle;
 
     gameLobbyContentPanelStyle: GameLobbyContentPanelStyle;
@@ -169,6 +174,10 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
                 {displayName:"6", itemValue:"6"},
                 {displayName:"7", itemValue:"7"},
                 {displayName:"8", itemValue:"8"}
+            ],
+            gameModeListItems: [
+                {displayName:"Casual", itemValue:"1"},
+                {displayName:"Competitive", itemValue:"2"}
             ]
         }
     }
@@ -230,6 +239,14 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
             );
         });
 
+        let startGameButtonEnabled = true;
+        if(this.props.loggedInUser.userID===this.props.currentGameLobby.host.userID) 
+        {
+            if(!isNullOrUndefined(this.props.currentGameLobby.players) && this.props.currentGameLobby.players.length>1) 
+            {
+                startGameButtonEnabled = false;
+            }
+        }
         return (
             <CurrentGameLobbyElement>
                 <GameLobbyContentPanel
@@ -251,7 +268,8 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
                 </ButtonedInputComponent>
                 <ButtonsPanel>
                     <ButtonComponent
-						buttonText="Start"
+                        buttonText="Start"
+                        enabled={startGameButtonEnabled}
 						buttonClickHandler={this.props.startGameButtonClickHandler}
 						buttonComponentStyle={this.props.gameLobbyComponentStyle.startGameButtonStyle} />
 					<ButtonComponent
@@ -272,6 +290,11 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
 					labelValue={"Game Lobby Name"}
 					inputOnChangeHandler={this.gameLobbyNameInputOnChangeHandler}
 					componentStyle={this.props.gameLobbyComponentStyle.gameLobbyNameLabelledInputStyle} />
+                <LabelledListComponent
+                    labelValue={"Game Mode"}
+                    listItems={this.state.gameModeListItems}
+                    labelledListComponentStyle={this.props.gameLobbyComponentStyle.gameModeLabelledListStyle}
+                    listOnChangeHandler={this.props.gameModeListOnChangeHandler}/>
                 <ButtonComponent
                     buttonText={"Create Game"}
                     buttonComponentStyle={this.props.gameLobbyComponentStyle.createGameButtonStyle}

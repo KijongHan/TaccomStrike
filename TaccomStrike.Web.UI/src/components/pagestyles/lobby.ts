@@ -122,7 +122,7 @@ export class LobbyPageStyle extends BasePageStyle
 
             gameLobbyNameLabelledInputStyle: {
                 displayStyle: new DisplayStyle({
-                    widthPercentage: 90,
+                    widthPercentage: 70,
                     marginLeftPercentage: 5,
                     marginTopPixels: 20
                 })
@@ -130,7 +130,15 @@ export class LobbyPageStyle extends BasePageStyle
 
             maxLobbyLimitLabelledListStyle: {
                 displayStyle: new DisplayStyle({
-                    widthPercentage: 90,
+                    widthPercentage: 70,
+                    marginLeftPercentage: 5,
+                    marginTopPixels: 20
+                })
+            },
+
+            gameModeLabelledListStyle: {
+                displayStyle: new DisplayStyle({
+                    widthPercentage: 70,
                     marginLeftPercentage: 5,
                     marginTopPixels: 20
                 })

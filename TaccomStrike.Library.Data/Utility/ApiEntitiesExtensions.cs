@@ -96,7 +96,8 @@ namespace TaccomStrike.Library.Data.Utility
 				Players = gameLobby.GetUsers().ApiGetUsers(),
 				MaxRoomLimit = gameLobby.MaxRoomLimit,
 				GameLobbyName = gameLobby.GameLobbyName,
-				GameLobbyID = gameLobby.GameLobbyID
+				GameLobbyID = gameLobby.GameLobbyID,
+				GameMode = gameLobby.GameMode
 			};
 		}
 

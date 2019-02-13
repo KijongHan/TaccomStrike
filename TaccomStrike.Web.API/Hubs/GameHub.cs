@@ -193,11 +193,12 @@ namespace TaccomStrike.Web.API.Hubs
 					if (gameLobby.HasUser(Context.User))
 					{
 						var gameStarted = gameLobby.StartGame();
-						gameLobby.GameLogicController.StartTurn(OnTurnTimeout);
 						if (!gameStarted)
 						{
 							return;
 						}
+
+						gameLobby.GameLogicController.StartTurn(OnTurnTimeout);
 
 						foreach (var user in gameLobby.GetUsers())
 						{
@@ -281,39 +282,36 @@ namespace TaccomStrike.Web.API.Hubs
 				{
 					var userConnection = userConnectionsService.GameConnectionService.GetConnection(Context.User);
 					var newUser = Context.User.ApiGetUser();
-					
-					if (gameLobby.GameLobbyType == GameLobby.LobbyType.Public)
+
+					if (gameLobby.GetUsersCount() >= gameLobby.MaxRoomLimit)
 					{
-						if (gameLobby.GetUsersCount() >= gameLobby.MaxRoomLimit)
+						Clients.Client(userConnection).GameLobbyJoin(null);
+						return;
+					}
+					if (gameLobby.InGame())
+					{
+						Clients.Client(userConnection).GameLobbyJoin(null);
+						return;
+					}
+					else
+					{
+						if (!gameLobby.HasUser(Context.User))
 						{
-							Clients.Client(userConnection).GameLobbyJoin(null);
-							return;
+							gameLobby.AddUser(Context.User);
 						}
-						if (gameLobby.InGame())
-						{
-							Clients.Client(userConnection).GameLobbyJoin(null);
-							return;
-						}
-						else
-						{
-							if (!gameLobby.HasUser(Context.User))
-							{
-								gameLobby.AddUser(Context.User);
-							}
 
-							var apiObject = new GameLobbyJoin
-							{
-								NewUser = newUser,
-								GameLobby = gameLobby.ApiGetGameLobby()
-							};
+						var apiObject = new GameLobbyJoin
+						{
+							NewUser = newUser,
+							GameLobby = gameLobby.ApiGetGameLobby()
+						};
 
-							foreach (var user in gameLobby.GetUsers())
-							{
-								var connection = userConnectionsService.GameConnectionService.GetConnection(user);
-								Clients.Client(connection).GameLobbyJoin(apiObject);
-							}
-							Context.User.SetCurrentGameLobbyID(gameLobbyID);
+						foreach (var user in gameLobby.GetUsers())
+						{
+							var connection = userConnectionsService.GameConnectionService.GetConnection(user);
+							Clients.Client(connection).GameLobbyJoin(apiObject);
 						}
+						Context.User.SetCurrentGameLobbyID(gameLobbyID);
 					}
 				});
 			});

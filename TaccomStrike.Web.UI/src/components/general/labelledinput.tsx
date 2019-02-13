@@ -22,7 +22,7 @@ const LabelComponentElement = styled.div`
 `;
 
 const InputComponentElement = styled.input`
-	width: 80%;
+	width: 100%;
     background-color: rgba(255, 255, 255, 0.5);
     border-style: solid;
     border-width: 2px;
@@ -34,7 +34,7 @@ const InputComponentElement = styled.input`
 const InputValidationPanel = styled.div`
 	margin-top: 5px;
 	margin-bottom: 15px;
-	width: 80%;
+	width: 100%;
 	overflow: hidden;
 	display: flex;
 	align-items: center;

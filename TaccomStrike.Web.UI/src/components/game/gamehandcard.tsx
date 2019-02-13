@@ -2,6 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { CardComponent, CardComponentStyle, CardSlideAnimation, CardRotationAnimation } from "../general/card";
 import { GetGameCard } from "../../models/rest/getgamecard";
+import { ColorStyle } from "../../styles/colorstyle";
 
 const RedDiamond = require("../../res/red_diamond.png");
 const RedHeart = require("../../res/red_heart.png");
@@ -13,6 +14,16 @@ const GameCardFace = styled.div`
     width: 100%;
     border: 1px solid black;
     background-color: rgba(255, 255, 255, 1);
+`;
+
+const GameCardFaceSelected = styled.div`
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color: ${ColorStyle.pallet3};
+    opacity: 0.7;
 `;
 
 const GameCardIcon = styled.div`
@@ -141,11 +152,21 @@ export class GameHandCardComponent extends React.Component<GameHandCardComponent
                 </GameCardIcon>
             );
         }
+        let selectedGameCardFace: JSX.Element;
+        if(this.props.isSelected) 
+        {
+            selectedGameCardFace = (
+                <GameCardFaceSelected>
+                </GameCardFaceSelected>
+            );
+        }
+
         let gameCardFace = (
             <GameCardFace
                 onClick={this.gameCardClickHandler}>
                 {gameCardIcon1}
                 {gameCardIcon2}
+                {selectedGameCardFace}
             </GameCardFace>
         );
 

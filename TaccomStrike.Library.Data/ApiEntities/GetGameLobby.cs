@@ -13,6 +13,8 @@ namespace TaccomStrike.Library.Data.ApiEntities
 
 		public int MaxRoomLimit { get; set; }
 
+		public GameLobby.Mode GameMode { get; set; }
+
 		public GetUser Host { get; set; }
 
 		public List<GetUser> Players { get; set; }

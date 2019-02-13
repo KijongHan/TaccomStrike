@@ -17,6 +17,7 @@ import { PostGuestLogin } from "../../models/rest/postguestlogin";
 import { CreateUserLogin } from "../../models/rest/createuserlogin";
 import { InputValidationResult } from "../general/labelledinput";
 import { UserLoginsService } from "../../services/rest/userlogins";
+import { MessageDialogComponent } from "../general/msgdialog";
 
 const LoginPage = styled.div`
 	height: 100%;
@@ -43,6 +44,8 @@ export class LoginPageComponentState extends BasePageComponentState
 	usernameValidated: boolean;
 	emailValidated: boolean;
 	passwordValidated: boolean;
+
+	loginRequestFailed: boolean;
 }
 
 export class LoginPageComponent extends BasePageComponent<LoginPageComponentProps, LoginPageComponentState>
@@ -59,7 +62,9 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 
 			usernameValidated: false,
 			emailValidated: false,
-			passwordValidated: false
+			passwordValidated: false,
+
+			loginRequestFailed: null
 		};
 		GameConnectionsService.deinitializeGameConnections();
 		GameConnectionsService.removeHandlers();
@@ -81,6 +86,17 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 		&& this.state.createUser.username.length>0 && this.state.createUser.email.length>0 && this.state.createUser.password.length>0) 
 		{
 			registerButtonEnabled = true;
+		}
+
+		let messageDialog: JSX.Element;
+		if(this.state.loginRequestFailed) 
+		{
+			messageDialog = (
+				<MessageDialogComponent
+					message="Login failed. Username password combination is incorrect"
+					okayButtonClickHandler={this.messageDialogOkayButtonClickHandler}>
+				</MessageDialogComponent>
+			);
 		}
 		return (
 			<LoginPage>
@@ -120,8 +136,17 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 						registerButtonClickHandler={this.registerButtonClickHandler}>
 					</RegisterComponent>
 				</PanelsContainer>
+
+				{messageDialog}
 			</LoginPage>
 		);
+	}
+
+	messageDialogOkayButtonClickHandler = () => 
+	{
+		this.setState({
+			loginRequestFailed: null
+		});
 	}
 
 	guestnameInputOnChangeHandler = (input: string) =>
@@ -152,6 +177,14 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 			.then((getUser: GetUser) => {
 				this.props.userLoggedIn(getUser);
 				this.props.history.push("/play");
+				this.setState({
+					loginRequestFailed: null
+				})
+			})
+			.catch(() => {
+				this.setState({
+					loginRequestFailed: true
+				});
 			});
 	}
 

@@ -33,7 +33,6 @@ namespace TaccomStrike.Library.Data.Services
 		{
 			long id = generateUniqueID();
 			gameLobby.GameLobbyID = id;
-			gameLobby.GameLobbyType = GameLobby.LobbyType.Public;
 			gameLobbies.Add(gameLobby);
 			return id;
 		}

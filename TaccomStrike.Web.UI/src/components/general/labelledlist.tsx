@@ -3,6 +3,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
 import { isNullOrUndefined } from "util";
+import { ColorStyle } from "../../styles/colorstyle";
 
 const LabelledListComponentElement = styled.div`
 	height: ${(p: LabelledListComponentStyle) => p.displayStyle.getHeightString()}; 
@@ -14,6 +15,7 @@ const LabelComponentElement = styled.div`
 	width: 40%;
 	padding-left: 5px;
 	background-color: rgba(255, 255, 255, 0.65);
+	color: ${ColorStyle.pallet1};
 	font-size: 1.25em;
 `;
 
@@ -26,12 +28,13 @@ const ListComponentElement = styled.select`
     border-color: rgba(255, 255, 255, 0.65);
 	font-size: 1.2em;
 	text-align-last:center;
+	color: ${ColorStyle.pallet1};
 `;
 
 export class LabelledListComponentProps
 {
 	listItems: ListItem[];
-	labelValue: string;
+	labelValue?: string;
 	labelledListComponentStyle: LabelledListComponentStyle;
 
 	listOnChangeHandler: (value: string) => void;
@@ -81,9 +84,20 @@ export class LabelledListComponent extends React.Component<LabelledListComponent
 					</option>
 				);
 			});
+
+		let label: JSX.Element;
+		if(!isNullOrUndefined(this.props.labelValue)) 
+		{
+			label = (
+				<LabelComponentElement>
+					{this.props.labelValue}
+				</LabelComponentElement>
+			);
+		}
 		return (
 			<LabelledListComponentElement
 				displayStyle={this.props.labelledListComponentStyle.displayStyle}>
+				{label}
 				<ListComponentElement
 					onChange={this.listOnChangeHandler}>
                     {listItemOptions}

@@ -217,11 +217,13 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
 
         return (
             <GameLobbyComponent
+                loggedInUser={this.props.loggedInUser}
                 gameLobbyComponentStyle={style}
                 currentGameLobby={this.props.gameLobby}
                 currentGameLobbyMessages={this.props.gameLobbyMessages}
                 createGameLobby={null}
                 gameLobbyNameInputOnChangeHandler={null}
+                gameModeListOnChangeHandler={null}
                 startGameButtonClickHandler={null}
                 leaveGameButtonClickHandler={null}
                 createGameButtonClickHandler={null}
