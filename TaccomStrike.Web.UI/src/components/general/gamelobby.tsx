@@ -37,14 +37,12 @@ const CurrentGameLobbyElement = styled.div`
     width: 100%;
     background-color: ${ColorStyle.pallet3};
     padding: 5px 5px 5px 5px;
-    overflow: auto;
     -webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
 	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
 	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
 `;
 
 const GameLobbyContentPanel = styled.div`
-    overflow: auto;
     display: inline-block;
     height: ${(p : GameLobbyContentPanelStyle) => p.displayStyle.getHeightString()};
     width: ${(p : GameLobbyContentPanelStyle) => p.displayStyle.getWidthString()};
@@ -81,6 +79,7 @@ const GameLobbyMessagesPanel = styled.div`
     border-style: solid;
     border-width: 1px;
     border-color: ${ColorStyle.pallet2};
+    overflow-y: scroll;
 `;
 
 const GameLobbyMessageItem = styled.div`

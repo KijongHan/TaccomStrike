@@ -18,12 +18,6 @@ const ArrowDownIcon = require("../../res/arrowdown.png");
 const CardHandIcon = require("../../res/card_hand.png");
 const CardDeckIcon = require("../../res/card_deck.png");
 
-const ClaimPanel = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-`;
-
 const GameBoard = styled.div`
     margin: auto;
     position: relative;
@@ -49,6 +43,7 @@ const GameBoardPlayer = styled.div`
 const GameBoardPlayerName = styled.div`
     width: 100%;
     text-align: center;
+    font-family: "Times New Roman"
 `;
 
 const GameBoardPlayerCardHand = styled.div`
@@ -60,25 +55,17 @@ const GameBoardPlayerCardHand = styled.div`
 `;
 
 const GameBoardPlayerCardHandText = styled.p`
+    margin: auto;
+    color: white;
+    text-align: center;
+    font-size: 0.9em;
+    font-family: "Times New Roman"
+`;
+
+const ClaimPanel = styled.div`
+    width: 100%;
     height: 100%;
-    margin: auto;
-    color: white;
-    text-align: center;
-`;
-
-const GameBoardClaimsCount = styled.div`
-    width: 30%;
-    height: 60%;
-    background-size: 100% 100%;
-    background-image: url(${CardDeckIcon});
     display: flex;
-    margin: auto;
-`;
-
-const GameBoardClaimsCountText = styled.p`
-    margin: auto;
-    color: white;
-    text-align: center;
 `;
 
 const GameBoardPlayerCardCountChangeAnimation1 = keyframes`
@@ -377,7 +364,6 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
                 </GameBoardPlayerPanel>
             );
         }
-        let claimsCount: JSX.Element;
         let claimCard: JSX.Element;
         
         if(!isNullOrUndefined(this.props.gameCheat)) 
@@ -400,28 +386,14 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
             });
 
             let lastClaim = this.props.gameState.claims[this.props.gameState.claims.length-1];
-
-            claimsCount = (
-                <GameBoardClaimsCount>
-                    <GameBoardClaimsCountText>
-                        {claimsCardCount}
-                    </GameBoardClaimsCountText>
-                </GameBoardClaimsCount>
-            );
             claimCard = (
                 <GameClaimCardComponent
+                    claimsCardCount={claimsCardCount}
                     claimCount={lastClaim.claims.length}
                     claimRank={lastClaim.claims[0].rank}>
                 </GameClaimCardComponent>
             );
         }
-        
-        let claims = (
-            <ClaimPanel>
-                {claimsCount}
-                {claimCard}
-            </ClaimPanel>
-        );
 
         return (
             <GameBoard
@@ -446,7 +418,9 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
                     displayStyle={this.props.gameBoardSeatComponentStyle.displayStyle}>
                     {playerFour}
                 </GameBoardVacantSeat>
-                {claims}
+                <ClaimPanel>
+                    {claimCard}
+                </ClaimPanel>
             </GameBoard>
         );
     }

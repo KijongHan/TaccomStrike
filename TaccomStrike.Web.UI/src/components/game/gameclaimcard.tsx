@@ -11,6 +11,7 @@ const RedDiamond = require("../../res/red_diamond.png");
 const RedHeart = require("../../res/red_heart.png");
 const BlackSpade = require("../../res/black_spade.png");
 const BlackClover = require("../../res/black_clover.png");
+const CardDeckIcon = require("../../res/card_deck.png");
 
 const GameCardFace = styled.div`
     height: 100%;
@@ -36,6 +37,22 @@ const GameCardBackText = styled.p`
     color: white;
     margin: auto;
     text-align: center;
+    font-family: "Times New Roman"
+`;
+
+const GameBoardClaimsCount = styled.div`
+    width: 30%;
+    height: 35%;
+    background-size: 100% 100%;
+    background-image: url(${CardDeckIcon});
+    display: flex;
+    margin: auto;
+`;
+
+const GameBoardClaimsCountText = styled.p`
+    margin: auto;
+    text-align: center;
+    font-family: "Times New Roman"
 `;
 
 export class GameClaimCardComponentState 
@@ -49,6 +66,7 @@ export class GameClaimCardComponentProps
     claimCount: number;
     claimRank: string;
     actualCards?: GetGameCard[];
+    claimsCardCount?: number;
 }
 
 export class GameClaimCardComponent extends React.Component<GameClaimCardComponentProps, GameClaimCardComponentState> 
@@ -78,7 +96,7 @@ export class GameClaimCardComponent extends React.Component<GameClaimCardCompone
     {
         let cardStyle: CardComponentStyle =
 		{
-			displayStyle: new DisplayStyle({widthPercentage: 30, heightPercentage:60, marginString: 'auto'}),
+			displayStyle: new DisplayStyle({widthPercentage: 50, heightPercentage: 75, marginString: 'auto'}),
 			perspectiveStyle: new PerspectiveStyle({perspective: 1200, rotateY: 180})
         };
         let cardFront: JSX.Element;
@@ -127,6 +145,11 @@ export class GameClaimCardComponent extends React.Component<GameClaimCardCompone
                 <GameCardBackText>
                     (×{this.props.claimCount}) {this.props.claimRank}
                 </GameCardBackText>
+                <GameBoardClaimsCount>
+                    <GameBoardClaimsCountText>
+                        {this.props.claimsCardCount}
+                    </GameBoardClaimsCountText>
+                </GameBoardClaimsCount>
             </GameCardBack>
         );
 
