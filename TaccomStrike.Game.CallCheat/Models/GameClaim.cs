@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace TaccomStrike.Library.Data.ViewModel
+namespace TaccomStrike.Game.CallCheat
 {
 	public class GameClaim
 	{

@@ -1,5 +1,8 @@
-public enum GameUserState {
 
-    ActivePlayer, Observer
-
+namespace TaccomStrike.Game.CallCheat
+{
+	public enum GameUserState
+	{
+		ActivePlayer, Observer
+	}
 }

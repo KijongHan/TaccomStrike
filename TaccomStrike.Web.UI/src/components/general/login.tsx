@@ -2,37 +2,40 @@
 import { ButtonComponent, ButtonComponentStyle } from "./button";
 
 import styled from "styled-components";
-import { CardComponent, CardComponentStyle, CardOrientation, CardTiltAnimation } from "./card";
+import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
 import { debug } from "util";
 import { LabelledInputComponent, LabelledInputComponentStyle } from "./labelledinput";
 import { PostUserLogin } from "../../models/rest/postuserlogin";
+import { ComboButtonComponent, ComboButtonItem, ComboButtonComponentStyle } from "./combobutton";
+import { ColorStyle } from "../../styles/colorstyle";
+import { PostGuestLogin } from "../../models/rest/postguestlogin";
+import { LoginPageComponentState } from "../page/login";
 
 export class LoginComponentProps
 {
 	loginComponentStyle: LoginComponentStyle
-
 	userLogin: PostUserLogin;
+	guestLogin: PostGuestLogin;
 
 	userLoginButtonClickHandler: () => void;
 	guestLoginButtonClickHandler: () => void;
 
+	guestnameInputOnChangeHandler: (input: string) => void;
 	usernameInputOnChangeHandler: (input: string) => void;
 	passwordInputOnChangeHandler: (input: string) => void;
 }
 
-export class LoginComponentState
+export class LoginComponentState 
 {
-	loginComponentStyle: LoginComponentStyle
-
-	userLogin: PostUserLogin;
+	userGuestComboButton: ComboButtonItem[];
+	flipAnimation: CardRotationAnimation;
 }
 
 export class LoginComponentStyle
 {
 	cardComponentStyle: CardComponentStyle;
 
-	userButtonComponentStyle: ButtonComponentStyle;
-	guestButtonComponentStyle: ButtonComponentStyle;
+	userGuestComboButtonComponentStyle: ComboButtonComponentStyle;
 	loginButtonComponentStyle: ButtonComponentStyle;
 
 	usernameLabelledInputStyle: LabelledInputComponentStyle;
@@ -42,11 +45,15 @@ export class LoginComponentStyle
 const LoginComponentElement = styled.div`
 	height: 100%;
 	width: 100%;
-	background-color: rgba(0, 0, 0, 0.88);
-`;
+	background-color: ${ColorStyle.pallet3};
+	-webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	padding-top: 2px;
 
-const ButtonsPanel = styled.div`
-	overflow: auto;
+	border-style: solid;
+	border-width: 2px;
+	border-color: rgba(0, 0, 0, 0.1);
 `;
 
 export class LoginComponent extends React.Component<LoginComponentProps, LoginComponentState>
@@ -54,63 +61,81 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 	constructor(props: LoginComponentProps)
 	{
 		super(props);
-		this.state =
-		{
-			loginComponentStyle: props.loginComponentStyle,
-			userLogin: props.userLogin
-		};
+		this.state = {
+			userGuestComboButton: [
+				new ComboButtonItem("User", true, this.userButtonClickHandler),
+				new ComboButtonItem("Guest", false, this.guestButtonClickHandler)
+			],
+			flipAnimation: null
+		}
 	}
 
 	render()
 	{
-		let loginComponent = (
-			<LoginComponentElement>
-				<ButtonsPanel>
-					<ButtonComponent
-						buttonText="User"
-						buttonClickHandler={this.userButtonClickHandler}
-						buttonComponentStyle={this.state.loginComponentStyle.userButtonComponentStyle} />
-					<ButtonComponent
-						buttonText="Guest"
-						buttonClickHandler={this.guestButtonClickHandler}
-						buttonComponentStyle={this.state.loginComponentStyle.guestButtonComponentStyle} />
-				</ButtonsPanel>
-				<LabelledInputComponent
-					inputValue={this.state.userLogin.username}
-					labelValue={"Username"}
-					inputOnChangeHandler={this.usernameInputOnChangeHandler}
-					componentStyle={this.state.loginComponentStyle.usernameLabelledInputStyle} />
-				<LabelledInputComponent
-					inputType={"password"}
-					inputValue={this.state.userLogin.password}
-					labelValue={"Password"}
-					inputOnChangeHandler={this.passwordInputOnChangeHandler}
-					componentStyle={this.state.loginComponentStyle.usernameLabelledInputStyle} />
-				<ButtonComponent
-					buttonText="Login"
-					buttonClickHandler={this.userLoginButtonClickHandler}
-					buttonComponentStyle={this.state.loginComponentStyle.loginButtonComponentStyle} />
-			</LoginComponentElement>);
-
-		let tiltAnimation = new CardTiltAnimation();
-		tiltAnimation.tiltAngle = 20;
-		tiltAnimation.tiltDelay = 0;
-		tiltAnimation.tiltDuration = 0.7;
+		let loginComponent = this.getUserLoginComponent();
+		let guestComponent = this.getGuestLoginComponent();
+		
 		return (
 			<CardComponent
-				panel={loginComponent}
-				changeTriggers={[this.state.loginComponentStyle, this.state.userLogin]}
-				cardStyle={this.state.loginComponentStyle.cardComponentStyle}
-				cardOrientation={CardOrientation.Front}
-				flipAnimation={null}
-				tiltAnimation={tiltAnimation}>
+				front={loginComponent}
+				back={guestComponent}
+				cardStyle={this.props.loginComponentStyle.cardComponentStyle}
+				rotationAnimation={this.state.flipAnimation}>
 			</CardComponent>
 		);
 	}
 
-	userLoginButtonClickHandler = () =>  
+	getUserLoginComponent = () => 
 	{
-		this.props.userLoginButtonClickHandler();
+		return (
+			<LoginComponentElement>
+				<ComboButtonComponent
+					comboButtons={this.state.userGuestComboButton}
+					comboButtonComponentStyle={this.props.loginComponentStyle.userGuestComboButtonComponentStyle}>
+				</ComboButtonComponent>
+				<LabelledInputComponent
+					inputValue={this.props.userLogin.username}
+					labelValue={"Username"}
+					inputOnChangeHandler={this.usernameInputOnChangeHandler}
+					componentStyle={this.props.loginComponentStyle.usernameLabelledInputStyle} />
+				<LabelledInputComponent
+					inputType={"password"}
+					inputValue={this.props.userLogin.password}
+					labelValue={"Password"}
+					inputOnChangeHandler={this.passwordInputOnChangeHandler}
+					componentStyle={this.props.loginComponentStyle.usernameLabelledInputStyle} />
+				<ButtonComponent
+					buttonText="Login"
+					buttonClickHandler={this.props.userLoginButtonClickHandler}
+					buttonComponentStyle={this.props.loginComponentStyle.loginButtonComponentStyle} />
+			</LoginComponentElement>
+		);
+	}
+
+	getGuestLoginComponent = () => 
+	{
+		return (
+			<LoginComponentElement>
+				<ComboButtonComponent
+					comboButtons={this.state.userGuestComboButton}
+					comboButtonComponentStyle={this.props.loginComponentStyle.userGuestComboButtonComponentStyle}>
+				</ComboButtonComponent>
+				<LabelledInputComponent
+					inputValue={this.props.guestLogin.guestname}
+					labelValue={"Guestname"}
+					inputOnChangeHandler={this.guestnameInputOnChangeHandler}
+					componentStyle={this.props.loginComponentStyle.usernameLabelledInputStyle} />
+				<ButtonComponent
+					buttonText="Login"
+					buttonClickHandler={this.props.guestLoginButtonClickHandler}
+					buttonComponentStyle={this.props.loginComponentStyle.loginButtonComponentStyle} />
+			</LoginComponentElement>
+		);
+	}
+
+	guestnameInputOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
+	{
+		this.props.guestnameInputOnChangeHandler(event.target.value);
 	}
 
 	usernameInputOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -125,23 +150,35 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 
 	guestButtonClickHandler= () =>  
 	{
-
+		this.setState({
+			flipAnimation: new CardRotationAnimation({
+				rotationDelay: 0,
+				rotationDirection: 1,
+				rotationDuration: 1000,
+				rotationFrom: 0,
+				rotationTo: 180
+			}),
+			userGuestComboButton: [
+				new ComboButtonItem("User", false, this.userButtonClickHandler),
+				new ComboButtonItem("Guest", true, this.guestButtonClickHandler)
+			]
+		});
 	}
 
 	userButtonClickHandler= () => 
 	{
-
-	}
-
-	componentDidUpdate(prevProps: LoginComponentProps, prevState: LoginComponentState)
-	{
-		if (this.props.loginComponentStyle !== prevProps.loginComponentStyle)
-		{
-			this.setState({ loginComponentStyle: this.props.loginComponentStyle });
-		}
-		if(this.props.userLogin !== prevProps.userLogin) 
-		{
-			this.setState({ userLogin: this.props.userLogin });
-		}
+		this.setState({
+			flipAnimation: new CardRotationAnimation({
+				rotationDelay: 0,
+				rotationDirection: 1,
+				rotationDuration: 1000,
+				rotationFrom: 180,
+				rotationTo: 359.9
+			}),
+			userGuestComboButton: [
+				new ComboButtonItem("User", true, this.userButtonClickHandler),
+				new ComboButtonItem("Guest", false, this.guestButtonClickHandler)
+			]
+		});
 	}
 }

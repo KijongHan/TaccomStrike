@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using TaccomStrike.Game.CallCheat.Models;
 
-namespace TaccomStrike.Library.Data.ViewModel
+namespace TaccomStrike.Game.CallCheat
 {
 	public class GameState
 	{
@@ -11,6 +12,16 @@ namespace TaccomStrike.Library.Data.ViewModel
 		public GameUser User { get; set; }
 
 		public List<GameClaim> Claims { get; set; }
+
+		public string LowerBoundRank { get; set; }
+		public string UpperBoundRank { get; set; }
+		public string MiddleBoundRank { get; set; }
+
+		public GamePhase CurrentGamePhase { get;set; }
+		public double TurnPhaseDuration { get; set; }
+		public double CallPhaseDuration { get; set; }
+
+		public List<string> ActionHistory { get; set; }
 
 		public GameState()
 		{

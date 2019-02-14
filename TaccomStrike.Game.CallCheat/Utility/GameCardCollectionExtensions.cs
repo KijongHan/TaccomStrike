@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using TaccomStrike.Library.Data.ViewModel;
 
-namespace TaccomStrike.Library.Data.Utilty
+namespace TaccomStrike.Game.CallCheat.Utilty
 {
 	public static class GameCardCollectionExtensions
 	{

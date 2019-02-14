@@ -8,6 +8,8 @@ namespace TaccomStrike.Library.Data.ViewModel
 	{
 		public int MaxRoomLimit { get; set; }
 
+		public GameLobby.Mode GameMode { get; set; }
+
 		public string GameLobbyName { get; set; }
 	}
 }

@@ -1,6 +1,16 @@
 import * as React from "react";
 import { BasePageComponent, BasePageComponentProps, BasePageComponentState } from "./base";
-import { ConnectionsService } from "../../services/connections";
+import { ChatConnectionsService } from "../../services/hub/chatconnections";
+import { ChatUserConnected } from "../../models/hub/chatuserconnected";
+import { MainPageStyle } from "../pagestyles/main";
+import styled from "styled-components";
+import { ChatRoomsService } from "../../services/rest/chatrooms";
+import { GetChatRoom } from "../../models/rest/getchatroom";
+
+const MainPage = styled.div`
+	height: 100%;
+	font-family: 'Cormorant Upright', serif;
+`;
 
 export interface MainPageComponentProps extends BasePageComponentProps {}
 
@@ -11,10 +21,14 @@ export class MainPageComponent extends BasePageComponent<MainPageComponentProps,
 	constructor(props: MainPageComponentProps) 
 	{
 		super(props);
-		ConnectionsService
-			.initializeConnections()
+		ChatConnectionsService
+			.initializeChatConnections()
 			.then(() => {
 				console.log("Connection Succeeded");
+				this.state = { pageStyle: new MainPageStyle() };
+				ChatConnectionsService.addChatUserConnectedHandler(this.chatUserConnectedHandler);
+
+				ChatRoomsService.getChatRooms().then((response: GetChatRoom[]) => {console.log(response);});
 			})
 			.catch(() => {
 				console.log("Connection Failed");
@@ -23,22 +37,15 @@ export class MainPageComponent extends BasePageComponent<MainPageComponentProps,
 
     render() 
     {
-        return (<div>HI</div>);
-    }
-
-    onResizeLarge = () =>  
-	{
+        return (
+			<MainPage>
+				
+			</MainPage>
+		);
 	}
-
-	onResizeMedium = () =>  
+	
+	chatUserConnectedHandler = (chatUserConnected: ChatUserConnected) => 
 	{
-	}
-
-	onResizeSmall = () =>  
-	{
-	}
-
-	onResizeVerySmall= () =>  
-	{
+		console.log("Chat User Conected");
 	}
 }

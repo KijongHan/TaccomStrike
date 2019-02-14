@@ -1,7 +1,8 @@
 ﻿import * as React from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, consolidateStreamedStyles } from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined, isNull } from "util";
+import { PerspectiveStyle } from "../../styles/perspectivestyle";
 
 const CardFront = styled.div`
 	position: absolute;
@@ -9,19 +10,10 @@ const CardFront = styled.div`
 	bottom: 0;
 	left: 0;
 	right: 0;
-	${
-		(p: CardFrontStyle) => isNullOrUndefined(p.tiltAnimation) ? '' :
-		`animation: ${CardTilt(p.startRotation, p.endRotation)} ${p.tiltAnimation.tiltDuration}s ${p.tiltAnimation.tiltDelay}s forwards`
-	};
-	${
-		(p: CardFrontStyle) => isNullOrUndefined(p.flipAnimation) ? '' :
-		`animation: ${CardFlip(180, 'visible')} ${p.flipAnimation.flipDuration / 2}s ${p.flipAnimation.flipDelay}s forwards`
-	};
 	visibility: ${(p: CardFrontStyle) => p.displayFront ? 'visible' : 'hidden'};
-	transform: ${(p: CardFrontStyle) => p.flipped ? 'rotateY(180deg);' : 'rotateY(0deg);'};
 `;
 
-const CardBack = styled.div`
+const CardBackCover = styled.div`
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -31,128 +23,107 @@ const CardBack = styled.div`
 	border-style: solid;
 	border-width: 4px;
 	border-color: rgba(180, 180, 180, 0.7);
-	${
-		(p: CardBackStyle) => isNullOrUndefined(p.tiltAnimation) ? '' :
-		`animation: ${CardTilt(p.startRotation, p.endRotation)} ${p.tiltAnimation.tiltDuration}s ${p.tiltAnimation.tiltDelay}s forwards`
-	};
-	${
-		(p: CardBackStyle) => isNullOrUndefined(p.flipAnimation) ? '' :
-		`animation: ${CardFlip(180, 'hidden')} ${p.flipAnimation.flipDuration / 2}s ${p.flipAnimation.flipDelay}s forwards`
-	};
-	transform: ${(p: CardBackStyle) => p.flipped ? 'rotateY(180deg);' : 'rotateY(0deg);'};
+	visibility: ${(p: CardBackStyle) => p.displayBack ? 'visible' : 'hidden'};
+`;
+
+const CardBack = styled.div`
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 	visibility: ${(p: CardBackStyle) => p.displayBack ? 'visible' : 'hidden'};
 `;
 
 const Card = styled.div`
-	position: relative;
-	float: left;
+	position: ${(p: CardComponentStyle) => p.displayStyle.getPositionString()};
+	display: inline-block;
+	left: ${(p: CardComponentStyle) => p.displayStyle.getLeftString()};
+	top: ${(p: CardComponentStyle) => p.displayStyle.getTopString()};
+	bottom: ${(p: CardComponentStyle) => p.displayStyle.getBottomString()};
+	right: ${(p: CardComponentStyle) => p.displayStyle.getRightString()};
 	width: ${(p: CardComponentStyle) => p.displayStyle.getWidthString()};
 	height: ${(p: CardComponentStyle) => p.displayStyle.getHeightString()};
 	margin: ${(p : CardComponentStyle) => p.displayStyle.getMarginString()};
-	-webkit-perspective: 800px;
-	perspective: 800px;
+	-webkit-perspective: ${(p : CardComponentStyle) => p.perspectiveStyle.getPerspectiveString()};
+	perspective: ${(p : CardComponentStyle) => p.perspectiveStyle.getPerspectiveString()};
 `;
 
-function CardTilt(startRotation: number, endRotation: number)
+export enum CardRotationDirection 
 {
-	return keyframes`
-		0% {
-			transform: rotateY(${startRotation}deg);
-		}
-
-		100% {
-			transform: rotateY(${endRotation}deg);
-		}
-	`;
+	Postive,
+	Negative
 }
 
-function CardFlip(startRotation: number, endVisibility: string)
-{
-	return keyframes`
-		0% {
-			transform: rotateY(${startRotation}deg);
-		}
-	
-		50% {
-			transform: rotateY(90deg);
-			visibility: ${endVisibility};
-		}
-
-		100% {
-			transform: rotateY(0deg);
-			visibility: ${endVisibility};
-		}
-	`;
-}
-
-export enum CardOrientation
-{
-	Front,
-	Back
-}
-
-export interface CardComponentStyle
+export class CardComponentStyle
 {
 	displayStyle: DisplayStyle;
+	perspectiveStyle: PerspectiveStyle;
+
+	constructor() 
+	{
+		this.displayStyle = new DisplayStyle();
+		this.perspectiveStyle = new PerspectiveStyle();
+	}
 }
 
 export class CardBackStyle
 {
 	displayBack: boolean;
-	flipped: boolean;
-
-	flipAnimation: CardFlipAnimation;
-	tiltAnimation: CardTiltAnimation;
-
-	startRotation: number;
-	endRotation: number;
 }
 
 export class CardFrontStyle
 {
 	displayFront: boolean;
-	flipped: boolean;
-
-	flipAnimation: CardFlipAnimation;
-	tiltAnimation: CardTiltAnimation;
-
-	startRotation: number;
-	endRotation: number;
 }
 
-export class CardFlipAnimation
+export class CardRotationAnimation
 {
-	flipDuration: number;
-	flipDelay: number;
+	rotationFrom: number;
+	rotationTo: number;
+	rotationDirection: number;
+	rotationDuration: number;
+	rotationDelay: number;
+
+	constructor(init?: Partial<CardRotationAnimation>) 
+	{
+		Object.assign(this, init);
+	}
 }
 
-export class CardTiltAnimation
+export class CardSlideAnimation 
 {
-	tiltDuration: number;
-	tiltDelay: number;
-	tiltAngle: number;
+	slideFrom: number;
+	slideTo: number;
+	slideDuration: number;
+	slideDelay: number;
+
+	constructor(init?: Partial<CardSlideAnimation>) 
+	{
+		Object.assign(this, init);
+	}
 }
 
 export interface CardComponentProps
 {
-	panel: JSX.Element;
+	front: JSX.Element;
+	back?: JSX.Element;
 	cardStyle: CardComponentStyle;
+	isSelected?: boolean;
 
-	cardOrientation: CardOrientation;
-	flipAnimation: CardFlipAnimation;
-	tiltAnimation: CardTiltAnimation;
+	rotationAnimation?: CardRotationAnimation;
+	slideAnimation?: CardSlideAnimation;
 
-	changeTriggers: any[];
+	hoverAnimation?: CardRotationAnimation | CardSlideAnimation;
 }
 
-export interface CardComponentState
+export interface CardComponentState 
 {
-	panel: JSX.Element;
-	cardStyle: CardComponentStyle;
+	currentRotation: number;
+	currentTopOffset: number;
 
-	cardOrientation: CardOrientation;
-	flipAnimation: CardFlipAnimation;
-	tiltAnimation: CardTiltAnimation;
+	animationHandlerID: number;
+	animationDelayHandlerID: number;
 }
 
 export class CardComponent extends React.Component<CardComponentProps, CardComponentState>
@@ -160,86 +131,272 @@ export class CardComponent extends React.Component<CardComponentProps, CardCompo
 	constructor(props: CardComponentProps)
 	{
 		super(props);
-		this.state =
+		this.state = {
+			currentRotation: props.cardStyle.perspectiveStyle.rotateY,
+			currentTopOffset: 0,
+			animationHandlerID: null,
+			animationDelayHandlerID: null
+		}
+	}
+
+	getBack = (displayBack: boolean) => 
+	{
+		let topOffset: number;
+		let bottomOffset: number;
+
+		if(isNullOrUndefined(this.props.isSelected) || this.props.isSelected===false)
 		{
-			panel: props.panel,
-			cardStyle: props.cardStyle,
-			cardOrientation: props.cardOrientation,
-			flipAnimation: props.flipAnimation,
-			tiltAnimation: props.tiltAnimation
-		};
+			topOffset = this.state.currentTopOffset;
+			bottomOffset = -1 * this.state.currentTopOffset
+		}
+		else if(this.props.isSelected===true && this.props.hoverAnimation instanceof CardSlideAnimation)
+		{
+			window.clearInterval(this.state.animationHandlerID);
+			topOffset = this.props.hoverAnimation.slideTo;
+			bottomOffset = -1 * this.props.hoverAnimation.slideTo;
+		}
+		if(isNullOrUndefined(this.props.back)) 
+		{
+			return (
+				<CardBackCover
+					displayBack={displayBack}
+					style={{
+						transform: `rotateY(${180 + this.state.currentRotation}deg)`,
+						top: `${topOffset}%`,
+						bottom: `${bottomOffset}%`
+					}}>
+				</CardBackCover>
+			);
+		}
+		else 
+		{
+			return (
+				<CardBack
+					displayBack={displayBack}
+					style={{
+						transform: `rotateY(${180 + this.state.currentRotation}deg)`,
+						top: `${topOffset}%`,
+						bottom: `${bottomOffset}%`
+					}}>
+					{this.props.back}
+				</CardBack>
+			);
+		}
+	}
+
+	getFront = (displayFront: boolean) => 
+	{
+		let topOffset: number;
+		let bottomOffset: number;
+
+		if(isNullOrUndefined(this.props.isSelected) || this.props.isSelected===false)
+		{
+			topOffset = this.state.currentTopOffset;
+			bottomOffset = -1 * this.state.currentTopOffset
+		}
+		else if(this.props.isSelected===true && this.props.hoverAnimation instanceof CardSlideAnimation)
+		{
+			window.clearInterval(this.state.animationHandlerID);
+			topOffset = this.props.hoverAnimation.slideTo;
+			bottomOffset = -1 * this.props.hoverAnimation.slideTo;
+		}
+		return (
+			<CardFront
+				displayFront={displayFront}
+				style={{
+					transform: `rotateY(${this.state.currentRotation}deg)`,
+					top: `${topOffset}%`,
+					bottom: `${bottomOffset}%`
+				}}>
+				{this.props.front}
+			</CardFront>
+		);
 	}
 
 	render()
 	{
-		let displayBack: boolean;
-		let displayFront: boolean;
+		let displayFront = true;
+		let displayBack = false;
 
-		let cardFlipped: boolean;
-		if (this.state.cardOrientation == CardOrientation.Front)
+		if(this.state.currentRotation>=0 && this.state.currentRotation<90) 
 		{
-			displayBack = false;
 			displayFront = true;
-			cardFlipped = false;
+			displayBack = false;
 		}
-		else
+		if(this.state.currentRotation>90 && this.state.currentRotation <=270) 
 		{
-			displayBack = true;
 			displayFront = false;
-			cardFlipped = true;
+			displayBack = true;
 		}
 
-		let startRotation: number;
-		let endRotation: number;
-		if (this.state.tiltAnimation != null)
-		{
-			if (cardFlipped)
-			{
-				startRotation = 180;
-			}
-			else
-			{
-				startRotation = 0;
-			}
-
-			endRotation = this.state.tiltAnimation.tiltAngle + startRotation;
-		}
+		let back = this.getBack(displayBack);
+		let front = this.getFront(displayFront);
 		
 		return (
 			<Card
-				displayStyle={this.state.cardStyle.displayStyle}>
-				<CardFront
-					flipAnimation={this.state.flipAnimation}
-					tiltAnimation={this.state.tiltAnimation}
-					displayFront={displayFront}
-					flipped={cardFlipped}
-					startRotation={startRotation}
-					endRotation={endRotation}>{this.state.panel}
-				</CardFront>
-				<CardBack
-					flipAnimation={this.state.flipAnimation}
-					tiltAnimation={this.state.tiltAnimation}
-					displayBack={displayBack}
-					flipped={cardFlipped}
-					startRotation={startRotation}
-					endRotation={endRotation}></CardBack>
+				onMouseEnter={this.onMouseEnterEventHandler}
+				onMouseLeave={this.onMouseLeaveEventHandler}
+				displayStyle={this.props.cardStyle.displayStyle}
+				perspectiveStyle={this.props.cardStyle.perspectiveStyle}>
+				{front}
+				{back}
 			</Card>
 		);
 	}
 
-	componentDidUpdate(prevProps: CardComponentProps, prevState: CardComponentState)
+	onMouseEnterEventHandler = () => 
 	{
-		this.props.changeTriggers.forEach((value: any, index: number) => 
+		if(!isNullOrUndefined(this.props.hoverAnimation)) 
 		{
-			if(value !== prevProps.changeTriggers[index]) 
+			if(this.props.hoverAnimation instanceof CardRotationAnimation) 
 			{
-				this.setState({
-					cardStyle: this.props.cardStyle,
-					panel: this.props.panel,
-					flipAnimation: this.props.flipAnimation,
-					tiltAnimation: this.props.tiltAnimation
-				});
+				this.delayedRotateCard(this.props.hoverAnimation);
 			}
-		});
+			if(this.props.hoverAnimation instanceof CardSlideAnimation) 
+			{
+				this.delayedSlideCard(this.props.hoverAnimation);
+			}
+		}
+	}
+
+	onMouseLeaveEventHandler = () => 
+	{
+		if(!isNullOrUndefined(this.props.hoverAnimation)) 
+		{
+			if(this.props.hoverAnimation instanceof CardRotationAnimation) 
+			{
+				window.clearTimeout(this.state.animationDelayHandlerID);
+				window.clearInterval(this.state.animationHandlerID);
+				this.setState({currentRotation: this.props.hoverAnimation.rotationFrom});
+			}
+			if(this.props.hoverAnimation instanceof CardSlideAnimation) 
+			{
+				window.clearTimeout(this.state.animationDelayHandlerID);
+				window.clearInterval(this.state.animationHandlerID);
+				this.setState({currentTopOffset: this.props.hoverAnimation.slideFrom});
+			}
+		}
+	}
+
+	delayedRotateCard = (rotationAnimation: CardRotationAnimation) =>
+	{
+		if(!isNullOrUndefined(this.state.animationDelayHandlerID)) 
+		{
+			window.clearTimeout(this.state.animationDelayHandlerID);
+		}
+		if(!isNullOrUndefined(this.state.animationHandlerID)) 
+		{
+			window.clearInterval(this.state.animationHandlerID);
+		}
+
+		let handlerID = window.setTimeout(() =>
+		{
+			this.setState({
+				currentRotation: rotationAnimation.rotationFrom,
+				animationDelayHandlerID: null
+			});
+			this.rotateCard(rotationAnimation.rotationTo, rotationAnimation.rotationDirection, rotationAnimation.rotationDuration);
+		}, rotationAnimation.rotationDelay);
+		this.setState({animationDelayHandlerID: handlerID});
+	}
+
+	rotateCard = (toAngle: number, direction: number, durationMiliseconds: number) =>
+	{
+		let rotationAngles = toAngle - this.state.currentRotation;
+		let rotationsPerMilisecond = rotationAngles / durationMiliseconds;
+		let rotationsPerInterval = rotationsPerMilisecond * 15;
+
+		if(direction>1) {
+			direction = 1;
+		}
+		if(direction<-1) {
+			direction = -1;
+		}
+
+		let handlerID = window.setInterval(() => {
+			if(direction===1 && this.state.currentRotation>=toAngle) 
+			{
+				this.setState({currentRotation: toAngle});
+				clearInterval(this.state.animationHandlerID);
+				this.setState({animationHandlerID: null});
+			}
+			else if(this.state.currentRotation !== toAngle)
+			{
+				let nextRotation = this.state.currentRotation + (rotationsPerInterval * direction);
+				if(nextRotation < 0) {
+					nextRotation = 365 + nextRotation;
+				}
+				this.setState({currentRotation: nextRotation});
+			}
+		}, 15);
+		this.setState({animationHandlerID: handlerID});
+	}
+
+	delayedSlideCard = (cardSlideAnimation: CardSlideAnimation) => 
+	{
+		if(!isNullOrUndefined(this.state.animationDelayHandlerID)) 
+		{
+			window.clearTimeout(this.state.animationDelayHandlerID);
+		}
+		if(!isNullOrUndefined(this.state.animationHandlerID)) 
+		{
+			window.clearInterval(this.state.animationHandlerID);
+		}
+
+		let handlerID = window.setTimeout(() =>
+		{
+			this.setState({
+				currentTopOffset: cardSlideAnimation.slideFrom,
+				animationDelayHandlerID: null
+			});
+			this.slideCard(cardSlideAnimation.slideTo, cardSlideAnimation.slideDuration);
+		}, cardSlideAnimation.slideDelay);
+		this.setState({animationDelayHandlerID: handlerID});
+	}
+
+	slideCard = (to: number, durationMiliseconds: number) => 
+	{
+		let slideDistance = to - this.state.currentRotation;
+		let distancePerMilisecond = slideDistance / durationMiliseconds;
+		let distancePerInterval = distancePerMilisecond * 15;
+
+		let handlerID = window.setInterval(() => {
+			if(this.state.currentTopOffset<=to)
+			{
+				this.setState({currentTopOffset: to});
+				clearInterval(this.state.animationHandlerID);
+				this.setState({animationHandlerID: null});
+			}
+			else if(this.state.currentTopOffset !== to)
+			{
+				let nextDistance = this.state.currentTopOffset + distancePerInterval;
+				this.setState({currentTopOffset: nextDistance});
+			}
+		}, 15);
+		this.setState({animationHandlerID: handlerID});
+	}
+
+	componentDidUpdate(prevProps: CardComponentProps) 
+	{
+		if(prevProps.rotationAnimation !== this.props.rotationAnimation && !isNullOrUndefined(this.props.rotationAnimation)) 
+		{
+			this.delayedRotateCard(this.props.rotationAnimation);
+		}
+		if(prevProps.slideAnimation !== this.props.slideAnimation && !isNullOrUndefined(this.props.slideAnimation)) 
+		{
+			this.delayedSlideCard(this.props.slideAnimation);
+		}
+	}
+
+	componentDidMount() 
+	{
+		if(!isNullOrUndefined(this.props.rotationAnimation)) 
+		{
+			this.delayedRotateCard(this.props.rotationAnimation);
+		}
+		if(!isNullOrUndefined(this.props.slideAnimation)) 
+		{
+			this.delayedSlideCard(this.props.slideAnimation);
+		}
 	}
 }

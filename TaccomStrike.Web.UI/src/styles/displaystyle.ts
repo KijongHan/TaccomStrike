@@ -1,9 +1,14 @@
 ﻿import styled from "styled-components";
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined, isNull } from "util";
 
 export enum Position
 {
 	static, absolute, fixed, relative, sticky, initial, inherit
+}
+
+export enum Display 
+{
+	none, initial
 }
 
 export class DisplayStyle
@@ -16,6 +21,7 @@ export class DisplayStyle
 	floatLeft?: boolean;
 	floatRight?: boolean;
 
+	marginString?: string;
 	marginTopPixels?: number;
 	marginTopPercentage?: number;
 	marginBottomPixels?: number;
@@ -25,12 +31,25 @@ export class DisplayStyle
 	marginRightPixels?: number;
 	marginRightPercentage?: number;
 
+	paddingTopPixels?: number;
+	paddingBottomPixels?: number;
+	paddingLeftPixels?: number;
+	paddingRightPixels?: number;
+
+	rightPixels?: number;
+	topPixels?: number;
+	topPercentage?: number;
+	leftPixels?: number;
 	bottomPixels?: number;
+	bottomPercentage?: number;
+	
 	position?: Position;
+	display?: Display;
 
 	public constructor(init?: Partial<DisplayStyle>)
 	{
 		this.position = Position.static;
+		this.display = Display.initial;
 		Object.assign(this, init);
 	}
 
@@ -40,6 +59,11 @@ export class DisplayStyle
 		let marginRight = "0";
 		let marginTop = "0";
 		let marginBottom = "0";
+
+		if(!isNullOrUndefined(this.marginString)) 
+		{
+			return this.marginString;
+		}
 
 		if (!isNullOrUndefined(this.marginLeftPixels))
 		{
@@ -78,6 +102,33 @@ export class DisplayStyle
 		}
 
 		return `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}`;
+	}
+
+	getPaddingString = (): string =>
+	{
+		let paddingLeft = "0";
+		let paddingRight = "0";
+		let paddingTop = "0";
+		let paddingBottom = "0";
+
+		if (!isNullOrUndefined(this.paddingLeftPixels))
+		{
+			paddingLeft = `${this.paddingLeftPixels}px`;
+		}
+		if (!isNullOrUndefined(this.paddingRightPixels))
+		{
+			paddingRight = `${this.paddingRightPixels}px`;
+		}
+		if (!isNullOrUndefined(this.paddingTopPixels))
+		{
+			paddingTop = `${this.paddingTopPixels}px`;
+		}
+		if (!isNullOrUndefined(this.paddingBottomPixels))
+		{
+			paddingBottom = `${this.paddingBottomPixels}px`;
+		}
+
+		return `${paddingTop} ${paddingRight} ${paddingBottom} ${paddingLeft}`;
 	}
 
 	getWidthString = (): string =>
@@ -133,15 +184,58 @@ export class DisplayStyle
 		return Position[this.position];
 	};
 
+	getDisplayString = (): string =>
+	{
+		return Display[this.display];
+	};
+
 	getBottomString = (): string =>
 	{
-		if (isNullOrUndefined(this.bottomPixels))
+		if(!isNullOrUndefined(this.bottomPixels))
+		{
+			return `${this.bottomPixels}px`;
+		}
+		if(!isNullOrUndefined(this.bottomPercentage))
+		{
+			return `${this.bottomPercentage}%`;
+		}
+		return 'auto';
+	};
+
+	getLeftString = (): string => 
+	{
+		if (isNullOrUndefined(this.leftPixels))
 		{
 			return 'auto';
 		}
 		else
 		{
-			return `${this.bottomPixels}px`;
+			return `${this.leftPixels}px`;
 		}
-	};
+	}
+
+	getRightString = (): string => 
+	{
+		if (isNullOrUndefined(this.rightPixels))
+		{
+			return 'auto';
+		}
+		else
+		{
+			return `${this.rightPixels}px`;
+		}
+	}
+
+	getTopString = (): string => 
+	{
+		if(!isNullOrUndefined(this.topPixels))
+		{
+			return `${this.topPixels}px`;
+		}
+		if(!isNullOrUndefined(this.topPercentage))
+		{
+			return `${this.topPercentage}%`;
+		}
+		return 'auto';
+	}
 }

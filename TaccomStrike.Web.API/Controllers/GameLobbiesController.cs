@@ -11,13 +11,12 @@ using TaccomStrike.Library.Data.Services;
 using TaccomStrike.Library.Data.ViewModel;
 using TaccomStrike.Library.Data.Utility;
 
-namespace TaccomStrike.Web.API.Controllers {
-	
+namespace TaccomStrike.Web.API.Controllers
+{
 	[Route("api/gamelobbies")]
 	[EnableCors("AllowSpecificOrigin")]
 	public class GameLobbiesController : Controller
 	{
-
 		private GameLobbyService gameLobbyService;
 
 		public GameLobbiesController(GameLobbyService gameLobbyService)
@@ -25,17 +24,23 @@ namespace TaccomStrike.Web.API.Controllers {
 			this.gameLobbyService = gameLobbyService;
 		}
 
+		[Authorize]
 		[Route("")]
 		[HttpPost]
 		public IActionResult CreateGameLobby([FromBody] CreateGameLobby gameLobbyViewModel)
 		{
-			GameLobby gameLobby = new GameLobby 
+			GameLobby gameLobby = new GameLobby
 			{
 				GameLobbyName = gameLobbyViewModel.GameLobbyName,
-				MaxRoomLimit = gameLobbyViewModel.MaxRoomLimit
+				GameMode = gameLobbyViewModel.GameMode,
+				MaxRoomLimit = 4
 			};
 			
-			string gameLobbyID = gameLobbyService.AddGameLobby(gameLobby, HttpContext.User);
+			if(HttpContext.User.InGameLobby())
+			{
+				return BadRequest();
+			}
+			gameLobbyService.AddGameLobby(gameLobby, HttpContext.User);
 			return Ok(gameLobby.ApiGetGameLobby());
 		}
 

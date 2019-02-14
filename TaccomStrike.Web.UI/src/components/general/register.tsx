@@ -2,18 +2,34 @@
 import { ButtonComponent, ButtonComponentStyle } from "./button";
 
 import styled from "styled-components";
-import { CardComponent, CardComponentStyle, CardTiltAnimation, CardOrientation } from "./card";
-import { LabelledInputComponentStyle, LabelledInputComponent } from "./labelledinput";
+import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
+import { LabelledInputComponentStyle, LabelledInputComponent, InputValidationResult } from "./labelledinput";
+import { ColorStyle } from "../../styles/colorstyle";
+import { CreateUserLogin } from "../../models/rest/createuserlogin";
 
-export interface RegisterComponentProps
+export class RegisterComponentProps
 {
-	registerComponentStyle: RegisterComponentStyle
+	registerComponentStyle: RegisterComponentStyle;
+	createUser: CreateUserLogin;
+	registerButtonEnabled: boolean;
+
+	usernameInputValidation: () => Promise<InputValidationResult>;
+	usernameInputValidationWait: number;
+	emailInputValidation: () => Promise<InputValidationResult>;
+	emailInputValidationWait: number;
+	passwordInputValidation: () => Promise<InputValidationResult>;
+	passwordInputValidationWait: number;
+	confirmPasswordInputValidation: () => Promise<InputValidationResult>;
+	confirmPasswordInputValidationWait: number;
+
+	usernameInputOnChangeHandler: (input: string) => void;
+	emailInputOnChangeHandler: (input: string) => void;
+	passwordInputOnChangeHandler: (input: string) => void;
+	confirmPasswordInputOnChangeHandler: (input: string) => void;
+	registerButtonClickHandler: () => void;
 }
 
-export class RegisterComponentState
-{
-	registerComponentStyle: RegisterComponentStyle
-}
+export class RegisterComponentState {}
 
 export class RegisterComponentStyle
 {
@@ -30,7 +46,15 @@ export class RegisterComponentStyle
 const RegisterComponentElement = styled.div`
 	height: 100%;
 	width: 100%;
-	background-color: rgba(0, 0, 0, 0.88);
+	background-color: ${ColorStyle.pallet3};
+	-webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	padding-top: 2px;
+
+	border-style: solid;
+	border-width: 2px;
+	border-color: rgba(0, 0, 0, 0.1);
 `;
 
 export class RegisterComponent extends React.Component<RegisterComponentProps, RegisterComponentState>
@@ -38,10 +62,6 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 	constructor(props: RegisterComponentProps)
 	{
 		super(props);
-		this.state =
-		{
-			registerComponentStyle: props.registerComponentStyle
-		};
 	}
 
 	render()
@@ -49,77 +69,58 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 		let registerComponent = (
 			<RegisterComponentElement>
 				<LabelledInputComponent
-					inputValue={""}
+					inputValue={this.props.createUser.username}
 					labelValue={"Username"}
+					inputValidation={this.props.usernameInputValidation}
+					validationWait={this.props.usernameInputValidationWait}
 					inputOnChangeHandler={this.usernameOnChangeHandler}
-					componentStyle={this.state.registerComponentStyle.usernameLabelledInputStyle} />
+					componentStyle={this.props.registerComponentStyle.usernameLabelledInputStyle} />
 				<LabelledInputComponent
-					inputValue={""}
+					inputValue={this.props.createUser.email}
 					labelValue={"Email"}
+					inputValidation={this.props.emailInputValidation}
+					validationWait={this.props.emailInputValidationWait}
 					inputOnChangeHandler={this.emailOnChangeHandler}
-					componentStyle={this.state.registerComponentStyle.emailLabelledInputStyle} />
+					componentStyle={this.props.registerComponentStyle.emailLabelledInputStyle} />
 				<LabelledInputComponent
-					inputValue={""}
+					inputType={"password"}
+					inputValue={this.props.createUser.password}
 					labelValue={"Password"}
+					inputValidation={this.props.passwordInputValidation}
+					validationWait={this.props.passwordInputValidationWait}
 					inputOnChangeHandler={this.passwordOnChangeHandler}
-					componentStyle={this.state.registerComponentStyle.passwordLabelledInputStyle} />
-				<LabelledInputComponent
-					inputValue={""}
-					labelValue={"Confirm Password"}
-					inputOnChangeHandler={this.confirmPasswordOnChangeHandler}
-					componentStyle={this.state.registerComponentStyle.confirmPasswordLabelledInputStyle} />
+					componentStyle={this.props.registerComponentStyle.passwordLabelledInputStyle} />
 				<ButtonComponent
+					enabled={!this.props.registerButtonEnabled}
 					buttonText="Register"
-					buttonClickHandler={this.registerButtonClickHandler}
-					buttonComponentStyle={this.state.registerComponentStyle.registerButtonComponentStyle} />
+					buttonClickHandler={this.props.registerButtonClickHandler}
+					buttonComponentStyle={this.props.registerComponentStyle.registerButtonComponentStyle} />
 			</RegisterComponentElement>);
 
-		let tiltAnimation = new CardTiltAnimation();
-		tiltAnimation.tiltAngle = -20;
-		tiltAnimation.tiltDelay = 0;
-		tiltAnimation.tiltDuration = 0.7;
+		let flipAnimation = new CardRotationAnimation();
+		flipAnimation.rotationDelay = 0;
+		flipAnimation.rotationDuration = 2;
 		return (
 			<CardComponent
-				panel={registerComponent}
-				changeTriggers={[this.state.registerComponentStyle]}
-				cardStyle={this.state.registerComponentStyle.cardComponentStyle}
-				cardOrientation={CardOrientation.Front}
-				flipAnimation={null}
-				tiltAnimation={tiltAnimation}>
+				front={registerComponent}
+				cardStyle={this.props.registerComponentStyle.cardComponentStyle}
+				rotationAnimation={null}>
 			</CardComponent>
 		);
 	}
 
 	usernameOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => 
 	{
-
+		this.props.usernameInputOnChangeHandler(event.target.value);
 	}
 
 	emailOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => 
 	{
-
+		this.props.emailInputOnChangeHandler(event.target.value);
 	}
 
 	passwordOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => 
 	{
-
-	}
-
-	confirmPasswordOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => 
-	{
-
-	}
-
-	registerButtonClickHandler = () =>
-	{
-
-	};
-
-	componentDidUpdate(prevProps: RegisterComponentProps, prevState: RegisterComponentState)
-	{
-		if (this.props.registerComponentStyle !== prevProps.registerComponentStyle)
-		{
-			this.setState({ registerComponentStyle: this.props.registerComponentStyle });
-		}
+		this.props.passwordInputOnChangeHandler(event.target.value);
 	}
 }

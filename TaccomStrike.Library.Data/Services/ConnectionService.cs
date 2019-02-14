@@ -8,7 +8,7 @@ public class ConnectionService
 	private readonly Dictionary<int, string> userConnections;
 	private readonly Dictionary<int, ClaimsPrincipal> users;
 
-	public object ConnectionLock = new object();
+	private object connectionLock = new object();
 
 	public ConnectionService()
 	{
@@ -18,7 +18,7 @@ public class ConnectionService
 	
 	public void Add(ClaimsPrincipal user, string connectionId)
 	{
-		lock (ConnectionLock)
+		lock (connectionLock)
 		{
 			if(!userConnections.ContainsKey(user.GetUserLoginID()))
 			{
@@ -30,7 +30,7 @@ public class ConnectionService
 
 	public List<ClaimsPrincipal> GetUsers()
 	{
-		lock(ConnectionLock)
+		lock(connectionLock)
 		{
 			return users.Values.ToList();
 		}
@@ -38,7 +38,7 @@ public class ConnectionService
 
 	public List<string> GetUserConnections()
 	{
-		lock(ConnectionLock)
+		lock(connectionLock)
 		{
 			return userConnections.Values.ToList();
 		}
@@ -46,7 +46,7 @@ public class ConnectionService
 
 	public string GetConnection(int userID)
 	{
-		lock (ConnectionLock)
+		lock (connectionLock)
 		{
 			if (userConnections.ContainsKey(userID))
 			{
@@ -63,7 +63,7 @@ public class ConnectionService
 
 	public void Remove(ClaimsPrincipal user, string connectionId)
 	{
-		lock (ConnectionLock)
+		lock (connectionLock)
 		{
 			if(!userConnections.ContainsKey(user.GetUserLoginID()))
 			{

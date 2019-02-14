@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using TaccomStrike.Game.CallCheat;
 using TaccomStrike.Library.Data.ApiEntities;
 using TaccomStrike.Library.Data.Model;
 using TaccomStrike.Library.Data.ViewModel;
@@ -47,12 +48,43 @@ namespace TaccomStrike.Library.Data.Utility
 				.ToList();
 		}
 
+		public static List<GetUser> ApiGetUsers(this IEnumerable<UserLogin> users)
+		{
+			return users
+				.Select((user) =>
+				{
+					return new GetUser
+					{
+						UserID = user.UserLoginID,
+						Username = user.Username
+					};
+				})
+				.ToList();
+		}
+
 		public static GetUser ApiGetUser(this ClaimsPrincipal principal)
 		{
+			if(principal == null)
+			{
+				return null;
+			}
 			return new GetUser
 			{
 				UserID = principal.GetUserLoginID(),
 				Username = principal.GetUserName()
+			};
+		}
+
+		public static GetUser ApiGetUser(this UserLogin userLogin)
+		{
+			if (userLogin == null)
+			{
+				return null;
+			}
+			return new GetUser
+			{
+				UserID = userLogin.UserLoginID,
+				Username = userLogin.Username
 			};
 		}
 
@@ -61,10 +93,11 @@ namespace TaccomStrike.Library.Data.Utility
 			return new GetGameLobby
 			{
 				Host = gameLobby.GetHost().ApiGetUser(),
-				Player = gameLobby.Players.ApiGetUsers(),
+				Players = gameLobby.GetUsers().ApiGetUsers(),
 				MaxRoomLimit = gameLobby.MaxRoomLimit,
 				GameLobbyName = gameLobby.GameLobbyName,
-				GameLobbyID = gameLobby.GameLobbyID
+				GameLobbyID = gameLobby.GameLobbyID,
+				GameMode = gameLobby.GameMode
 			};
 		}
 
@@ -82,7 +115,7 @@ namespace TaccomStrike.Library.Data.Utility
 		{
 			return new GetChatMessage
 			{
-				UserViewmodel = chatMessage.User.ApiGetUser(),
+				User = chatMessage.User.ApiGetUser(),
 				Message = chatMessage.Message,
 				WhenCreated = chatMessage.WhenCreated
 			};
@@ -94,6 +127,16 @@ namespace TaccomStrike.Library.Data.Utility
 				.Select((gameCard) =>
 				{
 					return new GetGameCard(gameCard);
+				})
+				.ToList();
+		}
+
+		public static List<GetGameCard> ApiGetGameCard(this SortedList<GameCard, GameCard> gameCards)
+		{
+			return gameCards
+				.Select((gameCard) =>
+				{
+					return new GetGameCard(gameCard.Value);
 				})
 				.ToList();
 		}

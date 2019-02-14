@@ -8,24 +8,36 @@ namespace TaccomStrike.Library.Data.Services
 {
 	public class GameLobbyService
 	{
+		private object serviceLock;
 		private List<GameLobby> gameLobbies;
+
+		private static long nextGameLobbyID = 1;
 
 		public GameLobbyService()
 		{
 			gameLobbies = new List<GameLobby>();
+			serviceLock = new object();
 		}
 
-		public string AddGameLobby(GameLobby gameLobby, ClaimsPrincipal creator)
+		private long generateUniqueID()
 		{
-			var salt = Authentication.GenerateSalt();
-			gameLobby.GameLobbyID = salt;
-			gameLobby.GameLobbyType = GameLobby.LobbyType.Public;
-			gameLobby.AddUser(creator);
-			gameLobbies.Add(gameLobby);
-			return salt;
+			lock(serviceLock)
+			{
+				long gameLobbyID = nextGameLobbyID;
+				nextGameLobbyID = nextGameLobbyID + 1;
+				return gameLobbyID;
+			}
 		}
 
-		public void RemoveGameLobby(string gameLobbyID)
+		public long AddGameLobby(GameLobby gameLobby, ClaimsPrincipal creator)
+		{
+			long id = generateUniqueID();
+			gameLobby.GameLobbyID = id;
+			gameLobbies.Add(gameLobby);
+			return id;
+		}
+
+		public void RemoveGameLobby(long gameLobbyID)
 		{
 			var gameLobby = gameLobbies
 			.Where((item) => item.GameLobbyID==gameLobbyID)
@@ -33,7 +45,7 @@ namespace TaccomStrike.Library.Data.Services
 			gameLobbies.Remove(gameLobby);
 		}
 
-		public GameLobby GetGameLobby(string gameLobbyID)
+		public GameLobby GetGameLobby(long gameLobbyID)
 		{
 			return gameLobbies
 			.Where((item) => item.GameLobbyID==gameLobbyID)
