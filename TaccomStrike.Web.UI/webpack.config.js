@@ -31,13 +31,26 @@ const config = {
 					fallback: 'style-loader',
 					use: ['css-loader', 'sass-loader'],
 				})
+			},
+			{
+				test: /\.(png|jpg|gif|svg)$/,
+				use: [
+				  {
+					loader: 'file-loader',
+					options: {},
+				  },
+				],
 			}
 		]
 	},
 	devServer: {
 		contentBase: distPath,
 		compress: true,
-		port: 9000
+		port: 9000,
+		historyApiFallback: true
+	},
+	externals: {
+		'Config': JSON.stringify(require('./app.config.json'))
 	}
 };
 

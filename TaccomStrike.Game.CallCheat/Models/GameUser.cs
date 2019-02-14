@@ -1,16 +1,19 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace TaccomStrike.Library.Data.ViewModel
+namespace TaccomStrike.Game.CallCheat
 {
 	public class GameUser
 	{
+		public int GameUserID { get; set; }
+
 		public ClaimsPrincipal UserPrincipal { get; set; }
 
-		public List<GameCard> Hand { get; set; }
+		public SortedList<GameCard, GameCard> Hand { get; set; }
 
-		public GameUser(ClaimsPrincipal userPrincipal, List<GameCard> hand)
+		public GameUser(int gameUserID, ClaimsPrincipal userPrincipal, SortedList<GameCard, GameCard> hand)
 		{
+			GameUserID = gameUserID;
 			UserPrincipal = userPrincipal;
 			Hand = hand;
 		}

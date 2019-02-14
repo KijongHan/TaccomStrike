@@ -9,10 +9,6 @@ namespace TaccomStrike.Web.API.HubApi
 {
 	public class GameLobbyJoin
 	{
-		public GetUser Host { get; set; }
-
-		public List<GetUser> Players { get; set; }
-
 		public GetUser NewUser { get; set; }
 
 		public GetGameLobby GameLobby { get; set; }

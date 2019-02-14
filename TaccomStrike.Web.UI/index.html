@@ -5,8 +5,148 @@
 	<title>Call Cheat Online</title>
 	<link href="https://fonts.googleapis.com/css?family=Cormorant+Upright" rel="stylesheet">
 </head>
-<body>
+<style>
+	#LoadingScreen {
+		position:fixed;
+		top:0%;
+		bottom:0%;
+		left:0%;
+		right:0%;
+		display:flex;
+	}
+
+	#LoadingPanel {
+		margin: auto;
+		width: 140px;
+		height: 100px;
+		display:flex;
+	}
+
+	.LoadingSpinnerCard {
+		-webkit-perspective: 1200px;
+		perspective: 1200px;
+		height: 100px;
+		width: 50px;
+		margin: auto;
+	}
+
+	.LoadingSpinnerCardFace {
+		position: absolute;
+		visibility: visible;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background-color: #B4E8CB;
+		border-style: solid;
+		border-width: 4px;
+		border-color: rgba(0, 0, 0, 0.1);
+	}
+
+	.LoadingSpinnerCardFace.One {
+		animation: LoadingSpinnerCardFaceAnimation 3s infinite;
+	}
+
+	.LoadingSpinnerCardFace.Two {
+		animation: LoadingSpinnerCardFaceAnimation 3s 1s infinite;
+	}
+
+	.LoadingSpinnerCardBack {
+		position: absolute;
+		visibility: hidden;
+		background-color: #FFD8D8;
+		transform: rotateY(180deg);
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		border-style: solid;
+		border-width: 4px;
+		border-color: rgba(0, 0, 0, 0.1);
+	}
+
+	.LoadingSpinnerCardBack.One {
+		animation: LoadingSpinnerCardBackAnimation 3s infinite;
+	}
+
+	.LoadingSpinnerCardBack.Two {
+		animation: LoadingSpinnerCardBackAnimation 3s 1s infinite;
+	}
+
+	@keyframes LoadingSpinnerCardFaceAnimation {
+		0% {
+			transform: rotateY(0deg);
+			visibility: visible;
+		}
+		24% {
+			visibility: visible;
+		}
+		25% {
+			transform: rotateY(90deg);
+			visibility: hidden;
+		}
+		50% {
+			transform:  rotateY(180deg);
+			visibility: hidden;
+		}
+		74% {
+			visibility: hidden;
+		}
+		75% {
+			transform: rotateY(270deg);
+			visibility: visible;
+		}
+		100% 
+		{
+			transform:  rotateY(360deg);
+			visibility: visible;
+		}
+	}
+
+	@keyframes LoadingSpinnerCardBackAnimation {
+		0% {
+			transform: rotateY(180deg);
+			visibility: hidden;
+		}
+		24% {
+			visibility: hidden;
+		}
+		25% {
+			transform: rotateY(270deg);
+			visibility: visible;
+		}
+		50% {
+			transform:  rotateY(360deg);
+			visibility: visible;
+		}
+		74% {
+			visibility: visible;
+		}
+		75% {
+			transform: rotateY(450deg);
+			visibility: hidden;
+		}
+		100% 
+		{
+			transform:  rotateY(540deg);
+			visibility: hidden;
+		}
+	}
+</style>
+<body style="margin: 0">
 	<!-- Main -->
 	<div id="root"></div>
+	<div id="LoadingScreen">
+		<div id="LoadingPanel">
+			<div class="LoadingSpinnerCard">
+				<div class="LoadingSpinnerCardFace One"></div>
+				<div class="LoadingSpinnerCardBack One"></div>
+			</div>
+			<div class="LoadingSpinnerCard">
+				<div class="LoadingSpinnerCardFace Two"></div>
+				<div class="LoadingSpinnerCardBack Two"></div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

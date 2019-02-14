@@ -1,8 +1,6 @@
 ﻿import * as React from "react";
-import { TitlePanelComponent, TitlePanelStyle } from "../general/titlepanel";
-import { CardComponentStyle, CardComponent } from "../general/card";
+import { TitlePanelStyle } from "../general/titlepanel";
 import { LoginComponent, LoginComponentStyle } from "../general/login";
-import { withRouter } from "react-router";
 
 import styled from "styled-components";
 import { TitlePanelsStyle, TitlePanelsComponent } from "../general/titlepanels";
@@ -10,7 +8,16 @@ import { DisplayStyle, Position } from "../../styles/displaystyle";
 import { RegisterComponentStyle, RegisterComponent } from "../general/register";
 import { BasePageComponentProps, BasePageComponent, BasePageComponentState } from "./base";
 import { PostUserLogin } from "../../models/rest/postuserlogin";
-import { AuthenticationService } from "../../services/authentication";
+import { AuthenticationService } from "../../services/rest/authentication";
+import { LoginPageStyle } from "../pagestyles/login";
+import { GetUser } from "../../models/rest/getuser";
+import { ChatConnectionsService } from "../../services/hub/chatconnections";
+import { GameConnectionsService } from "../../services/hub/gameconnections";
+import { PostGuestLogin } from "../../models/rest/postguestlogin";
+import { CreateUserLogin } from "../../models/rest/createuserlogin";
+import { InputValidationResult } from "../general/labelledinput";
+import { UserLoginsService } from "../../services/rest/userlogins";
+import { MessageDialogComponent } from "../general/msgdialog";
 
 const LoginPage = styled.div`
 	height: 100%;
@@ -20,609 +27,25 @@ const LoginPage = styled.div`
 const PanelsContainer = styled.div`
 	overflow: auto;
 	padding-top: 25px;
-	padding-bottom: 25px;
+	padding-bottom: 50px;
 `;
 
-const largeStyle: LoginPageStyle =
+export interface LoginPageComponentProps extends BasePageComponentProps 
 {
-	titlePanelsStyle:
-	{
-		displayStyling: new DisplayStyle({ heightPixels: 170 })
-	},
-
-	callTitlePanelStyle:
-	{
-		displayStyle: new DisplayStyle({
-			widthPercentage: 40,
-			heightPixels: 170,
-			marginLeftPercentage: 1,
-			floatLeft: true
-		})
-	},
-
-	cheatTitlePanelStyle:
-	{
-		displayStyle: new DisplayStyle({
-			widthPercentage: 55,
-			heightPixels: 170,
-			marginLeftPercentage: 3,
-			floatLeft: true
-		})
-	},
-
-	loginComponentStyle:
-	{
-		cardComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				floatLeft: true,
-				widthPercentage: 30,
-				heightPixels: 400
-			})
-		},
-
-		userButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				floatLeft: true,
-				widthPercentage: 30,
-				heightPixels: 50,
-				marginLeftPercentage: 5
-			})
-		},
-
-		guestButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				floatLeft: true,
-				widthPercentage: 30,
-				heightPixels: 50,
-				marginLeftPercentage: 5
-			})
-		},
-
-		loginButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 30,
-				heightPixels: 50,
-				marginLeftPercentage: 5,
-				position: Position.absolute,
-				bottomPixels: 10
-			})
-		},
-
-		usernameLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 20
-			})
-		},
-
-		passwordLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		}
-	},
-
-	registerComponentStyle:
-	{
-		cardComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				floatLeft: true,
-				widthPercentage: 30,
-				heightPixels: 400
-			})
-		},
-
-		usernameLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5
-			})
-		},
-
-		emailLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		},
-
-		passwordLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		},
-
-		confirmPasswordLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		},
-
-		registerButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 30,
-				heightPixels: 50,
-				marginLeftPercentage: 5,
-				position: Position.absolute,
-				bottomPixels: 10
-			})
-		}
-	}
+	userLoggedIn: (user: GetUser) => void;
 }
 
-const mediumStyling: LoginPageStyle =
+export class LoginPageComponentState extends BasePageComponentState
 {
-	titlePanelsStyle:
-	{
-		displayStyling: new DisplayStyle({
-			heightPixels: 340
-		})
-	},
-
-	callTitlePanelStyle:
-	{
-		displayStyle: new DisplayStyle({
-			widthPercentage: 90,
-			heightPixels: 170,
-			marginLeftPercentage: 5,
-			floatLeft: true
-		})
-	},
-
-	cheatTitlePanelStyle:
-	{
-		displayStyle: new DisplayStyle({
-			widthPercentage: 90,
-			heightPixels: 170,
-			marginLeftPercentage: 5,
-			marginTopPixels: 15,
-			floatLeft: true
-		})
-	},
-
-	loginComponentStyle:
-	{
-		cardComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 40,
-				marginLeftPercentage: 5,
-				heightPixels: 400
-			})
-		},
-
-		userButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				floatLeft: true,
-				marginLeftPercentage: 5,
-				widthPercentage: 45,
-				heightPixels: 50
-			})
-		},
-
-		guestButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				floatLeft: true,
-				marginLeftPercentage: 2.5,
-				widthPercentage: 45,
-				heightPixels: 50
-			})
-		},
-
-		loginButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 30,
-				heightPixels: 50,
-				marginLeftPercentage: 5,
-				position: Position.absolute,
-				bottomPixels: 10
-			})
-		},
-
-		usernameLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 20
-			})
-		},
-
-		passwordLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		}
-	},
-
-	registerComponentStyle:
-	{
-		cardComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 30,
-				heightPixels: 400
-			})
-		},
-
-		usernameLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 20
-			})
-		},
-
-		emailLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		},
-
-		passwordLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		},
-
-		confirmPasswordLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		},
-
-		registerButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 30,
-				heightPixels: 50,
-				marginLeftPercentage: 5,
-				position: Position.absolute,
-				bottomPixels: 10
-			})
-		}
-	}
-}
-
-const smallStyling: LoginPageStyle =
-{
-	titlePanelsStyle:
-	{
-		displayStyling: new DisplayStyle({ heightPixels: 340 })
-	},
-
-	callTitlePanelStyle:
-	{
-		displayStyle: new DisplayStyle({
-			widthPercentage: 90,
-			heightPixels: 170,
-			marginLeftPercentage: 5,
-			floatLeft: true
-		})
-	},
-
-	cheatTitlePanelStyle:
-	{
-		displayStyle: new DisplayStyle({
-			widthPercentage: 90,
-			heightPixels: 170,
-			marginLeftPercentage: 5,
-			floatLeft: true
-		})
-	},
-
-	loginComponentStyle:
-	{
-		cardComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				floatLeft: true,
-				widthPercentage: 45,
-				heightPixels: 400
-			})
-		},
-
-		userButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				floatLeft: true,
-				marginLeftPercentage: 5,
-				widthPercentage: 45,
-				heightPixels: 50
-			})
-		},
-
-		guestButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				floatLeft: true,
-				marginLeftPercentage: 2.5,
-				widthPercentage: 45,
-				heightPixels: 50
-			})
-		},
-
-		loginButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 30,
-				heightPixels: 50,
-				marginLeftPercentage: 5,
-				position: Position.absolute,
-				bottomPixels: 10
-			})
-		},
-
-		usernameLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 20
-			})
-		},
-
-		passwordLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		}
-	},
-
-	registerComponentStyle:
-	{
-		cardComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				marginLeftPercentage: 8,
-				widthPercentage: 45,
-				heightPixels: 400
-			})
-		},
-
-		usernameLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 20
-			})
-		},
-
-		emailLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		},
-
-		passwordLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		},
-
-		confirmPasswordLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		},
-
-		registerButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 30,
-				heightPixels: 50,
-				marginLeftPercentage: 5,
-				position: Position.absolute,
-				bottomPixels: 10
-			})
-		}
-	}
-}
-
-const verySmallStyling: LoginPageStyle =
-{
-	titlePanelsStyle:
-	{
-		displayStyling: new DisplayStyle({ heightPixels: 340 })
-	},
-
-	callTitlePanelStyle:
-	{
-		displayStyle: new DisplayStyle({
-			widthPercentage: 90,
-			heightPixels: 170,
-			marginLeftPercentage: 5,
-			floatLeft: true
-		})
-	},
-
-	cheatTitlePanelStyle:
-	{
-		displayStyle: new DisplayStyle({
-			widthPercentage: 90,
-			heightPixels: 170,
-			marginLeftPercentage: 5,
-			floatLeft: true
-		})
-	},
-
-	loginComponentStyle:
-	{
-		cardComponentStyle:
-		{
-			displayStyle: new DisplayStyle({ widthPercentage: 90, heightPixels: 400 })
-		},
-
-		userButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				floatLeft: false,
-				widthPercentage: 80,
-				heightPixels: 50
-			})
-		},
-
-		guestButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				floatLeft: false,
-				widthPercentage: 80,
-				heightPixels: 50
-			})
-		},
-
-		loginButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 30,
-				heightPixels: 50,
-				marginLeftPercentage: 5
-			})
-		},
-
-		usernameLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 20
-			})
-		},
-
-		passwordLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		}
-	},
-
-	registerComponentStyle:
-	{
-		cardComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 30,
-				heightPixels: 400
-			})
-		},
-
-		usernameLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 20
-			})
-		},
-
-		emailLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		},
-
-		passwordLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		},
-
-		confirmPasswordLabelledInputStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 90,
-				marginLeftPercentage: 5,
-				marginTopPixels: 10
-			})
-		},
-
-		registerButtonComponentStyle:
-		{
-			displayStyle: new DisplayStyle({
-				widthPercentage: 30,
-				heightPixels: 50,
-				marginLeftPercentage: 5,
-				position: Position.absolute,
-				bottomPixels: 10
-			})
-		}
-	}
-}
-
-export interface LoginPageComponentProps extends BasePageComponentProps { }
-
-export interface LoginPageComponentState extends BasePageComponentState
-{
-	loginPageStyle: LoginPageStyle;
+	createUser: CreateUserLogin;
 	userLogin: PostUserLogin;
-}
+	guestLogin: PostGuestLogin;
 
-export interface LoginPageStyle
-{
-	titlePanelsStyle: TitlePanelsStyle;
-	callTitlePanelStyle: TitlePanelStyle;
-	cheatTitlePanelStyle: TitlePanelStyle;
+	usernameValidated: boolean;
+	emailValidated: boolean;
+	passwordValidated: boolean;
 
-	loginComponentStyle: LoginComponentStyle;
-	registerComponentStyle: RegisterComponentStyle;
+	loginRequestFailed: boolean;
 }
 
 export class LoginPageComponent extends BasePageComponent<LoginPageComponentProps, LoginPageComponentState>
@@ -630,42 +53,107 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 	constructor(props: LoginPageComponentProps)
 	{
 		super(props);
-		console.log(props);
 		this.state =
 		{
-			loginPageStyle: largeStyle,
-			userLogin: new PostUserLogin()
+			pageStyle: new LoginPageStyle().large(),
+			createUser: new CreateUserLogin(),
+			userLogin: new PostUserLogin(),
+			guestLogin: new PostGuestLogin(),
+
+			usernameValidated: false,
+			emailValidated: false,
+			passwordValidated: false,
+
+			loginRequestFailed: null
 		};
+		GameConnectionsService.deinitializeGameConnections();
+		GameConnectionsService.removeHandlers();
+		ChatConnectionsService.deinitializeChatConnections();
+
+		this.usernameInputValidation = this.usernameInputValidation.bind(this);
+		this.emailInputValidation = this.emailInputValidation.bind(this);
+		this.passwordInputValidation = this.passwordInputValidation.bind(this);
 	}
 
 	render()
 	{
+		let loginPageStyle = this.state.pageStyle as LoginPageStyle;
 		let titleWords = ["Call", "Cheat"];
-		let titlePanelStylings = [this.state.loginPageStyle.callTitlePanelStyle, this.state.loginPageStyle.cheatTitlePanelStyle];
+		let titlePanelStylings = [loginPageStyle.callTitlePanelStyle, loginPageStyle.cheatTitlePanelStyle];
 
+		let registerButtonEnabled = false;
+		if(this.state.usernameValidated && this.state.emailValidated && this.state.passwordValidated
+		&& this.state.createUser.username.length>0 && this.state.createUser.email.length>0 && this.state.createUser.password.length>0) 
+		{
+			registerButtonEnabled = true;
+		}
+
+		let messageDialog: JSX.Element;
+		if(this.state.loginRequestFailed) 
+		{
+			messageDialog = (
+				<MessageDialogComponent
+					message="Login failed. Username password combination is incorrect"
+					okayButtonClickHandler={this.messageDialogOkayButtonClickHandler}>
+				</MessageDialogComponent>
+			);
+		}
 		return (
 			<LoginPage>
 				<TitlePanelsComponent
 					titleWords={titleWords}
 					titlePanelStyles={titlePanelStylings}
-					titlePanelsStyle={this.state.loginPageStyle.titlePanelsStyle}>
+					titlePanelsStyle={loginPageStyle.titlePanelsStyle}>
 				</TitlePanelsComponent>
 
 				<PanelsContainer>
 					<LoginComponent
+						guestLogin={this.state.guestLogin}
 						userLogin={this.state.userLogin}
-						loginComponentStyle={this.state.loginPageStyle.loginComponentStyle}
+						loginComponentStyle={loginPageStyle.loginComponentStyle}
 						userLoginButtonClickHandler={this.userLoginButtonClickHandler}
 						guestLoginButtonClickHandler={this.guestLoginButtonClickHandler}
+						guestnameInputOnChangeHandler={this.guestnameInputOnChangeHandler}
 						usernameInputOnChangeHandler={this.usernameInputOnChangeHandler}
 						passwordInputOnChangeHandler={this.passwordInputOnChangeHandler}>
 					</LoginComponent>
 					<RegisterComponent
-						registerComponentStyle={this.state.loginPageStyle.registerComponentStyle}>
+						registerButtonEnabled={registerButtonEnabled}
+						createUser={this.state.createUser}
+						registerComponentStyle={loginPageStyle.registerComponentStyle}
+						usernameInputValidation={this.usernameInputValidation}
+						usernameInputValidationWait={200}
+						emailInputValidation={this.emailInputValidation}
+						emailInputValidationWait={200}
+						passwordInputValidation={this.passwordInputValidation}
+						passwordInputValidationWait={200}
+						confirmPasswordInputValidation={null}
+						confirmPasswordInputValidationWait={null}
+						usernameInputOnChangeHandler={this.registerUsernameInputOnChangeHandler}
+						emailInputOnChangeHandler={this.registerEmailInputOnChangeHandler}
+						passwordInputOnChangeHandler={this.registerPasswordInputOnChangeHandler}
+						confirmPasswordInputOnChangeHandler={this.registerConfirmPasswordInputOnChangeHandler}
+						registerButtonClickHandler={this.registerButtonClickHandler}>
 					</RegisterComponent>
 				</PanelsContainer>
+
+				{messageDialog}
 			</LoginPage>
 		);
+	}
+
+	messageDialogOkayButtonClickHandler = () => 
+	{
+		this.setState({
+			loginRequestFailed: null
+		});
+	}
+
+	guestnameInputOnChangeHandler = (input: string) =>
+	{
+		let newGuestLogin = Object.assign({}, this.state.guestLogin);
+		newGuestLogin.guestname = input;
+		this.setState({guestLogin: newGuestLogin});
 	}
 
 	usernameInputOnChangeHandler = (input: string) =>
@@ -685,12 +173,18 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 	userLoginButtonClickHandler = () =>
 	{
 		AuthenticationService
-			.login(this.state.userLogin)
-			.then((response: Response) => {
-				if(response.ok) 
-				{
-					this.props.history.push("/main");
-				}
+			.userLogin(this.state.userLogin)
+			.then((getUser: GetUser) => {
+				this.props.userLoggedIn(getUser);
+				this.props.history.push("/play");
+				this.setState({
+					loginRequestFailed: null
+				})
+			})
+			.catch(() => {
+				this.setState({
+					loginRequestFailed: true
+				});
 			});
 	}
 
@@ -699,35 +193,96 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 		
 	}
 
-	onResizeLarge = () =>  
+	registerButtonClickHandler = () => 
 	{
-		if (this.state.loginPageStyle != largeStyle)
-		{
-			this.setState({ loginPageStyle: largeStyle });
-		}
+		UserLoginsService.createUserLogin(this.state.createUser)
+			.then((value: GetUser) => {
+				let userLogin = Object.assign({}, this.state.userLogin);
+				userLogin.username = value.username;
+				userLogin.password = this.state.createUser.password;
+
+				this.setState({
+					userLogin: userLogin,
+					createUser: new CreateUserLogin()
+				});
+			})
+			.catch((reason: any) => {
+				prompt("Register failed: " + reason);
+			});
 	}
 
-	onResizeMedium = () =>  
+	registerUsernameInputOnChangeHandler = (input: string) => 
 	{
-		if (this.state.loginPageStyle != mediumStyling)
-		{
-			this.setState({ loginPageStyle: mediumStyling });
-		}
+		let newCreateUser = Object.assign({}, this.state.createUser);
+		newCreateUser.username = input;
+		this.setState({createUser: newCreateUser});
 	}
 
-	onResizeSmall = () =>  
+	registerEmailInputOnChangeHandler = (input: string) => 
 	{
-		if (this.state.loginPageStyle != smallStyling)
-		{
-			this.setState({ loginPageStyle: smallStyling });
-		}
+		let newCreateUser = Object.assign({}, this.state.createUser);
+		newCreateUser.email = input;
+		this.setState({createUser: newCreateUser});
 	}
 
-	onResizeVerySmall= () =>  
+	registerPasswordInputOnChangeHandler = (input: string) => 
 	{
-		if (this.state.loginPageStyle != verySmallStyling)
+		let newCreateUser = Object.assign({}, this.state.createUser);
+		newCreateUser.password = input;
+		this.setState({createUser: newCreateUser});
+	}
+
+	registerConfirmPasswordInputOnChangeHandler = (input: string) => 
+	{
+		let newCreateUser = Object.assign({}, this.state.createUser);
+		newCreateUser.confirmPassword = input;
+		this.setState({createUser: newCreateUser});
+	}
+
+	async usernameInputValidation() 
+	{
+		let invalidCharacter = /\W/.test(this.state.createUser.username);
+		if(invalidCharacter) 
 		{
-			this.setState({ loginPageStyle: verySmallStyling });
+			this.setState({usernameValidated: false});
+			return new InputValidationResult(false, "Only letters [a-z] numbers [1-9] or underscore [_]");
 		}
+		if(this.state.createUser.username.length<4 || this.state.createUser.username.length>20) 
+		{
+			this.setState({usernameValidated: false});
+			return new InputValidationResult(false, "Username must be between 5 and 20");
+		}
+
+		let users = await UserLoginsService.getUsers(this.state.createUser.username, null);
+		if(users.length>0) 
+		{
+			this.setState({usernameValidated: false});
+			return new InputValidationResult(false, "Username already exists");
+		}
+		this.setState({usernameValidated: true});
+		return new InputValidationResult(true, "Username okay to use");
+	}
+
+	async emailInputValidation() 
+	{
+		let users = await UserLoginsService.getUsers(null, this.state.createUser.email);
+		if(users.length>0) 
+		{
+			this.setState({emailValidated: false});
+			return new InputValidationResult(false, "Email already exists");
+		}
+		this.setState({emailValidated: true});
+		return new InputValidationResult(true, "Email okay to use");
+	}
+
+	async passwordInputValidation() 
+	{
+		if(this.state.createUser.password.length<8) 
+		{
+			this.setState({passwordValidated: false});
+			return new InputValidationResult(false, "Must be at least 8 characters");
+		}
+		this.setState({passwordValidated: true});
+		return new InputValidationResult(true, "Password okay to use");
 	}
 }

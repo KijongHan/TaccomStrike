@@ -37,9 +37,9 @@
     <Folder Include="src\components\general\" />
     <Folder Include="src\components\page\" />
     <Folder Include="src\models\" />
+    <Folder Include="src\styles\" />
     <Folder Include="src\viewmodels\" />
     <Folder Include="src\services\" />
-	<Folder Include="src\styling\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="index.html">
@@ -84,7 +84,7 @@
     <TypeScriptCompile Include="src\viewmodels\user.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-	<TypeScriptCompile Include="src\styles\displaystyle.ts">
+    <TypeScriptCompile Include="src\styles\displaystyle.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="webpack.config.js">

@@ -5,7 +5,7 @@ namespace TaccomStrike.Library.Data.ViewModel
 {
 	public class GetChatMessage
 	{
-		public GetUser UserViewmodel { get; set; }
+		public GetUser User { get; set; }
 
 		public string Message {get;set;}
 
@@ -15,7 +15,7 @@ namespace TaccomStrike.Library.Data.ViewModel
 
 		public GetChatMessage(ChatMessage chatMessage)
 		{
-			UserViewmodel = new GetUser(chatMessage.User);
+			User = new GetUser(chatMessage.User);
 			Message = chatMessage.Message;
 			WhenCreated = chatMessage.WhenCreated;
 		}

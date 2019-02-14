@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TaccomStrike.Library.Data.ViewModel
+namespace TaccomStrike.Game.CallCheat
 {
 	public class GameCard
 	{
@@ -12,7 +13,7 @@ namespace TaccomStrike.Library.Data.ViewModel
 
 		public static List<string> Ranks = new List<string>
 		{
-			"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"
+			"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"
 		};
 
 		public string Suit {get;set;}
@@ -26,16 +27,43 @@ namespace TaccomStrike.Library.Data.ViewModel
 			Suit = suit;
 			Rank = rank;
 		}
+	}
 
-		public override bool Equals(object obj)
+	public class GameCardRankComparer : Comparer<GameCard>
+	{
+		public override int Compare(GameCard x, GameCard y)
 		{
-			if (obj == null || GetType() != obj.GetType())
-			{
-				return false;
-			}
+			var xRankIndex = GameCard
+				.Ranks
+				.FindIndex((item) =>
+				{
+					return item == x.Rank;
+				});
+			var yRankIndex = GameCard
+				.Ranks
+				.FindIndex((item) =>
+				{
+					return item == y.Rank;
+				});
+			var rankComparison = xRankIndex.CompareTo(yRankIndex);
 
-			GameCard c = (GameCard)obj;
-			return (Suit==c.Suit) && (Rank==c.Rank);
+			if(rankComparison == 0)
+			{
+				var xSuitIndex = GameCard
+					.Suits
+					.FindIndex((item) =>
+					{
+						return item == x.Suit;
+					});
+				var ySuitIndex = GameCard
+					.Suits
+					.FindIndex((item) =>
+					{
+						return item == y.Suit;
+					});
+				return xSuitIndex.CompareTo(ySuitIndex);
+			}
+			return rankComparison;
 		}
 	}
 }

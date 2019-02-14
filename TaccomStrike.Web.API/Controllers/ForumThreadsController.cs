@@ -8,22 +8,23 @@ using System.Threading.Tasks;
 
 namespace TaccomStrike.Web.API.Controllers
 {
-    [Route("api/forumthreads")]
-    public class ForumThreadsController : Controller
-    {
+	[Route("api/forumthreads")]
+	public class ForumThreadsController : Controller
+	{
 
-        private ForumThreadRepository forumThreadRepository;
+		private ForumThreadRepository forumThreadRepository;
 
-        public ForumThreadsController(ForumThreadRepository forumThreadRepository)
-        {
-            this.forumThreadRepository = forumThreadRepository;
-        }
+		public ForumThreadsController(ForumThreadRepository forumThreadRepository)
+		{
+			this.forumThreadRepository = forumThreadRepository;
+		}
 
-        [HttpGet]
-        public List<GetForumThread> GetForumThreads()
-        {
-            var forumThreads = forumThreadRepository.GetForumThreads();
-            return forumThreads;
-        }
-    }
+		[HttpGet]
+		public List<GetForumThread> GetForumThreads()
+		{
+			var forumThreads = forumThreadRepository.GetForumThreads();
+			return forumThreads;
+		}
+	}
 }
+ 

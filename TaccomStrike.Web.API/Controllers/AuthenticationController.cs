@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using TaccomStrike.Library.Utility.Security;
 using TaccomStrike.Library.Data.ViewModel;
 using Microsoft.AspNetCore.Cors;
+using TaccomStrike.Library.Data.Utility;
 
 namespace TaccomStrike.Web.API.Controllers
 {
@@ -21,18 +22,6 @@ namespace TaccomStrike.Web.API.Controllers
 		public AuthenticationController(UserAuthenticationService authenticationService)
 		{
 			this.authenticationService = authenticationService;
-		}
-
-		[Route("")]
-		[HttpPost]
-		public async Task<IActionResult> CreateAsync([FromBody] CreateUserLogin userEntity)
-		{
-			if(await authenticationService.CreateLoginAsync(userEntity) == null)
-			{
-				return NotFound();
-			}
-
-			return Ok();
 		}
 
 		[Route("login")]
@@ -50,7 +39,7 @@ namespace TaccomStrike.Web.API.Controllers
 				(
 					Security.AuthenticationScheme, claimsPrincipal
 				);
-			return Ok();
+			return Ok(claimsPrincipal.ApiGetUser());
 		}
 	}
 }
