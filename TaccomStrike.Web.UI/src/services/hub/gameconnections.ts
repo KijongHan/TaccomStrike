@@ -1,3 +1,5 @@
+const Config = require('Config');
+
 import { HubConnection, HubConnectionBuilder, HubConnectionState, IHttpConnectionOptions } from "@aspnet/signalr";
 import { GameLobbyJoin } from "../../models/hub/gamelobbyjoin";
 import { GetGameLobby } from "../../models/rest/getgamelobby";
@@ -28,7 +30,7 @@ export class GameConnectionsService
     static initializeGameConnections = () => 
     {
         GameConnectionsService.gameConnection = new HubConnectionBuilder()
-            .withUrl("http://localhost:50248" + "/game")
+            .withUrl(`${Config.apiUrl}/game`)
             .build();
             GameConnectionsService.initializeGameEventHandlers();
         return GameConnectionsService.gameConnection.start();
@@ -63,7 +65,6 @@ export class GameConnectionsService
     static initializeGameEventHandlers = () => 
     {
         GameConnectionsService.gameConnection.on("GameLobbyJoin", (apiObject: GameLobbyJoin) => {
-            console.log(apiObject);
             GameConnectionsService
                 .gameLobbyJoinHandlers
                 .forEach((handler: (gameLobbyJoin: GameLobbyJoin) => void, index: number) => {
@@ -71,7 +72,6 @@ export class GameConnectionsService
                 });
         });
         GameConnectionsService.gameConnection.on("GameLobbySendMessage", (apiObject: GameLobbySendMessage) => {
-            console.log(apiObject);
             GameConnectionsService
                 .gameLobbySendMessageHandlers
                 .forEach((handler: (gameLobbySendMessage: GameLobbySendMessage) => void, index: number) => {
@@ -79,7 +79,6 @@ export class GameConnectionsService
                 });
         });
         GameConnectionsService.gameConnection.on("GameLobbyStartGame", (apiObject: GameLobbyStartGame) => {
-            console.log(apiObject);
             GameConnectionsService
                 .gameLobbyStartGameHandlers
                 .forEach((handler: (gameLobbyStartGame: GameLobbyStartGame) => void, index: number) => {
@@ -87,7 +86,6 @@ export class GameConnectionsService
                 });
         })
         GameConnectionsService.gameConnection.on("GameLobbyLeaveGame", (apiObject: GameLobbyLeaveGame) => {
-            console.log(apiObject);
             GameConnectionsService
                 .gameLobbyLeaveGameHandlers
                 .forEach((handler: (gameLobbyLeaveGame: GameLobbyLeaveGame) => void, index: number) => {
@@ -95,7 +93,6 @@ export class GameConnectionsService
                 });
         });
         GameConnectionsService.gameConnection.on("GameSubmitClaim", (apiObject: GameClaim) => {
-            console.log(apiObject);
             GameConnectionsService
                 .gameClaimHandlers
                 .forEach((handler: (gameClaim: GameClaim) => void, index: number) => {
@@ -103,7 +100,6 @@ export class GameConnectionsService
                 });
         });
         GameConnectionsService.gameConnection.on("GameCallCheat", (apiObject: GameCallCheat) => {
-            console.log(apiObject);
             GameConnectionsService
                 .gameCallCheatHandlers
                 .forEach((handler: (gameCallCheat: GameCallCheat) => void, index: number) => {
@@ -111,7 +107,6 @@ export class GameConnectionsService
                 });
         });
         GameConnectionsService.gameConnection.on("GameFinish", (apiObject: GameFinish) => {
-            console.log(apiObject);
             GameConnectionsService
                 .gameFinishHandlers
                 .forEach((handler: (gameFinish: GameFinish) => void, index: number) => {

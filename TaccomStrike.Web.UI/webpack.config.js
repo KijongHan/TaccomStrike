@@ -48,6 +48,9 @@ const config = {
 		compress: true,
 		port: 9000,
 		historyApiFallback: true
+	},
+	externals: {
+		'Config': JSON.stringify(require('./app.config.json'))
 	}
 };
 

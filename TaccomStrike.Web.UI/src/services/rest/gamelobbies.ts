@@ -1,3 +1,5 @@
+const Config = require('Config');
+
 import { GetGameLobby } from "../../models/rest/getgamelobby";
 import { CreateGameLobby } from "../../models/rest/creategamelobby";
 
@@ -5,7 +7,7 @@ export class GameLobbiesService
 {
     static createGameLobby = (createGameLobby: CreateGameLobby) => 
     {
-        return fetch("http://localhost:50248" + "/api/gamelobbies", {
+        return fetch(`${Config.apiUrl}/api/gamelobbies`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -25,7 +27,7 @@ export class GameLobbiesService
 
     static getChatRooms = () => 
     {
-        return fetch("http://localhost:50248" + "/api/gamelobbies", {
+        return fetch(`${Config.apiUrl}/api/gamelobbies`, {
             method: 'GET',
             credentials: 'include'
         })

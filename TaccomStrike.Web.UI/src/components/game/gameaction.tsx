@@ -18,6 +18,10 @@ const GameAction = styled.div`
     width: 100%;
     height: 100%;
     background-color: ${ColorStyle.pallet3};
+
+    border-style: solid;
+	border-width: 2px;
+	border-color: rgba(0, 0, 0, 0.1);
 `;
 
 const GameActionHistory = styled.div`
@@ -46,6 +50,7 @@ const GamePhaseTimerText = styled.p`
     margin: auto;
     font-size: 1.3em;
     color: ${ColorStyle.pallet2};
+    font-family: "Times New Roman"
 `;
 
 export class GameActionComponentProps 

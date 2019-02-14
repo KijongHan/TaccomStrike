@@ -65,7 +65,7 @@ export class LobbyPageStyle extends BasePageStyle
 
             lobbyListItemsPanelStyle: {
                 displayStyle: new DisplayStyle({
-                    heightPixels: 400,
+                    heightPixels: 390,
                     paddingBottomPixels: 2
                 })
             }

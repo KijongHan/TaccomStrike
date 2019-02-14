@@ -69,4 +69,10 @@ export class AppComponent extends React.Component<{}, AppComponentState>
             loggedInUser: user
         });
     }
+
+    componentDidMount() 
+    {
+        let loadingScreen = document.getElementById("LoadingScreen");
+        loadingScreen.style.display = "none";
+    }
 }

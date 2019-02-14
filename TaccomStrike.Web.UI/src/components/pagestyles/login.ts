@@ -96,7 +96,7 @@ export class LoginPageStyle extends BasePageStyle
                         floatLeft: true,
                         widthPercentage: 35,
                         heightPixels: 450,
-                        marginLeftPixels: 10
+                        marginLeftPixels: 20
                     }),
                     perspectiveStyle: new PerspectiveStyle({
                         perspective: 1200

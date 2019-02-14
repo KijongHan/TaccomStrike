@@ -166,6 +166,11 @@ export class LabelledInputComponent extends React.Component<LabelledInputCompone
 			}
 		}
 
+		if(isNullOrUndefined(this.props.inputValue) || this.props.inputValue==="") 
+		{
+			validationElement = null;
+		}
+
 		return (
 			<LabelledInputComponentElement
 				displayStyle={this.props.componentStyle.displayStyle}>
@@ -188,16 +193,25 @@ export class LabelledInputComponent extends React.Component<LabelledInputCompone
 		if(!isNullOrUndefined(this.props.inputValidation)) 
 		{
 			window.clearTimeout(this.state.inputValidationTimer)
-			let handlerID = window.setTimeout(() => {
-				this.props.inputValidation().then((value: InputValidationResult) => {
-					this.setState({
-						inputValidationResult: value
-					});
+			if(event.target.value==="") 
+			{
+				this.setState({
+					inputValidationResult: null
 				});
-			}, this.props.validationWait);
-			this.setState({
-				inputValidationTimer: handlerID
-			})
+			}
+			else 
+			{
+				let handlerID = window.setTimeout(() => {
+					this.props.inputValidation().then((value: InputValidationResult) => {
+						this.setState({
+							inputValidationResult: value
+						});
+					});
+				}, this.props.validationWait);
+				this.setState({
+					inputValidationTimer: handlerID
+				});
+			}
 		}
 	}
 }

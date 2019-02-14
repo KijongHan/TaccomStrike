@@ -34,6 +34,7 @@ const GameCardIcon = styled.div`
     color: white;
     font-weight: bold;
     background-size: 100% 100%;
+    font-family: "Times New Roman"
 `;
 
 export class GameHandCardComponentProps 

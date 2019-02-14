@@ -36,6 +36,10 @@ const TitleCharacter = styled.div`
 	-webkit-box-shadow: -2px 2px 1px 0px ${ColorStyle.pallet1};
 	-moz-box-shadow: -2px 2px 1px 0px ${ColorStyle.pallet1};
 	box-shadow: -2px 2px 1px 0px ${ColorStyle.pallet1};
+
+	border-style: solid;
+	border-width: 2px;
+	border-color: rgba(0, 0, 0, 0.1);
 `;
 
 const TitlePanel = styled.div`

@@ -50,6 +50,11 @@ const RegisterComponentElement = styled.div`
 	-webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
 	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
 	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	padding-top: 2px;
+
+	border-style: solid;
+	border-width: 2px;
+	border-color: rgba(0, 0, 0, 0.1);
 `;
 
 export class RegisterComponent extends React.Component<RegisterComponentProps, RegisterComponentState>

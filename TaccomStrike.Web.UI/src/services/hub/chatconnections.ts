@@ -1,3 +1,5 @@
+const Config = require('Config');
+
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from "@aspnet/signalr";
 import { ChatUserConnected } from "../../models/hub/chatuserconnected";
 import { number } from "prop-types";
@@ -13,7 +15,7 @@ export class ChatConnectionsService
     static initializeChatConnections = () => 
     {
         ChatConnectionsService.chatConnection = new HubConnectionBuilder()
-            .withUrl("http://localhost:50248" + "/chat")
+            .withUrl(`${Config.apiUrl}/chat`)
             .build();    
         ChatConnectionsService.initializeChatEventHandlers();
         return ChatConnectionsService.chatConnection.start();

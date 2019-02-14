@@ -1,3 +1,5 @@
+const Config = require('Config');
+
 import { CreateUserLogin } from "../../models/rest/createuserlogin";
 import { GetUser } from "../../models/rest/getuser";
 import { isNullOrUndefined } from "util";
@@ -6,7 +8,7 @@ export class UserLoginsService
 {
     static createUserLogin = (createUserLogin: CreateUserLogin) => 
     {
-        return fetch("http://localhost:50248" + "/api/users", {
+        return fetch(`${Config.apiUrl}/api/users`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -26,8 +28,7 @@ export class UserLoginsService
 
     static getUsers = (username: string, email: string) => 
     {
-        console.log(username + "|" + email);
-        return fetch("http://localhost:50248" + `/api/users?username=${isNullOrUndefined(username) ? "" : username}&email=${isNullOrUndefined(email) ? "" : email}`, {
+        return fetch(Config.apiUrl + `/api/users?username=${isNullOrUndefined(username) ? "" : username}&email=${isNullOrUndefined(email) ? "" : email}`, {
             method: 'GET',
             credentials: 'include'
         })

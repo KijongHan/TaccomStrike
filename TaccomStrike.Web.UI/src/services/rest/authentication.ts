@@ -1,3 +1,5 @@
+const Config = require('Config');
+
 import { PostUserLogin } from "../../models/rest/postuserlogin"
 import { GetUser } from "../../models/rest/getuser";
 
@@ -5,7 +7,7 @@ export class AuthenticationService
 {
     static userLogin = (userLogin: PostUserLogin) => 
     {
-        return fetch("http://localhost:50248" + "/api/authentication/login", {
+        return fetch(`${Config.apiUrl}/api/authentication/login`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

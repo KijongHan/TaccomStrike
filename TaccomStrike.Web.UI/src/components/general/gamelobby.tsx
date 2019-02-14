@@ -29,7 +29,11 @@ const CreateGameLobbyElement = styled.div`
     overflow: auto;
     -webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
 	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
-	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+    box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+    
+    border-style: solid;
+	border-width: 2px;
+	border-color: rgba(0, 0, 0, 0.1);
 `;
 
 const CurrentGameLobbyElement = styled.div`
@@ -39,7 +43,11 @@ const CurrentGameLobbyElement = styled.div`
     padding: 5px 5px 5px 5px;
     -webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
 	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
-	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+    box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+    
+    border-style: solid;
+	border-width: 2px;
+	border-color: rgba(0, 0, 0, 0.1);
 `;
 
 const GameLobbyContentPanel = styled.div`
