@@ -29,7 +29,11 @@ const GameActionHistory = styled.div`
     width: 98%;
     margin: auto;
     overflow-y: auto;
+    overflow-x: hidden;
     background-color: rgba(255, 255, 255, 0.2);
+    border-style: solid;
+    border-width: 1px;
+    border-color: ${ColorStyle.pallet2};
 `;
 
 const GameActionHistoryItem = styled.p`

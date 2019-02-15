@@ -108,9 +108,6 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
         }
         else 
         {
-            let gameLobbyMessages = this.state.currentGameLobbyMessages.map((value: GameLobbySendMessage) => {
-                return value.chatMessage;
-            });
             return (
                 <GamePageComponent
                     history={this.props.history}
@@ -118,7 +115,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     match={this.props.match}
                     
                     loggedInUser={this.props.loggedInUser}
-                    gameLobbyMessages={gameLobbyMessages}
+                    gameLobbyMessages={this.state.currentGameLobbyMessages}
                     gameLobby={this.state.currentGameLobby}
                     gameState={this.state.currentGameState}
                     gameCheat={this.state.currentGameCheat}

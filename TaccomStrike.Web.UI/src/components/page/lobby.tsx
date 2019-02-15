@@ -65,10 +65,6 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
         let lobbyPageStyle = this.state.pageStyle as LobbyPageStyle;
 		let titleWords = ["Game", "Lobbies"];
         let titlePanelStylings = [lobbyPageStyle.gameTitlePanelStyle, lobbyPageStyle.lobbiesTitlePanelStyle];
-
-        let gameLobbyMessages = this.props.currentGameLobbyMessages.map((value: GameLobbySendMessage) => {
-            return value.chatMessage;
-        });
         
         return (
             <LobbyPage>
@@ -100,7 +96,7 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                         createGameButtonClickHandler={this.props.createGameButtonClickHandler}
                         startGameButtonClickHandler={this.props.startGameButtonClickHandler}
                         leaveGameButtonClickHandler={this.props.leaveGameButtonClickHandler}
-                        currentGameLobbyMessages={gameLobbyMessages}
+                        currentGameLobbyMessages={this.props.currentGameLobbyMessages}
                         sendMessageButtonHandler={this.props.sendMessageButtonClickHandler}>
                     </GameLobbyComponent>
                 </PanelsContainer>

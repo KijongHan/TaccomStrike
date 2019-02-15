@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as moment from "moment";
 import { ButtonComponent, ButtonComponentStyle } from "./button";
 import styled from "styled-components";
 import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
@@ -12,6 +13,8 @@ import { DisplayStyle } from "../../styles/displaystyle";
 import { GetChatMessage } from "../../models/rest/getchatmessage";
 import { GetUser } from "../../models/rest/getuser";
 import { ColorStyle } from "../../styles/colorstyle";
+import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
+import { GameLobbyMessageType } from "../../models/enums/gamelobbymessagetype";
 
 const ButtonsPanel = styled.div`
     overflow: auto;
@@ -88,24 +91,35 @@ const GameLobbyMessagesPanel = styled.div`
     border-width: 1px;
     border-color: ${ColorStyle.pallet2};
     overflow-y: scroll;
+    overflow-x: hidden;
 `;
 
 const GameLobbyMessageItem = styled.div`
-    display: inline-block;
     width: 100%;
-    font-size: 1.1em;
+    padding-left: 5px;
+`;
+
+const GameLobbyMessagePlayerItem = styled.span`
+    font-weight: bold;
+    color: ${ColorStyle.pallet1};
+    padding-left: 5px;
+`;
+
+const GameLobbyMessageMessageItem = styled.span`
+    padding-left: 5px;
     color: ${ColorStyle.pallet1};
 `;
 
-const GameLobbyMessagePlayerItem = styled.div`
-    float: left;
-    font-weight: bold;
-    padding-left: 7px;
+const SystemMessageText = styled.span`
+    padding-left: 5px;
+    font-size: 1.1em;
+    font-family: "Times New Roman";
+    color: rgba(0, 0, 0, 0.7);
 `;
 
-const GameLobbyMessageMessageItem = styled.div`
-    float: left;
-    padding-left: 5px;
+const MessageTimeText = styled.span`
+    color: ${ColorStyle.pallet1};
+    font-family: "Times New Roman";
 `;
 
 export class GameLobbyComponentProps 
@@ -114,7 +128,7 @@ export class GameLobbyComponentProps
 
     gameLobbyComponentStyle: GameLobbyComponentStyle;
     currentGameLobby: GetGameLobby;
-    currentGameLobbyMessages: GetChatMessage[];
+    currentGameLobbyMessages: GameLobbySendMessage[];
     createGameLobby: CreateGameLobby;
 
     gameLobbyNameInputOnChangeHandler: (input: string) => void;
@@ -225,17 +239,40 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
 
     getCurrentGameLobbyComponent = () => 
     {
-        let gameLobbyMessages = this.props.currentGameLobbyMessages.map((value: GetChatMessage) => {
-            return (
-                <GameLobbyMessageItem>
-                    <GameLobbyMessagePlayerItem>
-                        {value.user.username}:
-                    </GameLobbyMessagePlayerItem>
-                    <GameLobbyMessageMessageItem>
-                        {value.message}
-                    </GameLobbyMessageMessageItem>
-                </GameLobbyMessageItem>
-            );
+        let gameLobbyMessages = this.props.currentGameLobbyMessages.map((value: GameLobbySendMessage) => {
+            if(value.messageType===GameLobbyMessageType.User) 
+            {
+                return (
+                    <GameLobbyMessageItem>
+                        <span>
+                        <MessageTimeText>
+                            {moment(value.chatMessage.whenCreated).format("hh:mm:ss")}
+                        </MessageTimeText>
+                        <GameLobbyMessagePlayerItem>
+                            {value.chatMessage.user.username}:
+                        </GameLobbyMessagePlayerItem>
+                        <GameLobbyMessageMessageItem>
+                            {value.chatMessage.message}
+                        </GameLobbyMessageMessageItem>
+                        </span>
+                    </GameLobbyMessageItem>
+                );
+            }
+            else if(value.messageType===GameLobbyMessageType.System)
+            {
+                return (
+                    <GameLobbyMessageItem>
+                        <span>
+                        <MessageTimeText>
+                            {moment(value.chatMessage.whenCreated).format("hh:mm:ss")}
+                        </MessageTimeText>
+                        <SystemMessageText>
+                            {value.chatMessage.message}
+                        </SystemMessageText>
+                        </span>
+                    </GameLobbyMessageItem>
+                );
+            }
         });
 
         let gameLobbyPlayers = this.props.currentGameLobby.players.map((value: GetUser) => {

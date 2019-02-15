@@ -1,4 +1,5 @@
 import { GetUser } from "./getuser";
+import { GameMode } from "../enums/gamemode";
 
 export class GetGameLobby 
 {
@@ -8,9 +9,4 @@ export class GetGameLobby
     host: GetUser;
     gameMode: GameMode;
     players: GetUser[];
-}
-
-export enum GameMode 
-{
-    Casual=1, Competitive=2
 }

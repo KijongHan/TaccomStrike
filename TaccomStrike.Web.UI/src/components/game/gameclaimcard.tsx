@@ -5,12 +5,7 @@ import { CardComponent, CardComponentStyle, CardSlideAnimation, CardRotationAnim
 import { DisplayStyle } from "../../styles/displaystyle";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
 import { isNullOrUndefined } from "util";
-import { string } from "prop-types";
 
-const RedDiamond = require("../../res/red_diamond.png");
-const RedHeart = require("../../res/red_heart.png");
-const BlackSpade = require("../../res/black_spade.png");
-const BlackClover = require("../../res/black_clover.png");
 const CardDeckIcon = require("../../res/card_deck.png");
 
 const GameCardFace = styled.div`
@@ -24,6 +19,7 @@ const GameCardFace = styled.div`
 const GameCardFaceText = styled.div`
     margin: auto;
     text-align: center;
+    font-family: "Times New Roman"
 `;
 
 const GameCardBack = styled.div`

@@ -18,6 +18,7 @@ import { ColorStyle } from "../../styles/colorstyle";
 import { GetGameLobby } from "../../models/rest/getgamelobby";
 import { GameLobbyComponent, GameLobbyComponentStyle } from "../general/gamelobby";
 import { GetChatMessage } from "../../models/rest/getchatmessage";
+import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
 
 const GamePage = styled.div`
     position: fixed;
@@ -68,7 +69,7 @@ export class GamePageComponentState extends BasePageComponentState
 
 export interface GamePageComponentProps extends BasePageComponentProps 
 {
-    gameLobbyMessages: GetChatMessage[];
+    gameLobbyMessages: GameLobbySendMessage[];
     gameLobby: GetGameLobby;
     gameState: GetGameState;
     gameCheat: GetGameCheat;
