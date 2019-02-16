@@ -37,6 +37,8 @@ export interface LobbyPageComponentProps extends BasePageComponentProps
     currentGameLobby: GetGameLobby;
     currentGameLobbyMessages: GameLobbySendMessage[];
 
+    messageContentPanelRef: React.RefObject<any>;
+
     lobbyListItemClickHandler: (gameLobbyID: number) => void;
     sendMessageButtonClickHandler: (message: string) => void;
     startGameButtonClickHandler: () => void;
@@ -87,6 +89,7 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                         refreshButtonClickHandler={this.props.refreshButtonClickHandler}>
                     </GameLobbiesComponent>
                     <GameLobbyComponent
+                        messageContentPanelRef={this.props.messageContentPanelRef}
                         loggedInUser={this.props.loggedInUser}
                         currentGameLobby={this.props.currentGameLobby}
                         createGameLobby={this.props.createGameLobby}

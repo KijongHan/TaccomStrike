@@ -1,5 +1,5 @@
 import * as React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { GetGameCard } from "../../models/rest/getgamecard";
 import { CardComponent, CardComponentStyle, CardSlideAnimation, CardRotationAnimation } from "../general/card";
 import { DisplayStyle } from "../../styles/displaystyle";
@@ -8,12 +8,26 @@ import { isNullOrUndefined } from "util";
 
 const CardDeckIcon = require("../../res/card_deck.png");
 
+const GameClaimCardFaceAnimation = keyframes`
+    0% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+`;
+
 const GameCardFace = styled.div`
     height: 100%;
     width: 100%;
     border: 1px solid black;
     background-color: rgba(255, 255, 255, 1);
     display: flex;
+    opacity: 1;
+    animation: ${GameClaimCardFaceAnimation} 2s linear forwards;
 `;
 
 const GameCardFaceText = styled.div`

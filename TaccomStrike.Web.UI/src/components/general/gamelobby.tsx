@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as ReactDom from "react-dom";
 import * as moment from "moment";
 import { ButtonComponent, ButtonComponentStyle } from "./button";
 import styled from "styled-components";
@@ -75,7 +76,7 @@ const GameLobbyPlayerItem = styled.div`
     font-size: 1.25em;
     font-weight: bold;
     height: 40px;
-    padding: 5px 5px 5px 5px;
+    padding: 5px 5px 5px 10px;
     border-style: solid;
     border-width: 1px;
     color: ${ColorStyle.pallet1};
@@ -125,6 +126,8 @@ const MessageTimeText = styled.span`
 export class GameLobbyComponentProps 
 {
     loggedInUser: GetUser;
+
+    messageContentPanelRef: React.RefObject<any>;
 
     gameLobbyComponentStyle: GameLobbyComponentStyle;
     currentGameLobby: GetGameLobby;
@@ -183,6 +186,8 @@ export class GameLobbyMessagesPanelStyle
 
 export class GameLobbyComponent extends React.Component<GameLobbyComponentProps, GameLobbyComponentState> 
 {
+    messageInputRef: React.RefObject<any>;
+
     constructor(props: GameLobbyComponentProps) 
     {
         super(props);
@@ -201,6 +206,8 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
                 {displayName:"Competitive", itemValue:"2"}
             ]
         }
+
+        this.messageInputRef = React.createRef();
     }
 
     render() 
@@ -296,6 +303,7 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
                 <GameLobbyContentPanel
                     displayStyle={this.props.gameLobbyComponentStyle.gameLobbyContentPanelStyle.displayStyle}>
                     <GameLobbyMessagesPanel
+                        innerRef={this.props.messageContentPanelRef}
                         displayStyle={this.props.gameLobbyComponentStyle.gameLobbyMessagesPanelStyle.displayStyle}>
                         {gameLobbyMessages}
                     </GameLobbyMessagesPanel>
@@ -305,6 +313,7 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
                     </GameLobbyPlayersPanel>
                 </GameLobbyContentPanel>
                 <ButtonedInputComponent
+                    forwardRef={this.messageInputRef}
                     inputValue={this.state.gameLobbyMessage}
                     componentStyle={this.props.gameLobbyComponentStyle.gameLobbyMessageButtonedInputStyle}
                     inputOnChangeHandler={this.messageInputOnChangeHandler}
@@ -371,5 +380,31 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
     gameLobbyNameInputOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
 	{
 		this.props.gameLobbyNameInputOnChangeHandler(event.target.value);
+    }
+
+    componentDidMount() 
+    {
+        window.addEventListener('keydown', this.keyDownHandler);
+    }
+
+    componentWillUnmount() 
+    {
+        window.removeEventListener('keydown', this.keyDownHandler);
+    }
+
+    keyDownHandler = (event: KeyboardEvent) => 
+    {
+        if(event.key===`Enter` && !isNullOrUndefined(this.props.currentGameLobby)) 
+        {
+            if(document.activeElement===ReactDom.findDOMNode(this.messageInputRef.current)) 
+            {
+                this.sendMessageButtonClickHandler();
+                this.messageInputRef.current.blur();
+            }
+            else 
+            {
+                this.messageInputRef.current.focus();
+            }
+        }
     }
 }

@@ -74,6 +74,8 @@ export interface GamePageComponentProps extends BasePageComponentProps
     gameState: GetGameState;
     gameCheat: GetGameCheat;
     gameWinner: GetGameUser;
+
+    messageContentPanelRef: React.RefObject<any>;
     
     sendMessageButtonClickHandler: (message: string) => void;
     submitClaimButtonClickHandler: (claims: GetGameCard[], actual: GetGameCard[]) => void;
@@ -103,7 +105,9 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
         let gameChat = this.getGameChat();
 
         return (
-            <GamePage>
+            <GamePage
+                tabIndex={0}
+                onKeyPress={this.keyPressHandler}>
                 <GamePageInner>
                     <GameBoardPanel>
                         {gameChat}
@@ -216,6 +220,7 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
 
         return (
             <GameLobbyComponent
+                messageContentPanelRef={this.props.messageContentPanelRef}
                 loggedInUser={this.props.loggedInUser}
                 gameLobbyComponentStyle={style}
                 currentGameLobby={this.props.gameLobby}
@@ -403,5 +408,13 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
             selectedClaimRank: null
         });
         this.props.submitClaimButtonClickHandler(claims, actual);
+    }
+
+    keyPressHandler = (event: React.KeyboardEvent<HTMLDivElement>) => 
+    {
+        if(event.key==='Enter') 
+        {
+            console.log("Enter");
+        }
     }
 }
