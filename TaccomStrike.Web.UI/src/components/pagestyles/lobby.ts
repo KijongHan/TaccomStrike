@@ -853,7 +853,8 @@ export class LobbyPageStyle extends BasePageStyle
                 heightPixels: 150,
                 marginLeftPercentage: 5,
                 floatLeft: true
-            })
+            }),
+            fontSize: '4em'
         }
         style.lobbiesTitlePanelStyle = {
             displayStyle: new DisplayStyle({
@@ -862,7 +863,8 @@ export class LobbyPageStyle extends BasePageStyle
                 marginLeftPercentage: 5,
                 floatLeft: true,
                 marginTopPixels: 10
-            })
+            }),
+            fontSize: '4em'
         };
 
         style.gameLobbiesComponentStyle = {

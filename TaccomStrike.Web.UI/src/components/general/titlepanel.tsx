@@ -5,6 +5,7 @@ import styled from "styled-components"
 import { DisplayStyle } from "../../styles/displaystyle";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
 import { ColorStyle } from "../../styles/colorstyle";
+import { isNullOrUndefined } from "util";
 
 export class TitlePanelComponentProps
 {
@@ -22,13 +23,14 @@ export class TitlePanelComponentState
 export class TitlePanelStyle
 {
 	displayStyle: DisplayStyle;
+	fontSize?: string;
 }
 
 const TitleCharacter = styled.div`
 	width: 100%;
 	height: 100%;
-	font-size: 7em;
-	line-height: ${(p: TitlePanelStyle) => p.displayStyle.getHeightString()}
+	font-size: ${(p: TitlePanelStyle) => isNullOrUndefined(p.fontSize) ? '7em' : p.fontSize };
+	line-height: ${(p: TitlePanelStyle) => p.displayStyle.getHeightString()};
 	text-align: center;
 
 	color: ${ColorStyle.pallet2};
@@ -92,7 +94,8 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 			let titlePanel = (
 				<TitleCharacter
 					key={index}
-					displayStyle={this.props.titlePanelStyling.displayStyle}>
+					displayStyle={this.props.titlePanelStyling.displayStyle}
+					fontSize={this.props.titlePanelStyling.fontSize}>
 					{titleLetter}
 				</TitleCharacter>);
 
@@ -114,7 +117,8 @@ export class TitlePanelComponent extends React.Component<TitlePanelComponentProp
 
 		return (
 			<TitlePanel
-				displayStyle={this.props.titlePanelStyling.displayStyle}>
+				displayStyle={this.props.titlePanelStyling.displayStyle}
+				fontSize={this.props.titlePanelStyling.fontSize}>
 				{cardComponents}
 			</TitlePanel>
 		);
