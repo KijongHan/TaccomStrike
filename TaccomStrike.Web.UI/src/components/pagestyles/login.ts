@@ -434,33 +434,35 @@ export class LoginPageStyle extends BasePageStyle
         let style = new LoginPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({ 
-                heightPixels: 340
+                heightPixels: 300
             })
         };
         style.callTitlePanelStyle = {
             displayStyle: new DisplayStyle({
                 widthPercentage: 90,
-                heightPixels: 170,
+                heightPixels: 150,
                 marginLeftPercentage: 5,
                 floatLeft: true
-            })
+            }),
+            fontSize: '4em'
         }
         style.cheatTitlePanelStyle = {
             displayStyle: new DisplayStyle({
                 widthPercentage: 90,
-                heightPixels: 170,
+                heightPixels: 150,
                 marginLeftPercentage: 5,
                 floatLeft: true
-            })
+            }),
+            fontSize: '4em'
         };
         style.loginComponentStyle = {
             cardComponentStyle:
                 {
                     displayStyle: new DisplayStyle({
                         floatLeft: true,
-                        widthPercentage: 70,
+                        widthPercentage: 90,
                         heightPixels: 450,
-                        marginLeftPercentage: 15
+                        marginLeftPercentage: 5
                     }),
                     perspectiveStyle: new PerspectiveStyle({
                         perspective: 1200
@@ -508,8 +510,8 @@ export class LoginPageStyle extends BasePageStyle
             cardComponentStyle:
                 {
                     displayStyle: new DisplayStyle({
-                        marginLeftPercentage: 15,
-                        widthPercentage: 70,
+                        marginLeftPercentage: 5,
+                        widthPercentage: 90,
                         heightPixels: 450,
                         marginTopPixels: 25 
                     }),
