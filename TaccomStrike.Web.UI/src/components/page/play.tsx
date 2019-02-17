@@ -37,6 +37,8 @@ export class PlayPageComponentState extends BasePageComponentState
 
 export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps, PlayPageComponentState> 
 {
+    messageContentPanelRef: React.RefObject<any>;
+
     constructor(props: PlayPageComponentProps) 
     {
         super(props);
@@ -76,6 +78,8 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
             .catch(() => {
                 this.props.history.push("/");
             });
+        
+        this.messageContentPanelRef = React.createRef();
     }
 
     render() 
@@ -88,6 +92,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     location={this.props.location}
                     match={this.props.match}
                     
+                    messageContentPanelRef={this.messageContentPanelRef}
                     loggedInUser={this.props.loggedInUser}
                     currentGameLobby={this.state.currentGameLobby}
                     currentGameLobbyMessages={this.state.currentGameLobbyMessages}
@@ -108,17 +113,15 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
         }
         else 
         {
-            let gameLobbyMessages = this.state.currentGameLobbyMessages.map((value: GameLobbySendMessage) => {
-                return value.chatMessage;
-            });
             return (
                 <GamePageComponent
                     history={this.props.history}
                     location={this.props.location}
                     match={this.props.match}
                     
+                    messageContentPanelRef={this.messageContentPanelRef}
                     loggedInUser={this.props.loggedInUser}
-                    gameLobbyMessages={gameLobbyMessages}
+                    gameLobbyMessages={this.state.currentGameLobbyMessages}
                     gameLobby={this.state.currentGameLobby}
                     gameState={this.state.currentGameState}
                     gameCheat={this.state.currentGameCheat}
@@ -243,6 +246,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
     {
         let currentList = this.state.currentGameLobbyMessages;
         this.setState({currentGameLobbyMessages: currentList.concat(gameLobbySendMessage)});
+        this.messageContentPanelRef.current.scrollTop = this.messageContentPanelRef.current.scrollHeight - this.messageContentPanelRef.current.clientHeight;
     }
 
     submitClaimButtonClickHandler = (claims: GetGameCard[], actual: GetGameCard[]) =>

@@ -72,6 +72,7 @@ export class ComboButtonComponent extends React.Component<ComboButtonComponentPr
 
             return (
                 <ButtonComponent
+                    key={value.displayName}
                     enabled={value.enabled}
                     buttonText={value.displayName}
                     buttonComponentStyle={style}

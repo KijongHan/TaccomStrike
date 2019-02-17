@@ -26,17 +26,24 @@ export abstract class BasePageComponent<P extends BasePageComponentProps, S exte
     componentDidMount()
 	{
 		window.addEventListener('resize', this.throttledResizeEventHandler);
+		window.addEventListener('scroll', this.throttledScrollEventHandler);
 		this.resizeEventHandler();
 	}
 
 	componentWillUnmount()
 	{
 		window.removeEventListener('resize', this.throttledResizeEventHandler);
+		window.removeEventListener('scroll', this.throttledScrollEventHandler);
 	}
 
 	throttledResizeEventHandler = () =>
 	{
 		this.throttledEventHandler(this.resizeEventHandler);
+	}
+
+	throttledScrollEventHandler = () => 
+	{
+		this.throttledEventHandler(this.scrollEventHandler);
 	}
 
 	throttledEventHandler = (eventHandler: ()=>void) =>
@@ -51,7 +58,12 @@ export abstract class BasePageComponent<P extends BasePageComponentProps, S exte
 			}, 500);
 		}
     }
-    
+	
+	scrollEventHandler = () => 
+	{
+		this.onScroll();
+	}
+
     resizeEventHandler = () =>
 	{
 		let w = window.innerWidth;
@@ -81,6 +93,8 @@ export abstract class BasePageComponent<P extends BasePageComponentProps, S exte
 			this.onResizeVerySmall();
 		}
 	}
+
+	onScroll() {}
 
 	onResizeLarge() {}
 

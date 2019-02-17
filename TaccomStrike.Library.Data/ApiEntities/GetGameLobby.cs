@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TaccomStrike.Library.Data.Enums;
 using TaccomStrike.Library.Data.ViewModel;
 
 namespace TaccomStrike.Library.Data.ApiEntities
@@ -13,7 +14,7 @@ namespace TaccomStrike.Library.Data.ApiEntities
 
 		public int MaxRoomLimit { get; set; }
 
-		public GameLobby.Mode GameMode { get; set; }
+		public GameMode GameMode { get; set; }
 
 		public GetUser Host { get; set; }
 

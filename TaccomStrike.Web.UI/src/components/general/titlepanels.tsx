@@ -22,6 +22,7 @@ export class TitlePanelsStyle
 
 const TitlesPanel = styled.div`
 	height: ${(p: TitlePanelsStyle) => p.displayStyling.getHeightString()};
+	margin: ${(p: TitlePanelsStyle) => p.displayStyling.getMarginString()};
 	overflow: hidden;
 	margin-bottom: 50px;
 	padding-top: 30px;

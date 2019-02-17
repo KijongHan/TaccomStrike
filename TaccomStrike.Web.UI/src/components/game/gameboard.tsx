@@ -16,7 +16,6 @@ const GreenGameUserIcon = require("../../res/green_gameuser.svg");
 const PurpleGameUserIcon = require("../../res/purple_gameuser.svg");
 const ArrowDownIcon = require("../../res/arrowdown.png");
 const CardHandIcon = require("../../res/card_hand.png");
-const CardDeckIcon = require("../../res/card_deck.png");
 
 const GameBoard = styled.div`
     margin: auto;

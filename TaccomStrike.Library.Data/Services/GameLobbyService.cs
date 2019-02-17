@@ -21,20 +21,20 @@ namespace TaccomStrike.Library.Data.Services
 
 		private long generateUniqueID()
 		{
-			lock(serviceLock)
-			{
-				long gameLobbyID = nextGameLobbyID;
-				nextGameLobbyID = nextGameLobbyID + 1;
-				return gameLobbyID;
-			}
+			long gameLobbyID = nextGameLobbyID;
+			nextGameLobbyID = nextGameLobbyID + 1;
+			return gameLobbyID;
 		}
 
 		public long AddGameLobby(GameLobby gameLobby, ClaimsPrincipal creator)
 		{
-			long id = generateUniqueID();
-			gameLobby.GameLobbyID = id;
-			gameLobbies.Add(gameLobby);
-			return id;
+			lock(serviceLock)
+			{
+				long id = generateUniqueID();
+				gameLobby.GameLobbyID = id;
+				gameLobbies.Add(gameLobby);
+				return id;
+			}
 		}
 
 		public void RemoveGameLobby(long gameLobbyID)

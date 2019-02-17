@@ -33,6 +33,7 @@ const InputComponentElement = styled.input`
 
 export class ButtonedInputComponentProps
 {
+    forwardRef: React.RefObject<any>;
 	inputType?: string
 	inputValue: string;
 	componentStyle: ButtonedInputComponentStyle;
@@ -81,11 +82,12 @@ export class ButtonedInputComponent extends React.Component<ButtonedInputCompone
 		return (
 			<ButtonedInputComponentElement
 				displayStyle={this.props.componentStyle.buttonedInputComponentPanelStyle.displayStyle}>
-                <InputComponentElement 
+                <InputComponentElement
+                    innerRef={this.props.forwardRef as any}
                     displayStyle={this.props.componentStyle.inputComponentStyle.displayStyle}
-					type={this.props.inputType}
-					value={this.props.inputValue}
-					onChange={this.inputOnChangeHandler}>
+                    type={this.props.inputType}
+                    value={this.props.inputValue}
+                    onChange={this.inputOnChangeHandler}>
                 </InputComponentElement>
                 <ButtonComponent
                     buttonText={"Send"}
@@ -95,9 +97,10 @@ export class ButtonedInputComponent extends React.Component<ButtonedInputCompone
 			</ButtonedInputComponentElement>
 		);
     }
+    
 
     inputOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
 	{
 		this.props.inputOnChangeHandler(event.target.value);
-	}
+    }
 }

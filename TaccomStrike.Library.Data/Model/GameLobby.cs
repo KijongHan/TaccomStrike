@@ -4,27 +4,12 @@ using System.Security.Claims;
 using TaccomStrike.Library.Utility.Security;
 using TaccomStrike.Game.CallCheat.Services;
 using System;
+using TaccomStrike.Library.Data.Enums;
 
 namespace TaccomStrike.Library.Data.ViewModel
 {
 	public class GameLobby
 	{
-
-		public enum Lobby
-		{
-			Public, Private, Competitive
-		}
-
-		public enum Mode
-		{
-			Casual=1, Competitive=2
-		}
-
-		public enum GameType
-		{
-			OneOnOne
-		}
-
 		public string GameLobbyName {get;set;}
 		public long GameLobbyID {get;set;}
 		public string GameLobbyPassword {get;set;}
@@ -33,9 +18,7 @@ namespace TaccomStrike.Library.Data.ViewModel
 		private object lobbyLock = new object();
 		private List<ClaimsPrincipal> players {get;set;}
 
-		public GameLobby.Mode GameMode { get; set; }
-		public GameLobby.Lobby GameLobbyType {get;set;}
-		public GameLobby.GameType GameLobbyGameType {get;set;}
+		public GameMode GameMode { get; set; }
 
 		public GameLogicController GameLogicController {get;set;}
 
@@ -167,13 +150,13 @@ namespace TaccomStrike.Library.Data.ViewModel
 			}
 		}
 
-		private int GetCallPhaseDuration(GameLobby.Mode gameMode)
+		private int GetCallPhaseDuration(GameMode gameMode)
 		{
-			if(gameMode==GameLobby.Mode.Casual)
+			if(gameMode== GameMode.Casual)
 			{
 				return 10000;
 			}
-			if(gameMode==GameLobby.Mode.Competitive)
+			if(gameMode== GameMode.Competitive)
 			{
 				return 5000;
 			}
@@ -183,13 +166,13 @@ namespace TaccomStrike.Library.Data.ViewModel
 			}
 		}
 
-		private int GetTurnPhaseDuration(GameLobby.Mode gameMode)
+		private int GetTurnPhaseDuration(GameMode gameMode)
 		{
-			if (gameMode == GameLobby.Mode.Casual)
+			if (gameMode == GameMode.Casual)
 			{
 				return 40000;
 			}
-			if (gameMode == GameLobby.Mode.Competitive)
+			if (gameMode == GameMode.Competitive)
 			{
 				return 20000;
 			}

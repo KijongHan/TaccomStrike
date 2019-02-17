@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TaccomStrike.Library.Data.Enums;
 
 namespace TaccomStrike.Library.Data.ViewModel
 {
@@ -8,7 +9,7 @@ namespace TaccomStrike.Library.Data.ViewModel
 	{
 		public int MaxRoomLimit { get; set; }
 
-		public GameLobby.Mode GameMode { get; set; }
+		public GameMode GameMode { get; set; }
 
 		public string GameLobbyName { get; set; }
 	}
