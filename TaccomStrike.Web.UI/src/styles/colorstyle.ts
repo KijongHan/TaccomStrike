@@ -4,5 +4,5 @@ export class ColorStyle
     static pallet2: string = "#FFFFFF";
     static pallet3: string = "#B4E8CB";
     static pallet4: string = "#A8D7ED";
-    static pallet5: string = "#FFD8D8";
+    static pallet5: string = "#FFAFAF";
 }

@@ -2,6 +2,8 @@ import { BasePageStyle } from "./base";
 
 export class GamePageStyle extends BasePageStyle 
 {
+    
+
     large = () => 
     {
         let style = new GamePageStyle();

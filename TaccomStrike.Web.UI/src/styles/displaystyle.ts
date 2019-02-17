@@ -8,7 +8,7 @@ export enum Position
 
 export enum Display 
 {
-	none, initial
+	none, initial, inlineBlock, flex
 }
 
 export class DisplayStyle
@@ -186,6 +186,10 @@ export class DisplayStyle
 
 	getDisplayString = (): string =>
 	{
+		if(this.display===Display.inlineBlock) 
+		{
+			return "inline-block";
+		}
 		return Display[this.display];
 	};
 

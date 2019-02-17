@@ -4,57 +4,97 @@ import { DisplayStyle } from "../../styles/displaystyle";
 import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
 import { ColorStyle } from "../../styles/colorstyle";
 
+const PlayIcon = require("../../res/play.png");
+const CommunityIcon = require("../../res/community.png");
+const NewsIcon = require("../../res/news.png");
+
 const Navbar = styled.div`
-    display: inline-block;
+    position: ${(props: NavbarComponentStyle) => props.displayStyle.getPositionString()}; 
+    display: ${(props: NavbarComponentStyle) => props.displayStyle.getDisplayString()};
     width: ${(props: NavbarComponentStyle) => props.displayStyle.getWidthString()};
     height: ${(props: NavbarComponentStyle) => props.displayStyle.getHeightString()};
     margin: ${(props: NavbarComponentStyle) => props.displayStyle.getMarginString()};
-    padding: ${(props: NavbarComponentStyle) => props.displayStyle.getPaddingString};
+    padding: ${(props: NavbarComponentStyle) => props.displayStyle.getPaddingString()};
+    top: ${(props: NavbarComponentStyle) => props.displayStyle.getTopString()};
+`;
+
+const NavbarItemText = styled.div`
+    margin: auto;
+    font-size: 1.5em;
+    color: ${ColorStyle.pallet2};
+    text-align: center;
+`;
+
+const NavbarItemPlay = styled.div`
+    height: 55px;
+    width: 55px;
+    background-size: 100% 100%;
+    background-image: url(${PlayIcon});
+`;
+
+const NavbarItemCommunity = styled.div`
+    height: 55px;
+    width: 55px;
+    background-size: 100% 100%;
+    background-image: url(${CommunityIcon});
+`;
+
+const NavbarItemNews = styled.div`
+    height: 55px;
+    width: 55px;
+    background-size: 100% 100%;
+    background-image: url(${NewsIcon});
 `;
 
 const PlayNavbarItem = styled.div`
     width: 100%;
     height: 100%;
-    font-size: 1.5em;
-    color: ${ColorStyle.pallet2};
-    background-color: ${ColorStyle.pallet5};
-    text-align: center;
     -webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
 	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
 	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
-    line-height: ${(prop: CardComponentStyle) => prop.displayStyle.getHeightString()}
+    background-color: ${(prop: NavbarItemStyleProp) => prop.isSelected ? ColorStyle.pallet4 : ColorStyle.pallet5};
+    display: flex;
+
+    &:hover {
+		cursor: pointer;
+	}
 `;
 
 const CommunityNavbarItem = styled.div`
     width: 100%;
     height: 100%;
-    font-size: 1.5em;
-    color: ${ColorStyle.pallet2};
-    background-color: ${ColorStyle.pallet5};
-    text-align: center;
     -webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
 	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
 	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
-    line-height: ${(prop: CardComponentStyle) => prop.displayStyle.getHeightString()}
+    background-color: ${(prop: NavbarItemStyleProp) => prop.isSelected ? ColorStyle.pallet4 : ColorStyle.pallet5};
+    display: flex;
+
+    &:hover {
+		cursor: pointer;
+	}
 `;
 
 const NewsNavbarItem = styled.div`
     width: 100%;
     height: 100%;
-    font-size: 1.5em;
-    color: ${ColorStyle.pallet2};
-    background-color: ${ColorStyle.pallet5};
-    text-align: center;
     -webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
 	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
 	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet1};
-    line-height: ${(prop: CardComponentStyle) => prop.displayStyle.getHeightString()}
-`;
+    background-color: ${(prop: NavbarItemStyleProp) => prop.isSelected ? ColorStyle.pallet4 : ColorStyle.pallet5};
+    display: flex;
+
+    &:hover {
+		cursor: pointer;
+	}
+`;  
 
 export class NavbarComponentProps 
 {
     navbarComponentStyle: NavbarComponentStyle;
-    navbarItemStyle: NavbarItemStyle;
+    playNavbarItemStyle: NavbarItemStyle;
+    communityNavbarItemStyle: NavbarItemStyle;
+    newsNavbarItemStyle: NavbarItemStyle;
+    navbarRef: React.RefObject<any>;
 }
 
 export class NavbarComponentStyle 
@@ -64,52 +104,133 @@ export class NavbarComponentStyle
 
 export class NavbarItemStyle 
 {
+    isSelected: boolean;
     cardComponentStyle: CardComponentStyle;
     cardRotationAnimation: CardRotationAnimation;
     cardHoverAnimation: CardRotationAnimation;
+
+    showIcon: boolean;
+    showText: boolean;
+}
+
+class NavbarItemStyleProp 
+{
+    isSelected: boolean;
 }
 
 export class NavbarComponent extends React.Component<NavbarComponentProps, {}> 
 {
+    constructor(props: NavbarComponentProps) 
+    {
+        super(props);
+    }
+
     render() 
     {
         return (
             <Navbar
+                innerRef={this.props.navbarRef}
                 displayStyle={this.props.navbarComponentStyle.displayStyle}>
-                <CardComponent
-                    front={
-                        <PlayNavbarItem
-                            displayStyle={this.props.navbarItemStyle.cardComponentStyle.displayStyle}
-                            perspectiveStyle={this.props.navbarItemStyle.cardComponentStyle.perspectiveStyle}>
-                            Play
-                        </PlayNavbarItem>}
-                    cardStyle={this.props.navbarItemStyle.cardComponentStyle}
-                    rotationAnimation={this.props.navbarItemStyle.cardRotationAnimation}
-                    hoverAnimation={this.props.navbarItemStyle.cardHoverAnimation}>
-                </CardComponent>
-                <CardComponent
-                    front={
-                        <CommunityNavbarItem
-                            displayStyle={this.props.navbarItemStyle.cardComponentStyle.displayStyle}
-                            perspectiveStyle={this.props.navbarItemStyle.cardComponentStyle.perspectiveStyle}>
-                            Community
-                        </CommunityNavbarItem>}
-                    cardStyle={this.props.navbarItemStyle.cardComponentStyle}
-                    rotationAnimation={this.props.navbarItemStyle.cardRotationAnimation}
-                    hoverAnimation={this.props.navbarItemStyle.cardHoverAnimation}>
-                </CardComponent>
-                <CardComponent
-                    front={
-                        <NewsNavbarItem
-                            displayStyle={this.props.navbarItemStyle.cardComponentStyle.displayStyle}
-                            perspectiveStyle={this.props.navbarItemStyle.cardComponentStyle.perspectiveStyle}>
-                            News
-                        </NewsNavbarItem>}
-                    cardStyle={this.props.navbarItemStyle.cardComponentStyle}
-                    rotationAnimation={this.props.navbarItemStyle.cardRotationAnimation}
-                    hoverAnimation={this.props.navbarItemStyle.cardHoverAnimation}>
-                </CardComponent>
+                {this.getPlayNavbarItem()}
+                {this.getCommunityNavbarItem()}
+                {this.getNewsNavbarItem()}
             </Navbar>
+        );
+    }
+
+    getPlayNavbarItem = () => 
+    {
+        let icon: JSX.Element;
+        let text: JSX.Element;
+        if(this.props.playNavbarItemStyle.showIcon) 
+        {
+            icon = <NavbarItemPlay/>
+        }
+        if(this.props.playNavbarItemStyle.showText) 
+        {
+            text = (
+                <NavbarItemText>
+                    Play
+                </NavbarItemText>
+            );
+        }
+
+        return (
+            <CardComponent
+                front={
+                    <PlayNavbarItem
+                        isSelected={this.props.playNavbarItemStyle.isSelected}>
+                        {icon}
+                        {text}
+                    </PlayNavbarItem>}
+                cardStyle={this.props.playNavbarItemStyle.cardComponentStyle}
+                rotationAnimation={this.props.playNavbarItemStyle.cardRotationAnimation}
+                hoverAnimation={this.props.playNavbarItemStyle.cardHoverAnimation}>
+            </CardComponent>
+        );
+    }
+
+    getCommunityNavbarItem = () => 
+    {
+        let icon: JSX.Element;
+        let text: JSX.Element;
+        if(this.props.communityNavbarItemStyle.showIcon) 
+        {
+            icon = <NavbarItemCommunity/>
+        }
+        if(this.props.communityNavbarItemStyle.showText) 
+        {
+            text = (
+                <NavbarItemText>
+                    Community
+                </NavbarItemText>
+            );
+        }
+
+        return (
+            <CardComponent
+                front={
+                    <CommunityNavbarItem
+                        isSelected={this.props.communityNavbarItemStyle.isSelected}>
+                        {icon}
+                        {text}
+                    </CommunityNavbarItem>}
+                cardStyle={this.props.communityNavbarItemStyle.cardComponentStyle}
+                rotationAnimation={this.props.communityNavbarItemStyle.cardRotationAnimation}
+                hoverAnimation={this.props.communityNavbarItemStyle.cardHoverAnimation}>
+            </CardComponent>
+        );
+    }
+
+    getNewsNavbarItem = () => 
+    {
+        let icon: JSX.Element;
+        let text: JSX.Element;
+        if(this.props.newsNavbarItemStyle.showIcon) 
+        {
+            icon = <NavbarItemNews/>
+        }
+        if(this.props.newsNavbarItemStyle.showText) 
+        {
+            text = (
+                <NavbarItemText>
+                    News
+                </NavbarItemText>
+            );
+        }
+
+        return (
+            <CardComponent
+                front={
+                    <NewsNavbarItem
+                        isSelected={this.props.newsNavbarItemStyle.isSelected}>
+                        {icon}
+                        {text}
+                    </NewsNavbarItem>}
+                cardStyle={this.props.newsNavbarItemStyle.cardComponentStyle}
+                rotationAnimation={this.props.newsNavbarItemStyle.cardRotationAnimation}
+                hoverAnimation={this.props.newsNavbarItemStyle.cardHoverAnimation}>
+            </CardComponent>
         );
     }
 }

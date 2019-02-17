@@ -14,7 +14,7 @@ import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
 import { isNullOrUndefined } from "util";
 import { GameLobbyLeaveGame } from "../../models/hub/gamelobbyleave";
 import { GameLobbyStartGame } from "../../models/hub/gamelobbystart";
-import { NavbarComponent } from "../general/navbar";
+import { NavbarComponent, NavbarComponentStyle } from "../general/navbar";
 
 const LobbyPage = styled.div`
     width: 100%;
@@ -53,12 +53,15 @@ export class LobbyPageComponentState extends BasePageComponentState {}
 
 export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProps, LobbyPageComponentState>
 {
+    navbarRef: React.RefObject<any>;
+
     constructor(props: LobbyPageComponentProps) 
 	{
         super(props);
+        let pageStyle = new LobbyPageStyle().large()
         this.state = 
         {
-            pageStyle: new LobbyPageStyle().large()
+            pageStyle: pageStyle
         };
     }
 
@@ -75,11 +78,6 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
 					titlePanelStyles={titlePanelStylings}
 					titlePanelsStyle={lobbyPageStyle.titlePanelsStyle}>
 				</TitlePanelsComponent>
-
-                <NavbarComponent
-                    navbarComponentStyle={lobbyPageStyle.navbarComponentStyle}
-                    navbarItemStyle={lobbyPageStyle.navbarItemStyle}>
-                </NavbarComponent>
 
                 <PanelsContainer>
                     <GameLobbiesComponent
@@ -103,6 +101,14 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                         sendMessageButtonHandler={this.props.sendMessageButtonClickHandler}>
                     </GameLobbyComponent>
                 </PanelsContainer>
+
+                <NavbarComponent
+                    navbarRef={this.navbarRef}
+                    navbarComponentStyle={lobbyPageStyle.navbarComponentStyle}
+                    playNavbarItemStyle={lobbyPageStyle.playNavbarItemStyle}
+                    communityNavbarItemStyle={lobbyPageStyle.communityNavbarItemStyle}
+                    newsNavbarItemStyle={lobbyPageStyle.newsNavbarItemStyle}>
+                </NavbarComponent>
             </LobbyPage>
         );
     }
