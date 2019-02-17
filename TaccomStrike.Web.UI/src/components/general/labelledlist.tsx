@@ -12,9 +12,9 @@ const LabelledListComponentElement = styled.div`
 `;
 
 const LabelComponentElement = styled.div`
-	width: 40%;
+	width: ${(props: LabelledListComponentStyle) => isNullOrUndefined(props.labelWidth) ? '40%' : props.labelWidth };
 	padding-left: 5px;
-	background-color: rgba(255, 255, 255, 0.65);
+	background-color: ${ColorStyle.pallet2};;
 	color: ${ColorStyle.pallet1};
 	font-size: 1.25em;
 `;
@@ -45,6 +45,7 @@ export class LabelledListComponentState {}
 export class LabelledListComponentStyle
 {
 	displayStyle: DisplayStyle;
+	labelWidth?: string;
 
 	constructor(displayStyle?: DisplayStyle) 
 	{
@@ -89,7 +90,9 @@ export class LabelledListComponent extends React.Component<LabelledListComponent
 		if(!isNullOrUndefined(this.props.labelValue)) 
 		{
 			label = (
-				<LabelComponentElement>
+				<LabelComponentElement
+					displayStyle={this.props.labelledListComponentStyle.displayStyle}
+					labelWidth={this.props.labelledListComponentStyle.labelWidth}>
 					{this.props.labelValue}
 				</LabelComponentElement>
 			);
