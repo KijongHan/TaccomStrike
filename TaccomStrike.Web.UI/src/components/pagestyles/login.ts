@@ -295,7 +295,7 @@ export class LoginPageStyle extends BasePageStyle
         let style = new LoginPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({ 
-                heightPixels: 340
+                heightPixels: 355
             })
         };
         style.callTitlePanelStyle = {
@@ -310,6 +310,7 @@ export class LoginPageStyle extends BasePageStyle
             displayStyle: new DisplayStyle({
                 widthPercentage: 90,
                 heightPixels: 170,
+                marginTopPixels: 15,
                 marginLeftPercentage: 5,
                 floatLeft: true
             })
@@ -434,7 +435,7 @@ export class LoginPageStyle extends BasePageStyle
         let style = new LoginPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({ 
-                heightPixels: 300
+                heightPixels: 315
             })
         };
         style.callTitlePanelStyle = {
@@ -451,6 +452,7 @@ export class LoginPageStyle extends BasePageStyle
                 widthPercentage: 90,
                 heightPixels: 150,
                 marginLeftPercentage: 5,
+                marginTopPixels: 15,
                 floatLeft: true
             }),
             fontSize: '4em'
