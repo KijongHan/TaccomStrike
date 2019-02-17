@@ -66,6 +66,7 @@ const GameLobbyPlayersPanel = styled.div`
     height: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getHeightString()};
     width: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getWidthString()};
     display: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getDisplayString()};
+    margin: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getMarginString()};
     border-style: solid;
     border-width: 1px;
     border-color: ${ColorStyle.pallet2};
@@ -88,6 +89,7 @@ const GameLobbyMessagesPanel = styled.div`
     float: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getFloatString()};
     height: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getHeightString()};
     width: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getWidthString()};
+    margin: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getMarginString()};
     border-style: solid;
     border-width: 1px;
     border-color: ${ColorStyle.pallet2};
@@ -212,6 +214,11 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
 
     render() 
     {
+        if(isNullOrUndefined(this.props.gameLobbyComponentStyle)) 
+        {
+            return <div></div>
+        }
+
         let currentGameLobbyComponent: JSX.Element;
         let createGameLobbyComponent: JSX.Element;
         let flipAnimation: CardRotationAnimation;

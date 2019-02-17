@@ -968,7 +968,7 @@ export class LobbyPageStyle extends BasePageStyle
                     position: Position.relative,
                     floatLeft: true,
                     widthPercentage: 80,
-                    heightPixels: 450,
+                    heightPixels: 600,
                     marginLeftPercentage: 10,
                     marginTopPixels: 20
                 }),
@@ -1013,24 +1013,24 @@ export class LobbyPageStyle extends BasePageStyle
 
             gameLobbyContentPanelStyle: {
                 displayStyle: new DisplayStyle({
-                    heightPixels: 300,
+                    heightPixels: 450,
                     widthPercentage: 100
                 })
             },
 
             gameLobbyPlayersPanelStyle: {
                 displayStyle: new DisplayStyle({
-                    heightPixels: 298,
-                    widthPercentage: 49,
-                    floatLeft: true
+                    marginTopPixels: 10,
+                    heightPixels: 150,
+                    widthPercentage: 98,
+                    display: Display.inlineBlock
                 })
             },
 
             gameLobbyMessagesPanelStyle: {
                 displayStyle: new DisplayStyle({
                     heightPixels: 298,
-                    widthPercentage: 50,
-                    floatLeft: true
+                    widthPercentage: 98
                 })
             },
 

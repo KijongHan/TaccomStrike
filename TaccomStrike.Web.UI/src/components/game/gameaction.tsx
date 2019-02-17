@@ -82,6 +82,7 @@ export class GameActionComponentState
 export class GameActionComponentStyle 
 {
     cardComponentStyle: CardComponentStyle;
+    
 
     constructor() 
     {

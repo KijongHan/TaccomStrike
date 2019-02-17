@@ -123,106 +123,11 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
 
     getGameChat = () => 
     {
-        let style = new GameLobbyComponentStyle();
-        style.cardComponentStyle = {
-            displayStyle: new DisplayStyle({
-                position: Position.absolute,
-                widthPercentage: 25,
-                heightPercentage: 70,
-                topPixels: 0,
-                leftPixels: 0
-            }),
-            perspectiveStyle: new PerspectiveStyle()
-        };
-        style.gameLobbyNameLabelledInputStyle = {
-            displayStyle: new DisplayStyle({
-                display: Display.none
-            })
-        };
-        style.maxLobbyLimitLabelledListStyle = {
-            displayStyle: new DisplayStyle({
-                display: Display.none
-            })
-        };
-        style.createGameButtonStyle = {
-            displayStyle: new DisplayStyle({
-                display: Display.none
-            })
-        };
-        style.gameLobbyContentPanelStyle = {
-            displayStyle: new DisplayStyle({
-                heightPercentage: 70,
-                widthPercentage: 100
-            })
-        };
-        style.gameLobbyPlayersPanelStyle = {
-            displayStyle: new DisplayStyle({
-                display: Display.none
-            })
-        };
-        style.gameLobbyMessagesPanelStyle = {
-            displayStyle: new DisplayStyle({
-                heightPercentage: 98,
-                widthPercentage: 99
-            })
-        };
-        style.gameLobbyMessageButtonedInputStyle = {
-            buttonedInputComponentPanelStyle: {
-                displayStyle: new DisplayStyle({
-                    widthPercentage: 99,
-                    marginTopPixels: 35,
-                    heightPixels: 40
-                })
-            },
-
-            buttonComponentStyle: {
-                displayStyle: new DisplayStyle({
-                    floatLeft: true,
-                    widthPercentage: 25,
-                    heightPixels: 40
-                })
-            },
-
-            inputComponentStyle: {
-                displayStyle: new DisplayStyle({
-                    floatLeft: true,
-                    widthPercentage: 75,
-                    heightPixels: 40
-                })
-            }
-        };
-        style.startGameButtonStyle = {
-            displayStyle: new DisplayStyle({
-                display: Display.none
-            })
-        };
-        style.leaveGameButtonStyle = {
-            displayStyle: new DisplayStyle({
-                display: Display.none
-            })
-        };
-
-        style.createGameLobbyFlipAnimation = {
-            rotationFrom: 180,
-            rotationTo: 359.9,
-            rotationDirection: 1,
-            rotationDelay: 0,
-            rotationDuration: 1000
-        };
-
-        style.currentGameLobbyFlipAnimation ={
-            rotationFrom: 180,
-            rotationTo: 180,
-            rotationDirection: 1,
-            rotationDelay: 0,
-            rotationDuration: 1000
-        };
-
         return (
             <GameLobbyComponent
                 messageContentPanelRef={this.props.messageContentPanelRef}
                 loggedInUser={this.props.loggedInUser}
-                gameLobbyComponentStyle={style}
+                gameLobbyComponentStyle={(this.state.pageStyle as GamePageStyle).gameLobbyComponentStyle}
                 currentGameLobby={this.props.gameLobby}
                 currentGameLobbyMessages={this.props.gameLobbyMessages}
                 createGameLobby={null}
@@ -263,18 +168,12 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
 
     getActionComponent = () => 
     {
-        let gameActionComponentStyle = new GameActionComponentStyle();
-        gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.absolute;
-        gameActionComponentStyle.cardComponentStyle.displayStyle.heightPercentage = 100;
-        gameActionComponentStyle.cardComponentStyle.displayStyle.widthPercentage = 25;
-        gameActionComponentStyle.cardComponentStyle.displayStyle.topPixels = 0;
-        gameActionComponentStyle.cardComponentStyle.displayStyle.rightPixels = 0;
         return (
             <GameActionComponent
                 loggedInUser={this.props.loggedInUser}
                 gameState={this.props.gameState}
                 gameCheat={this.props.gameCheat}
-                gameActionComponentStyle={gameActionComponentStyle}
+                gameActionComponentStyle={(this.state.pageStyle as GamePageStyle).gameActionComponentStyle}
                 submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}
                 claimRankSelectedOnChangeHandler={this.claimRankSelectedOnChangeHandler}
                 callCheatButtonClickHandler={this.props.callCheatButtonClickHandler}>
@@ -284,20 +183,13 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
 
     getBoardComponent = () => 
     {
-        let gameBoardComponentStyle = new GameBoardComponentStyle();
-        gameBoardComponentStyle.displayStyle.widthPercentage = 12;
-        gameBoardComponentStyle.displayStyle.heightPercentage = 30;
-        let gameBoardSeatComponentStyle = new GameBoardSeatComponentStyle();
-        gameBoardSeatComponentStyle.displayStyle.widthPercentage = 90;
-        gameBoardSeatComponentStyle.displayStyle.heightPercentage = 75;
-
         let gameBoard = (
             <GameBoardComponent
                 loggedInUser={this.props.loggedInUser}
                 gameCheat={this.props.gameCheat}
                 gameState={this.props.gameState}
-                gameBoardComponentStyle={gameBoardComponentStyle}
-                gameBoardSeatComponentStyle={gameBoardSeatComponentStyle}>
+                gameBoardComponentStyle={(this.state.pageStyle as GamePageStyle).gameBoardComponentStyle}
+                gameBoardSeatComponentStyle={(this.state.pageStyle as GamePageStyle).gameBoardSeatComponentStyle}>
             </GameBoardComponent>
         );
         return gameBoard;
