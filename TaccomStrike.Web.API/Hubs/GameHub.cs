@@ -14,6 +14,7 @@ using TaccomStrike.Library.Data.Extensions;
 using TaccomStrike.Game.CallCheat.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using TaccomStrike.Library.Data.Enums;
 
 namespace TaccomStrike.Web.API.Hubs
 {
@@ -247,6 +248,16 @@ namespace TaccomStrike.Web.API.Hubs
 							Players = players
 						};
 
+						var message = new GameLobbySendMessage
+						{
+							MessageType = GameLobbyMessageType.System,
+							ChatMessage = new GetChatMessage(new ChatMessage
+							{
+								Message = $"{Context.User.GetUserName()} has left the game lobby",
+								WhenCreated = DateTime.Now
+							})
+						};
+
 						if (gameLobby.GetUsers().Count <= 0)
 						{
 							gameLobbyService.RemoveGameLobby(gameLobbyID);
@@ -259,6 +270,7 @@ namespace TaccomStrike.Web.API.Hubs
 							{
 								var connection = userConnectionsService.GameConnectionService.GetConnection(user);
 								Clients.Client(connection).GameLobbyLeaveGame(apiObject);
+								Clients.Client(connection).GameLobbySendMessage(message);
 							}
 							var userConnection = userConnectionsService.GameConnectionService.GetConnection(Context.User);
 							Clients.Client(userConnection).GameLobbyLeaveGame(apiObject);
@@ -306,10 +318,22 @@ namespace TaccomStrike.Web.API.Hubs
 							GameLobby = gameLobby.ApiGetGameLobby()
 						};
 
+						var message = new GameLobbySendMessage
+						{
+							MessageType = GameLobbyMessageType.System,
+							ChatMessage = new GetChatMessage(new ChatMessage
+							{
+								User = null,
+								Message = $"{newUser.Username} has joined the game lobby",
+								WhenCreated = DateTime.Now
+							})
+						};
+
 						foreach (var user in gameLobby.GetUsers())
 						{
 							var connection = userConnectionsService.GameConnectionService.GetConnection(user);
 							Clients.Client(connection).GameLobbyJoin(apiObject);
+							Clients.Client(connection).GameLobbySendMessage(message);
 						}
 						Context.User.SetCurrentGameLobbyID(gameLobbyID);
 					}
@@ -338,6 +362,7 @@ namespace TaccomStrike.Web.API.Hubs
 						};
 						var apiObject = new GameLobbySendMessage
 						{
+							MessageType = GameLobbyMessageType.User,
 							ChatMessage = chatMessage.ApiGetChatMessage()
 						};
 

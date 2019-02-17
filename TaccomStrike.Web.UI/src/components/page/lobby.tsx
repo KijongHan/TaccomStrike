@@ -14,7 +14,7 @@ import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
 import { isNullOrUndefined } from "util";
 import { GameLobbyLeaveGame } from "../../models/hub/gamelobbyleave";
 import { GameLobbyStartGame } from "../../models/hub/gamelobbystart";
-import { NavbarComponent } from "../general/navbar";
+import { NavbarComponent, NavbarComponentStyle } from "../general/navbar";
 
 const LobbyPage = styled.div`
     width: 100%;
@@ -37,6 +37,8 @@ export interface LobbyPageComponentProps extends BasePageComponentProps
     currentGameLobby: GetGameLobby;
     currentGameLobbyMessages: GameLobbySendMessage[];
 
+    messageContentPanelRef: React.RefObject<any>;
+
     lobbyListItemClickHandler: (gameLobbyID: number) => void;
     sendMessageButtonClickHandler: (message: string) => void;
     startGameButtonClickHandler: () => void;
@@ -51,12 +53,15 @@ export class LobbyPageComponentState extends BasePageComponentState {}
 
 export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProps, LobbyPageComponentState>
 {
+    navbarRef: React.RefObject<any>;
+
     constructor(props: LobbyPageComponentProps) 
 	{
         super(props);
+        let pageStyle = new LobbyPageStyle().large()
         this.state = 
         {
-            pageStyle: new LobbyPageStyle().large()
+            pageStyle: pageStyle
         };
     }
 
@@ -65,10 +70,6 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
         let lobbyPageStyle = this.state.pageStyle as LobbyPageStyle;
 		let titleWords = ["Game", "Lobbies"];
         let titlePanelStylings = [lobbyPageStyle.gameTitlePanelStyle, lobbyPageStyle.lobbiesTitlePanelStyle];
-
-        let gameLobbyMessages = this.props.currentGameLobbyMessages.map((value: GameLobbySendMessage) => {
-            return value.chatMessage;
-        });
         
         return (
             <LobbyPage>
@@ -78,11 +79,6 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
 					titlePanelsStyle={lobbyPageStyle.titlePanelsStyle}>
 				</TitlePanelsComponent>
 
-                <NavbarComponent
-                    navbarComponentStyle={lobbyPageStyle.navbarComponentStyle}
-                    navbarItemStyle={lobbyPageStyle.navbarItemStyle}>
-                </NavbarComponent>
-
                 <PanelsContainer>
                     <GameLobbiesComponent
                         gameLobbiesComponentStyle={lobbyPageStyle.gameLobbiesComponentStyle}
@@ -91,6 +87,7 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                         refreshButtonClickHandler={this.props.refreshButtonClickHandler}>
                     </GameLobbiesComponent>
                     <GameLobbyComponent
+                        messageContentPanelRef={this.props.messageContentPanelRef}
                         loggedInUser={this.props.loggedInUser}
                         currentGameLobby={this.props.currentGameLobby}
                         createGameLobby={this.props.createGameLobby}
@@ -100,10 +97,18 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                         createGameButtonClickHandler={this.props.createGameButtonClickHandler}
                         startGameButtonClickHandler={this.props.startGameButtonClickHandler}
                         leaveGameButtonClickHandler={this.props.leaveGameButtonClickHandler}
-                        currentGameLobbyMessages={gameLobbyMessages}
+                        currentGameLobbyMessages={this.props.currentGameLobbyMessages}
                         sendMessageButtonHandler={this.props.sendMessageButtonClickHandler}>
                     </GameLobbyComponent>
                 </PanelsContainer>
+
+                <NavbarComponent
+                    navbarRef={this.navbarRef}
+                    navbarComponentStyle={lobbyPageStyle.navbarComponentStyle}
+                    playNavbarItemStyle={lobbyPageStyle.playNavbarItemStyle}
+                    communityNavbarItemStyle={lobbyPageStyle.communityNavbarItemStyle}
+                    newsNavbarItemStyle={lobbyPageStyle.newsNavbarItemStyle}>
+                </NavbarComponent>
             </LobbyPage>
         );
     }

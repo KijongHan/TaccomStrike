@@ -15,7 +15,10 @@ namespace TaccomStrike.Library.Data.ViewModel
 
 		public GetChatMessage(ChatMessage chatMessage)
 		{
-			User = new GetUser(chatMessage.User);
+			if(chatMessage.User!=null)
+			{
+				User = new GetUser(chatMessage.User);
+			}
 			Message = chatMessage.Message;
 			WhenCreated = chatMessage.WhenCreated;
 		}

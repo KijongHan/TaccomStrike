@@ -181,9 +181,9 @@ export class LoginPageStyle extends BasePageStyle
             cardComponentStyle:
                 {
                     displayStyle: new DisplayStyle({
-                        widthPercentage: 40,
-                        marginLeftPercentage: 5,
-                        heightPixels: 400
+                        widthPercentage: 45,
+                        marginLeftPercentage: 4,
+                        heightPixels: 450
                     }),
                     perspectiveStyle: new PerspectiveStyle({
                         perspective: 1200
@@ -231,8 +231,9 @@ export class LoginPageStyle extends BasePageStyle
             cardComponentStyle:
                 {
                     displayStyle: new DisplayStyle({
-                        widthPercentage: 30,
-                        heightPixels: 400
+                        widthPercentage: 45,
+                        heightPixels: 450,
+                        marginLeftPercentage: 2
                     }),
                     perspectiveStyle: new PerspectiveStyle({
                         perspective: 1200
@@ -318,8 +319,9 @@ export class LoginPageStyle extends BasePageStyle
                 {
                     displayStyle: new DisplayStyle({
                         floatLeft: true,
-                        widthPercentage: 45,
-                        heightPixels: 400
+                        widthPercentage: 70,
+                        heightPixels: 450,
+                        marginLeftPercentage: 15
                     }),
                     perspectiveStyle: new PerspectiveStyle({
                         perspective: 1200
@@ -367,9 +369,10 @@ export class LoginPageStyle extends BasePageStyle
             cardComponentStyle:
                 {
                     displayStyle: new DisplayStyle({
-                        marginLeftPercentage: 8,
-                        widthPercentage: 45,
-                        heightPixels: 400
+                        marginLeftPercentage: 15,
+                        widthPercentage: 70,
+                        heightPixels: 450,
+                        marginTopPixels: 25 
                     }),
                     perspectiveStyle: new PerspectiveStyle({
                         perspective: 1200
@@ -431,7 +434,7 @@ export class LoginPageStyle extends BasePageStyle
         let style = new LoginPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({ 
-                heightPixels: 340 
+                heightPixels: 340
             })
         };
         style.callTitlePanelStyle = {
@@ -453,9 +456,11 @@ export class LoginPageStyle extends BasePageStyle
         style.loginComponentStyle = {
             cardComponentStyle:
                 {
-                    displayStyle: new DisplayStyle({ 
-                        widthPercentage: 90, 
-                        heightPixels: 400 
+                    displayStyle: new DisplayStyle({
+                        floatLeft: true,
+                        widthPercentage: 70,
+                        heightPixels: 450,
+                        marginLeftPercentage: 15
                     }),
                     perspectiveStyle: new PerspectiveStyle({
                         perspective: 1200
@@ -475,7 +480,9 @@ export class LoginPageStyle extends BasePageStyle
                     displayStyle: new DisplayStyle({
                         widthPercentage: 30,
                         heightPixels: 50,
-                        marginLeftPercentage: 5
+                        marginLeftPercentage: 5,
+                        position: Position.absolute,
+                        bottomPixels: 10
                     })
                 },
         
@@ -501,8 +508,10 @@ export class LoginPageStyle extends BasePageStyle
             cardComponentStyle:
                 {
                     displayStyle: new DisplayStyle({
-                        widthPercentage: 30,
-                        heightPixels: 400
+                        marginLeftPercentage: 15,
+                        widthPercentage: 70,
+                        heightPixels: 450,
+                        marginTopPixels: 25 
                     }),
                     perspectiveStyle: new PerspectiveStyle({
                         perspective: 1200

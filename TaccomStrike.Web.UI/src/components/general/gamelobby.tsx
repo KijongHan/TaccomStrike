@@ -1,4 +1,6 @@
 import * as React from "react";
+import * as ReactDom from "react-dom";
+import * as moment from "moment";
 import { ButtonComponent, ButtonComponentStyle } from "./button";
 import styled from "styled-components";
 import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
@@ -12,6 +14,8 @@ import { DisplayStyle } from "../../styles/displaystyle";
 import { GetChatMessage } from "../../models/rest/getchatmessage";
 import { GetUser } from "../../models/rest/getuser";
 import { ColorStyle } from "../../styles/colorstyle";
+import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
+import { GameLobbyMessageType } from "../../models/enums/gamelobbymessagetype";
 
 const ButtonsPanel = styled.div`
     overflow: auto;
@@ -62,6 +66,7 @@ const GameLobbyPlayersPanel = styled.div`
     height: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getHeightString()};
     width: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getWidthString()};
     display: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getDisplayString()};
+    margin: ${(p : GameLobbyPlayersPanelStyle) => p.displayStyle.getMarginString()};
     border-style: solid;
     border-width: 1px;
     border-color: ${ColorStyle.pallet2};
@@ -72,7 +77,7 @@ const GameLobbyPlayerItem = styled.div`
     font-size: 1.25em;
     font-weight: bold;
     height: 40px;
-    padding: 5px 5px 5px 5px;
+    padding: 5px 5px 5px 10px;
     border-style: solid;
     border-width: 1px;
     color: ${ColorStyle.pallet1};
@@ -84,37 +89,51 @@ const GameLobbyMessagesPanel = styled.div`
     float: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getFloatString()};
     height: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getHeightString()};
     width: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getWidthString()};
+    margin: ${(p : GameLobbyMessagesPanelStyle) => p.displayStyle.getMarginString()};
     border-style: solid;
     border-width: 1px;
     border-color: ${ColorStyle.pallet2};
     overflow-y: scroll;
+    overflow-x: hidden;
 `;
 
 const GameLobbyMessageItem = styled.div`
-    display: inline-block;
     width: 100%;
-    font-size: 1.1em;
+    padding-left: 5px;
+`;
+
+const GameLobbyMessagePlayerItem = styled.span`
+    font-weight: bold;
+    color: ${ColorStyle.pallet1};
+    padding-left: 5px;
+`;
+
+const GameLobbyMessageMessageItem = styled.span`
+    padding-left: 5px;
     color: ${ColorStyle.pallet1};
 `;
 
-const GameLobbyMessagePlayerItem = styled.div`
-    float: left;
-    font-weight: bold;
-    padding-left: 7px;
+const SystemMessageText = styled.span`
+    padding-left: 5px;
+    font-size: 1.1em;
+    font-family: "Times New Roman";
+    color: rgba(0, 0, 0, 0.7);
 `;
 
-const GameLobbyMessageMessageItem = styled.div`
-    float: left;
-    padding-left: 5px;
+const MessageTimeText = styled.span`
+    color: ${ColorStyle.pallet1};
+    font-family: "Times New Roman";
 `;
 
 export class GameLobbyComponentProps 
 {
     loggedInUser: GetUser;
 
+    messageContentPanelRef: React.RefObject<any>;
+
     gameLobbyComponentStyle: GameLobbyComponentStyle;
     currentGameLobby: GetGameLobby;
-    currentGameLobbyMessages: GetChatMessage[];
+    currentGameLobbyMessages: GameLobbySendMessage[];
     createGameLobby: CreateGameLobby;
 
     gameLobbyNameInputOnChangeHandler: (input: string) => void;
@@ -169,6 +188,8 @@ export class GameLobbyMessagesPanelStyle
 
 export class GameLobbyComponent extends React.Component<GameLobbyComponentProps, GameLobbyComponentState> 
 {
+    messageInputRef: React.RefObject<any>;
+
     constructor(props: GameLobbyComponentProps) 
     {
         super(props);
@@ -187,10 +208,17 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
                 {displayName:"Competitive", itemValue:"2"}
             ]
         }
+
+        this.messageInputRef = React.createRef();
     }
 
     render() 
     {
+        if(isNullOrUndefined(this.props.gameLobbyComponentStyle)) 
+        {
+            return <div></div>
+        }
+
         let currentGameLobbyComponent: JSX.Element;
         let createGameLobbyComponent: JSX.Element;
         let flipAnimation: CardRotationAnimation;
@@ -225,17 +253,40 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
 
     getCurrentGameLobbyComponent = () => 
     {
-        let gameLobbyMessages = this.props.currentGameLobbyMessages.map((value: GetChatMessage) => {
-            return (
-                <GameLobbyMessageItem>
-                    <GameLobbyMessagePlayerItem>
-                        {value.user.username}:
-                    </GameLobbyMessagePlayerItem>
-                    <GameLobbyMessageMessageItem>
-                        {value.message}
-                    </GameLobbyMessageMessageItem>
-                </GameLobbyMessageItem>
-            );
+        let gameLobbyMessages = this.props.currentGameLobbyMessages.map((value: GameLobbySendMessage) => {
+            if(value.messageType===GameLobbyMessageType.User) 
+            {
+                return (
+                    <GameLobbyMessageItem>
+                        <span>
+                        <MessageTimeText>
+                            {moment(value.chatMessage.whenCreated).format("hh:mm:ss")}
+                        </MessageTimeText>
+                        <GameLobbyMessagePlayerItem>
+                            {value.chatMessage.user.username}:
+                        </GameLobbyMessagePlayerItem>
+                        <GameLobbyMessageMessageItem>
+                            {value.chatMessage.message}
+                        </GameLobbyMessageMessageItem>
+                        </span>
+                    </GameLobbyMessageItem>
+                );
+            }
+            else if(value.messageType===GameLobbyMessageType.System)
+            {
+                return (
+                    <GameLobbyMessageItem>
+                        <span>
+                        <MessageTimeText>
+                            {moment(value.chatMessage.whenCreated).format("hh:mm:ss")}
+                        </MessageTimeText>
+                        <SystemMessageText>
+                            {value.chatMessage.message}
+                        </SystemMessageText>
+                        </span>
+                    </GameLobbyMessageItem>
+                );
+            }
         });
 
         let gameLobbyPlayers = this.props.currentGameLobby.players.map((value: GetUser) => {
@@ -259,6 +310,7 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
                 <GameLobbyContentPanel
                     displayStyle={this.props.gameLobbyComponentStyle.gameLobbyContentPanelStyle.displayStyle}>
                     <GameLobbyMessagesPanel
+                        innerRef={this.props.messageContentPanelRef}
                         displayStyle={this.props.gameLobbyComponentStyle.gameLobbyMessagesPanelStyle.displayStyle}>
                         {gameLobbyMessages}
                     </GameLobbyMessagesPanel>
@@ -268,6 +320,7 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
                     </GameLobbyPlayersPanel>
                 </GameLobbyContentPanel>
                 <ButtonedInputComponent
+                    forwardRef={this.messageInputRef}
                     inputValue={this.state.gameLobbyMessage}
                     componentStyle={this.props.gameLobbyComponentStyle.gameLobbyMessageButtonedInputStyle}
                     inputOnChangeHandler={this.messageInputOnChangeHandler}
@@ -334,5 +387,31 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
     gameLobbyNameInputOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
 	{
 		this.props.gameLobbyNameInputOnChangeHandler(event.target.value);
+    }
+
+    componentDidMount() 
+    {
+        window.addEventListener('keydown', this.keyDownHandler);
+    }
+
+    componentWillUnmount() 
+    {
+        window.removeEventListener('keydown', this.keyDownHandler);
+    }
+
+    keyDownHandler = (event: KeyboardEvent) => 
+    {
+        if(event.key===`Enter` && !isNullOrUndefined(this.props.currentGameLobby)) 
+        {
+            if(document.activeElement===ReactDom.findDOMNode(this.messageInputRef.current)) 
+            {
+                this.sendMessageButtonClickHandler();
+                this.messageInputRef.current.blur();
+            }
+            else 
+            {
+                this.messageInputRef.current.focus();
+            }
+        }
     }
 }

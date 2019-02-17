@@ -2,9 +2,10 @@ import * as React from "react";
 import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
 import { ButtonComponent, ButtonComponentStyle } from "./button";
 import styled from "styled-components";
-import { GetGameLobby, GameMode } from "../../models/rest/getgamelobby";
+import { GetGameLobby } from "../../models/rest/getgamelobby";
 import { DisplayStyle } from "../../styles/displaystyle";
 import { ColorStyle } from "../../styles/colorstyle";
+import { GameMode } from "../../models/enums/gamemode";
 
 const GameLobbies = styled.div`
     height: 100%;
