@@ -5,16 +5,13 @@ import { DisplayStyle } from "../../styles/displaystyle";
 import { isNullOrUndefined } from "util";
 import { ColorStyle } from "../../styles/colorstyle";
 
-const ValidationSuccessIcon = require("../../res/tick.png");
-const ValidationFailIcon = require("../../res/cross.png");
-
 const LabelledInputComponentElement = styled.div`
 	width: ${(p: LabelledInputComponentStyle) => p.displayStyle.getWidthString()};
 	margin: ${(p: LabelledInputComponentStyle) => p.displayStyle.getMarginString()};
 `;
 
 const LabelComponentElement = styled.div`
-	width: 40%;
+	width: ${(props: LabelledInputComponentStyle) => isNullOrUndefined(props.labelWidth) ? '40%' : props.labelWidth };
 	padding-left: 5px;
 	background-color: ${ColorStyle.pallet2};;
 	color: ${ColorStyle.pallet1};
@@ -123,6 +120,7 @@ export class LabelledInputComponentState
 export class LabelledInputComponentStyle
 {
 	displayStyle: DisplayStyle;
+	labelWidth?: string;
 
 	constructor(displayStyle?: DisplayStyle) 
 	{
@@ -174,7 +172,9 @@ export class LabelledInputComponent extends React.Component<LabelledInputCompone
 		return (
 			<LabelledInputComponentElement
 				displayStyle={this.props.componentStyle.displayStyle}>
-				<LabelComponentElement>
+				<LabelComponentElement
+					displayStyle={this.props.componentStyle.displayStyle}
+					labelWidth={this.props.componentStyle.labelWidth}>
 					{this.props.labelValue}
 				</LabelComponentElement>
 				<InputComponentElement

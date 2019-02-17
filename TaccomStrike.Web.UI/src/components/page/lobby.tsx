@@ -68,7 +68,7 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
     render() 
     {
         let lobbyPageStyle = this.state.pageStyle as LobbyPageStyle;
-		let titleWords = ["Game", "Lobbies"];
+		let titleWords = ["Game", "Lobby"];
         let titlePanelStylings = [lobbyPageStyle.gameTitlePanelStyle, lobbyPageStyle.lobbiesTitlePanelStyle];
         
         return (
