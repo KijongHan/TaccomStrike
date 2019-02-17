@@ -25,7 +25,7 @@ export abstract class BasePageComponent<P extends BasePageComponentProps, S exte
 
     componentDidMount()
 	{
-		if(typeof isNullOrUndefined(screen.orientation)) 
+		if(typeof isNullOrUndefined(window.orientation)) 
 		{
 			window.addEventListener('resize', this.throttledResizeEventHandler);
 		}
@@ -39,7 +39,7 @@ export abstract class BasePageComponent<P extends BasePageComponentProps, S exte
 
 	componentWillUnmount()
 	{
-		if(typeof isNullOrUndefined(screen.orientation)) 
+		if(typeof isNullOrUndefined(window.orientation)) 
 		{
 			window.removeEventListener('resize', this.throttledResizeEventHandler);
 		}
