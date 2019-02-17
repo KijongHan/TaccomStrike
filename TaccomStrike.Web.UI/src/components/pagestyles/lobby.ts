@@ -728,7 +728,8 @@ export class LobbyPageStyle extends BasePageStyle
                     widthPercentage: 70,
                     marginLeftPercentage: 5,
                     marginTopPixels: 20
-                })
+                }),
+                labelWidth: "90%"
             },
 
             maxLobbyLimitLabelledListStyle: {
@@ -744,7 +745,8 @@ export class LobbyPageStyle extends BasePageStyle
                     widthPercentage: 70,
                     marginLeftPercentage: 5,
                     marginTopPixels: 20
-                })
+                }),
+                labelWidth: "90%"
             },
 
             createGameButtonStyle: {
@@ -984,7 +986,8 @@ export class LobbyPageStyle extends BasePageStyle
                     widthPercentage: 70,
                     marginLeftPercentage: 5,
                     marginTopPixels: 20
-                })
+                }),
+                labelWidth: "90%"
             },
 
             maxLobbyLimitLabelledListStyle: {
@@ -1000,7 +1003,8 @@ export class LobbyPageStyle extends BasePageStyle
                     widthPercentage: 70,
                     marginLeftPercentage: 5,
                     marginTopPixels: 20
-                })
+                }),
+                labelWidth: "90%"
             },
 
             createGameButtonStyle: {
