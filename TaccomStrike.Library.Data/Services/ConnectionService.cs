@@ -8,8 +8,6 @@ public class ConnectionService
 	private readonly Dictionary<int, string> userConnections;
 	private readonly Dictionary<int, ClaimsPrincipal> users;
 
-	private object connectionLock = new object();
-
 	public ConnectionService()
 	{
 		users = new Dictionary<int, ClaimsPrincipal>();
@@ -18,40 +16,28 @@ public class ConnectionService
 	
 	public void Add(ClaimsPrincipal user, string connectionId)
 	{
-		lock (connectionLock)
+		if (!userConnections.ContainsKey(user.GetUserLoginID()))
 		{
-			if(!userConnections.ContainsKey(user.GetUserLoginID()))
-			{
-				userConnections.Add(user.GetUserLoginID(), connectionId);
-				users.Add(user.GetUserLoginID(), user);
-			}
+			userConnections.Add(user.GetUserLoginID(), connectionId);
+			users.Add(user.GetUserLoginID(), user);
 		}
 	}
 
 	public List<ClaimsPrincipal> GetUsers()
 	{
-		lock(connectionLock)
-		{
-			return users.Values.ToList();
-		}
+		return users.Values.ToList();
 	}
 
 	public List<string> GetUserConnections()
 	{
-		lock(connectionLock)
-		{
-			return userConnections.Values.ToList();
-		}
+		return userConnections.Values.ToList();
 	}
 
 	public string GetConnection(int userID)
 	{
-		lock (connectionLock)
+		if (userConnections.ContainsKey(userID))
 		{
-			if (userConnections.ContainsKey(userID))
-			{
-				return userConnections[userID];
-			}
+			return userConnections[userID];
 		}
 		return null;
 	}
@@ -63,15 +49,12 @@ public class ConnectionService
 
 	public void Remove(ClaimsPrincipal user, string connectionId)
 	{
-		lock (connectionLock)
+		if (!userConnections.ContainsKey(user.GetUserLoginID()))
 		{
-			if(!userConnections.ContainsKey(user.GetUserLoginID()))
-			{
-				return;
-			}
-
-			userConnections.Remove(user.GetUserLoginID());
-			users.Remove(user.GetUserLoginID());
+			return;
 		}
+
+		userConnections.Remove(user.GetUserLoginID());
+		users.Remove(user.GetUserLoginID());
 	}
 }

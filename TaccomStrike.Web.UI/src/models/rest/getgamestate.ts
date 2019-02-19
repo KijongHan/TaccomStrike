@@ -1,7 +1,7 @@
 import { GetGameUser } from "./getgameuser";
 import { GetGameCard } from "./getgamecard";
 import { GetGameClaim } from "./getgameclaim";
-import { GamePhase } from "../../services/game/gameservice";
+import { GamePhase } from "../enums/gamephase";
 
 export class GetGameState 
 {
@@ -17,6 +17,7 @@ export class GetGameState
     currentGamePhase: GamePhase;
     turnPhaseDuration: number;
     callPhaseDuration: number;
+    preparationPhaseDuration: number;
 
     actionHistory: string[];
 }

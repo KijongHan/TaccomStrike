@@ -20,6 +20,7 @@ namespace TaccomStrike.Game.CallCheat
 		public GamePhase CurrentGamePhase { get;set; }
 		public double TurnPhaseDuration { get; set; }
 		public double CallPhaseDuration { get; set; }
+		public double PreparationPhaseDuration { get; set; }
 
 		public List<string> ActionHistory { get; set; }
 
