@@ -42,6 +42,23 @@ const GameBoardPanel = styled.div`
     position: relative;
 `;
 
+const GamePreparationPanel = styled.div`
+    position: fixed;
+    display: flex;
+    top: 0;
+    bottom: 0; 
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.7);
+`;
+
+const GamePreparationText = styled.div`
+    margin: auto;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+`;
+
 const GameUserHandPanel = styled.div`
     overflow-y: hidden;
     overflow-x: scroll;
@@ -116,17 +133,11 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
         {
             let currentPhaseDurationSeconds = Math.floor(this.state.preparationDuration / 1000)
             gamePreparation = (
-                <div style={{
-                    position: 'fixed', 
-                    top: '0', 
-                    bottom: '0', 
-                    left: '0',
-                    right: '0',
-                    textAlign: 'center', 
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'
-                }}>
-                    Game will begin in.. {currentPhaseDurationSeconds}
-                </div>
+                <GamePreparationPanel>
+                    <GamePreparationText>
+                        Game will begin in.. {currentPhaseDurationSeconds}
+                    </GamePreparationText>
+                </GamePreparationPanel>
             );
         }
 
@@ -162,7 +173,6 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
 
     startPreparationTimer = ()  =>
     {
-        console.log(this.props.gameState);
         if(this.state.preparationTimer!==null) 
         {
             window.clearInterval(this.state.preparationTimer);
