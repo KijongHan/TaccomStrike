@@ -19,6 +19,7 @@ import { GetGameLobby } from "../../models/rest/getgamelobby";
 import { GameLobbyComponent, GameLobbyComponentStyle } from "../general/gamelobby";
 import { GetChatMessage } from "../../models/rest/getchatmessage";
 import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
+import { GamePhase } from "../../models/enums/gamephase";
 
 const GamePage = styled.div`
     position: fixed;
@@ -65,6 +66,9 @@ export class GamePageComponentState extends BasePageComponentState
 {
     selectedCards: GetGameCard[];
     selectedClaimRank: string;
+
+    preparationDuration: number;
+    preparationTimer: number;
 }
 
 export interface GamePageComponentProps extends BasePageComponentProps 
@@ -92,7 +96,10 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
         {
             pageStyle: new GamePageStyle().large(),
             selectedCards: [],
-            selectedClaimRank: null
+            selectedClaimRank: null,
+
+            preparationDuration: null,
+            preparationTimer: null
         }
     }
 
@@ -104,10 +111,28 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
         let gameFinish = this.getFinishComponent();
         let gameChat = this.getGameChat();
 
+        let gamePreparation: JSX.Element;
+        if(this.props.gameState.currentGamePhase===GamePhase.PreparationPhase) 
+        {
+            let currentPhaseDurationSeconds = Math.floor(this.state.preparationDuration / 1000)
+            gamePreparation = (
+                <div style={{
+                    position: 'fixed', 
+                    top: '0', 
+                    bottom: '0', 
+                    left: '0',
+                    right: '0',
+                    textAlign: 'center', 
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'
+                }}>
+                    Game will begin in.. {currentPhaseDurationSeconds}
+                </div>
+            );
+        }
+
         return (
             <GamePage
-                tabIndex={0}
-                onKeyPress={this.keyPressHandler}>
+                tabIndex={0}>
                 <GamePageInner>
                     <GameBoardPanel>
                         {gameChat}
@@ -117,8 +142,48 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                     {hand}
                     {gameFinish}
                 </GamePageInner>
+                {gamePreparation}
             </GamePage>
         );
+    }
+    
+    componentWillMount() 
+    {
+        this.startPreparationTimer();
+    }
+
+    componentDidUpdate(prevProps: GamePageComponentProps) 
+    {
+        if(prevProps.gameState.currentGamePhase!==this.props.gameState.currentGamePhase && this.props.gameState.currentGamePhase===GamePhase.PreparationPhase) 
+        {
+            this.startPreparationTimer();
+        }
+    }
+
+    startPreparationTimer = ()  =>
+    {
+        console.log(this.props.gameState);
+        if(this.state.preparationTimer!==null) 
+        {
+            window.clearInterval(this.state.preparationTimer);
+        }
+
+        let duration = this.props.gameState.preparationPhaseDuration
+        this.setState({preparationDuration: duration});
+        let handlerID = window.setInterval(() => {
+            if(this.state.preparationDuration<=0) 
+            {
+                this.setState({preparationDuration: 0});
+                window.clearInterval(this.state.preparationTimer);
+                this.setState({preparationTimer: null});
+            }
+            else 
+            {
+                let nextInterval = this.state.preparationDuration - 15;
+                this.setState({preparationDuration: nextInterval});
+            }
+        }, 15);
+        this.setState({preparationTimer: handlerID});0.
     }
 
     getGameChat = () => 
@@ -300,13 +365,5 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
             selectedClaimRank: null
         });
         this.props.submitClaimButtonClickHandler(claims, actual);
-    }
-
-    keyPressHandler = (event: React.KeyboardEvent<HTMLDivElement>) => 
-    {
-        if(event.key==='Enter') 
-        {
-            console.log("Enter");
-        }
     }
 }

@@ -13,6 +13,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 		private int turnsIndex;
 		private object gameLogicLock = new object();
 
+		private int preparationPhaseDuration;
 		private int callPhaseDuration;
 		private int turnPhaseDuration;
 
@@ -23,6 +24,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 		public List<GameUser> UsersCallingCheat { get; set; }
 
 		public GamePhase CurrentGamePhase { get; set; }
+		public Timer PreparationTimer { get; set; }
 		public Timer TurnTimer { get; set; }
 		public Timer CallTimer { get; set; }
 
@@ -60,6 +62,10 @@ namespace TaccomStrike.Game.CallCheat.Services
 				if(CallTimer!=null)
 				{
 					gameState.CallPhaseDuration = CallTimer.Interval;
+				}
+				if(PreparationTimer!=null)
+				{
+					gameState.PreparationPhaseDuration = PreparationTimer.Interval;
 				}
 
 				gameState.ActionHistory = ActionHistory;
@@ -324,7 +330,13 @@ namespace TaccomStrike.Game.CallCheat.Services
 			}
 		}
 
-		public void StartGame(List<ClaimsPrincipal> users, long gameLobbyID, int callPhaseDuration, int turnPhaseDuration)
+		public void StartGame(
+			List<ClaimsPrincipal> users, 
+			long gameLobbyID, 
+			int callPhaseDuration, 
+			int turnPhaseDuration, 
+			int preparationPhaseDuration,
+			Action<long> onPreparationEnd)
 		{
 			List<GameCard> deck = instantiateDeck();
 			GameUsers = new List<GameUser>();
@@ -335,6 +347,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 
 			this.callPhaseDuration = callPhaseDuration;
 			this.turnPhaseDuration = turnPhaseDuration;
+			this.preparationPhaseDuration = preparationPhaseDuration;
 
 			int interval = deck.Count / users.Count;
 			for (int i = 0; i < users.Count; i++)
@@ -359,6 +372,24 @@ namespace TaccomStrike.Game.CallCheat.Services
 					}
 					GameUsers.Add(new GameUser(i + 1, users[i], hand));
 				}
+			}
+
+			lock (gameLogicLock)
+			{
+				CurrentGamePhase = GamePhase.PreparationPhase;
+				PreparationTimer = new Timer(preparationPhaseDuration);
+				PreparationTimer.Elapsed += (object sender, ElapsedEventArgs e) =>
+				{
+					lock (gameLogicLock)
+					{
+						PreparationTimer.Stop();
+						PreparationTimer.Dispose();
+
+						onPreparationEnd(GameLobbyID);
+					}
+				};
+				PreparationTimer.AutoReset = false;
+				PreparationTimer.Start();
 			}
 		}
 

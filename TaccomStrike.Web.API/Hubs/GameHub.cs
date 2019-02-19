@@ -193,15 +193,13 @@ namespace TaccomStrike.Web.API.Hubs
 				{
 					if (gameLobby.HasUser(Context.User))
 					{
-						var gameStarted = gameLobby.StartGame();
+						var gameStarted = gameLobby.StartGame(OnEndTurn);
 						if (!gameStarted)
 						{
 							return;
 						}
 
-						gameLobby.GameLogicController.StartTurn(OnTurnTimeout);
-
-						foreach (var user in gameLobby.GetUsers())
+						Parallel.ForEach(gameLobby.GetUsers(), (user) =>
 						{
 							var connection = userConnectionsService.GameConnectionService.GetConnection(user);
 							var gameState = gameLobby.GameLogicController.GetGameState(user);
@@ -211,7 +209,7 @@ namespace TaccomStrike.Web.API.Hubs
 								GameState = new GetGameState(gameState)
 							};
 							Clients.Client(connection).GameLobbyStartGame(apiObject);
-						}
+						});
 					}
 				});
 			});

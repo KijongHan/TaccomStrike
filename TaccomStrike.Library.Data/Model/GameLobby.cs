@@ -39,7 +39,7 @@ namespace TaccomStrike.Library.Data.ViewModel
 			return true;
 		}
 
-		public bool StartGame()
+		public bool StartGame(Action<long> onPreparationEnd)
 		{
 			lock(lobbyLock)
 			{
@@ -50,9 +50,10 @@ namespace TaccomStrike.Library.Data.ViewModel
 
 				var callPhaseDuration = GetCallPhaseDuration(GameMode);
 				var turnPhaseDuration = GetTurnPhaseDuration(GameMode);
+				var preparationPhaseDuration = 20000;
 
 				GameLogicController = new GameLogicController();
-				GameLogicController.StartGame(players, GameLobbyID, callPhaseDuration, turnPhaseDuration);
+				GameLogicController.StartGame(players, GameLobbyID, callPhaseDuration, turnPhaseDuration, preparationPhaseDuration, onPreparationEnd);
 				return true;
 			}
 		 }

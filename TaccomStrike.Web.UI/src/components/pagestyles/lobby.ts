@@ -847,7 +847,10 @@ export class LobbyPageStyle extends BasePageStyle
     {
         let style = new LobbyPageStyle();
         style.titlePanelsStyle = {
-            displayStyling: new DisplayStyle({ heightPixels: 310 })
+            displayStyling: new DisplayStyle({ 
+                heightPixels: 310,
+                marginTopPixels: 72
+            })
         };
         style.gameTitlePanelStyle = {
             displayStyle: new DisplayStyle({

@@ -10,9 +10,10 @@ import { string, number } from "prop-types";
 import { isNullOrUndefined, isNull } from "util";
 import { LabelledListComponent, ListItem, LabelledListComponentStyle } from "../general/labelledlist";
 import { LabelledInputComponentStyle } from "../general/labelledinput";
-import { CardRank, GamePhase } from "../../services/game/gameservice";
 import { GetGameCheat } from "../../models/rest/getgamecheat";
 import { ColorStyle } from "../../styles/colorstyle";
+import { GamePhase } from "../../models/enums/gamephase";
+import { CardRank } from "../../models/enums/cardrank";
 
 const GameAction = styled.div`
     width: 100%;
@@ -122,6 +123,10 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
         else if(this.props.gameState.currentGamePhase===GamePhase.CallPhase) 
         {
             gameActionComponent = this.getCallPhaseActionComponent();
+        }
+        else if(this.props.gameState.currentGamePhase===GamePhase.PreparationPhase) 
+        {
+            gameActionComponent = null
         }
         
         return (
