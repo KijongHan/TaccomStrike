@@ -24,6 +24,7 @@ namespace TaccomStrike.Library.Data.ApiEntities
 		public int CurrentGamePhase { get; set; }
 		public double TurnPhaseDuration { get; set; }
 		public double CallPhaseDuration { get; set; }
+		public double PreparationPhaseDuration { get; set; }
 
 		public List<string> ActionHistory { get; set; }
 
@@ -48,6 +49,7 @@ namespace TaccomStrike.Library.Data.ApiEntities
 			CurrentGamePhase = (int)gameState.CurrentGamePhase;
 			TurnPhaseDuration = gameState.TurnPhaseDuration;
 			CallPhaseDuration = gameState.CallPhaseDuration;
+			PreparationPhaseDuration = gameState.PreparationPhaseDuration;
 
 			ActionHistory = gameState.ActionHistory;
 		}
