@@ -5,19 +5,18 @@ import { GetGameState } from "../../models/rest/getgamestate";
 import styled from "styled-components";
 import { GetGameCard } from "../../models/rest/getgamecard";
 import { CardSlideAnimation } from "../general/card";
-import { DisplayStyle, Position, Display } from "../../styles/displaystyle";
+import { DisplayStyle, Position } from "../../styles/displaystyle";
 import { GetGameUser } from "../../models/rest/getgameuser";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
 import { GameHandCardComponent, GameHandCardComponentStyle } from "../game/gamehandcard";
-import { GameBoardComponent, GameBoardComponentStyle, GameBoardSeatComponentStyle } from "../game/gameboard";
-import { GameActionComponent, GameActionComponentStyle } from "../game/gameaction";
-import { isNullOrUndefined, isNull } from "util";
+import { GameBoardComponent } from "../game/gameboard";
+import { GameActionComponent } from "../game/gameaction";
+import { isNullOrUndefined } from "util";
 import { GetGameCheat } from "../../models/rest/getgamecheat";
 import { ButtonComponent, ButtonComponentStyle } from "../general/button";
 import { ColorStyle } from "../../styles/colorstyle";
 import { GetGameLobby } from "../../models/rest/getgamelobby";
-import { GameLobbyComponent, GameLobbyComponentStyle } from "../general/gamelobby";
-import { GetChatMessage } from "../../models/rest/getchatmessage";
+import { GameLobbyComponent } from "../general/gamelobby";
 import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
 import { GamePhase } from "../../models/enums/gamephase";
 
@@ -112,6 +111,8 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
         this.state = 
         {
             pageStyle: new GamePageStyle().large(),
+            useMobileStyle: true,
+
             selectedCards: [],
             selectedClaimRank: null,
 
@@ -122,6 +123,11 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
 
     render() 
     {
+        if(isNullOrUndefined(this.state.pageStyle)) 
+        {
+            return <div></div>
+        }
+
         let hand = this.getHandComponent();
         let gameBoard = this.getBoardComponent();
         let gameAction = this.getActionComponent();
@@ -158,8 +164,9 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
         );
     }
     
-    componentWillMount() 
+    componentDidMount() 
     {
+        super.componentDidMount();
         this.startPreparationTimer();
     }
 
@@ -263,8 +270,7 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                 loggedInUser={this.props.loggedInUser}
                 gameCheat={this.props.gameCheat}
                 gameState={this.props.gameState}
-                gameBoardComponentStyle={(this.state.pageStyle as GamePageStyle).gameBoardComponentStyle}
-                gameBoardSeatComponentStyle={(this.state.pageStyle as GamePageStyle).gameBoardSeatComponentStyle}>
+                gameBoardComponentStyle={(this.state.pageStyle as GamePageStyle).gameBoardComponentStyle}>
             </GameBoardComponent>
         );
         return gameBoard;

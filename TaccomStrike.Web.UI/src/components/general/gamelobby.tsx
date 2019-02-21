@@ -216,7 +216,7 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
     {
         if(isNullOrUndefined(this.props.gameLobbyComponentStyle)) 
         {
-            return <div></div>
+            return null;
         }
 
         let currentGameLobbyComponent: JSX.Element;

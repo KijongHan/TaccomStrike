@@ -13,7 +13,8 @@ export interface BasePageComponentProps extends RouteComponentProps
 
 export class BasePageComponentState 
 {
-	pageStyle: BasePageStyle;	
+	pageStyle: BasePageStyle;
+	useMobileStyle: boolean;
 }
 
 export abstract class BasePageComponent<P extends BasePageComponentProps, S extends BasePageComponentState> extends React.Component<P, S> 
@@ -39,7 +40,7 @@ export abstract class BasePageComponent<P extends BasePageComponentProps, S exte
 		{
 			window.addEventListener('resize', this.throttledResizeEventHandler);
 		}
-		
+		window.scrollTo(0,0);
 		this.resizeEventHandler();
 	}
 
@@ -52,6 +53,11 @@ export abstract class BasePageComponent<P extends BasePageComponentProps, S exte
 	throttledResizeEventHandler = () =>
 	{
 		this.throttledEventHandler(this.resizeEventHandler);
+	}
+
+	throttledOrientationChangeEventHandler = () => 
+	{
+		this.throttledEventHandler(this.orientationChangeHandler);
 	}
 
 	throttledEventHandler = (eventHandler: ()=>void) =>
@@ -97,6 +103,51 @@ export abstract class BasePageComponent<P extends BasePageComponentProps, S exte
 		}
 	}
 
+	orientationChangeHandler = () => 
+	{
+		if(isNullOrUndefined(this.state.useMobileStyle)) 
+		{
+			return;
+		}
+
+		if(this.state.useMobileStyle) 
+		{
+			if(window.screen.orientation.type==="landscape-primary" || window.screen.orientation.type==="landscape-secondary") 
+			{
+				this.onLandscape();
+			}
+			if(window.screen.orientation.type==="portrait-primary" || window.screen.orientation.type==="portrait-secondary") 
+			{
+				this.onPortrait();
+			}
+		}
+		else 
+		{
+			let w = window.innerWidth;
+			if (w > 1100 && this.state.pageStyle!==this.state.pageStyle.large())
+			{
+				this.setState({pageStyle: this.state.pageStyle.large()});
+				this.onResizeLarge();
+			}
+			else if (w > 900 && this.state.pageStyle!==this.state.pageStyle.medium())
+			{
+				this.setState({pageStyle: this.state.pageStyle.medium()});
+				this.onResizeMedium();
+			}
+			else if (w > 700 && this.state.pageStyle!==this.state.pageStyle.small())
+			{
+				this.setState({pageStyle: this.state.pageStyle.small()});
+				this.onResizeSmall();
+			}
+			else if(this.state.pageStyle!==this.state.pageStyle.verysmall())
+			{
+				this.setState({pageStyle: this.state.pageStyle.verysmall()});
+				this.onResizeVerySmall();
+			}
+		}
+		
+	}
+
 	onResizeLarge() {}
 
 	onResizeMedium() {}
@@ -104,4 +155,8 @@ export abstract class BasePageComponent<P extends BasePageComponentProps, S exte
 	onResizeSmall() {}
 
 	onResizeVerySmall() {}
+
+	onLandscape() {}
+
+	onPortrait() {}
 }

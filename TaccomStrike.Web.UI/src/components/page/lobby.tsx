@@ -61,7 +61,8 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
         let pageStyle = new LobbyPageStyle().large()
         this.state = 
         {
-            pageStyle: pageStyle
+            pageStyle: pageStyle,
+            useMobileStyle: false
         };
     }
 

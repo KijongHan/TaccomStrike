@@ -3,7 +3,7 @@ import { GameLobbyComponentStyle } from "../general/gamelobby";
 import { DisplayStyle, Display, Position } from "../../styles/displaystyle";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
 import { GameActionComponentStyle } from "../game/gameaction";
-import { GameBoardSeatComponentStyle, GameBoardComponentStyle } from "../game/gameboard";
+import { GameBoardComponentStyle } from "../game/gameboard";
 
 export class GamePageStyle extends BasePageStyle 
 {
@@ -11,7 +11,6 @@ export class GamePageStyle extends BasePageStyle
     gameActionComponentStyle: GameActionComponentStyle;
 
     gameBoardComponentStyle: GameBoardComponentStyle;
-    gameBoardSeatComponentStyle: GameBoardSeatComponentStyle;
 
     large = () => 
     {
@@ -117,13 +116,22 @@ export class GamePageStyle extends BasePageStyle
         style.gameActionComponentStyle.cardComponentStyle.displayStyle.widthPercentage = 25;
         style.gameActionComponentStyle.cardComponentStyle.displayStyle.topPixels = 0;
         style.gameActionComponentStyle.cardComponentStyle.displayStyle.rightPixels = 0;
+        
+        style.gameActionComponentStyle.actionHistoryStyle.widthPercentage = 98;
+        style.gameActionComponentStyle.actionHistoryStyle.heightPercentage = 60;
+        style.gameActionComponentStyle.actionOptionsStyle.widthPercentage = 98;
+        style.gameActionComponentStyle.actionOptionsStyle.heightPercentage = 30;
+        style.gameActionComponentStyle.actionOptionsStyle.marginTopPercentage = 8;
 
         style.gameBoardComponentStyle = new GameBoardComponentStyle();
-        style.gameBoardComponentStyle.displayStyle.widthPercentage = 12;
-        style.gameBoardComponentStyle.displayStyle.heightPercentage = 30;
-        style.gameBoardSeatComponentStyle = new GameBoardSeatComponentStyle();
-        style.gameBoardSeatComponentStyle.displayStyle.widthPercentage = 90;
-        style.gameBoardSeatComponentStyle.displayStyle.heightPercentage = 75;
+        style.gameBoardComponentStyle.boardStyle.topPercentage = 15;
+        style.gameBoardComponentStyle.boardStyle.widthPercentage = 40;
+        style.gameBoardComponentStyle.boardStyle.heightPercentage = 70;
+        style.gameBoardComponentStyle.seatStyle.widthPercentage = 32;
+        style.gameBoardComponentStyle.seatStyle.heightPercentage = 32;
+        style.gameBoardComponentStyle.claimPanelStyle.topPercentage = 30;
+        style.gameBoardComponentStyle.claimPanelStyle.widthPercentage = 30;
+        style.gameBoardComponentStyle.claimPanelStyle.heightPercentage = 40;
 
         return style;
     }
@@ -232,13 +240,22 @@ export class GamePageStyle extends BasePageStyle
         style.gameActionComponentStyle.cardComponentStyle.displayStyle.widthPercentage = 25;
         style.gameActionComponentStyle.cardComponentStyle.displayStyle.topPixels = 0;
         style.gameActionComponentStyle.cardComponentStyle.displayStyle.rightPixels = 0;
+        
+        style.gameActionComponentStyle.actionHistoryStyle.widthPercentage = 98;
+        style.gameActionComponentStyle.actionHistoryStyle.heightPercentage = 60;
+        style.gameActionComponentStyle.actionOptionsStyle.widthPercentage = 98;
+        style.gameActionComponentStyle.actionOptionsStyle.heightPercentage = 30;
+        style.gameActionComponentStyle.actionOptionsStyle.marginTopPercentage = 8;
 
         style.gameBoardComponentStyle = new GameBoardComponentStyle();
-        style.gameBoardComponentStyle.displayStyle.widthPercentage = 12;
-        style.gameBoardComponentStyle.displayStyle.heightPercentage = 30;
-        style.gameBoardSeatComponentStyle = new GameBoardSeatComponentStyle();
-        style.gameBoardSeatComponentStyle.displayStyle.widthPercentage = 90;
-        style.gameBoardSeatComponentStyle.displayStyle.heightPercentage = 75;
+        style.gameBoardComponentStyle.boardStyle.topPercentage = 15;
+        style.gameBoardComponentStyle.boardStyle.widthPercentage = 40;
+        style.gameBoardComponentStyle.boardStyle.heightPercentage = 70;
+        style.gameBoardComponentStyle.seatStyle.widthPercentage = 32;
+        style.gameBoardComponentStyle.seatStyle.heightPercentage = 32;
+        style.gameBoardComponentStyle.claimPanelStyle.topPercentage = 30;
+        style.gameBoardComponentStyle.claimPanelStyle.widthPercentage = 30;
+        style.gameBoardComponentStyle.claimPanelStyle.heightPercentage = 40;
 
         return style;
     }
@@ -246,19 +263,27 @@ export class GamePageStyle extends BasePageStyle
     small = () => 
     {
         let style = new GamePageStyle();
+        style.gameLobbyComponentStyle = null;
 
         style.gameActionComponentStyle = new GameActionComponentStyle();
-        style.gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.relative;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.absolute;
         style.gameActionComponentStyle.cardComponentStyle.displayStyle.heightPercentage = 30;
         style.gameActionComponentStyle.cardComponentStyle.displayStyle.widthPercentage = 100;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.bottomPercentage = -5;
         
+        style.gameActionComponentStyle.actionHistoryStyle.widthPercentage = 49;
+        style.gameActionComponentStyle.actionHistoryStyle.heightPercentage = 98;
+        style.gameActionComponentStyle.actionHistoryStyle.floatLeft = true;
+        style.gameActionComponentStyle.actionOptionsStyle.widthPercentage = 49;
+        style.gameActionComponentStyle.actionOptionsStyle.heightPercentage = 98;
+        style.gameActionComponentStyle.actionOptionsStyle.floatLeft = true;
 
         style.gameBoardComponentStyle = new GameBoardComponentStyle();
-        style.gameBoardComponentStyle.displayStyle.widthPercentage = 30;
-        style.gameBoardComponentStyle.displayStyle.heightPercentage = 30;
-        style.gameBoardSeatComponentStyle = new GameBoardSeatComponentStyle();
-        style.gameBoardSeatComponentStyle.displayStyle.widthPercentage = 90;
-        style.gameBoardSeatComponentStyle.displayStyle.heightPercentage = 75;
+        style.gameBoardComponentStyle.boardStyle.topPercentage = 30;
+        style.gameBoardComponentStyle.boardStyle.widthPercentage = 30;
+        style.gameBoardComponentStyle.boardStyle.heightPercentage = 20;
+        style.gameBoardComponentStyle.seatStyle.widthPercentage = 90;
+        style.gameBoardComponentStyle.seatStyle.heightPercentage = 75;
 
         return style;
     }
@@ -266,6 +291,67 @@ export class GamePageStyle extends BasePageStyle
     verysmall = () => 
     {
         let style = new GamePageStyle();
-        return style;;
+        style.gameLobbyComponentStyle = null;
+
+        style.gameActionComponentStyle = new GameActionComponentStyle();
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.absolute;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.heightPercentage = 30;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.widthPercentage = 100;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.bottomPercentage = -5;
+        
+        style.gameActionComponentStyle.actionHistoryStyle.widthPercentage = 49;
+        style.gameActionComponentStyle.actionHistoryStyle.heightPercentage = 98;
+        style.gameActionComponentStyle.actionHistoryStyle.floatLeft = true;
+        style.gameActionComponentStyle.actionOptionsStyle.widthPercentage = 49;
+        style.gameActionComponentStyle.actionOptionsStyle.heightPercentage = 98;
+        style.gameActionComponentStyle.actionOptionsStyle.floatLeft = true;
+
+        style.gameBoardComponentStyle = new GameBoardComponentStyle();
+        style.gameBoardComponentStyle.boardStyle.topPercentage = 5;
+        style.gameBoardComponentStyle.boardStyle.widthPercentage = 80;
+        style.gameBoardComponentStyle.boardStyle.heightPercentage = 50;
+        style.gameBoardComponentStyle.seatStyle.widthPercentage = 32;
+        style.gameBoardComponentStyle.seatStyle.heightPercentage = 32;
+        style.gameBoardComponentStyle.claimPanelStyle.topPercentage = 30;
+        style.gameBoardComponentStyle.claimPanelStyle.widthPercentage = 35;
+        style.gameBoardComponentStyle.claimPanelStyle.heightPercentage = 42;
+
+        return style;
+    }
+
+    portrait = ():GamePageStyle => 
+    {
+        let style = new GamePageStyle();
+        style.gameLobbyComponentStyle = null;
+
+        style.gameActionComponentStyle = new GameActionComponentStyle();
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.absolute;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.heightPercentage = 30;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.widthPercentage = 100;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.bottomPercentage = -5;
+        
+        style.gameActionComponentStyle.actionHistoryStyle.widthPercentage = 49;
+        style.gameActionComponentStyle.actionHistoryStyle.heightPercentage = 98;
+        style.gameActionComponentStyle.actionHistoryStyle.floatLeft = true;
+        style.gameActionComponentStyle.actionOptionsStyle.widthPercentage = 49;
+        style.gameActionComponentStyle.actionOptionsStyle.heightPercentage = 98;
+        style.gameActionComponentStyle.actionOptionsStyle.floatLeft = true;
+
+        style.gameBoardComponentStyle = new GameBoardComponentStyle();
+        style.gameBoardComponentStyle.boardStyle.topPercentage = 15;
+        style.gameBoardComponentStyle.boardStyle.widthPercentage = 40;
+        style.gameBoardComponentStyle.boardStyle.heightPercentage = 70;
+        style.gameBoardComponentStyle.seatStyle.widthPercentage = 32;
+        style.gameBoardComponentStyle.seatStyle.heightPercentage = 32;
+        style.gameBoardComponentStyle.claimPanelStyle.topPercentage = 30;
+        style.gameBoardComponentStyle.claimPanelStyle.widthPercentage = 30;
+        style.gameBoardComponentStyle.claimPanelStyle.heightPercentage = 40;
+
+        return style;
+    }
+
+    landscape = ():GamePageStyle => 
+    {
+        return null;
     }
 }
