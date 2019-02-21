@@ -34,7 +34,7 @@ export abstract class BasePageComponent<P extends BasePageComponentProps, S exte
 	{
 		if(this.mobileAndTabletcheck()) 
 		{
-			window.addEventListener('orientationchange', this.throttledResizeEventHandler);
+			window.addEventListener('orientationchange', this.throttledOrientationChangeEventHandler);
 		}
 		else 
 		{
@@ -47,7 +47,7 @@ export abstract class BasePageComponent<P extends BasePageComponentProps, S exte
 	componentWillUnmount()
 	{
 		window.removeEventListener('resize', this.throttledResizeEventHandler);
-		window.removeEventListener('orientationchange', this.throttledResizeEventHandler);
+		window.removeEventListener('orientationchange', this.throttledOrientationChangeEventHandler);
 	}
 
 	throttledResizeEventHandler = () =>
@@ -112,13 +112,16 @@ export abstract class BasePageComponent<P extends BasePageComponentProps, S exte
 
 		if(this.state.useMobileStyle) 
 		{
-			if(window.screen.orientation.type==="landscape-primary" || window.screen.orientation.type==="landscape-secondary") 
+			if (window.matchMedia("(orientation: portrait)").matches) 
 			{
-				this.onLandscape();
-			}
-			if(window.screen.orientation.type==="portrait-primary" || window.screen.orientation.type==="portrait-secondary") 
-			{
+				this.setState({pageStyle: this.state.pageStyle.portrait()});
 				this.onPortrait();
+			}
+			 
+			if (window.matchMedia("(orientation: landscape)").matches) 
+			{
+				this.setState({pageStyle: this.state.pageStyle.landscape()});
+				this.onLandscape();
 			}
 		}
 		else 

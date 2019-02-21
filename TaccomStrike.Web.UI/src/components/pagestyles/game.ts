@@ -377,6 +377,37 @@ export class GamePageStyle extends BasePageStyle
 
     landscape = ():GamePageStyle => 
     {
-        return null;
+        let style = new GamePageStyle();
+        style.gameLobbyComponentStyle = null;
+
+        style.gameHandPanelStyle = new DisplayStyle();
+        style.gameHandPanelStyle.heightPercentage = 30;
+
+        style.gameActionComponentStyle = new GameActionComponentStyle();
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.absolute;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.heightPercentage = 65;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.widthPercentage = 50;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.topPercentage = 10;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.rightPixels = 0;
+        
+        style.gameActionComponentStyle.actionHistoryStyle.widthPercentage = 49;
+        style.gameActionComponentStyle.actionHistoryStyle.heightPercentage = 98;
+        style.gameActionComponentStyle.actionHistoryStyle.floatLeft = true;
+        style.gameActionComponentStyle.actionOptionsStyle.widthPercentage = 49;
+        style.gameActionComponentStyle.actionOptionsStyle.heightPercentage = 98;
+        style.gameActionComponentStyle.actionOptionsStyle.floatLeft = true;
+
+        style.gameBoardComponentStyle = new GameBoardComponentStyle();
+        style.gameBoardComponentStyle.boardStyle.marginString = '0';
+        style.gameBoardComponentStyle.boardStyle.topPercentage = 15;
+        style.gameBoardComponentStyle.boardStyle.widthPercentage = 45;
+        style.gameBoardComponentStyle.boardStyle.heightPercentage = 65;
+        style.gameBoardComponentStyle.seatStyle.widthPercentage = 32;
+        style.gameBoardComponentStyle.seatStyle.heightPercentage = 32;
+        style.gameBoardComponentStyle.claimPanelStyle.topPercentage = 30;
+        style.gameBoardComponentStyle.claimPanelStyle.widthPercentage = 30;
+        style.gameBoardComponentStyle.claimPanelStyle.heightPercentage = 40;
+
+        return style;
     }
 }
