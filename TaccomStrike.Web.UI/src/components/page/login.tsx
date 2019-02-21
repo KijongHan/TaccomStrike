@@ -56,6 +56,8 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 		this.state =
 		{
 			pageStyle: new LoginPageStyle().large(),
+			useMobileStyle: false,
+
 			createUser: new CreateUserLogin(),
 			userLogin: new PostUserLogin(),
 			guestLogin: new PostGuestLogin(),

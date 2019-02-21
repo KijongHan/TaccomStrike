@@ -18,12 +18,12 @@ const ArrowDownIcon = require("../../res/arrowdown.png");
 const CardHandIcon = require("../../res/card_hand.png");
 
 const GameBoard = styled.div`
-    margin: auto;
+    margin: ${(p: DisplayStyleProps) => p.displayStyle.getMarginString()};
     position: relative;
-    top: 35%;
+    top: ${(p: DisplayStyleProps) => p.displayStyle.getTopString()};
     border-radius: 50%;
-    width: ${(p: GameBoardComponentStyle) => p.displayStyle.getWidthString()};
-    height: ${(p: GameBoardComponentStyle) => p.displayStyle.getHeightString()};
+    width: ${(p: DisplayStyleProps) => p.displayStyle.getWidthString()};
+    height: ${(p: DisplayStyleProps) => p.displayStyle.getHeightString()};
 `;
 
 const GameBoardPlayerPanel = styled.div`
@@ -46,6 +46,7 @@ const GameBoardPlayerName = styled.div`
 `;
 
 const GameBoardPlayerCardHand = styled.div`
+    position: relative;
     width: 70%;
     height: 30%;
     background-size: 100% 100%;
@@ -62,28 +63,31 @@ const GameBoardPlayerCardHandText = styled.p`
 `;
 
 const ClaimPanel = styled.div`
-    width: 100%;
-    height: 100%;
+    margin: auto;
+    position: relative;
+    top: ${(p: DisplayStyleProps) => p.displayStyle.getTopString()};
+    width: ${(p: DisplayStyleProps) => p.displayStyle.getWidthString()};
+    height: ${(p: DisplayStyleProps) => p.displayStyle.getHeightString()};
     display: flex;
 `;
 
 const GameBoardPlayerCardCountChangeAnimation1 = keyframes`
     0% {
-        bottom: 20%;
+        top: 0%;
         visibility: visible;
     }
 
-    60% {
-        bottom: 35%;
+    40% {
+        top: -140%;
     }
 
     80% {
-        bottom: 35%;
+        top: -140%;
         opacity: 1;
     }
 
     100% {
-        bottom: 35%;
+        top: -140%;
         opacity: 0;
         visibility: hidden;
     }
@@ -93,27 +97,27 @@ const GameBoardPlayerCardCountChange1 = styled.div`
     position: absolute;
     text-align: center;
     font-size: 1.5em;
-    bottom: 20%;
+    top: 0%;
     animation: ${GameBoardPlayerCardCountChangeAnimation1} 1.5s linear forwards;
 `;
 
 const GameBoardPlayerCardCountChangeAnimation2 = keyframes`
     0% {
-        top: -10%;
+        top: 0%;
         visibility: visible;
     }
 
-    60% {
-        top: -25%;
+    40% {
+        top: -140%;
     }
 
     80% {
-        top: -25%;
+        top: -140%;
         opacity: 1;
     }
 
     100% {
-        top: -25%;
+        top: -140%;
         opacity: 0;
         visibility: hidden;
     }
@@ -123,14 +127,14 @@ const GameBoardPlayerCardCountChange2 = styled.div`
     position: absolute;
     text-align: center;
     font-size: 1.5em;
-    top: -10%;
+    top: 0%;
     animation: ${GameBoardPlayerCardCountChangeAnimation2} 1.5s linear forwards;
 `;
 
 const GameBoardVacantSeat = styled.div`
     position: absolute;
-    width: ${(p: GameBoardSeatComponentStyle) => p.displayStyle.getWidthString()};
-    height: ${(p: GameBoardSeatComponentStyle) => p.displayStyle.getHeightString()};
+    width: ${(p: DisplayStyleProps) => p.displayStyle.getWidthString()};
+    height: ${(p: DisplayStyleProps) => p.displayStyle.getHeightString()};
 `;
 
 const GameUserSelectionAnimation = keyframes`
@@ -164,29 +168,27 @@ export class GameBoardComponentProps
     gameCheat: GetGameCheat;
 
     gameBoardComponentStyle: GameBoardComponentStyle;
-    gameBoardSeatComponentStyle: GameBoardSeatComponentStyle;
 }
 
 export class GameBoardComponentState {}
 
 export class GameBoardComponentStyle 
 {
-    displayStyle: DisplayStyle;
+    boardStyle: DisplayStyle;
+    seatStyle: DisplayStyle;
+    claimPanelStyle: DisplayStyle;
 
     constructor() 
     {
-        this.displayStyle = new DisplayStyle();
+        this.boardStyle = new DisplayStyle();
+        this.seatStyle = new DisplayStyle();
+        this.claimPanelStyle = new DisplayStyle();
     }
 }
 
-export class GameBoardSeatComponentStyle 
+class DisplayStyleProps 
 {
     displayStyle: DisplayStyle;
-
-    constructor() 
-    {
-        this.displayStyle = new DisplayStyle();
-    }
 }
 
 export class GameBoardComponent extends React.Component<GameBoardComponentProps, GameBoardComponentState>
@@ -396,28 +398,29 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
 
         return (
             <GameBoard
-                displayStyle={this.props.gameBoardComponentStyle.displayStyle}>
+                displayStyle={this.props.gameBoardComponentStyle.boardStyle}>
                 <GameBoardVacantSeat
-                    style={{top:-100, left:-120}}
-                    displayStyle={this.props.gameBoardSeatComponentStyle.displayStyle}>
+                    style={{top:0, left:0}}
+                    displayStyle={this.props.gameBoardComponentStyle.seatStyle}>
                     {playerOne}
                 </GameBoardVacantSeat>
                 <GameBoardVacantSeat
-                    style={{top:-100, right:-120}}
-                    displayStyle={this.props.gameBoardSeatComponentStyle.displayStyle}>
+                    style={{top:0, right:0}}
+                    displayStyle={this.props.gameBoardComponentStyle.seatStyle}>
                     {playerTwo}
                 </GameBoardVacantSeat>
                 <GameBoardVacantSeat
-                    style={{bottom:-100, left:-120}}
-                    displayStyle={this.props.gameBoardSeatComponentStyle.displayStyle}>
+                    style={{bottom:0, left:0}}
+                    displayStyle={this.props.gameBoardComponentStyle.seatStyle}>
                     {playerThree}
                 </GameBoardVacantSeat>
                 <GameBoardVacantSeat
-                    style={{bottom:-100, right:-120}}
-                    displayStyle={this.props.gameBoardSeatComponentStyle.displayStyle}>
+                    style={{bottom:0, right:0}}
+                    displayStyle={this.props.gameBoardComponentStyle.seatStyle}>
                     {playerFour}
                 </GameBoardVacantSeat>
-                <ClaimPanel>
+                <ClaimPanel
+                    displayStyle={this.props.gameBoardComponentStyle.claimPanelStyle}>
                     {claimCard}
                 </ClaimPanel>
             </GameBoard>

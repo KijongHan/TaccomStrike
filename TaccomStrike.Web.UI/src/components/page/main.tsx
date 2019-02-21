@@ -25,7 +25,11 @@ export class MainPageComponent extends BasePageComponent<MainPageComponentProps,
 			.initializeChatConnections()
 			.then(() => {
 				console.log("Connection Succeeded");
-				this.state = { pageStyle: new MainPageStyle() };
+				this.state = 
+				{
+					pageStyle: new MainPageStyle(),
+					useMobileStyle: false
+				};
 				ChatConnectionsService.addChatUserConnectedHandler(this.chatUserConnectedHandler);
 
 				ChatRoomsService.getChatRooms().then((response: GetChatRoom[]) => {console.log(response);});

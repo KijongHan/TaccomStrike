@@ -25,4 +25,14 @@ export class MainPageStyle extends BasePageStyle {
         let style = new MainPageStyle();
         return style;
     }
+
+    portrait = ():MainPageStyle => 
+    {
+        return null;
+    }
+
+    landscape = ():MainPageStyle => 
+    {
+        return null;
+    }
 }

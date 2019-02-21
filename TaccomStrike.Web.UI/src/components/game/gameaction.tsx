@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import { CardComponentStyle, CardComponent } from "../general/card";
-import { DisplayStyle } from "../../styles/displaystyle";
+import { DisplayStyle, Display } from "../../styles/displaystyle";
 import { ButtonComponent, ButtonComponentStyle } from "../general/button";
 import { GetUser } from "../../models/rest/getuser";
 import { GetGameState } from "../../models/rest/getgamestate";
@@ -22,12 +22,13 @@ const GameAction = styled.div`
 
     border-style: solid;
 	border-width: 2px;
-	border-color: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.1);
 `;
 
 const GameActionHistory = styled.div`
-    height: 60%;
-    width: 98%;
+    height: ${(p: DisplayStyleProps) => p.displayStyle.getHeightString()};
+    width: ${(p: DisplayStyleProps) => p.displayStyle.getWidthString()};
+    float: ${(p: DisplayStyleProps) => p.displayStyle.getFloatString()};
     margin: auto;
     overflow-y: auto;
     overflow-x: hidden;
@@ -37,6 +38,13 @@ const GameActionHistory = styled.div`
     border-color: ${ColorStyle.pallet2};
 `;
 
+const GameActionOptionsPanel = styled.div`
+    height: ${(p: DisplayStyleProps) => p.displayStyle.getHeightString()};
+    width: ${(p: DisplayStyleProps) => p.displayStyle.getWidthString()};
+    margin: ${(p: DisplayStyleProps) => p.displayStyle.getMarginString()};
+    float: ${(p: DisplayStyleProps) => p.displayStyle.getFloatString()};
+`;
+
 const GameActionHistoryItem = styled.p`
     margin: 5px 0px 5px 0px;
     padding-left: 5%;
@@ -44,9 +52,7 @@ const GameActionHistoryItem = styled.p`
 `;
 
 const GamePhaseTimer = styled.div`
-    height: 10%;
-    width: 100%;
-    margin-top: 10%;
+    height: 40%;
     display: flex;
 `;
 
@@ -83,12 +89,20 @@ export class GameActionComponentState
 export class GameActionComponentStyle 
 {
     cardComponentStyle: CardComponentStyle;
-    
+    actionHistoryStyle: DisplayStyle;
+    actionOptionsStyle: DisplayStyle;
 
     constructor() 
     {
         this.cardComponentStyle = new CardComponentStyle();
+        this.actionHistoryStyle = new DisplayStyle();
+        this.actionOptionsStyle = new DisplayStyle();
     }
+}
+
+class DisplayStyleProps 
+{
+    displayStyle: DisplayStyle;
 }
 
 export class GameActionComponent extends React.Component<GameActionComponentProps, GameActionComponentState>
@@ -233,7 +247,7 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
     {
         let buttonStyle = new ComboButtonComponentStyle();
         buttonStyle.displayStyle.widthPercentage = 80;
-        buttonStyle.displayStyle.heightPercentage = 10;
+        buttonStyle.displayStyle.heightPercentage = 30;
         buttonStyle.displayStyle.marginLeftPercentage = 10;
 
         if(this.props.loggedInUser.userID!==this.props.gameState.userTurn.user.userID) 
@@ -241,11 +255,14 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
             return (
                 <GameAction>
                     {this.getGameHistoryListComponent()}
-                    {this.getPhaseTimerComponent()}
-                    <ComboButtonComponent
-                        comboButtonComponentStyle={buttonStyle}
-                        comboButtons={this.state.callCheatComboBox}>
-                    </ComboButtonComponent>
+                    <GameActionOptionsPanel
+                        displayStyle={this.props.gameActionComponentStyle.actionOptionsStyle}>
+                        {this.getPhaseTimerComponent()}
+                        <ComboButtonComponent
+                            comboButtonComponentStyle={buttonStyle}
+                            comboButtons={this.state.callCheatComboBox}>
+                        </ComboButtonComponent>
+                    </GameActionOptionsPanel>
                 </GameAction>
             );
         }
@@ -265,7 +282,7 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
         let claimOptions: JSX.Element;
         let buttonStyle = new ButtonComponentStyle();
         buttonStyle.displayStyle.widthPercentage = 80;
-        buttonStyle.displayStyle.heightPercentage = 10;
+        buttonStyle.displayStyle.heightPercentage = 30;
         buttonStyle.displayStyle.marginLeftPercentage = 10;
 
         if(this.props.loggedInUser.userID===this.props.gameState.userTurn.user.userID) 
@@ -278,7 +295,7 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
                     return new ListItem(CardRank[key], CardRank[key]);
                 });
                 let labelledListComponentStyle = new LabelledListComponentStyle(new DisplayStyle({
-                    heightPercentage: 10,
+                    heightPercentage: 30,
                     widthPercentage: 80,
                     marginLeftPercentage: 10
                 }));
@@ -294,7 +311,7 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
             {
                 let comboButtonComponentStyle = new ComboButtonComponentStyle(new DisplayStyle({
                     widthPercentage: 80,
-                    heightPercentage: 10,
+                    heightPercentage: 30,
                     marginLeftPercentage: 10
                 }));
                 claimOptions=(
@@ -308,13 +325,16 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
             return (
                 <GameAction>
                     {this.getGameHistoryListComponent()}
-                    {this.getPhaseTimerComponent()}
-                    {claimOptions}
-                    <ButtonComponent
-                        buttonText="Submit Claim"
-                        buttonComponentStyle={buttonStyle}
-                        buttonClickHandler={this.props.submitClaimButtonClickHandler}>
-                    </ButtonComponent>
+                    <GameActionOptionsPanel
+                        displayStyle={this.props.gameActionComponentStyle.actionOptionsStyle}>
+                        {this.getPhaseTimerComponent()}
+                        {claimOptions}
+                        <ButtonComponent
+                            buttonText="Submit Claim"
+                            buttonComponentStyle={buttonStyle}
+                            buttonClickHandler={this.props.submitClaimButtonClickHandler}>
+                        </ButtonComponent>
+                    </GameActionOptionsPanel>
                 </GameAction>
             );
         }
@@ -337,7 +357,8 @@ export class GameActionComponent extends React.Component<GameActionComponentProp
             );
         });
         return (
-            <GameActionHistory>
+            <GameActionHistory
+                displayStyle={this.props.gameActionComponentStyle.actionHistoryStyle}>
                 {actionHistoryItems}
             </GameActionHistory>
         );
