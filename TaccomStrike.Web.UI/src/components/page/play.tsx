@@ -56,6 +56,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
             currentGameWinner: null,
             currentGameLobbyMessages: [],
             pageStyle: null,
+            useMobileStyle: null,
 
             gameLobbies: [],
             createGameLobby: new CreateGameLobby(),

@@ -571,4 +571,14 @@ export class LoginPageStyle extends BasePageStyle
         }
         return style;
     }
+
+    portrait = ():LoginPageStyle => 
+    {
+        return null;
+    }
+
+    landscape = ():LoginPageStyle => 
+    {
+        return null;
+    }
 }

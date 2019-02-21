@@ -1103,4 +1103,14 @@ export class LobbyPageStyle extends BasePageStyle
         }
         return style;
     }
+
+    portrait = ():LobbyPageStyle => 
+    {
+        return null;
+    }
+
+    landscape = ():LobbyPageStyle => 
+    {
+        return null;
+    }
 }

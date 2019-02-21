@@ -7,4 +7,8 @@ export abstract class BasePageStyle
     abstract small: () => BasePageStyle;
 
     abstract verysmall: () => BasePageStyle;
+
+    abstract portrait: () => BasePageStyle;
+
+    abstract landscape: () => BasePageStyle;
 }
