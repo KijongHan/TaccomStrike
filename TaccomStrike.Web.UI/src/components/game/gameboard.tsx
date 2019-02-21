@@ -18,7 +18,7 @@ const ArrowDownIcon = require("../../res/arrowdown.png");
 const CardHandIcon = require("../../res/card_hand.png");
 
 const GameBoard = styled.div`
-    margin: auto;
+    margin: ${(p: DisplayStyleProps) => p.displayStyle.getMarginString()};
     position: relative;
     top: ${(p: DisplayStyleProps) => p.displayStyle.getTopString()};
     border-radius: 50%;
@@ -78,16 +78,16 @@ const GameBoardPlayerCardCountChangeAnimation1 = keyframes`
     }
 
     40% {
-        top: -120%;
+        top: -140%;
     }
 
     80% {
-        top: -120%;
+        top: -140%;
         opacity: 1;
     }
 
     100% {
-        top: -120%;
+        top: -140%;
         opacity: 0;
         visibility: hidden;
     }
@@ -108,16 +108,16 @@ const GameBoardPlayerCardCountChangeAnimation2 = keyframes`
     }
 
     40% {
-        top: -120%;
+        top: -140%;
     }
 
     80% {
-        top: -120%;
+        top: -140%;
         opacity: 1;
     }
 
     100% {
-        top: -120%;
+        top: -140%;
         opacity: 0;
         visibility: hidden;
     }

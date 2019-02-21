@@ -9,12 +9,16 @@ export class GamePageStyle extends BasePageStyle
 {
     gameLobbyComponentStyle: GameLobbyComponentStyle;
     gameActionComponentStyle: GameActionComponentStyle;
+    gameHandPanelStyle: DisplayStyle;
 
     gameBoardComponentStyle: GameBoardComponentStyle;
 
     large = () => 
     {
         let style = new GamePageStyle();
+        style.gameHandPanelStyle = new DisplayStyle();
+        style.gameHandPanelStyle.heightPercentage = 25;
+
         style.gameLobbyComponentStyle = new GameLobbyComponentStyle();
         style.gameLobbyComponentStyle.cardComponentStyle = {
             displayStyle: new DisplayStyle({
@@ -124,6 +128,7 @@ export class GamePageStyle extends BasePageStyle
         style.gameActionComponentStyle.actionOptionsStyle.marginTopPercentage = 8;
 
         style.gameBoardComponentStyle = new GameBoardComponentStyle();
+        style.gameBoardComponentStyle.boardStyle.marginString = 'auto';
         style.gameBoardComponentStyle.boardStyle.topPercentage = 15;
         style.gameBoardComponentStyle.boardStyle.widthPercentage = 40;
         style.gameBoardComponentStyle.boardStyle.heightPercentage = 70;
@@ -139,6 +144,9 @@ export class GamePageStyle extends BasePageStyle
     medium = () => 
     {
         let style = new GamePageStyle();
+        style.gameHandPanelStyle = new DisplayStyle();
+        style.gameHandPanelStyle.heightPercentage = 25;
+
         style.gameLobbyComponentStyle = new GameLobbyComponentStyle();
         style.gameLobbyComponentStyle.cardComponentStyle = {
             displayStyle: new DisplayStyle({
@@ -248,6 +256,7 @@ export class GamePageStyle extends BasePageStyle
         style.gameActionComponentStyle.actionOptionsStyle.marginTopPercentage = 8;
 
         style.gameBoardComponentStyle = new GameBoardComponentStyle();
+        style.gameBoardComponentStyle.boardStyle.marginString = 'auto';
         style.gameBoardComponentStyle.boardStyle.topPercentage = 15;
         style.gameBoardComponentStyle.boardStyle.widthPercentage = 40;
         style.gameBoardComponentStyle.boardStyle.heightPercentage = 70;
@@ -265,11 +274,15 @@ export class GamePageStyle extends BasePageStyle
         let style = new GamePageStyle();
         style.gameLobbyComponentStyle = null;
 
+        style.gameHandPanelStyle = new DisplayStyle();
+        style.gameHandPanelStyle.heightPercentage = 30;
+
         style.gameActionComponentStyle = new GameActionComponentStyle();
         style.gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.absolute;
-        style.gameActionComponentStyle.cardComponentStyle.displayStyle.heightPercentage = 30;
-        style.gameActionComponentStyle.cardComponentStyle.displayStyle.widthPercentage = 100;
-        style.gameActionComponentStyle.cardComponentStyle.displayStyle.bottomPercentage = -5;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.heightPercentage = 65;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.widthPercentage = 50;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.topPercentage = 10;
+        style.gameActionComponentStyle.cardComponentStyle.displayStyle.rightPixels = 0;
         
         style.gameActionComponentStyle.actionHistoryStyle.widthPercentage = 49;
         style.gameActionComponentStyle.actionHistoryStyle.heightPercentage = 98;
@@ -279,11 +292,15 @@ export class GamePageStyle extends BasePageStyle
         style.gameActionComponentStyle.actionOptionsStyle.floatLeft = true;
 
         style.gameBoardComponentStyle = new GameBoardComponentStyle();
-        style.gameBoardComponentStyle.boardStyle.topPercentage = 30;
-        style.gameBoardComponentStyle.boardStyle.widthPercentage = 30;
-        style.gameBoardComponentStyle.boardStyle.heightPercentage = 20;
-        style.gameBoardComponentStyle.seatStyle.widthPercentage = 90;
-        style.gameBoardComponentStyle.seatStyle.heightPercentage = 75;
+        style.gameBoardComponentStyle.boardStyle.marginString = '0';
+        style.gameBoardComponentStyle.boardStyle.topPercentage = 15;
+        style.gameBoardComponentStyle.boardStyle.widthPercentage = 45;
+        style.gameBoardComponentStyle.boardStyle.heightPercentage = 65;
+        style.gameBoardComponentStyle.seatStyle.widthPercentage = 32;
+        style.gameBoardComponentStyle.seatStyle.heightPercentage = 32;
+        style.gameBoardComponentStyle.claimPanelStyle.topPercentage = 30;
+        style.gameBoardComponentStyle.claimPanelStyle.widthPercentage = 30;
+        style.gameBoardComponentStyle.claimPanelStyle.heightPercentage = 40;
 
         return style;
     }
@@ -293,6 +310,9 @@ export class GamePageStyle extends BasePageStyle
         let style = new GamePageStyle();
         style.gameLobbyComponentStyle = null;
 
+        style.gameHandPanelStyle = new DisplayStyle();
+        style.gameHandPanelStyle.heightPercentage = 25;
+
         style.gameActionComponentStyle = new GameActionComponentStyle();
         style.gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.absolute;
         style.gameActionComponentStyle.cardComponentStyle.displayStyle.heightPercentage = 30;
@@ -307,6 +327,7 @@ export class GamePageStyle extends BasePageStyle
         style.gameActionComponentStyle.actionOptionsStyle.floatLeft = true;
 
         style.gameBoardComponentStyle = new GameBoardComponentStyle();
+        style.gameBoardComponentStyle.boardStyle.marginString = 'auto';
         style.gameBoardComponentStyle.boardStyle.topPercentage = 5;
         style.gameBoardComponentStyle.boardStyle.widthPercentage = 80;
         style.gameBoardComponentStyle.boardStyle.heightPercentage = 50;
@@ -324,6 +345,9 @@ export class GamePageStyle extends BasePageStyle
         let style = new GamePageStyle();
         style.gameLobbyComponentStyle = null;
 
+        style.gameHandPanelStyle = new DisplayStyle();
+        style.gameHandPanelStyle.heightPercentage = 25;
+
         style.gameActionComponentStyle = new GameActionComponentStyle();
         style.gameActionComponentStyle.cardComponentStyle.displayStyle.position = Position.absolute;
         style.gameActionComponentStyle.cardComponentStyle.displayStyle.heightPercentage = 30;
@@ -338,14 +362,15 @@ export class GamePageStyle extends BasePageStyle
         style.gameActionComponentStyle.actionOptionsStyle.floatLeft = true;
 
         style.gameBoardComponentStyle = new GameBoardComponentStyle();
-        style.gameBoardComponentStyle.boardStyle.topPercentage = 15;
-        style.gameBoardComponentStyle.boardStyle.widthPercentage = 40;
-        style.gameBoardComponentStyle.boardStyle.heightPercentage = 70;
+        style.gameBoardComponentStyle.boardStyle.marginString = 'auto';
+        style.gameBoardComponentStyle.boardStyle.topPercentage = 5;
+        style.gameBoardComponentStyle.boardStyle.widthPercentage = 80;
+        style.gameBoardComponentStyle.boardStyle.heightPercentage = 50;
         style.gameBoardComponentStyle.seatStyle.widthPercentage = 32;
         style.gameBoardComponentStyle.seatStyle.heightPercentage = 32;
         style.gameBoardComponentStyle.claimPanelStyle.topPercentage = 30;
-        style.gameBoardComponentStyle.claimPanelStyle.widthPercentage = 30;
-        style.gameBoardComponentStyle.claimPanelStyle.heightPercentage = 40;
+        style.gameBoardComponentStyle.claimPanelStyle.widthPercentage = 35;
+        style.gameBoardComponentStyle.claimPanelStyle.heightPercentage = 42;
 
         return style;
     }

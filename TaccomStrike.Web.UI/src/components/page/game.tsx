@@ -63,7 +63,7 @@ const GameUserHandPanel = styled.div`
     overflow-x: scroll;
     white-space: nowrap
     width: 100%;
-    height: 25%;
+    height: ${(p: DisplayStyleProps) => p.displayStyle.getHeightString()};
     position: relative;
 `;
 
@@ -77,6 +77,11 @@ const GameFinishPanel = styled.div`
     top: 30%;
     padding: 10px 10px 10px 10px;
 `;
+
+class DisplayStyleProps 
+{
+    displayStyle: DisplayStyle;
+}
 
 export class GamePageComponentState extends BasePageComponentState 
 {
@@ -326,7 +331,8 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
             );
         });
         return (
-            <GameUserHandPanel>
+            <GameUserHandPanel
+                displayStyle={(this.state.pageStyle as GamePageStyle).gameHandPanelStyle}>
                 {hand}
             </GameUserHandPanel>
         )
