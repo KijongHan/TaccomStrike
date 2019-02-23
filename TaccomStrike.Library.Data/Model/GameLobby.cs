@@ -50,7 +50,7 @@ namespace TaccomStrike.Library.Data.ViewModel
 
 				var callPhaseDuration = GetCallPhaseDuration(GameMode);
 				var turnPhaseDuration = GetTurnPhaseDuration(GameMode);
-				var preparationPhaseDuration = 20000;
+				var preparationPhaseDuration = 10000;
 
 				GameLogicController = new GameLogicController();
 				GameLogicController.StartGame(players, GameLobbyID, callPhaseDuration, turnPhaseDuration, preparationPhaseDuration, onPreparationEnd);

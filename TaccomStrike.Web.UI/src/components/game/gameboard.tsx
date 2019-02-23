@@ -48,7 +48,7 @@ const GameBoardPlayerName = styled.div`
 const GameBoardPlayerCardHand = styled.div`
     position: relative;
     width: 70%;
-    height: 30%;
+    height: 40%;
     background-size: 100% 100%;
     background-image: url(${CardHandIcon});
     display: flex;

@@ -53,8 +53,6 @@ export class LobbyPageComponentState extends BasePageComponentState {}
 
 export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProps, LobbyPageComponentState>
 {
-    navbarRef: React.RefObject<any>;
-
     constructor(props: LobbyPageComponentProps) 
 	{
         super(props);
@@ -104,7 +102,7 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                 </PanelsContainer>
 
                 <NavbarComponent
-                    navbarRef={this.navbarRef}
+                    history={this.props.history}
                     navbarComponentStyle={lobbyPageStyle.navbarComponentStyle}
                     playNavbarItemStyle={lobbyPageStyle.playNavbarItemStyle}
                     communityNavbarItemStyle={lobbyPageStyle.communityNavbarItemStyle}

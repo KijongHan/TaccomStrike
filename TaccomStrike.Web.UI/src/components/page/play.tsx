@@ -44,7 +44,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
         super(props);
         if(isNullOrUndefined(props.loggedInUser)) 
         {
-            props.history.push("/");
+            props.history.push("/login");
             return;
         }
 
@@ -77,7 +77,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                 GameConnectionsService.onCloseHandler = this.gameConnectionOnCloseHandler;
             })
             .catch(() => {
-                this.props.history.push("/");
+                this.props.history.push("/login");
             });
         
         this.messageContentPanelRef = React.createRef();
@@ -85,6 +85,11 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
 
     render() 
     {
+        if(isNullOrUndefined(this.props.loggedInUser)) 
+        {
+            return null;
+        }
+
         if(isNullOrUndefined(this.state.currentGameState)) 
         {
             return (

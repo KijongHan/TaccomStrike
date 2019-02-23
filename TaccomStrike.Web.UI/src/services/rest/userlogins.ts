@@ -40,4 +40,9 @@ export class UserLoginsService
                 });
         });
     }
+
+    static getConnectedUsers = () => 
+    {
+        
+    }
 }
