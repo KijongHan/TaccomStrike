@@ -41,8 +41,18 @@ export class UserLoginsService
         });
     }
 
-    static getConnectedUsers = () => 
+    static getConnectedUsersCount = () => 
     {
-        
+        return fetch(`${Config.apiUrl}/api/users/connected/count`, {
+            method: 'GET',
+            credentials: 'include'
+        })
+        .then((response: Response) => {
+            return response
+                .json()
+                .then((value: any) => {
+                    return <number>value;
+                });
+        });
     }
 }

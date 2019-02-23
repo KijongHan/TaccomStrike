@@ -24,7 +24,6 @@ export interface PlayPageComponentProps extends BasePageComponentProps {}
 
 export class PlayPageComponentState extends BasePageComponentState 
 {
-    gameLobbies: GetGameLobby[];
     createGameLobby: CreateGameLobby;
 
     currentGameLobbyMessage: string;
@@ -57,12 +56,9 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
             currentGameLobbyMessages: [],
             pageStyle: null,
             useMobileStyle: null,
-
-            gameLobbies: [],
             createGameLobby: new CreateGameLobby(),
             currentGameLobbyMessage: null
         };
-        this.retrieveGameLobbies();
 
         GameConnectionsService
             .initializeGameConnections()
@@ -104,7 +100,6 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     currentGameLobbyMessages={this.state.currentGameLobbyMessages}
                     currentGameLobbyMessage={this.state.currentGameLobbyMessage}
                     createGameLobby={this.state.createGameLobby}
-                    gameLobbies={this.state.gameLobbies}
 
                     lobbyListItemClickHandler={this.lobbyListItemClickHandler}
                     sendMessageButtonClickHandler={this.sendMessageButtonClickHandler}
@@ -112,8 +107,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     leaveGameButtonClickHandler={this.leaveGameButtonClickHandler}
                     createGameButtonClickHandler={this.createGameButtonClickHandler}
                     gameLobbyNameInputOnChangeHandler={this.gameLobbyNameInputOnChangeHandler}
-                    gameModeListOnChangeHandler={this.gameModeListOnChangeHandler}
-                    refreshButtonClickHandler={this.refreshButtonClickHandler}>
+                    gameModeListOnChangeHandler={this.gameModeListOnChangeHandler}>
                 </LobbyPageComponent>
             );
         }
@@ -140,22 +134,6 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                 </GamePageComponent>
             );
         }
-    }
-
-    retrieveGameLobbies = () => 
-    {
-        GameLobbiesService
-            .getChatRooms()
-            .then((value: GetGameLobby[]) => {
-                this.setState({
-                    gameLobbies: value
-                })
-            });
-    }
-
-    refreshButtonClickHandler = () => 
-    {
-        this.retrieveGameLobbies();
     }
 
     createGameButtonClickHandler = () => 
@@ -295,7 +273,6 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
             currentGameLobby: null,
             currentGameState: null
         });
-        this.refreshButtonClickHandler();
     }
 
     gameConnectionOnCloseHandler = () => 

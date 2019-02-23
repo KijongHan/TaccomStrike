@@ -86,5 +86,6 @@
     <Build Include="Security\db_application.sql" />
     <Build Include="Security\taccomstrike_website.sql" />
     <Build Include="Security\application_login.sql" />
+    <Build Include="auth\Tables\UserFriendship.sql" />
   </ItemGroup>
 </Project>

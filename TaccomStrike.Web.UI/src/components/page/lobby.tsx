@@ -30,7 +30,6 @@ const PanelsContainer = styled.div`
 
 export interface LobbyPageComponentProps extends BasePageComponentProps 
 {
-    gameLobbies: GetGameLobby[];
     createGameLobby: CreateGameLobby;
 
     currentGameLobbyMessage: string;
@@ -43,13 +42,16 @@ export interface LobbyPageComponentProps extends BasePageComponentProps
     sendMessageButtonClickHandler: (message: string) => void;
     startGameButtonClickHandler: () => void;
     leaveGameButtonClickHandler: () => void;
-    refreshButtonClickHandler: () => void;
     createGameButtonClickHandler: () => void;
     gameLobbyNameInputOnChangeHandler: (input: string) => void;
     gameModeListOnChangeHandler: (input: string) => void;
 }
 
-export class LobbyPageComponentState extends BasePageComponentState {}
+export class LobbyPageComponentState extends BasePageComponentState 
+{
+    gameLobbies: GetGameLobby[];
+    gameLobbiesRefreshIntervalID: number;
+}
 
 export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProps, LobbyPageComponentState>
 {
@@ -60,7 +62,10 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
         this.state = 
         {
             pageStyle: pageStyle,
-            useMobileStyle: false
+            useMobileStyle: false,
+            gameLobbies: [],
+
+            gameLobbiesRefreshIntervalID: null
         };
     }
 
@@ -81,9 +86,9 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                 <PanelsContainer>
                     <GameLobbiesComponent
                         gameLobbiesComponentStyle={lobbyPageStyle.gameLobbiesComponentStyle}
-                        gameLobbies={this.props.gameLobbies}
+                        gameLobbies={this.state.gameLobbies}
                         lobbyListItemClickHandler={this.props.lobbyListItemClickHandler}
-                        refreshButtonClickHandler={this.props.refreshButtonClickHandler}>
+                        refreshButtonClickHandler={this.refreshButtonClickHandler}>
                     </GameLobbiesComponent>
                     <GameLobbyComponent
                         messageContentPanelRef={this.props.messageContentPanelRef}
@@ -110,5 +115,42 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                 </NavbarComponent>
             </LobbyPage>
         );
+    }
+
+    componentDidMount() 
+    {
+        super.componentDidMount();
+        this.retrieveGameLobbies();
+        let intervalID = window.setInterval(() => {
+			this.retrieveGameLobbies();
+		}, 15000);
+		this.setState({
+			gameLobbiesRefreshIntervalID: intervalID
+		});
+    }
+
+    componentWillUnmount() 
+    {
+        super.componentWillUnmount();
+		window.clearInterval(this.state.gameLobbiesRefreshIntervalID);
+		this.setState({
+			gameLobbiesRefreshIntervalID: null
+		});
+    }
+
+    retrieveGameLobbies = () => 
+    {
+        GameLobbiesService
+            .getGameLobbies()
+            .then((value: GetGameLobby[]) => {
+                this.setState({
+                    gameLobbies: value
+                })
+            });
+    }
+
+    refreshButtonClickHandler = () => 
+    {
+        this.retrieveGameLobbies();
     }
 }

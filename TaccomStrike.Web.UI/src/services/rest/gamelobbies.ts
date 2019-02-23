@@ -25,7 +25,7 @@ export class GameLobbiesService
         });
     }
 
-    static getChatRooms = () => 
+    static getGameLobbies = () => 
     {
         return fetch(`${Config.apiUrl}/api/gamelobbies`, {
             method: 'GET',
@@ -36,6 +36,21 @@ export class GameLobbiesService
                 .json()
                 .then((value: any) => {
                     return <GetGameLobby[]>value;
+                });
+        });
+    }
+
+    static getGameLobbiesCount = () => 
+    {
+        return fetch(`${Config.apiUrl}/api/gamelobbies/count`, {
+            method: 'GET',
+            credentials: 'include'
+        })
+        .then((response: Response) => {
+            return response
+                .json()
+                .then((value: any) => {
+                    return <number>value;
                 });
         });
     }

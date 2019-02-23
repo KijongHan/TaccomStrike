@@ -133,6 +133,11 @@ export class HomePageStyle extends BasePageStyle
             showIcon: true,
             showText: true
         };
+
+        style.statusPanelStyle = new DisplayStyle({
+            marginLeftPercentage: 2,
+            widthPercentage: 25
+        });
         return style;
     }
 
