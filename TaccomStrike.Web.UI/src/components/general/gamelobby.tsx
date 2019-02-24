@@ -212,22 +212,23 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
         this.messageInputRef = React.createRef();
     }
 
-    render() 
+    render()
     {
-        if(isNullOrUndefined(this.props.gameLobbyComponentStyle)) 
+        if(isNullOrUndefined(this.props.gameLobbyComponentStyle))
         {
             return null;
         }
 
+        console.log(this.props);
         let currentGameLobbyComponent: JSX.Element;
         let createGameLobbyComponent: JSX.Element;
         let flipAnimation: CardRotationAnimation;
-        if(isNullOrUndefined(this.props.currentGameLobby)) 
+        if(isNullOrUndefined(this.props.currentGameLobby))
         {
             flipAnimation = this.props.gameLobbyComponentStyle.createGameLobbyFlipAnimation;
             currentGameLobbyComponent = null;
         }
-        else 
+        else
         {
             currentGameLobbyComponent = this.getCurrentGameLobbyComponent();
             flipAnimation = this.props.gameLobbyComponentStyle.currentGameLobbyFlipAnimation;

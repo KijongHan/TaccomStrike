@@ -5,6 +5,7 @@ import { CardRotationAnimation } from "../general/card";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
 import { TitlePanelsStyle } from "../general/titlepanels";
 import { TitlePanelStyle } from "../general/titlepanel";
+import { ButtonComponentStyle } from "../general/button";
 
 export class HomePageStyle extends BasePageStyle 
 {
@@ -12,7 +13,13 @@ export class HomePageStyle extends BasePageStyle
 	callTitlePanelStyle: TitlePanelStyle;
     cheatTitlePanelStyle: TitlePanelStyle;
     
+    panelOneStyle: DisplayStyle;
+    socialMediaPanelStyle: DisplayStyle;
     statusPanelStyle: DisplayStyle;
+    playNowPanelStyle: DisplayStyle;
+    playNowButtonStyle: ButtonComponentStyle;
+
+    youtubeTrailerStyle: DisplayStyle;
 
     large = () => 
     {
@@ -134,9 +141,38 @@ export class HomePageStyle extends BasePageStyle
             showText: true
         };
 
+        style.panelOneStyle = new DisplayStyle({
+            floatLeft: true,
+            widthPercentage: 25,
+            marginLeftPercentage: 2
+        });
+        style.socialMediaPanelStyle = new DisplayStyle({
+            widthPercentage: 100,
+            heightPixels: 80
+        });
+
         style.statusPanelStyle = new DisplayStyle({
-            marginLeftPercentage: 2,
-            widthPercentage: 25
+            marginTopPixels: 10,
+            widthPercentage: 100
+        });
+        style.playNowPanelStyle = new DisplayStyle({
+            marginTopPixels: 10,
+            heightPixels: 80,
+            widthPercentage: 100
+        });
+        style.playNowButtonStyle = {
+            displayStyle: new DisplayStyle({
+                heightPixels: 60,
+                widthPercentage: 80,
+                marginLeftPercentage: 10
+            }),
+            fontSize: '1.5em'
+        };
+
+        style.youtubeTrailerStyle = new DisplayStyle({
+            floatLeft: true,
+            widthPercentage: 65,
+            marginLeftPercentage: 5
         });
         return style;
     }

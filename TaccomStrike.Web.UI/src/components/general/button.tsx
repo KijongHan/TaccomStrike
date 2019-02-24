@@ -7,7 +7,8 @@ import { ColorStyle } from "../../styles/colorstyle";
 
 const ButtonText = styled.p`
 	margin: auto;
-	text-align: center; 
+	text-align: center;
+	font-size: ${(p: ButtonTextProps) => !isNullOrUndefined(p.fontSize) ? p.fontSize : '' };
 `;
 
 const ButtonElement = styled.div`
@@ -57,6 +58,11 @@ const DisabledButton = styled.div`
 	display: ${(p: ButtonComponentStyle) => p.displayStyle.getDisplayString()==='none' ? 'none' : 'flex'}
 `;
 
+class ButtonTextProps 
+{
+	fontSize: string;
+}
+
 export interface ButtonComponentProps
 {
 	buttonText: string;
@@ -71,6 +77,7 @@ export interface ButtonComponentState {}
 export class ButtonComponentStyle
 {
 	displayStyle: DisplayStyle;
+	fontSize?: string;
 
 	constructor() 
 	{
@@ -93,7 +100,8 @@ export class ButtonComponent extends React.Component<ButtonComponentProps, Butto
 				<ButtonElement
 					displayStyle={this.props.buttonComponentStyle.displayStyle}
 					onClick={this.props.buttonClickHandler}>
-					<ButtonText>
+					<ButtonText
+						fontSize={this.props.buttonComponentStyle.fontSize}>
 						{this.props.buttonText}
 					</ButtonText>
 				</ButtonElement>
@@ -105,7 +113,8 @@ export class ButtonComponent extends React.Component<ButtonComponentProps, Butto
 				<DisabledButton
 					displayStyle={this.props.buttonComponentStyle.displayStyle}
 					onClick={null}>
-					<ButtonText>
+					<ButtonText
+						fontSize={this.props.buttonComponentStyle.fontSize}>
 						{this.props.buttonText}
 					</ButtonText>
 				</DisabledButton>
@@ -117,7 +126,8 @@ export class ButtonComponent extends React.Component<ButtonComponentProps, Butto
 				<ButtonElement
 					displayStyle={this.props.buttonComponentStyle.displayStyle}
 					onClick={this.props.buttonClickHandler}>
-					<ButtonText>
+					<ButtonText
+						fontSize={this.props.buttonComponentStyle.fontSize}>
 						{this.props.buttonText}
 					</ButtonText>
 				</ButtonElement>

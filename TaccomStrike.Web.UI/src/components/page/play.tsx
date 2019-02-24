@@ -12,7 +12,6 @@ import { GameLobbyJoin } from "../../models/hub/gamelobbyjoin";
 import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
 import { CreateGameLobby } from "../../models/rest/creategamelobby";
 import { GameLobbiesService } from "../../services/rest/gamelobbies";
-import { GetGameClaim } from "../../models/rest/getgameclaim";
 import { GetGameCard } from "../../models/rest/getgamecard";
 import { GameClaim } from "../../models/hub/gameclaim";
 import { GameCallCheat } from "../../models/hub/gamecallcheat";
@@ -20,10 +19,9 @@ import { GetGameUser } from "../../models/rest/getgameuser";
 import { GetGameCheat } from "../../models/rest/getgamecheat";
 import { GameFinish } from "../../models/hub/gamefinish";
 
-export interface PlayPageComponentProps extends BasePageComponentProps {}
-
-export class PlayPageComponentState extends BasePageComponentState 
+export interface PlayPageComponentProps extends BasePageComponentProps 
 {
+    messageContentPanelRef: React.RefObject<any>;
     createGameLobby: CreateGameLobby;
 
     currentGameLobbyMessage: string;
@@ -32,12 +30,32 @@ export class PlayPageComponentState extends BasePageComponentState
     currentGameState: GetGameState;
     currentGameCheat: GetGameCheat;
     currentGameWinner: GetGameUser;
+
+    createGameButtonClickHandler: () => void;
+    maxLobbyLimitListOnChangeHandler: (input: string) => void;
+    gameLobbyNameInputOnChangeHandler: (input: string) => void;
+    lobbyListItemClickHandler: (gameLobbyID: number) => void;
+    sendMessageButtonClickHandler: (message: string) => void;
+    startGameButtonClickHandler: () => void;
+    leaveGameButtonClickHandler: () => void;
+    gameLobbyStartGameHandler: (gameLobbyStartGame: GameLobbyStartGame) => void;
+    gameLobbyLeaveGameHandler: (gameLobbyLeaveGame: GameLobbyLeaveGame) => void;
+    gameLobbyJoinHandler: (gameLobbyJoin: GameLobbyJoin) => void;
+    gameLobbySendMessageHandler: (gameLobbySendMessage: GameLobbySendMessage) => void;
+    submitClaimButtonClickHandler: (claims: GetGameCard[], actual: GetGameCard[]) => void;
+    gameClaimHandler: (gameClaim: GameClaim) => void;
+    callCheatButtonClickHandler: () => void;
+    gameCallCheatHandler: (gameCallCheat: GameCallCheat) => void;
+    gameFinishHandler: (gameFinish: GameFinish) => void;
+    finishButtonClickHandler: () => void;
+    gameConnectionOnCloseHandler: () => void;
+    gameModeListOnChangeHandler: (input: string) => void;
 }
+
+export class PlayPageComponentState extends BasePageComponentState {}
 
 export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps, PlayPageComponentState> 
 {
-    messageContentPanelRef: React.RefObject<any>;
-
     constructor(props: PlayPageComponentProps) 
     {
         super(props);
@@ -49,34 +67,9 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
 
         this.state = 
         {
-            currentGameLobby: null,
-            currentGameState: null,
-            currentGameCheat: null,
-            currentGameWinner: null,
-            currentGameLobbyMessages: [],
             pageStyle: null,
-            useMobileStyle: null,
-            createGameLobby: new CreateGameLobby(),
-            currentGameLobbyMessage: null
+            useMobileStyle: null
         };
-
-        GameConnectionsService
-            .initializeGameConnections()
-            .then(() => {
-                GameConnectionsService.addGameLobbyJoinHandler(this.gameLobbyJoinHandler);
-                GameConnectionsService.addGameLobbySendMessageHandler(this.gameLobbySendMessageHandler);
-                GameConnectionsService.addGameLobbyStartGameHandler(this.gameLobbyStartGameHandler);
-                GameConnectionsService.addGameLobbyLeaveGameHandler(this.gameLobbyLeaveGameHandler);
-                GameConnectionsService.addGameClaimHandler(this.gameClaimHandler);
-                GameConnectionsService.addGameCallCheatHandler(this.gameCallCheatHandler);
-                GameConnectionsService.addGameFinishHandler(this.gameFinishHandler);
-                GameConnectionsService.onCloseHandler = this.gameConnectionOnCloseHandler;
-            })
-            .catch(() => {
-                this.props.history.push("/login");
-            });
-        
-        this.messageContentPanelRef = React.createRef();
     }
 
     render() 
@@ -86,7 +79,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
             return null;
         }
 
-        if(isNullOrUndefined(this.state.currentGameState)) 
+        if(isNullOrUndefined(this.props.currentGameState)) 
         {
             return (
                 <LobbyPageComponent
@@ -94,20 +87,20 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     location={this.props.location}
                     match={this.props.match}
                     
-                    messageContentPanelRef={this.messageContentPanelRef}
+                    messageContentPanelRef={this.props.messageContentPanelRef}
                     loggedInUser={this.props.loggedInUser}
-                    currentGameLobby={this.state.currentGameLobby}
-                    currentGameLobbyMessages={this.state.currentGameLobbyMessages}
-                    currentGameLobbyMessage={this.state.currentGameLobbyMessage}
-                    createGameLobby={this.state.createGameLobby}
+                    currentGameLobby={this.props.currentGameLobby}
+                    currentGameLobbyMessages={this.props.currentGameLobbyMessages}
+                    currentGameLobbyMessage={this.props.currentGameLobbyMessage}
+                    createGameLobby={this.props.createGameLobby}
 
-                    lobbyListItemClickHandler={this.lobbyListItemClickHandler}
-                    sendMessageButtonClickHandler={this.sendMessageButtonClickHandler}
-                    startGameButtonClickHandler={this.startGameButtonClickHandler}
-                    leaveGameButtonClickHandler={this.leaveGameButtonClickHandler}
-                    createGameButtonClickHandler={this.createGameButtonClickHandler}
-                    gameLobbyNameInputOnChangeHandler={this.gameLobbyNameInputOnChangeHandler}
-                    gameModeListOnChangeHandler={this.gameModeListOnChangeHandler}>
+                    lobbyListItemClickHandler={this.props.lobbyListItemClickHandler}
+                    sendMessageButtonClickHandler={this.props.sendMessageButtonClickHandler}
+                    startGameButtonClickHandler={this.props.startGameButtonClickHandler}
+                    leaveGameButtonClickHandler={this.props.leaveGameButtonClickHandler}
+                    createGameButtonClickHandler={this.props.createGameButtonClickHandler}
+                    gameLobbyNameInputOnChangeHandler={this.props.gameLobbyNameInputOnChangeHandler}
+                    gameModeListOnChangeHandler={this.props.gameModeListOnChangeHandler}>
                 </LobbyPageComponent>
             );
         }
@@ -119,179 +112,25 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     location={this.props.location}
                     match={this.props.match}
                     
-                    messageContentPanelRef={this.messageContentPanelRef}
+                    messageContentPanelRef={this.props.messageContentPanelRef}
                     loggedInUser={this.props.loggedInUser}
-                    gameLobbyMessages={this.state.currentGameLobbyMessages}
-                    gameLobby={this.state.currentGameLobby}
-                    gameState={this.state.currentGameState}
-                    gameCheat={this.state.currentGameCheat}
-                    gameWinner={this.state.currentGameWinner}
+                    gameLobbyMessages={this.props.currentGameLobbyMessages}
+                    gameLobby={this.props.currentGameLobby}
+                    gameState={this.props.currentGameState}
+                    gameCheat={this.props.currentGameCheat}
+                    gameWinner={this.props.currentGameWinner}
 
-                    sendMessageButtonClickHandler={this.sendMessageButtonClickHandler}
-                    submitClaimButtonClickHandler={this.submitClaimButtonClickHandler}
-                    callCheatButtonClickHandler={this.callCheatButtonClickHandler}
-                    finishButtonClickHandler={this.finishButtonClickHandler}>
+                    sendMessageButtonClickHandler={this.props.sendMessageButtonClickHandler}
+                    submitClaimButtonClickHandler={this.props.submitClaimButtonClickHandler}
+                    callCheatButtonClickHandler={this.props.callCheatButtonClickHandler}
+                    finishButtonClickHandler={this.props.finishButtonClickHandler}>
                 </GamePageComponent>
             );
         }
     }
 
-    createGameButtonClickHandler = () => 
-    {
-        if(isNullOrUndefined(this.state.createGameLobby.gameLobbyName) || this.state.createGameLobby.gameLobbyName==="") 
-        {
-            return;
-        }
-
-        GameLobbiesService
-            .createGameLobby(this.state.createGameLobby)
-            .then((value: GetGameLobby) => {
-                console.log(value);
-                GameConnectionsService.gameLobbyJoin(value.gameLobbyID);
-            });
-    }
-
-    maxLobbyLimitListOnChangeHandler = (input: string) => 
-	{
-        let newCreateGameLobby = Object.assign({}, this.state.createGameLobby);
-        newCreateGameLobby.maxRoomLimit = Number(input);
-        this.setState({createGameLobby: newCreateGameLobby});
-	}
-
-    gameLobbyNameInputOnChangeHandler = (input: string) => 
-    {
-        let newCreateGameLobby = Object.assign({}, this.state.createGameLobby);
-        newCreateGameLobby.gameLobbyName = input;
-		this.setState({createGameLobby: newCreateGameLobby});
-    }
-
-    lobbyListItemClickHandler = (gameLobbyID: number) => 
-    {
-        if(isNullOrUndefined(this.state.currentGameLobby)) 
-        {
-            GameConnectionsService.gameLobbyJoin(gameLobbyID);
-        }
-    }
-
-    sendMessageButtonClickHandler = (message: string) => 
-    {
-        GameConnectionsService.gameLobbySendMessage(message, this.state.currentGameLobby.gameLobbyID);
-    }
-
-    startGameButtonClickHandler = () => 
-    {
-        if(isNullOrUndefined(this.state.currentGameLobby)) 
-        {
-            return;
-        }
-        if(this.state.currentGameLobby.host.userID !== this.props.loggedInUser.userID) 
-        {
-            return;
-        }
-        GameConnectionsService.gameLobbyStartGame(this.state.currentGameLobby.gameLobbyID);
-    }
-
-    leaveGameButtonClickHandler = () => 
-    {
-        if(isNullOrUndefined(this.state.currentGameLobby)) 
-        {
-            return;
-        }
-        GameConnectionsService.gameLobbyLeaveGame(this.state.currentGameLobby.gameLobbyID);
-    }
-
-    gameLobbyStartGameHandler = (gameLobbyStartGame: GameLobbyStartGame) => 
-    {
-        this.setState({currentGameState: gameLobbyStartGame.gameState});
-    }
-
-    gameLobbyLeaveGameHandler = (gameLobbyLeaveGame: GameLobbyLeaveGame) => 
-    {
-        if(this.props.loggedInUser.userID===gameLobbyLeaveGame.playerLeaving.userID) 
-        {
-            this.setState({currentGameLobby: null});
-            this.setState({currentGameLobbyMessages: []});
-            this.setState({currentGameLobbyMessage: null});
-        }
-        else 
-        {
-            let currentGameLobby = this.state.currentGameLobby;
-            currentGameLobby.players = gameLobbyLeaveGame.players;
-            this.setState({currentGameLobby: currentGameLobby});  
-        }
-    }
-
-    gameLobbyJoinHandler = (gameLobbyJoin: GameLobbyJoin) => 
-    {
-        this.setState({currentGameLobby: gameLobbyJoin.gameLobby});
-    }
-
     gameLobbySendMessageHandler = (gameLobbySendMessage: GameLobbySendMessage) => 
     {
-        let currentList = this.state.currentGameLobbyMessages;
-        this.setState({currentGameLobbyMessages: currentList.concat(gameLobbySendMessage)});
-        this.messageContentPanelRef.current.scrollTop = this.messageContentPanelRef.current.scrollHeight - this.messageContentPanelRef.current.clientHeight;
-    }
-
-    submitClaimButtonClickHandler = (claims: GetGameCard[], actual: GetGameCard[]) =>
-    {
-        GameConnectionsService.gameSubmitClaim(this.state.currentGameLobby.gameLobbyID, claims, actual);
-    }
-
-    gameClaimHandler = (gameClaim: GameClaim) =>
-    {
-        this.setState({currentGameState: gameClaim.gameState});
-    }
-
-    callCheatButtonClickHandler = () => 
-    {
-        GameConnectionsService.gameCallCheat(this.state.currentGameLobby.gameLobbyID);
-    }
-
-    gameCallCheatHandler = (gameCallCheat: GameCallCheat) => 
-    {
-        this.setState({
-            currentGameCheat: gameCallCheat.gameCheat,
-            currentGameState: gameCallCheat.gameState
-        });
-    }
-
-    gameFinishHandler = (gameFinish: GameFinish) => 
-    {
-        this.setState({
-            currentGameWinner: gameFinish.winner
-        });
-    }
-
-    finishButtonClickHandler = () => 
-    {
-        this.setState({
-            currentGameLobbyMessages: [],
-            currentGameLobbyMessage: null,
-            currentGameWinner: null,
-            currentGameCheat: null,
-            currentGameLobby: null,
-            currentGameState: null
-        });
-    }
-
-    gameConnectionOnCloseHandler = () => 
-    {
-        this.props.history.push("/");
-    }
-
-    gameModeListOnChangeHandler = (input: string) => 
-    {
-        let newCreateGameLobby = Object.assign({}, this.state.createGameLobby);
-        newCreateGameLobby.gameMode = Number.parseInt(input);
-
-        this.setState({
-            createGameLobby: newCreateGameLobby
-        });
-    }
-
-    componentWillUnmount() 
-    {
-        GameConnectionsService.removeHandlers();
+        this.gameLobbySendMessageHandler(gameLobbySendMessage);
     }
 }
