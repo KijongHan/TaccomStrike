@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using TaccomStrike.Library.Utility.Security;
+using TaccomStrike.Library.Data.Model.Views;
 
 namespace TaccomStrike.Library.Data.DAL 
 {
@@ -122,6 +123,18 @@ namespace TaccomStrike.Library.Data.DAL
 				var userLoginID = CreateUserLogin(userEntity, passwordSalt, hashPassword, forumUserID);
 
 				return GetUserLogin(userLoginID);
+			});
+		}
+
+		public Task<List<UserComplete>> GetLeaderboard(int top)
+		{
+			return Task.Run(() =>
+			{
+				var query = dbContext.UserComplete.AsQueryable();
+				query = query
+					.OrderByDescending((i) => i.GameScore)
+					.Take(top);
+				return query.ToList();
 			});
 		}
 	}

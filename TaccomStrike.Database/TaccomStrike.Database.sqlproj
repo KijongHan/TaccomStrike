@@ -65,6 +65,10 @@
     <Folder Include="auth\" />
     <Folder Include="auth\Tables\" />
     <Folder Include="Security\" />
+    <Folder Include="game" />
+    <Folder Include="game\Tables" />
+    <Folder Include="game\Views" />
+    <Folder Include="auth\Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="app\Tables\AppException.sql" />
@@ -87,5 +91,9 @@
     <Build Include="Security\taccomstrike_website.sql" />
     <Build Include="Security\application_login.sql" />
     <Build Include="auth\Tables\UserFriendship.sql" />
+    <Build Include="Security\game.sql" />
+    <Build Include="game\Tables\GameUser.sql" />
+    <Build Include="game\Tables\GameSetting.sql" />
+    <Build Include="auth\Views\UserComplete.sql" />
   </ItemGroup>
 </Project>

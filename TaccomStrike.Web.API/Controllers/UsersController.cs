@@ -24,6 +24,14 @@ namespace TaccomStrike.Web.API.Controllers
 			this.userConnectionsService = userConnectionsService;
 		}
 
+		[Route("leaderboard")]
+		[HttpGet]
+		public async Task<IActionResult> GetLeaderboard([FromQuery] int top)
+		{
+			var leaderboard = await userLoginRepository.GetLeaderboard(top);
+			return Ok(leaderboard);
+		}
+
 		[Route("connected/count")]
 		[HttpGet]
 		public IActionResult GetConnectedUsers()

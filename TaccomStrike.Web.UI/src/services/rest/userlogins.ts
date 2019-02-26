@@ -3,6 +3,7 @@ const Config = require('Config');
 import { CreateUserLogin } from "../../models/rest/createuserlogin";
 import { GetUser } from "../../models/rest/getuser";
 import { isNullOrUndefined } from "util";
+import { GetUserComplete } from "../../models/rest/getusercomplete";
 
 export class UserLoginsService 
 {
@@ -52,6 +53,21 @@ export class UserLoginsService
                 .json()
                 .then((value: any) => {
                     return <number>value;
+                });
+        });
+    }
+
+    static getLeaderboard = (top: number) => 
+    {
+        return fetch(`${Config.apiUrl}/api/users/leaderboard?top=${top}`, {
+            method: 'GET',
+            credentials: 'include'
+        })
+        .then((response: Response) => {
+            return response
+                .json()
+                .then((value: any) => {
+                    return <GetUserComplete[]>value;
                 });
         });
     }

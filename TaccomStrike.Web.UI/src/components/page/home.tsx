@@ -191,6 +191,7 @@ export class HomePageComponent extends BasePageComponent<HomePageComponentProps,
 		let homePageStyle = this.state.pageStyle as HomePageStyle;
 		let titleWords = ["Call", "Cheat"];
 		let titlePanelStylings = [homePageStyle.callTitlePanelStyle, homePageStyle.cheatTitlePanelStyle];
+		console.log(UserLoginsService.getLeaderboard(5));
 
         return (
 			<HomePage>

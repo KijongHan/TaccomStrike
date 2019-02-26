@@ -154,7 +154,7 @@ namespace TaccomStrike.Web.API.Hubs
 			});
 		}
 
-		public void OnGameFinish(long gameLobbyID, GameUser winner)
+		public void OnGameFinish(long gameLobbyID, Game.CallCheat.GameUser winner)
 		{
 			var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
 			if (gameLobby == null)
