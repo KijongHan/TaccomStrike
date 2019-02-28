@@ -9,6 +9,8 @@ import { ColorStyle } from "../../styles/colorstyle";
 import { GameLobbiesService } from "../../services/rest/gamelobbies";
 import { UserLoginsService } from "../../services/rest/userlogins";
 import { ButtonComponent } from "../general/button";
+import { CardComponent } from "../general/card";
+import { GetUserComplete } from "../../models/rest/getusercomplete";
 
 const FacebookIcon = require("../../res/facebook_icon.png");
 const TwitterIcon = require("../../res/twitter_icon.png");
@@ -155,6 +157,66 @@ const StatusText = styled.li`
 	color: ${ColorStyle.pallet1};
 `;
 
+const SubPanel = styled.div`
+	width: 100%;
+	height: 100%;
+	padding: 15px 15px 15px 15px; 
+	background-color: ${ColorStyle.pallet3};
+	-webkit-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	-moz-box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	box-shadow: 0px 0px 1px 1px ${ColorStyle.pallet3};
+	border-style: solid;
+	border-width: 2px;
+	border-color: rgba(0, 0, 0, 0.1);
+	display: flex; 
+	flex-direction: column;
+`;
+
+const SubTitle = styled.div`
+	font-size: 2em;
+	font-weight: bold;
+	width: 100%;
+	color: ${ColorStyle.pallet2};
+`;
+
+const Divider = styled.div`
+	width: 100%;
+	height: 1px;
+	background-color: ${ColorStyle.pallet2};
+`;
+
+const LeaderboardContent = styled.div`
+	flex-grow: 1;
+	width: 100%;
+`;
+
+const LeaderboardTable = styled.table`
+	width: 100%;
+	height: 100%;
+`;
+
+const LeaderboardHeader = styled.th`
+	background-color: rgba(0,0,0,0.3);
+	color: ${ColorStyle.pallet2};
+`;
+
+const LeaderboardNumberData = styled.td`
+	padding: 8px;
+	text-align: right;
+`;
+
+const LeaderboardStringData = styled.td`
+	padding: 8px;
+`;
+
+const LeaderboardEvenRow = styled.tr`
+	background-color: rgba(0,0,0,0.1);
+`;
+
+const LeaderboardOddRow = styled.tr`
+
+`;
+
 class DisplayStyleProps 
 {
 	displayStyle: DisplayStyle;
@@ -168,6 +230,7 @@ export class HomePageComponentState extends BasePageComponentState
 	connectedUsersCount: number;
 
 	statusRefreshIntervalID: number;
+	leaderboard: GetUserComplete[];
 }
 
 export class HomePageComponent extends BasePageComponent<HomePageComponentProps, HomePageComponentState> 
@@ -182,8 +245,17 @@ export class HomePageComponent extends BasePageComponent<HomePageComponentProps,
 			gameLobbiesCount: 0,
 			connectedUsersCount: 0,
 
-			statusRefreshIntervalID: null
+			statusRefreshIntervalID: null,
+			leaderboard: []
 		};
+
+		UserLoginsService
+			.getLeaderboard(5)
+			.then((value: GetUserComplete[]) => {
+				this.setState({
+					leaderboard: value
+				});
+			});
 	}
 
     render() 
@@ -191,8 +263,53 @@ export class HomePageComponent extends BasePageComponent<HomePageComponentProps,
 		let homePageStyle = this.state.pageStyle as HomePageStyle;
 		let titleWords = ["Call", "Cheat"];
 		let titlePanelStylings = [homePageStyle.callTitlePanelStyle, homePageStyle.cheatTitlePanelStyle];
+
+		let tableRows = this.state.leaderboard.map((value: GetUserComplete, index: number) => {
+			if(index%2===0) {
+				return (
+					<LeaderboardEvenRow>
+						<LeaderboardNumberData>{index++}</LeaderboardNumberData>
+						<LeaderboardStringData>{value.username}</LeaderboardStringData>
+						<LeaderboardNumberData>{value.gameScore}</LeaderboardNumberData>
+					</LeaderboardEvenRow>
+				);
+			}
+			else {
+				return (
+					<LeaderboardOddRow>
+						<LeaderboardNumberData>{index++}</LeaderboardNumberData>
+						<LeaderboardStringData>{value.username}</LeaderboardStringData>
+						<LeaderboardNumberData>{value.gameScore}</LeaderboardNumberData>
+					</LeaderboardOddRow>
+				);
+			}
+		});
 		console.log(UserLoginsService.getLeaderboard(5));
 
+		let leaderboard = (
+			<SubPanel>
+				<SubTitle>Leader Board</SubTitle>
+				<Divider></Divider>
+				<LeaderboardContent>
+					<LeaderboardTable>
+						<tr>
+							<LeaderboardHeader>Rank</LeaderboardHeader>
+							<LeaderboardHeader>Player</LeaderboardHeader>
+							<LeaderboardHeader>Score</LeaderboardHeader>
+						</tr>
+						{tableRows}
+					</LeaderboardTable>
+				</LeaderboardContent>
+			</SubPanel>
+		);
+		let news = (
+			<SubPanel>
+				<SubTitle>Game News</SubTitle>
+				<Divider></Divider>
+				<LeaderboardContent>
+				</LeaderboardContent>
+			</SubPanel>
+		);
         return (
 			<HomePage>
 				<TitlePanelsComponent
@@ -239,7 +356,14 @@ export class HomePageComponent extends BasePageComponent<HomePageComponentProps,
 						</YoutubeVideo>
 					</YoutubeTrailer>
 
-					
+					<CardComponent
+						cardStyle={homePageStyle.leaderboardStyle}
+						front={leaderboard}>
+					</CardComponent>
+					<CardComponent
+						cardStyle={homePageStyle.newsStyle}
+						front={news}>
+					</CardComponent>
 				</PanelsContainer>
 
 				<NavbarComponent

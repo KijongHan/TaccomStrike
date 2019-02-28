@@ -1,7 +1,7 @@
 import { BasePageStyle } from "./base";
 import { NavbarComponentStyle, NavbarItemStyle } from "../general/navbar";
 import { DisplayStyle, Position } from "../../styles/displaystyle";
-import { CardRotationAnimation } from "../general/card";
+import { CardRotationAnimation, CardComponentStyle } from "../general/card";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
 import { TitlePanelsStyle } from "../general/titlepanels";
 import { TitlePanelStyle } from "../general/titlepanel";
@@ -20,6 +20,8 @@ export class HomePageStyle extends BasePageStyle
     playNowButtonStyle: ButtonComponentStyle;
 
     youtubeTrailerStyle: DisplayStyle;
+    leaderboardStyle: CardComponentStyle;
+    newsStyle: CardComponentStyle;
 
     large = () => 
     {
@@ -174,6 +176,29 @@ export class HomePageStyle extends BasePageStyle
             widthPercentage: 65,
             marginLeftPercentage: 5
         });
+
+        style.leaderboardStyle = {
+            displayStyle: new DisplayStyle({
+                widthPercentage: 35,
+                heightPixels: 300,
+                position: Position.relative,
+                floatLeft: true,
+                marginTopPixels: 100,
+                marginLeftPercentage: 5
+            }),
+            perspectiveStyle: new PerspectiveStyle()
+        };
+        style.newsStyle = {
+            displayStyle: new DisplayStyle({
+                widthPercentage: 45,
+                heightPixels: 300,
+                position: Position.relative,
+                floatLeft: true,
+                marginTopPixels: 100,
+                marginLeftPercentage: 5
+            }),
+            perspectiveStyle: new PerspectiveStyle()
+        };
         return style;
     }
 
