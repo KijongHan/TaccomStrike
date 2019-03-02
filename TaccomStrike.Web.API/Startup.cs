@@ -49,6 +49,7 @@ namespace TaccomStrike.Web.API
 			{
 				options.UseSqlServer(ConfigurationManager.AppSettings["ConnectionString"]);
 			});
+			services.AddScoped<GameUserRepository>();
 			services.AddScoped<ForumThreadRepository>();
 			services.AddScoped<ForumCommentRepository>();
 			services.AddScoped<ForumUserRepository>();

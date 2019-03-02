@@ -19,6 +19,7 @@ import { GetGameLobby } from "../../models/rest/getgamelobby";
 import { GameLobbyComponent } from "../general/gamelobby";
 import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
 import { GamePhase } from "../../models/enums/gamephase";
+import { GetGameResult } from "../../models/rest/getgameresult";
 
 const GamePage = styled.div`
     position: fixed;
@@ -68,6 +69,7 @@ const GameUserHandPanel = styled.div`
 `;
 
 const GameFinishPanel = styled.div`
+    font-family: 'Times New Roman';
     position: fixed;
     height: 30%;
     width: 30%;
@@ -98,7 +100,7 @@ export interface GamePageComponentProps extends BasePageComponentProps
     gameLobby: GetGameLobby;
     gameState: GetGameState;
     gameCheat: GetGameCheat;
-    gameWinner: GetGameUser;
+    gameResult: GetGameResult;
 
     messageContentPanelRef: React.RefObject<any>;
     
@@ -230,7 +232,7 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
 
     getFinishComponent = () => 
     {
-        if(!isNullOrUndefined(this.props.gameWinner)) 
+        if(!isNullOrUndefined(this.props.gameResult)) 
         {
             let style = new ButtonComponentStyle();
             style.displayStyle = new DisplayStyle({
@@ -240,9 +242,13 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                 marginLeftPercentage: 10,
                 heightPercentage: 25
             });
+
+            let userRank = this.props.gameResult.usersRanking.findIndex((value: GetGameUser) => value.user.userID===this.props.loggedInUser.userID);
+            let userScore = this.props.gameResult.rankingScores.find((value: number, index, number) => index===userRank);
             return (
                 <GameFinishPanel>
-                    {`The game has ended. The winner is ${this.props.gameWinner.user.username}`}
+                    {`The winner is ${this.props.gameResult.usersRanking[0].user.username}`}
+                    {`You finished ${userRank+1} ${userScore}`}
                     <ButtonComponent
                         buttonText="Finish"
                         buttonComponentStyle={style}

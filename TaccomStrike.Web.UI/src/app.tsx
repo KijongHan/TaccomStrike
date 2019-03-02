@@ -20,6 +20,7 @@ import { GetGameCard } from "./models/rest/getgamecard";
 import { GameClaim } from "./models/hub/gameclaim";
 import { GameCallCheat } from "./models/hub/gamecallcheat";
 import { GameFinish } from "./models/hub/gamefinish";
+import { GetGameResult } from "./models/rest/getgameresult";
 
 export class AppComponentState 
 {
@@ -32,7 +33,7 @@ export class AppComponentState
     currentGameLobbyMessages: GameLobbySendMessage[];
     currentGameState: GetGameState;
     currentGameCheat: GetGameCheat;
-    currentGameWinner: GetGameUser;
+    currentGameResult: GetGameResult;
 }
 
 export class AppComponent extends React.Component<{}, AppComponentState> 
@@ -47,7 +48,7 @@ export class AppComponent extends React.Component<{}, AppComponentState>
             currentGameLobby: null,
             currentGameState: null,
             currentGameCheat: null,
-            currentGameWinner: null,
+            currentGameResult: null,
             currentGameLobbyMessages: [],
             currentGameLobbyMessage: null,
             createGameLobby: new CreateGameLobby()
@@ -84,7 +85,7 @@ export class AppComponent extends React.Component<{}, AppComponentState>
                                 currentGameLobbyMessages={this.state.currentGameLobbyMessages}
                                 currentGameState={this.state.currentGameState}
                                 currentGameCheat={this.state.currentGameCheat}
-                                currentGameWinner={this.state.currentGameWinner}
+                                currentGameResult={this.state.currentGameResult}
 
                                 createGameButtonClickHandler={this.createGameButtonClickHandler}
                                 maxLobbyLimitListOnChangeHandler={this.maxLobbyLimitListOnChangeHandler}
@@ -243,7 +244,6 @@ export class AppComponent extends React.Component<{}, AppComponentState>
         let currentList = this.state.currentGameLobbyMessages;
         this.setState({currentGameLobbyMessages: currentList.concat(gameLobbySendMessage)});
         this.messageContentPanelRef.current.scrollTop = this.messageContentPanelRef.current.scrollHeight - this.messageContentPanelRef.current.clientHeight;
-        
     }
 
     submitClaimButtonClickHandler = (claims: GetGameCard[], actual: GetGameCard[]) =>
@@ -272,7 +272,7 @@ export class AppComponent extends React.Component<{}, AppComponentState>
     gameFinishHandler = (gameFinish: GameFinish) => 
     {
         this.setState({
-            currentGameWinner: gameFinish.winner
+            currentGameResult: gameFinish.gameResult
         });
     }
 
@@ -281,7 +281,7 @@ export class AppComponent extends React.Component<{}, AppComponentState>
         this.setState({
             currentGameLobbyMessages: [],
             currentGameLobbyMessage: null,
-            currentGameWinner: null,
+            currentGameResult: null,
             currentGameCheat: null,
             currentGameLobby: null,
             currentGameState: null
@@ -301,6 +301,11 @@ export class AppComponent extends React.Component<{}, AppComponentState>
         this.setState({
             createGameLobby: newCreateGameLobby
         });
+    }
+
+    chatRoomItemClickHandler = (chatroom: string) => 
+    {
+
     }
 
     componentDidMount() 

@@ -18,6 +18,7 @@ import { GameCallCheat } from "../../models/hub/gamecallcheat";
 import { GetGameUser } from "../../models/rest/getgameuser";
 import { GetGameCheat } from "../../models/rest/getgamecheat";
 import { GameFinish } from "../../models/hub/gamefinish";
+import { GetGameResult } from "../../models/rest/getgameresult";
 
 export interface PlayPageComponentProps extends BasePageComponentProps 
 {
@@ -29,7 +30,7 @@ export interface PlayPageComponentProps extends BasePageComponentProps
     currentGameLobbyMessages: GameLobbySendMessage[];
     currentGameState: GetGameState;
     currentGameCheat: GetGameCheat;
-    currentGameWinner: GetGameUser;
+    currentGameResult: GetGameResult;
 
     createGameButtonClickHandler: () => void;
     maxLobbyLimitListOnChangeHandler: (input: string) => void;
@@ -118,7 +119,7 @@ export class PlayPageComponent extends BasePageComponent<PlayPageComponentProps,
                     gameLobby={this.props.currentGameLobby}
                     gameState={this.props.currentGameState}
                     gameCheat={this.props.currentGameCheat}
-                    gameWinner={this.props.currentGameWinner}
+                    gameResult={this.props.currentGameResult}
 
                     sendMessageButtonClickHandler={this.props.sendMessageButtonClickHandler}
                     submitClaimButtonClickHandler={this.props.submitClaimButtonClickHandler}

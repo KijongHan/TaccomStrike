@@ -15,6 +15,8 @@ using TaccomStrike.Game.CallCheat.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using TaccomStrike.Library.Data.Enums;
+using TaccomStrike.Library.Data.DAL;
+using System.Linq;
 
 namespace TaccomStrike.Web.API.Hubs
 {
@@ -25,12 +27,14 @@ namespace TaccomStrike.Web.API.Hubs
 		private IHubContext<GameHub> gameHubContext;
 		private GameLobbyService gameLobbyService;
 		private UserConnectionsService userConnectionsService;
+		private GameUserRepository gameUserRepository;
 
-		public GameHub(GameLobbyService gameLobbyService, UserConnectionsService userConnectionsService, IHubContext<GameHub> gameHubContext)
+		public GameHub(GameLobbyService gameLobbyService, UserConnectionsService userConnectionsService, IHubContext<GameHub> gameHubContext, GameUserRepository gameUserRepository)
 		{
 			this.gameLobbyService = gameLobbyService;
 			this.userConnectionsService = userConnectionsService;
 			this.gameHubContext = gameHubContext;
+			this.gameUserRepository = gameUserRepository;
 		}
 
 		public Task GameCallCheat(long gameLobbyID)
@@ -154,7 +158,7 @@ namespace TaccomStrike.Web.API.Hubs
 			});
 		}
 
-		public void OnGameFinish(long gameLobbyID, Game.CallCheat.GameUser winner)
+		public void OnGameFinish(long gameLobbyID)
 		{
 			var gameLobby = gameLobbyService.GetGameLobby(gameLobbyID);
 			if (gameLobby == null)
@@ -163,6 +167,9 @@ namespace TaccomStrike.Web.API.Hubs
 			}
 			gameLobby.UseLobbyLock(() =>
 			{
+				var result = gameLobby.GameLogicController.GetGameResult();
+				gameUserRepository.UpdateGameScores(result.UsersRanking.Select((v) => v.UserPrincipal).ToList(), result.RankingScores);
+
 				foreach (var gameUser in gameLobby.GetUsers())
 				{
 					gameUser.SetCurrentGameLobbyID(null);
@@ -171,7 +178,7 @@ namespace TaccomStrike.Web.API.Hubs
 
 					var apiObject = new HubApi.GameFinish
 					{
-						Winner = new GetGameUser(winner)
+						GameResult = new GetGameResult(result)
 					};
 					gameHubContext.Clients.Client(connection).GameFinish(apiObject);
 				}

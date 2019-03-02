@@ -15,6 +15,7 @@ import { isNullOrUndefined } from "util";
 import { GameLobbyLeaveGame } from "../../models/hub/gamelobbyleave";
 import { GameLobbyStartGame } from "../../models/hub/gamelobbystart";
 import { NavbarComponent, NavbarComponentStyle } from "../general/navbar";
+import { FooterComponent } from "../general/footer";
 
 const LobbyPage = styled.div`
     width: 100%;
@@ -105,6 +106,7 @@ export class LobbyPageComponent extends BasePageComponent<LobbyPageComponentProp
                         sendMessageButtonHandler={this.props.sendMessageButtonClickHandler}>
                     </GameLobbyComponent>
                 </PanelsContainer>
+				<FooterComponent/>
 
                 <NavbarComponent
                     history={this.props.history}

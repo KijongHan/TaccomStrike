@@ -22,6 +22,7 @@ export class HomePageStyle extends BasePageStyle
     youtubeTrailerStyle: DisplayStyle;
     leaderboardStyle: CardComponentStyle;
     newsStyle: CardComponentStyle;
+    communityStyle: CardComponentStyle;
 
     large = () => 
     {
@@ -179,23 +180,34 @@ export class HomePageStyle extends BasePageStyle
 
         style.leaderboardStyle = {
             displayStyle: new DisplayStyle({
-                widthPercentage: 35,
+                widthPercentage: 30,
                 heightPixels: 300,
                 position: Position.relative,
                 floatLeft: true,
                 marginTopPixels: 100,
-                marginLeftPercentage: 5
+                marginLeftPercentage: 2
             }),
             perspectiveStyle: new PerspectiveStyle()
         };
         style.newsStyle = {
             displayStyle: new DisplayStyle({
-                widthPercentage: 45,
+                widthPercentage: 28,
                 heightPixels: 300,
                 position: Position.relative,
                 floatLeft: true,
                 marginTopPixels: 100,
-                marginLeftPercentage: 5
+                marginLeftPercentage: 4
+            }),
+            perspectiveStyle: new PerspectiveStyle()
+        };
+        style.communityStyle = {
+            displayStyle: new DisplayStyle({
+                widthPercentage: 28,
+                heightPixels: 300,
+                position: Position.relative,
+                floatLeft: true,
+                marginTopPixels: 100,
+                marginLeftPercentage: 4
             }),
             perspectiveStyle: new PerspectiveStyle()
         };

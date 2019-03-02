@@ -219,7 +219,6 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
             return null;
         }
 
-        console.log(this.props);
         let currentGameLobbyComponent: JSX.Element;
         let createGameLobbyComponent: JSX.Element;
         let flipAnimation: CardRotationAnimation;

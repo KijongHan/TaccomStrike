@@ -45,10 +45,11 @@ const GameActionOptionsPanel = styled.div`
     float: ${(p: DisplayStyleProps) => p.displayStyle.getFloatString()};
 `;
 
-const GameActionHistoryItem = styled.p`
+const GameActionHistoryItem = styled.div`
     margin: 5px 0px 5px 0px;
     padding-left: 5%;
     color: ${ColorStyle.pallet1};
+    font-family: 'Times New Roman';
 `;
 
 const GamePhaseTimer = styled.div`

@@ -11,6 +11,9 @@ import { UserLoginsService } from "../../services/rest/userlogins";
 import { ButtonComponent } from "../general/button";
 import { CardComponent } from "../general/card";
 import { GetUserComplete } from "../../models/rest/getusercomplete";
+import { ChatRoomsService } from "../../services/rest/chatrooms";
+import { GetChatRoom } from "../../models/rest/getchatroom";
+import { FooterComponent } from "../general/footer";
 
 const FacebookIcon = require("../../res/facebook_icon.png");
 const TwitterIcon = require("../../res/twitter_icon.png");
@@ -185,7 +188,7 @@ const Divider = styled.div`
 	background-color: ${ColorStyle.pallet2};
 `;
 
-const LeaderboardContent = styled.div`
+const SubPanelContent = styled.div`
 	flex-grow: 1;
 	width: 100%;
 `;
@@ -217,6 +220,31 @@ const LeaderboardOddRow = styled.tr`
 
 `;
 
+const ChatRoomsPanel = styled.div`
+	width: 100%;
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+`;
+
+const ChatRoomItem = styled.div`
+	height: 50px;
+	width: 98%;
+	margin-left: 1%;
+	padding: 10px;
+	background-color: ${ColorStyle.pallet2};
+	border-style: solid;
+	border-width: 1px;
+	border-color: ${ColorStyle.pallet3};
+	display: inline-block
+	color: ${ColorStyle.pallet1};
+
+	&:hover {
+		background-color: rgba(255, 255, 255, 0.5);
+		cursor: pointer;
+	}
+`;
+
 class DisplayStyleProps 
 {
 	displayStyle: DisplayStyle;
@@ -231,6 +259,7 @@ export class HomePageComponentState extends BasePageComponentState
 
 	statusRefreshIntervalID: number;
 	leaderboard: GetUserComplete[];
+	chatrooms: GetChatRoom[];
 }
 
 export class HomePageComponent extends BasePageComponent<HomePageComponentProps, HomePageComponentState> 
@@ -246,7 +275,8 @@ export class HomePageComponent extends BasePageComponent<HomePageComponentProps,
 			connectedUsersCount: 0,
 
 			statusRefreshIntervalID: null,
-			leaderboard: []
+			leaderboard: [],
+			chatrooms: []
 		};
 
 		UserLoginsService
@@ -254,6 +284,13 @@ export class HomePageComponent extends BasePageComponent<HomePageComponentProps,
 			.then((value: GetUserComplete[]) => {
 				this.setState({
 					leaderboard: value
+				});
+			});
+		ChatRoomsService
+			.getChatRooms()
+			.then((value: GetChatRoom[]) => {
+				this.setState({
+					chatrooms: value
 				});
 			});
 	}
@@ -284,13 +321,20 @@ export class HomePageComponent extends BasePageComponent<HomePageComponentProps,
 				);
 			}
 		});
-		console.log(UserLoginsService.getLeaderboard(5));
+
+		let chatRoomItems = this.state.chatrooms.map((value: GetChatRoom) => {
+			return (
+				<ChatRoomItem>
+					{value.chatRoomName} ({value.participants.length})
+				</ChatRoomItem>
+			);
+		});
 
 		let leaderboard = (
 			<SubPanel>
 				<SubTitle>Leader Board</SubTitle>
 				<Divider></Divider>
-				<LeaderboardContent>
+				<SubPanelContent>
 					<LeaderboardTable>
 						<tr>
 							<LeaderboardHeader>Rank</LeaderboardHeader>
@@ -299,17 +343,27 @@ export class HomePageComponent extends BasePageComponent<HomePageComponentProps,
 						</tr>
 						{tableRows}
 					</LeaderboardTable>
-				</LeaderboardContent>
+				</SubPanelContent>
 			</SubPanel>
 		);
 		let news = (
 			<SubPanel>
 				<SubTitle>Game News</SubTitle>
 				<Divider></Divider>
-				<LeaderboardContent>
-				</LeaderboardContent>
 			</SubPanel>
 		);
+		let community = (
+			<SubPanel>
+				<SubTitle>Community</SubTitle>
+				<Divider></Divider>
+				<SubPanelContent>
+					<ChatRoomsPanel>
+						{chatRoomItems}
+					</ChatRoomsPanel>
+				</SubPanelContent>
+			</SubPanel>
+		);
+
         return (
 			<HomePage>
 				<TitlePanelsComponent
@@ -364,7 +418,12 @@ export class HomePageComponent extends BasePageComponent<HomePageComponentProps,
 						cardStyle={homePageStyle.newsStyle}
 						front={news}>
 					</CardComponent>
+					<CardComponent
+						cardStyle={homePageStyle.communityStyle}
+						front={community}>
+					</CardComponent>
 				</PanelsContainer>
+				<FooterComponent/>
 
 				<NavbarComponent
 					history={this.props.history}
