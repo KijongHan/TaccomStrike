@@ -300,7 +300,7 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
         let startGameButtonEnabled = true;
         if(this.props.loggedInUser.userID===this.props.currentGameLobby.host.userID) 
         {
-            if(!isNullOrUndefined(this.props.currentGameLobby.players) && this.props.currentGameLobby.players.length>1) 
+            if(!isNullOrUndefined(this.props.currentGameLobby.players) && this.props.currentGameLobby.players.length>2) 
             {
                 startGameButtonEnabled = false;
             }

@@ -46,10 +46,14 @@ const GameActionOptionsPanel = styled.div`
 `;
 
 const GameActionHistoryItem = styled.div`
-    margin: 5px 0px 5px 0px;
     padding-left: 5%;
+    padding-top: 5px;
+    padding-bottom: 5px;
     color: ${ColorStyle.pallet1};
     font-family: 'Times New Roman';
+    border-style: solid;
+    border-width: 0.5px;
+    border-color: rgba(255, 255, 255, 0.5);
 `;
 
 const GamePhaseTimer = styled.div`

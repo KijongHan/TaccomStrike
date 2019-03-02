@@ -43,7 +43,7 @@ namespace TaccomStrike.Library.Data.ViewModel
 		{
 			lock(lobbyLock)
 			{
-				if (players.Count < 2)
+				if (players.Count < 3)
 				{
 					return false;
 				}
