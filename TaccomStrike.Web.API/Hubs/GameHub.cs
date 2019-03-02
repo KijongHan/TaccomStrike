@@ -92,18 +92,35 @@ namespace TaccomStrike.Web.API.Hubs
 			gameLobby.UseLobbyLock(() =>
 			{
 				gameLobby.GameLogicController.StartTurn(OnTurnTimeout);
-
-				foreach (var gameUser in gameLobby.GetUsers())
+				if(gameCheat==null)
 				{
-					var gameState = gameLobby.GameLogicController.GetGameState(gameUser);
-					var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser);
-
-					var apiObject = new GameCallCheat
+					foreach (var gameUser in gameLobby.GetUsers())
 					{
-						GameState = new GetGameState(gameState),
-						GameCheat = new GetGameCheat(gameCheat)
-					};
-					gameHubContext.Clients.Client(connection).GameCallCheat(apiObject);
+						var gameState = gameLobby.GameLogicController.GetGameState(gameUser);
+						var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser);
+
+						var apiObject = new GameCallCheat
+						{
+							GameState = new GetGameState(gameState),
+							GameCheat = null
+						};
+						gameHubContext.Clients.Client(connection).GameCallCheat(apiObject);
+					}
+				}
+				else
+				{
+					foreach (var gameUser in gameLobby.GetUsers())
+					{
+						var gameState = gameLobby.GameLogicController.GetGameState(gameUser);
+						var connection = userConnectionsService.GameConnectionService.GetConnection(gameUser);
+
+						var apiObject = new GameCallCheat
+						{
+							GameState = new GetGameState(gameState),
+							GameCheat = new GetGameCheat(gameCheat)
+						};
+						gameHubContext.Clients.Client(connection).GameCallCheat(apiObject);
+					}
 				}
 			});
 		}
@@ -168,7 +185,7 @@ namespace TaccomStrike.Web.API.Hubs
 			gameLobby.UseLobbyLock(() =>
 			{
 				var result = gameLobby.GameLogicController.GetGameResult();
-				gameUserRepository.UpdateGameScores(result.UsersRanking.Select((v) => v.UserPrincipal).ToList(), result.RankingScores);
+				//gameUserRepository.UpdateGameScores(result.UsersRanking.Select((v) => v.UserPrincipal).ToList(), result.RankingScores);
 
 				foreach (var gameUser in gameLobby.GetUsers())
 				{
@@ -235,7 +252,7 @@ namespace TaccomStrike.Web.API.Hubs
 				{
 					if (gameLobby.HasUser(Context.User))
 					{
-						gameLobby.RemoveUser(Context.User);
+						gameLobby.RemoveUser(Context.User, OnGameFinish, OnTurnTimeout);
 
 						var playerLeaving = Context
 							.User

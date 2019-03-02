@@ -9,6 +9,7 @@ import { GetGameClaim } from "../../models/rest/getgameclaim";
 import { GameClaimCardComponent } from "./gameclaimcard";
 import { GetGameCheat } from "../../models/rest/getgamecheat";
 import { GetGameCard } from "../../models/rest/getgamecard";
+import { GameUserState } from "../../models/enums/gameuserstate";
 
 const BlueGameUserIcon = require("../../res/blue_gameuser.svg");
 const YellowGameUserIcon = require("../../res/yellow_gameuser.svg");
@@ -239,7 +240,6 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
             let handCountChange: JSX.Element;
             if(!isNullOrUndefined(this.props.gameCheat) && cheatLoser.gameUserID===1) 
             {
-                console.log("p1 hc 2" + cheatCardsCount);
                 handCountChange = (
                     <GameBoardPlayerCardCountChange2>
                         + {cheatCardsCount}
@@ -248,7 +248,6 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
             }
             else if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0 && this.props.gameState.claims[this.props.gameState.claims.length-1].claimUser.gameUserID===1) 
             {
-                console.log("p1 hc 1");
                 handCountChange = (
                     <GameBoardPlayerCardCountChange1>
                         - {this.props.gameState.claims[this.props.gameState.claims.length-1].claims.length}
@@ -256,8 +255,13 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
                 );
             }
 
+            let opacity = 1;
+            if(gameUserIDToGameUserMapping.get(1).state===GameUserState.Disconnected) {
+                opacity = 0.3;
+            }
             playerOne = (
-                <GameBoardPlayerPanel>
+                <GameBoardPlayerPanel
+                    style={{opacity: opacity}}>
                     <GameBoardPlayerName>
                         {gameUserIDToGameUserMapping.get(1).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(1).user.username}
                     </GameBoardPlayerName>
@@ -305,8 +309,13 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
                 );
             }
 
+            let opacity = 1;
+            if(gameUserIDToGameUserMapping.get(2).state===GameUserState.Disconnected) {
+                opacity = 0.3;
+            }
             playerTwo = (
-                <GameBoardPlayerPanel>
+                <GameBoardPlayerPanel
+                    style={{opacity: opacity}}>
                     <GameBoardPlayerCardHand
                         style={{marginTop: '50%'}}>
                         {handCountChange}
@@ -354,9 +363,13 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
                 );
             }
 
-
+            let opacity = 1;
+            if(gameUserIDToGameUserMapping.get(3).state===GameUserState.Disconnected) {
+                opacity = 0.3;
+            }
             playerThree = (
-                <GameBoardPlayerPanel>
+                <GameBoardPlayerPanel
+                    style={{opacity: opacity}}>
                     <GameBoardPlayerName>
                         {gameUserIDToGameUserMapping.get(3).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(3).user.username}
                     </GameBoardPlayerName>
@@ -404,6 +417,10 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
                 );
             }
 
+            let opacity = 1;
+            if(gameUserIDToGameUserMapping.get(4).state===GameUserState.Disconnected) {
+                opacity = 0.3;
+            }
             playerFour = (
                 <GameBoardPlayerPanel>
                     <GameBoardPlayerCardHand

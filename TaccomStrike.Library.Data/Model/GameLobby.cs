@@ -52,8 +52,33 @@ namespace TaccomStrike.Library.Data.ViewModel
 				var turnPhaseDuration = GetTurnPhaseDuration(GameMode);
 				var preparationPhaseDuration = 10000;
 
+				List<int> gameScores;
+				if (players.Count == 2)
+				{
+					gameScores = new List<int>() { 1, -1 };
+				}
+				else if (players.Count == 3)
+				{
+					gameScores = new List<int>() { 1, 0, -1 };
+				}
+				else if(players.Count == 4)
+				{
+					gameScores = new List<int>() { 2, 1, 0, -1 };
+				}
+				else
+				{
+					gameScores = new List<int>() { };
+				}
+
 				GameLogicController = new GameLogicController();
-				GameLogicController.StartGame(players, GameLobbyID, callPhaseDuration, turnPhaseDuration, preparationPhaseDuration, onPreparationEnd);
+				GameLogicController.StartGame(
+					players, 
+					GameLobbyID, 
+					callPhaseDuration, 
+					turnPhaseDuration, 
+					preparationPhaseDuration, 
+					onPreparationEnd,
+					gameScores);
 				return true;
 			}
 		 }
@@ -106,7 +131,7 @@ namespace TaccomStrike.Library.Data.ViewModel
 			}
 		}
 
-		public void RemoveUser(ClaimsPrincipal user)
+		public void RemoveUser(ClaimsPrincipal user, Action<long> onGameFinish, Action<long> onTurnTimeout)
 		{
 			lock (lobbyLock)
 			{
@@ -124,6 +149,10 @@ namespace TaccomStrike.Library.Data.ViewModel
 				if (hosts.Count == 0 && players.Count > 0)
 				{
 					hosts.Add(players[0]);
+				}
+				if(InGame())
+				{
+					GameLogicController.GameUserLeave(removeUser, onTurnTimeout, onGameFinish);
 				}
 			}
 		}
