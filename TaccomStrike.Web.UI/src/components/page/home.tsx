@@ -406,7 +406,7 @@ export class HomePageComponent extends BasePageComponent<HomePageComponentProps,
 					<YoutubeTrailer
 						displayStyle={homePageStyle.youtubeTrailerStyle}>
 						<YoutubeVideo
-							src="http://www.youtube.com/embed/n_dZNLr2cME?rel=0&hd=1">
+							src="https://www.youtube.com/embed/z0uLuOSTsBY">
 						</YoutubeVideo>
 					</YoutubeTrailer>
 
