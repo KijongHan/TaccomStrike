@@ -17,6 +17,8 @@ namespace TaccomStrike.Game.CallCheat.Services
 		private int callPhaseDuration;
 		private int turnPhaseDuration;
 
+		private List<int> gameRankingScores;
+
 		public long GameLobbyID { get; set; }
 
 		public List<GameUser> GameUsers { get; set; }
@@ -73,14 +75,32 @@ namespace TaccomStrike.Game.CallCheat.Services
 			}
 		}
 
+		public GameResult GetGameResult()
+		{
+			lock(gameLogicLock)
+			{
+				var usersRanked = GameUsers.OrderBy((i) => i.State!=GameUserState.Connected).ThenBy((i) => i.Hand.Count).ToList();
+				return new GameResult
+				{
+					UsersRanking=usersRanked,
+					RankingScores=gameRankingScores
+				};
+			}
+		}
+
 		private GameCheat GameCheat()
 		{
 			var currentUser = GetCurrentPlayerTurn();
 
 			var cheatCallSuccessful = false;
-			var cheatCaller = UsersCallingCheat.First();
+			var cheatCaller = GetCheatCaller();
 			var lastClaimUser = CurrentClaims.Last().ClaimUser;
 			var preCheatClaims = CurrentClaims;
+
+			if(cheatCaller==null)
+			{
+				return null;
+			}
 
 			var lastClaim = CurrentClaims.Last();
 			for (int i = 0; i < lastClaim.Claims.Count; i++)
@@ -92,6 +112,23 @@ namespace TaccomStrike.Game.CallCheat.Services
 				}
 			}
 
+			var rankToCountMappings = new Dictionary<string, int>();
+			lastClaim.Actual.ForEach((value) =>
+			{
+				if (rankToCountMappings.ContainsKey(value.Rank))
+				{
+					rankToCountMappings[value.Rank] = rankToCountMappings[value.Rank] + 1;
+				}
+				else
+				{
+					rankToCountMappings[value.Rank] = 1;
+				}
+			});
+			var actualCards = new List<string>();
+			foreach(var pair in rankToCountMappings)
+			{
+				actualCards.Add($"×{pair.Value} {pair.Key}");
+			}
 			if (cheatCallSuccessful)
 			{
 				var claimCardsCount = 0;
@@ -103,7 +140,8 @@ namespace TaccomStrike.Game.CallCheat.Services
 						lastClaimUser.Hand.Add(actualCard, actualCard);
 					}
 				}
-				ActionHistory.Add($"{cheatCaller.UserPrincipal.GetUserName()} called cheat correctly! {lastClaimUser.UserPrincipal.GetUserName()} collected {claimCardsCount} cards");
+				ActionHistory.Add($"Call Cheat Success!");
+				ActionHistory.Add($"Call Cheat Success! {cheatCaller.UserPrincipal.GetUserName()} is the cheat caller. {lastClaimUser.UserPrincipal.GetUserName()} collected {claimCardsCount} cards. Actual cards were {String.Join(",", actualCards)}");
 			}
 			else
 			{
@@ -116,7 +154,8 @@ namespace TaccomStrike.Game.CallCheat.Services
 						cheatCaller.Hand.Add(actualCard, actualCard);
 					}
 				}
-				ActionHistory.Add($"{lastClaimUser.UserPrincipal.GetUserName()} cheated! {cheatCaller.UserPrincipal.GetUserName()} collected {claimCardsCount} cards");
+				ActionHistory.Add($"Call Cheat Failed!");
+				ActionHistory.Add($"{cheatCaller.UserPrincipal.GetUserName()} is the cheat caller. {cheatCaller.UserPrincipal.GetUserName()} collected {claimCardsCount} cards. Actual cards were {String.Join(",", actualCards)}");
 			}
 			CurrentClaims = new List<GameClaim>();
 			UsersCallingCheat = new List<GameUser>();
@@ -144,7 +183,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 				{
 					UsersCallingCheat.Add(gameUser);
 				}
-				ActionHistory.Add($"{user.GetUserName()} has called cheat!");
+				ActionHistory.Add($"{user.GetUserName()} is calling cheat!");
 			}
 		}
 
@@ -251,7 +290,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 			SubmitClaim(currentTurnUser.UserPrincipal, defaultClaims, defaultActual);
 		}
 
-		public void CallPhase(Action<long, GameCheat> onGameCheat, Action<long> onEndTurn, Action<long, GameUser> onGameFinish)
+		public void CallPhase(Action<long, GameCheat> onGameCheat, Action<long> onEndTurn, Action<long> onGameFinish)
 		{
 			lock(gameLogicLock)
 			{
@@ -269,9 +308,9 @@ namespace TaccomStrike.Game.CallCheat.Services
 						if(UsersCallingCheat.Count>0)
 						{
 							var gameCheat = GameCheat();
-							if(IsVictory())
+							if (IsVictory())
 							{
-								onGameFinish(GameLobbyID, GetCurrentPlayerTurn());
+								onGameFinish(GameLobbyID);
 							}
 							else
 							{
@@ -283,7 +322,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 						{
 							if (IsVictory())
 							{
-								onGameFinish(GameLobbyID, GetCurrentPlayerTurn());
+								onGameFinish(GameLobbyID);
 							}
 							else
 							{
@@ -302,7 +341,7 @@ namespace TaccomStrike.Game.CallCheat.Services
 		public void EndTurn()
 		{
 			turnsIndex++;
-			if (turnsIndex >= GameUsers.Count)
+			if (turnsIndex >= GameUsers.Where((i) => i.State==GameUserState.Connected).ToList().Count)
 			{
 				turnsIndex = 0;
 			}
@@ -336,7 +375,8 @@ namespace TaccomStrike.Game.CallCheat.Services
 			int callPhaseDuration, 
 			int turnPhaseDuration, 
 			int preparationPhaseDuration,
-			Action<long> onPreparationEnd)
+			Action<long> onPreparationEnd,
+			List<int> gameScores)
 		{
 			List<GameCard> deck = instantiateDeck();
 			GameUsers = new List<GameUser>();
@@ -348,34 +388,35 @@ namespace TaccomStrike.Game.CallCheat.Services
 			this.callPhaseDuration = callPhaseDuration;
 			this.turnPhaseDuration = turnPhaseDuration;
 			this.preparationPhaseDuration = preparationPhaseDuration;
-
-			int interval = deck.Count / users.Count;
-			for (int i = 0; i < users.Count; i++)
-			{
-				if (i == users.Count - 1)
-				{
-					SortedList<GameCard, GameCard> hand = new SortedList<GameCard, GameCard>(new GameCardRankComparer());
-					foreach(var card in deck)
-					{
-						hand.Add(card, card);
-					}
-					GameUsers.Add(new GameUser(i + 1, users[i], hand));
-				}
-				else
-				{
-					SortedList<GameCard, GameCard> hand = new SortedList<GameCard, GameCard>(new GameCardRankComparer());
-					for (int j = 0; j < interval; j++)
-					{
-						GameCard lastCard = deck.Last();
-						hand.Add(lastCard, lastCard);
-						deck.RemoveAt(deck.Count - 1);
-					}
-					GameUsers.Add(new GameUser(i + 1, users[i], hand));
-				}
-			}
+			this.gameRankingScores = gameScores;
 
 			lock (gameLogicLock)
 			{
+				int interval = deck.Count / users.Count;
+				for (int i = 0; i < users.Count; i++)
+				{
+					if (i == users.Count - 1)
+					{
+						SortedList<GameCard, GameCard> hand = new SortedList<GameCard, GameCard>(new GameCardRankComparer());
+						foreach (var card in deck)
+						{
+							hand.Add(card, card);
+						}
+						GameUsers.Add(new GameUser(i + 1, users[i], hand, GameUserState.Connected));
+					}
+					else
+					{
+						SortedList<GameCard, GameCard> hand = new SortedList<GameCard, GameCard>(new GameCardRankComparer());
+						for (int j = 0; j < interval; j++)
+						{
+							GameCard lastCard = deck.Last();
+							hand.Add(lastCard, lastCard);
+							deck.RemoveAt(deck.Count - 1);
+						}
+						GameUsers.Add(new GameUser(i + 1, users[i], hand, GameUserState.Connected));
+					}
+				}
+
 				CurrentGamePhase = GamePhase.PreparationPhase;
 				PreparationTimer = new Timer(preparationPhaseDuration);
 				PreparationTimer.Elapsed += (object sender, ElapsedEventArgs e) =>
@@ -391,6 +432,19 @@ namespace TaccomStrike.Game.CallCheat.Services
 				PreparationTimer.AutoReset = false;
 				PreparationTimer.Start();
 			}
+		}
+
+		private GameUser GetCheatCaller()
+		{
+			var orderedCheatCallers = UsersCallingCheat.Where((i) => i.State==GameUserState.Connected).OrderBy((i) => i.GameUserID).ToList();
+			var currentTurnUserID = GetCurrentPlayerTurn().GameUserID;
+
+			var cheatCaller = orderedCheatCallers.Where((i) => i.GameUserID > currentTurnUserID).FirstOrDefault();
+			if(cheatCaller==null)
+			{
+				cheatCaller = orderedCheatCallers.FirstOrDefault();
+			}
+			return cheatCaller;
 		}
 
 		private string GetLowerBoundRank(int recentClaimIndex)
@@ -425,7 +479,52 @@ namespace TaccomStrike.Game.CallCheat.Services
 			{
 				return true;
 			}
+			if(GameUsers.Where((i) => i.State==GameUserState.Connected).Count()==1)
+			{
+				return true;
+			}
 			return false;
+		}
+
+		public void GameUserLeave(ClaimsPrincipal userLeaving, Action<long> onTurnTimeout, Action<long> onGameFinish)
+		{
+			lock(gameLogicLock)
+			{
+				var user = GameUsers
+						.Where((i) => i.UserPrincipal.GetUserLoginID() == userLeaving.GetUserLoginID())
+						.FirstOrDefault();
+				if (GetCurrentPlayerTurn().UserPrincipal.GetUserLoginID() == user.UserPrincipal.GetUserLoginID() && CurrentGamePhase==GamePhase.TurnPhase)
+				{
+					TurnTimer.Stop();
+					onTurnTimeout(GameLobbyID);
+				}
+
+				user.State = GameUserState.Disconnected;
+
+				var rankToCountMappings = new Dictionary<string, int>();
+				user.Hand.Select((i) => i.Value).ToList().ForEach((value) =>
+				{
+					if (rankToCountMappings.ContainsKey(value.Rank))
+					{
+						rankToCountMappings[value.Rank] = rankToCountMappings[value.Rank] + 1;
+					}
+					else
+					{
+						rankToCountMappings[value.Rank] = 1;
+					}
+				});
+				var handList = new List<string>();
+				foreach (var pair in rankToCountMappings)
+				{
+					handList.Add($"×{pair.Value} {pair.Key}");
+				}
+				ActionHistory.Add($"{user.UserPrincipal.GetUserName()} has left. His cards are out of play: {String.Join(",", handList)}");
+
+				if (IsVictory())
+				{
+					onGameFinish(GameLobbyID);
+				}
+			}
 		}
 
 		public bool IsCurrentTurn(ClaimsPrincipal user)
@@ -446,7 +545,11 @@ namespace TaccomStrike.Game.CallCheat.Services
 
 		public GameUser GetCurrentPlayerTurn()
 		{
-			return GameUsers[turnsIndex];
+			if(turnsIndex>=GameUsers.Where((i) => i.State == GameUserState.Connected).ToList().Count)
+			{
+				turnsIndex = 0;
+			}
+			return GameUsers.Where((i) => i.State==GameUserState.Connected).ToList()[turnsIndex];
 		}
 
 		public GameUser GetPlayer(ClaimsPrincipal user)

@@ -27,7 +27,7 @@ const GameCardFace = styled.div`
     background-color: rgba(255, 255, 255, 1);
     display: flex;
     opacity: 1;
-    animation: ${GameClaimCardFaceAnimation} 2s linear forwards;
+    animation: ${GameClaimCardFaceAnimation} 5s linear forwards;
 `;
 
 const GameCardFaceText = styled.div`

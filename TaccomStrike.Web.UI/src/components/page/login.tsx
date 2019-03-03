@@ -18,6 +18,8 @@ import { CreateUserLogin } from "../../models/rest/createuserlogin";
 import { InputValidationResult } from "../general/labelledinput";
 import { UserLoginsService } from "../../services/rest/userlogins";
 import { MessageDialogComponent } from "../general/msgdialog";
+import { NavbarComponent } from "../general/navbar";
+import { FooterComponent } from "../general/footer";
 
 const LoginPage = styled.div`
 	height: 100%;
@@ -138,7 +140,15 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 						registerButtonClickHandler={this.registerButtonClickHandler}>
 					</RegisterComponent>
 				</PanelsContainer>
-
+				<FooterComponent/>
+				
+				<NavbarComponent
+					history={this.props.history}
+                    navbarComponentStyle={loginPageStyle.navbarComponentStyle}
+                    playNavbarItemStyle={loginPageStyle.playNavbarItemStyle}
+                    communityNavbarItemStyle={loginPageStyle.communityNavbarItemStyle}
+                    newsNavbarItemStyle={loginPageStyle.newsNavbarItemStyle}>
+                </NavbarComponent>
 				{messageDialog}
 			</LoginPage>
 		);

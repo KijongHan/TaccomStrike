@@ -212,9 +212,9 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
         this.messageInputRef = React.createRef();
     }
 
-    render() 
+    render()
     {
-        if(isNullOrUndefined(this.props.gameLobbyComponentStyle)) 
+        if(isNullOrUndefined(this.props.gameLobbyComponentStyle))
         {
             return null;
         }
@@ -222,12 +222,12 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
         let currentGameLobbyComponent: JSX.Element;
         let createGameLobbyComponent: JSX.Element;
         let flipAnimation: CardRotationAnimation;
-        if(isNullOrUndefined(this.props.currentGameLobby)) 
+        if(isNullOrUndefined(this.props.currentGameLobby))
         {
             flipAnimation = this.props.gameLobbyComponentStyle.createGameLobbyFlipAnimation;
             currentGameLobbyComponent = null;
         }
-        else 
+        else
         {
             currentGameLobbyComponent = this.getCurrentGameLobbyComponent();
             flipAnimation = this.props.gameLobbyComponentStyle.currentGameLobbyFlipAnimation;
@@ -300,7 +300,7 @@ export class GameLobbyComponent extends React.Component<GameLobbyComponentProps,
         let startGameButtonEnabled = true;
         if(this.props.loggedInUser.userID===this.props.currentGameLobby.host.userID) 
         {
-            if(!isNullOrUndefined(this.props.currentGameLobby.players) && this.props.currentGameLobby.players.length>1) 
+            if(!isNullOrUndefined(this.props.currentGameLobby.players) && this.props.currentGameLobby.players.length>2) 
             {
                 startGameButtonEnabled = false;
             }

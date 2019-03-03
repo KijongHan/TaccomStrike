@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 [Table("UserLogin", Schema="auth")]
 public class UserLogin 
 {
-
 	[Key, Column("UserLoginID")]
 	public int UserLoginID {get;set;}
 
@@ -30,4 +29,6 @@ public class UserLogin
 	[Column("ForumUserID")]
 	public int ForumUserID {get;set;}
 
+	[Column("GameUserID")]
+	public int GameUserID { get; set; }
 }

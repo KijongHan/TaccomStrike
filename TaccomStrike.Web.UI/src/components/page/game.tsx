@@ -19,6 +19,7 @@ import { GetGameLobby } from "../../models/rest/getgamelobby";
 import { GameLobbyComponent } from "../general/gamelobby";
 import { GameLobbySendMessage } from "../../models/hub/gamelobbysendmessage";
 import { GamePhase } from "../../models/enums/gamephase";
+import { GetGameResult } from "../../models/rest/getgameresult";
 
 const GamePage = styled.div`
     position: fixed;
@@ -68,11 +69,12 @@ const GameUserHandPanel = styled.div`
 `;
 
 const GameFinishPanel = styled.div`
+    font-family: 'Times New Roman';
     position: fixed;
     height: 30%;
     width: 30%;
-    color: white;
-    background-color: rgba(0, 0, 0, 1);
+    background-color: ${ColorStyle.pallet5};
+    text-align: center;
     margin-left: 35%;
     top: 30%;
     padding: 10px 10px 10px 10px;
@@ -98,7 +100,7 @@ export interface GamePageComponentProps extends BasePageComponentProps
     gameLobby: GetGameLobby;
     gameState: GetGameState;
     gameCheat: GetGameCheat;
-    gameWinner: GetGameUser;
+    gameResult: GetGameResult;
 
     messageContentPanelRef: React.RefObject<any>;
     
@@ -230,7 +232,7 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
 
     getFinishComponent = () => 
     {
-        if(!isNullOrUndefined(this.props.gameWinner)) 
+        if(!isNullOrUndefined(this.props.gameResult)) 
         {
             let style = new ButtonComponentStyle();
             style.displayStyle = new DisplayStyle({
@@ -240,9 +242,14 @@ export class GamePageComponent extends BasePageComponent<GamePageComponentProps,
                 marginLeftPercentage: 10,
                 heightPercentage: 25
             });
+
+            let userRank = this.props.gameResult.usersRanking.findIndex((value: GetGameUser) => value.user.userID===this.props.loggedInUser.userID);
+            //let userScore = this.props.gameResult.rankingScores.find((value: number, index, number) => index===userRank);
             return (
                 <GameFinishPanel>
-                    {`The game has ended. The winner is ${this.props.gameWinner.user.username}`}
+                    <div style={{width: '100%', fontSize: '1.2em'}}>{`The winner is ${this.props.gameResult.usersRanking[0].user.username}`}</div>
+                    <div style={{width: '100%'}}>{`You finished ${userRank+1}/${this.props.gameResult.usersRanking.length}`}</div>
+                    
                     <ButtonComponent
                         buttonText="Finish"
                         buttonComponentStyle={style}

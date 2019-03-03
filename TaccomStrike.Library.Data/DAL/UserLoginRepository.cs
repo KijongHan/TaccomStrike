@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using TaccomStrike.Library.Utility.Security;
+using TaccomStrike.Library.Data.Model.Views;
 
 namespace TaccomStrike.Library.Data.DAL 
 {
@@ -13,14 +14,16 @@ namespace TaccomStrike.Library.Data.DAL
 		private TaccomStrikeContext dbContext;
 
 		private readonly ForumUserRepository forumUserRepository;
+		private readonly GameUserRepository gameUserRepository;
 
-		public UserLoginRepository(TaccomStrikeContext dbContext, ForumUserRepository forumUserRepository) 
+		public UserLoginRepository(TaccomStrikeContext dbContext, ForumUserRepository forumUserRepository, GameUserRepository gameUserRepository) 
 		{
 			this.dbContext = dbContext;
 			this.forumUserRepository = forumUserRepository;
+			this.gameUserRepository = gameUserRepository;
 		}
 
-		public int CreateUserLogin(CreateUserLogin user, string passwordSalt, string passwordHash, int forumUserID)
+		public int CreateUserLogin(CreateUserLogin user, string passwordSalt, string passwordHash, int forumUserID, int gameUserID)
 		{
 			UserLogin insertUser = new UserLogin()
 			{
@@ -28,7 +31,8 @@ namespace TaccomStrike.Library.Data.DAL
 				Email = user.Email,
 				PasswordSalt = passwordSalt,
 				PasswordHash = passwordHash,
-				ForumUserID = forumUserID
+				ForumUserID = forumUserID,
+				GameUserID = gameUserID
 			};
 			insertUser.WhenCreated = DateTime.Now;
 			dbContext.UserLogin.Add(insertUser);
@@ -68,24 +72,6 @@ namespace TaccomStrike.Library.Data.DAL
 			return user;
 		}
 
-		public Task<int> CreateUserLoginAsync(CreateUserLogin user, string passwordSalt, string passwordHash, int forumUserID)
-		{
-			return Task.Run(() => 
-			{
-				UserLogin insertUser = new UserLogin()
-				{
-					Username = user.Username,
-					PasswordSalt = passwordSalt,
-					PasswordHash = passwordHash,
-					ForumUserID = forumUserID
-				};
-				insertUser.WhenCreated = DateTime.Now;
-				dbContext.UserLogin.Add(insertUser);
-				dbContext.SaveChanges();
-				return insertUser.ForumUserID;
-			});   
-		}
-
 		public Task<List<UserLogin>> GetUserLoginsAsync(string email = null, string username = null)
 		{
 			return Task.Run(() =>
@@ -119,9 +105,22 @@ namespace TaccomStrike.Library.Data.DAL
 				string hashPassword = Authentication.HashPassword(userEntity.Password, passwordSalt);
 
 				var forumUserID = forumUserRepository.CreateForumUser();
-				var userLoginID = CreateUserLogin(userEntity, passwordSalt, hashPassword, forumUserID);
+				var gameUserID = gameUserRepository.CreateGameUser();
+				var userLoginID = CreateUserLogin(userEntity, passwordSalt, hashPassword, forumUserID, gameUserID);
 
 				return GetUserLogin(userLoginID);
+			});
+		}
+
+		public Task<List<UserComplete>> GetLeaderboard(int top)
+		{
+			return Task.Run(() =>
+			{
+				var query = dbContext.UserComplete.AsQueryable();
+				query = query
+					.OrderByDescending((i) => i.GameScore)
+					.Take(top);
+				return query.ToList();
 			});
 		}
 	}
