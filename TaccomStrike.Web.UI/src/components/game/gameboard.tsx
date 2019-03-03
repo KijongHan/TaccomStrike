@@ -9,6 +9,7 @@ import { GetGameClaim } from "../../models/rest/getgameclaim";
 import { GameClaimCardComponent } from "./gameclaimcard";
 import { GetGameCheat } from "../../models/rest/getgamecheat";
 import { GetGameCard } from "../../models/rest/getgamecard";
+import { GameUserState } from "../../models/enums/gameuserstate";
 
 const BlueGameUserIcon = require("../../res/blue_gameuser.svg");
 const YellowGameUserIcon = require("../../res/yellow_gameuser.svg");
@@ -48,7 +49,7 @@ const GameBoardPlayerName = styled.div`
 const GameBoardPlayerCardHand = styled.div`
     position: relative;
     width: 70%;
-    height: 30%;
+    height: 40%;
     background-size: 100% 100%;
     background-image: url(${CardHandIcon});
     display: flex;
@@ -78,22 +79,23 @@ const GameBoardPlayerCardCountChangeAnimation1 = keyframes`
     }
 
     40% {
-        top: -140%;
+        top: -120%;
     }
 
     80% {
-        top: -140%;
+        top: -120%;
         opacity: 1;
     }
 
     100% {
-        top: -140%;
+        top: -120%;
         opacity: 0;
         visibility: hidden;
     }
 `;
 
 const GameBoardPlayerCardCountChange1 = styled.div`
+    visibility: visible;
     position: absolute;
     text-align: center;
     font-size: 1.5em;
@@ -108,27 +110,28 @@ const GameBoardPlayerCardCountChangeAnimation2 = keyframes`
     }
 
     40% {
-        top: -140%;
+        top: -120%;
     }
 
     80% {
-        top: -140%;
+        top: -120%;
         opacity: 1;
     }
 
     100% {
-        top: -140%;
+        top: -120%;
         opacity: 0;
         visibility: hidden;
     }
 `;
 
 const GameBoardPlayerCardCountChange2 = styled.div`
+    visibility: visible;
     position: absolute;
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1.6em;
     top: 0%;
-    animation: ${GameBoardPlayerCardCountChangeAnimation2} 1.5s linear forwards;
+    animation: ${GameBoardPlayerCardCountChangeAnimation2} 1.6s linear forwards;
 `;
 
 const GameBoardVacantSeat = styled.div`
@@ -204,6 +207,24 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
         this.props.gameState.players.forEach((player: GetGameUser) => {
             gameUserIDToGameUserMapping.set(player.gameUserID, player)
         });
+        let cheatLoser: GetGameUser;
+        let cheatCardsCount: number;
+
+        if(!isNullOrUndefined(this.props.gameCheat)) 
+        {
+            if(this.props.gameCheat.cheatCallSuccessful) 
+            {
+                cheatLoser = this.props.gameCheat.lastClaimUser;
+            }
+            else 
+            {
+                cheatLoser = this.props.gameCheat.cheatCaller;
+            }
+            cheatCardsCount = 0;
+            this.props.gameCheat.preCheatClaims.forEach((value: GetGameClaim) => {
+                cheatCardsCount = cheatCardsCount + value.actual.length;
+            });
+        }
 
         let playerOne: JSX.Element;
         if(gameUserIDToGameUserMapping.has(1))
@@ -217,7 +238,15 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
             }
 
             let handCountChange: JSX.Element;
-            if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0 && this.props.gameState.claims[this.props.gameState.claims.length-1].claimUser.gameUserID===1) 
+            if(!isNullOrUndefined(this.props.gameCheat) && cheatLoser.gameUserID===1) 
+            {
+                handCountChange = (
+                    <GameBoardPlayerCardCountChange2>
+                        + {cheatCardsCount}
+                    </GameBoardPlayerCardCountChange2>
+                );
+            }
+            else if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0 && this.props.gameState.claims[this.props.gameState.claims.length-1].claimUser.gameUserID===1) 
             {
                 handCountChange = (
                     <GameBoardPlayerCardCountChange1>
@@ -226,8 +255,13 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
                 );
             }
 
+            let opacity = 1;
+            if(gameUserIDToGameUserMapping.get(1).state===GameUserState.Disconnected) {
+                opacity = 0.3;
+            }
             playerOne = (
-                <GameBoardPlayerPanel>
+                <GameBoardPlayerPanel
+                    style={{opacity: opacity}}>
                     <GameBoardPlayerName>
                         {gameUserIDToGameUserMapping.get(1).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(1).user.username}
                     </GameBoardPlayerName>
@@ -257,7 +291,16 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
             }
 
             let handCountChange: JSX.Element;
-            if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0 && this.props.gameState.claims[this.props.gameState.claims.length-1].claimUser.gameUserID===2) 
+            if(!isNullOrUndefined(this.props.gameCheat) && cheatLoser.gameUserID===2) 
+            {
+                handCountChange = (
+                    <GameBoardPlayerCardCountChange2
+                        style={{visibility: 'visible'}}>
+                        + {cheatCardsCount}
+                    </GameBoardPlayerCardCountChange2>
+                );
+            }
+            else if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0 && this.props.gameState.claims[this.props.gameState.claims.length-1].claimUser.gameUserID===2)  
             {
                 handCountChange = (
                     <GameBoardPlayerCardCountChange1>
@@ -266,8 +309,13 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
                 );
             }
 
+            let opacity = 1;
+            if(gameUserIDToGameUserMapping.get(2).state===GameUserState.Disconnected) {
+                opacity = 0.3;
+            }
             playerTwo = (
-                <GameBoardPlayerPanel>
+                <GameBoardPlayerPanel
+                    style={{opacity: opacity}}>
                     <GameBoardPlayerCardHand
                         style={{marginTop: '50%'}}>
                         {handCountChange}
@@ -297,17 +345,31 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
             }
 
             let handCountChange: JSX.Element;
-            if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0 && this.props.gameState.claims[this.props.gameState.claims.length-1].claimUser.gameUserID===3) 
+            if(!isNullOrUndefined(this.props.gameCheat) && cheatLoser.gameUserID===3) 
             {
                 handCountChange = (
-                    <GameBoardPlayerCardCountChange2>
-                        - {this.props.gameState.claims[this.props.gameState.claims.length-1].claims.length}
+                    <GameBoardPlayerCardCountChange2
+                        style={{visibility: 'visible'}}>
+                        + {cheatCardsCount}
                     </GameBoardPlayerCardCountChange2>
                 );
             }
+            else if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0 && this.props.gameState.claims[this.props.gameState.claims.length-1].claimUser.gameUserID===3)  
+            {
+                handCountChange = (
+                    <GameBoardPlayerCardCountChange1>
+                        - {this.props.gameState.claims[this.props.gameState.claims.length-1].claims.length}
+                    </GameBoardPlayerCardCountChange1>
+                );
+            }
 
+            let opacity = 1;
+            if(gameUserIDToGameUserMapping.get(3).state===GameUserState.Disconnected) {
+                opacity = 0.3;
+            }
             playerThree = (
-                <GameBoardPlayerPanel>
+                <GameBoardPlayerPanel
+                    style={{opacity: opacity}}>
                     <GameBoardPlayerName>
                         {gameUserIDToGameUserMapping.get(3).user.userID === this.props.loggedInUser.userID ? "You" : gameUserIDToGameUserMapping.get(3).user.username}
                     </GameBoardPlayerName>
@@ -337,15 +399,28 @@ export class GameBoardComponent extends React.Component<GameBoardComponentProps,
             }
 
             let handCountChange: JSX.Element;
-            if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0 && this.props.gameState.claims[this.props.gameState.claims.length-1].claimUser.gameUserID===4) 
+            if(!isNullOrUndefined(this.props.gameCheat) && cheatLoser.gameUserID===4) 
             {
                 handCountChange = (
-                    <GameBoardPlayerCardCountChange2>
-                        - {this.props.gameState.claims[this.props.gameState.claims.length-1].claims.length}
+                    <GameBoardPlayerCardCountChange2
+                        style={{visibility: 'visible'}}>
+                        + {cheatCardsCount}
                     </GameBoardPlayerCardCountChange2>
                 );
             }
+            else if(!isNullOrUndefined(this.props.gameState.claims) && this.props.gameState.claims.length > 0 && this.props.gameState.claims[this.props.gameState.claims.length-1].claimUser.gameUserID===4)  
+            {
+                handCountChange = (
+                    <GameBoardPlayerCardCountChange1>
+                        - {this.props.gameState.claims[this.props.gameState.claims.length-1].claims.length}
+                    </GameBoardPlayerCardCountChange1>
+                );
+            }
 
+            let opacity = 1;
+            if(gameUserIDToGameUserMapping.get(4).state===GameUserState.Disconnected) {
+                opacity = 0.3;
+            }
             playerFour = (
                 <GameBoardPlayerPanel>
                     <GameBoardPlayerCardHand

@@ -1,6 +1,7 @@
 import { GetGameUser } from "../rest/getgameuser";
+import { GetGameResult } from "../rest/getgameresult";
 
 export class GameFinish 
 {
-    winner: GetGameUser;
+    gameResult: GetGameResult;
 }

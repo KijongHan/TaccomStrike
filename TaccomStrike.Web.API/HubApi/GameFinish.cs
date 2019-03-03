@@ -8,6 +8,6 @@ namespace TaccomStrike.Web.API.HubApi
 {
 	public class GameFinish
 	{
-		public GetGameUser Winner { get; set; }
+		public GetGameResult GameResult { get; set; }
 	}
 }

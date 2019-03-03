@@ -2,11 +2,14 @@
 using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using TaccomStrike.Library.Data.Model.Views;
 
 namespace TaccomStrike.Library.Data.Model
 {
 	public partial class TaccomStrikeContext : DbContext
 	{
+		public virtual DbSet<GameUser> GameUser { get; set; }
+
 		public virtual DbSet<ForumComment> ForumComment { get; set; }
 		public virtual DbSet<ForumLike> ForumLike { get; set; }
 		public virtual DbSet<ForumThread> ForumThread { get; set; }
@@ -15,11 +18,19 @@ namespace TaccomStrike.Library.Data.Model
 
 		public virtual DbSet<UserLogin> UserLogin {get;set;}
 		public virtual DbSet<UserRole> UserRole {get;set;}
+		public virtual DbQuery<UserComplete> UserComplete { get; set; }
 
 		public virtual DbSet<AppException> AppException {get;set;}
 		public virtual DbSet<AppSettingProgram> AppSettingProgram {get;set;}
 		public virtual DbSet<AppSettingItem> AppSettingItem {get;set;}
 		
+		public TaccomStrikeContext() : base(
+			new DbContextOptionsBuilder<TaccomStrikeContext>()
+				.UseSqlServer(ConfigurationManager.AppSettings["ConnectionString"])
+				.Options
+			)
+		{}
+
 		public TaccomStrikeContext(DbContextOptions<TaccomStrikeContext> options)
 			: base(options)
 		{

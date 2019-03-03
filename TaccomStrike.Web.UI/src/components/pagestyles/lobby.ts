@@ -13,11 +13,6 @@ export class LobbyPageStyle extends BasePageStyle
     titlePanelsStyle: TitlePanelsStyle;
 	gameTitlePanelStyle: TitlePanelStyle;
     lobbiesTitlePanelStyle: TitlePanelStyle;
-    
-    navbarComponentStyle: NavbarComponentStyle;
-    playNavbarItemStyle: NavbarItemStyle;
-    communityNavbarItemStyle: NavbarItemStyle;
-    newsNavbarItemStyle: NavbarItemStyle;
 
     gameLobbiesComponentStyle: GameLobbiesComponentStyle;
     gameLobbyComponentStyle: GameLobbyComponentStyle;
@@ -117,7 +112,7 @@ export class LobbyPageStyle extends BasePageStyle
             cardComponentStyle: {
                 displayStyle: new DisplayStyle({
                     heightPixels: 55,
-                    widthPercentage: 15
+                    widthPercentage: 12
                 }),
                 perspectiveStyle: new PerspectiveStyle({
                     perspective: 400
@@ -398,7 +393,7 @@ export class LobbyPageStyle extends BasePageStyle
             cardComponentStyle: {
                 displayStyle: new DisplayStyle({
                     heightPixels: 55,
-                    widthPercentage: 20
+                    widthPercentage: 14
                 }),
                 perspectiveStyle: new PerspectiveStyle({
                     perspective: 400

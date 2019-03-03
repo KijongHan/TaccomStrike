@@ -141,7 +141,7 @@ namespace TaccomStrike.Library.Data.Utility
 				.ToList();
 		}
 
-		public static List<GetGameUser> ApiGetGameUsers(this IEnumerable<GameUser> gameUsers)
+		public static List<GetGameUser> ApiGetGameUsers(this IEnumerable<Game.CallCheat.GameUser> gameUsers)
 		{
 			return gameUsers
 				.Select((gameUser) =>

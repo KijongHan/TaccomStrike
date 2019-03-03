@@ -11,7 +11,6 @@ namespace TaccomStrike.Web.API.Controllers
 	[Route("api/forumthreads")]
 	public class ForumThreadsController : Controller
 	{
-
 		private ForumThreadRepository forumThreadRepository;
 
 		public ForumThreadsController(ForumThreadRepository forumThreadRepository)

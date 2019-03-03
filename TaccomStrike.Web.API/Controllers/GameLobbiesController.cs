@@ -54,5 +54,13 @@ namespace TaccomStrike.Web.API.Controllers
 				.ToList();
 			return Ok(gameLobbies);
 		}
+
+		[Route("count")]
+		[HttpGet]
+		public IActionResult GetGameLobbiesCount()
+		{
+			var count = gameLobbyService.GetGameLobbies().Count;
+			return Ok(count);
+		}
 	}
 }

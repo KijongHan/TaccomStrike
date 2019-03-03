@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { DisplayStyle } from "../../styles/displaystyle";
 import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
 import { ColorStyle } from "../../styles/colorstyle";
+import { History } from "history";
 
 const PlayIcon = require("../../res/play.png");
 const CommunityIcon = require("../../res/community.png");
@@ -94,7 +95,7 @@ export class NavbarComponentProps
     playNavbarItemStyle: NavbarItemStyle;
     communityNavbarItemStyle: NavbarItemStyle;
     newsNavbarItemStyle: NavbarItemStyle;
-    navbarRef: React.RefObject<any>;
+    history: History<any>;
 }
 
 export class NavbarComponentStyle 
@@ -129,7 +130,6 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
     {
         return (
             <Navbar
-                innerRef={this.props.navbarRef}
                 displayStyle={this.props.navbarComponentStyle.displayStyle}>
                 {this.getPlayNavbarItem()}
                 {this.getCommunityNavbarItem()}
@@ -159,6 +159,7 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
             <CardComponent
                 front={
                     <PlayNavbarItem
+                        onClick={this.playNavbarItemClickHandler}
                         isSelected={this.props.playNavbarItemStyle.isSelected}>
                         {icon}
                         {text}
@@ -182,7 +183,7 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
         {
             text = (
                 <NavbarItemText>
-                    Community
+                    Home
                 </NavbarItemText>
             );
         }
@@ -191,6 +192,7 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
             <CardComponent
                 front={
                     <CommunityNavbarItem
+                        onClick={this.communityNavbarItemClickHandler}
                         isSelected={this.props.communityNavbarItemStyle.isSelected}>
                         {icon}
                         {text}
@@ -223,6 +225,7 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
             <CardComponent
                 front={
                     <NewsNavbarItem
+                        onClick={this.newsNavbarItemClickHandler}
                         isSelected={this.props.newsNavbarItemStyle.isSelected}>
                         {icon}
                         {text}
@@ -232,5 +235,20 @@ export class NavbarComponent extends React.Component<NavbarComponentProps, {}>
                 hoverAnimation={this.props.newsNavbarItemStyle.cardHoverAnimation}>
             </CardComponent>
         );
+    }
+
+    playNavbarItemClickHandler = () => 
+    {
+        this.props.history.push("/play");
+    }
+
+    communityNavbarItemClickHandler = () => 
+    {
+        this.props.history.push("/home");
+    }
+
+    newsNavbarItemClickHandler = () => 
+    {
+        this.props.history.push("/news");
     }
 }

@@ -7,6 +7,7 @@ CREATE TABLE [auth].[UserLogin] (
     [WhenCreated]        DATETIME       NULL,
     [WhenDeleted]        DATETIME       NULL,
     [ForumUserID] INT,
+	[GameUserID] INT,
     CONSTRAINT [PK_UserLogin] PRIMARY KEY CLUSTERED ([UserLoginID] ASC)
 );
 GO
@@ -14,4 +15,9 @@ GO
 ALTER TABLE [auth].[UserLogin]
 ADD CONSTRAINT FK_UserLogin_ForumUser FOREIGN KEY ([ForumUserID])
 REFERENCES [forum].[ForumUser] ([ForumUserID]);
+GO
+
+ALTER TABLE [auth].[UserLogin]
+ADD CONSTRAINT FK_UserLogin_GameUser FOREIGN KEY ([GameUserID])
+REFERENCES [game].[GameUser] ([GameUserID]);
 GO

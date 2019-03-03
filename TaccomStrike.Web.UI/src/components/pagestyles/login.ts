@@ -6,6 +6,7 @@ import { RegisterComponentStyle } from "../general/register";
 import { DisplayStyle, Position } from "../../styles/displaystyle";
 import { PerspectiveStyle } from "../../styles/perspectivestyle";
 import { ComboButtonComponentStyle } from "../general/combobutton";
+import { CardRotationAnimation } from "../general/card";
 
 export class LoginPageStyle extends BasePageStyle
 {
@@ -20,7 +21,10 @@ export class LoginPageStyle extends BasePageStyle
     {
         let style = new LoginPageStyle();
         style.titlePanelsStyle = {
-            displayStyling: new DisplayStyle({ heightPixels: 150 })
+            displayStyling: new DisplayStyle({ 
+                heightPixels: 150,
+                marginTopPixels: 72
+            })
         };
         style.callTitlePanelStyle = {
             displayStyle: new DisplayStyle({
@@ -38,6 +42,101 @@ export class LoginPageStyle extends BasePageStyle
                 floatLeft: true
             })
         };
+
+        style.navbarComponentStyle = {
+            displayStyle: new DisplayStyle({
+                position: Position.fixed,
+                topPixels: 0,
+                widthPercentage: 100,
+                paddingLeftPixels: 10,
+                paddingTopPixels: 17
+            })
+        };
+        style.playNavbarItemStyle = {
+            cardComponentStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 55,
+                    widthPercentage: 12
+                }),
+                perspectiveStyle: new PerspectiveStyle({
+                    perspective: 400
+                })
+            },
+            cardRotationAnimation: {
+                rotationFrom: 0,
+                rotationTo: 20,
+                rotationDirection: 1,
+                rotationDelay: 1000,
+                rotationDuration: 500
+            },
+            cardHoverAnimation: new CardRotationAnimation({
+                rotationFrom: 20,
+                rotationTo: 0,
+                rotationDirection: 1,
+                rotationDelay: 0,
+                rotationDuration: 1000
+            }),
+            isSelected: true,
+            showIcon: true,
+            showText: true
+        };
+        style.communityNavbarItemStyle = {
+            cardComponentStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 55,
+                    widthPercentage: 12
+                }),
+                perspectiveStyle: new PerspectiveStyle({
+                    perspective: 400
+                })
+            },
+            cardRotationAnimation: {
+                rotationFrom: 0,
+                rotationTo: 20,
+                rotationDirection: 1,
+                rotationDelay: 1000,
+                rotationDuration: 500
+            },
+            cardHoverAnimation: new CardRotationAnimation({
+                rotationFrom: 20,
+                rotationTo: 0,
+                rotationDirection: 1,
+                rotationDelay: 0,
+                rotationDuration: 1000
+            }),
+            isSelected: false,
+            showIcon: true,
+            showText: true
+        };
+        style.newsNavbarItemStyle = {
+            cardComponentStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 55,
+                    widthPercentage: 12
+                }),
+                perspectiveStyle: new PerspectiveStyle({
+                    perspective: 400
+                })
+            },
+            cardRotationAnimation: {
+                rotationFrom: 0,
+                rotationTo: 20,
+                rotationDirection: 1,
+                rotationDelay: 1000,
+                rotationDuration: 500
+            },
+            cardHoverAnimation: new CardRotationAnimation({
+                rotationFrom: 20,
+                rotationTo: 0,
+                rotationDirection: 1,
+                rotationDelay: 0,
+                rotationDuration: 1000
+            }),
+            isSelected: false,
+            showIcon: true,
+            showText: true
+        };
+
         style.loginComponentStyle = {
             cardComponentStyle:
                 {
@@ -157,7 +256,8 @@ export class LoginPageStyle extends BasePageStyle
         let style = new LoginPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({
-                heightPixels: 340
+                heightPixels: 340,
+                marginTopPixels: 72
             })
         };
         style.callTitlePanelStyle = {
@@ -177,6 +277,101 @@ export class LoginPageStyle extends BasePageStyle
                 floatLeft: true
             })
         };
+
+        style.navbarComponentStyle = {
+            displayStyle: new DisplayStyle({
+                position: Position.fixed,
+                topPixels: 0,
+                widthPercentage: 100,
+                paddingLeftPixels: 10,
+                paddingTopPixels: 17
+            })
+        };
+        style.playNavbarItemStyle = {
+            cardComponentStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 55,
+                    widthPercentage: 14
+                }),
+                perspectiveStyle: new PerspectiveStyle({
+                    perspective: 400
+                })
+            },
+            cardRotationAnimation: {
+                rotationFrom: 0,
+                rotationTo: 20,
+                rotationDirection: 1,
+                rotationDelay: 1000,
+                rotationDuration: 500
+            },
+            cardHoverAnimation: new CardRotationAnimation({
+                rotationFrom: 20,
+                rotationTo: 0,
+                rotationDirection: 1,
+                rotationDelay: 0,
+                rotationDuration: 1000
+            }),
+            isSelected: true,
+            showIcon: true,
+            showText: true
+        };
+        style.communityNavbarItemStyle = {
+            cardComponentStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 55,
+                    widthPercentage: 14
+                }),
+                perspectiveStyle: new PerspectiveStyle({
+                    perspective: 400
+                })
+            },
+            cardRotationAnimation: {
+                rotationFrom: 0,
+                rotationTo: 20,
+                rotationDirection: 1,
+                rotationDelay: 1000,
+                rotationDuration: 500
+            },
+            cardHoverAnimation: new CardRotationAnimation({
+                rotationFrom: 20,
+                rotationTo: 0,
+                rotationDirection: 1,
+                rotationDelay: 0,
+                rotationDuration: 1000
+            }),
+            isSelected: false,
+            showIcon: true,
+            showText: true
+        };
+        style.newsNavbarItemStyle = {
+            cardComponentStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 55,
+                    widthPercentage: 14
+                }),
+                perspectiveStyle: new PerspectiveStyle({
+                    perspective: 400
+                })
+            },
+            cardRotationAnimation: {
+                rotationFrom: 0,
+                rotationTo: 20,
+                rotationDirection: 1,
+                rotationDelay: 1000,
+                rotationDuration: 500
+            },
+            cardHoverAnimation: new CardRotationAnimation({
+                rotationFrom: 20,
+                rotationTo: 0,
+                rotationDirection: 1,
+                rotationDelay: 0,
+                rotationDuration: 1000
+            }),
+            isSelected: false,
+            showIcon: true,
+            showText: true
+        };
+
         style.loginComponentStyle = {
             cardComponentStyle:
                 {
@@ -295,7 +490,8 @@ export class LoginPageStyle extends BasePageStyle
         let style = new LoginPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({ 
-                heightPixels: 355
+                heightPixels: 355,
+                marginTopPixels: 72
             })
         };
         style.callTitlePanelStyle = {
@@ -315,6 +511,76 @@ export class LoginPageStyle extends BasePageStyle
                 floatLeft: true
             })
         };
+
+        style.navbarComponentStyle = {
+            displayStyle: new DisplayStyle({
+                position: Position.fixed,
+                topPixels: 0,
+                widthPercentage: 100,
+                paddingLeftPixels: 10,
+                paddingTopPixels: 17
+            })
+        };
+        style.playNavbarItemStyle = {
+            cardComponentStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 55,
+                    widthPercentage: 15
+                }),
+                perspectiveStyle: new PerspectiveStyle({
+                    perspective: 400
+                })
+            },
+            cardRotationAnimation: {
+                rotationFrom: 0,
+                rotationTo: 20,
+                rotationDirection: 1,
+                rotationDelay: 1000,
+                rotationDuration: 500
+            },
+            cardHoverAnimation: new CardRotationAnimation({
+                rotationFrom: 20,
+                rotationTo: 0,
+                rotationDirection: 1,
+                rotationDelay: 0,
+                rotationDuration: 1000
+            }),
+            isSelected: true,
+            showIcon: true,
+            showText: false
+        };
+
+        let navbarItemStyle = {
+            cardComponentStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 55,
+                    widthPercentage: 15
+                }),
+                perspectiveStyle: new PerspectiveStyle({
+                    perspective: 400
+                })
+            },
+            cardRotationAnimation: {
+                rotationFrom: 0,
+                rotationTo: 20,
+                rotationDirection: 1,
+                rotationDelay: 1000,
+                rotationDuration: 500
+            },
+            cardHoverAnimation: new CardRotationAnimation({
+                rotationFrom: 20,
+                rotationTo: 0,
+                rotationDirection: 1,
+                rotationDelay: 0,
+                rotationDuration: 1000
+            }),
+            isSelected: false,
+            showIcon: true,
+            showText: false
+        };
+        style.communityNavbarItemStyle = navbarItemStyle;
+        style.newsNavbarItemStyle = navbarItemStyle;
+
         style.loginComponentStyle = {
             cardComponentStyle:
                 {
@@ -435,7 +701,8 @@ export class LoginPageStyle extends BasePageStyle
         let style = new LoginPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({ 
-                heightPixels: 315
+                heightPixels: 315,
+                marginTopPixels: 72
             })
         };
         style.callTitlePanelStyle = {
@@ -457,6 +724,76 @@ export class LoginPageStyle extends BasePageStyle
             }),
             fontSize: '4em'
         };
+
+        style.navbarComponentStyle = {
+            displayStyle: new DisplayStyle({
+                position: Position.fixed,
+                topPixels: 0,
+                widthPercentage: 100,
+                paddingLeftPixels: 10,
+                paddingTopPixels: 17
+            })
+        };
+        style.playNavbarItemStyle = {
+            cardComponentStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 55,
+                    widthPercentage: 17
+                }),
+                perspectiveStyle: new PerspectiveStyle({
+                    perspective: 400
+                })
+            },
+            cardRotationAnimation: {
+                rotationFrom: 0,
+                rotationTo: 20,
+                rotationDirection: 1,
+                rotationDelay: 1000,
+                rotationDuration: 500
+            },
+            cardHoverAnimation: new CardRotationAnimation({
+                rotationFrom: 20,
+                rotationTo: 0,
+                rotationDirection: 1,
+                rotationDelay: 0,
+                rotationDuration: 1000
+            }),
+            isSelected: true,
+            showIcon: true,
+            showText: false
+        };
+
+        let navbarItemStyle = {
+            cardComponentStyle: {
+                displayStyle: new DisplayStyle({
+                    heightPixels: 55,
+                    widthPercentage: 17
+                }),
+                perspectiveStyle: new PerspectiveStyle({
+                    perspective: 400
+                })
+            },
+            cardRotationAnimation: {
+                rotationFrom: 0,
+                rotationTo: 20,
+                rotationDirection: 1,
+                rotationDelay: 1000,
+                rotationDuration: 500
+            },
+            cardHoverAnimation: new CardRotationAnimation({
+                rotationFrom: 20,
+                rotationTo: 0,
+                rotationDirection: 1,
+                rotationDelay: 0,
+                rotationDuration: 1000
+            }),
+            isSelected: false,
+            showIcon: true,
+            showText: false
+        };
+        style.communityNavbarItemStyle = navbarItemStyle;
+        style.newsNavbarItemStyle = navbarItemStyle;
+
         style.loginComponentStyle = {
             cardComponentStyle:
                 {

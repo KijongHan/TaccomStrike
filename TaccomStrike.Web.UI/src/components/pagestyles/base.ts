@@ -1,5 +1,12 @@
+import { NavbarComponentStyle, NavbarItemStyle } from "../general/navbar";
+
 export abstract class BasePageStyle 
 {
+    navbarComponentStyle: NavbarComponentStyle;
+    playNavbarItemStyle: NavbarItemStyle;
+    communityNavbarItemStyle: NavbarItemStyle;
+    newsNavbarItemStyle: NavbarItemStyle;
+
     abstract large: () => BasePageStyle;
 
     abstract medium: () => BasePageStyle;

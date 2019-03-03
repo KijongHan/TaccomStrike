@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaccomStrike.Library.Data.DAL;
+using TaccomStrike.Library.Data.Services;
 using TaccomStrike.Library.Data.Utility;
 using TaccomStrike.Library.Data.ViewModel;
 
@@ -14,11 +15,29 @@ namespace TaccomStrike.Web.API.Controllers
 	[EnableCors("AllowSpecificOrigin")]
 	public class UsersController : Controller
 	{
+		private readonly UserConnectionsService userConnectionsService;
 		private readonly UserLoginRepository userLoginRepository;
 
-		public UsersController(UserLoginRepository userLoginRepository)
+		public UsersController(UserLoginRepository userLoginRepository, UserConnectionsService userConnectionsService)
 		{
 			this.userLoginRepository = userLoginRepository;
+			this.userConnectionsService = userConnectionsService;
+		}
+
+		[Route("leaderboard")]
+		[HttpGet]
+		public async Task<IActionResult> GetLeaderboard([FromQuery] int top)
+		{
+			var leaderboard = await userLoginRepository.GetLeaderboard(top);
+			return Ok(leaderboard);
+		}
+
+		[Route("connected/count")]
+		[HttpGet]
+		public IActionResult GetConnectedUsers()
+		{
+			var count = userConnectionsService.GameConnectionService.GetUserConnections().Count;
+			return Ok(count);
 		}
 
 		[Route("")]

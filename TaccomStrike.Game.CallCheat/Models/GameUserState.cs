@@ -3,6 +3,6 @@ namespace TaccomStrike.Game.CallCheat
 {
 	public enum GameUserState
 	{
-		ActivePlayer, Observer
+		Connected = 1, Disconnected = 2
 	}
 }
