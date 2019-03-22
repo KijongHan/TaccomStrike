@@ -43,6 +43,7 @@ export class FooterComponent extends React.Component<{}, {}>
                     <FooterCopyright>
                         Copyright © 2019 Thomas Han. All Rights Reserved.
                         <Divider/>
+                        Version 0.1.0
                     </FooterCopyright>
                 </FooterContent>
             </Footer>
