@@ -67,7 +67,6 @@
     <Folder Include="Security\" />
     <Folder Include="game" />
     <Folder Include="game\Tables" />
-    <Folder Include="game\Views" />
     <Folder Include="auth\Views" />
   </ItemGroup>
   <ItemGroup>
