@@ -10,7 +10,6 @@ using CallCheatOnline.Library.Data.Model;
 using CallCheatOnline.Web.API.HubApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
-using CallCheatOnline.Web.API.HubApi;
 
 namespace CallCheatOnline.Web.API.Hubs
 {
