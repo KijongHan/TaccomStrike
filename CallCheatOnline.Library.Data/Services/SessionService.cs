@@ -12,60 +12,60 @@ using CallCheatOnline.Library.Utility.Security;
 
 namespace CallCheatOnline.Library.Data.Services
 {
-    public class SessionService : ITicketStore {
+	public class SessionService : ITicketStore {
 
-        private readonly Dictionary<string, AuthenticationTicket> userSessions;
+		private readonly Dictionary<string, AuthenticationTicket> userSessions;
 
-        public SessionService() {
-            userSessions = new Dictionary<string, AuthenticationTicket>();
-        }
+		public SessionService() {
+			userSessions = new Dictionary<string, AuthenticationTicket>();
+		}
 
-        public Task RemoveAsync(string key)
-        {
-            lock(userSessions) {
-                return Task.Run(() => 
-                {
-                    userSessions.Remove(key);
-                });
-            }
-        }
+		public Task RemoveAsync(string key)
+		{
+			lock(userSessions) {
+				return Task.Run(() => 
+				{
+					userSessions.Remove(key);
+				});
+			}
+		}
 
-        public Task RenewAsync(string key, AuthenticationTicket ticket)
-        {
-            lock(userSessions) {
-                return Task.Run(() => 
-                {
-                    if(userSessions.ContainsKey(key)) {
-                        userSessions[key] = ticket;
-                    }
-                });  
-            }    
-        }
+		public Task RenewAsync(string key, AuthenticationTicket ticket)
+		{
+			lock(userSessions) {
+				return Task.Run(() => 
+				{
+					if(userSessions.ContainsKey(key)) {
+						userSessions[key] = ticket;
+					}
+				});  
+			}    
+		}
 
-        public Task<AuthenticationTicket> RetrieveAsync(string key)
-        {
-            lock(userSessions) {
-                return Task.Run(() => 
-                {
-                    if(userSessions.ContainsKey(key)) {
-                        return userSessions[key];
-                    }
-                    return null;
-                });
-            }
-            
-        }
+		public Task<AuthenticationTicket> RetrieveAsync(string key)
+		{
+			lock(userSessions) {
+				return Task.Run(() => 
+				{
+					if(userSessions.ContainsKey(key)) {
+						return userSessions[key];
+					}
+					return null;
+				});
+			}
+			
+		}
 
-        public Task<string> StoreAsync(AuthenticationTicket ticket)
-        {
-            lock(userSessions) {
-                return Task.Run(() => 
-                {
-                    var salt = Authentication.GenerateSalt();
-                    userSessions.Add(salt, ticket);
-                    return salt;
-                });
-            }
-        }
-    }   
+		public Task<string> StoreAsync(AuthenticationTicket ticket)
+		{
+			lock(userSessions) {
+				return Task.Run(() => 
+				{
+					var salt = Authentication.GenerateSalt();
+					userSessions.Add(salt, ticket);
+					return salt;
+				});
+			}
+		}
+	}   
 }
