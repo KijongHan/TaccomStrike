@@ -4,14 +4,16 @@ using CallCheatOnline.Library.Data.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CallCheatOnline.Library.Data.Migrations
 {
     [DbContext(typeof(CallCheatOnlineContext))]
-    partial class CallCheatOnlineContextModelSnapshot : ModelSnapshot
+    [Migration("20190628231148_AddConstraintsAndRelationships")]
+    partial class AddConstraintsAndRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
