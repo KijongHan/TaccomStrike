@@ -1,34 +1,32 @@
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
-[Table("UserLogin", Schema="auth")]
-public class UserLogin 
+namespace CallCheatOnline.Library.Data.Model
 {
-	[Key, Column("UserLoginID")]
-	public int UserLoginID {get;set;}
+	public class UserLogin
+	{
+		public int UserLoginID { get; set; }
 
-	[Column("Username")]
-	public string Username {get;set;}
+		public string Username { get; set; }
 
-	[Column("Email")]
-	public string Email {get;set;}
+		public string Email { get; set; }
 
-	[Column("PasswordHash")]
-	public string PasswordHash {get;set;}
+		public string PasswordHash { get; set; }
 
-	[Column("PasswordSalt")]
-	public string PasswordSalt {get;set;}
+		public string PasswordSalt { get; set; }
 
-	[Column("WhenCreated")]
-	public DateTime? WhenCreated {get;set;}
+		public DateTime? WhenCreated { get; set; }
 
-	[Column("WhenDeleted")]
-	public DateTime? WhenDeleted {get;set;}
+		public DateTime? WhenDeleted { get; set; }
 
-	[Column("ForumUserID")]
-	public int ForumUserID {get;set;}
+		public int ForumUserID { get; set; }
+		public ForumUser ForumUser { get; set; }
 
-	[Column("GameUserID")]
-	public int GameUserID { get; set; }
+		public int GameUserID { get; set; }
+		public GameUser GameUser { get; set; }
+
+		public List<UserLoginAndRole> UserLoginAndRoles { get; set; }
+
+		public List<UserFriendship> UserFriendships { get; set; }
+	}
 }
