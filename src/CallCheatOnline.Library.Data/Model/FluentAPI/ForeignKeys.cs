@@ -18,7 +18,7 @@ namespace CallCheatOnline.Library.Data.Model.FluentAPI
 				.Entity<ForumComment>()
 				.HasOne(fc => fc.ForumUser)
 				.WithOne()
-				.HasForeignKey<ForumComment>(fc => fc.ForumUser);
+				.HasForeignKey<ForumComment>(fc => fc.ForumUserID);
 
 			modelBuilder
 				.Entity<ForumLike>()
@@ -34,7 +34,7 @@ namespace CallCheatOnline.Library.Data.Model.FluentAPI
 				.Entity<ForumLike>()
 				.HasOne(fl => fl.ForumUser)
 				.WithOne()
-				.HasForeignKey<ForumLike>(fl => fl.ForumUser);
+				.HasForeignKey<ForumLike>(fl => fl.ForumUserID);
 
 			modelBuilder
 				.Entity<ForumThread>()
@@ -71,11 +71,12 @@ namespace CallCheatOnline.Library.Data.Model.FluentAPI
 				.Entity<UserFriendship>()
 				.HasOne(ular => ular.FromUserLogin)
 				.WithMany(ul => ul.UserFriendships)
-				.HasForeignKey(ular => ular.UserFromID);
+				.HasForeignKey(ular => ular.UserFromID)
+				.OnDelete(DeleteBehavior.Restrict);
 			modelBuilder
 				.Entity<UserFriendship>()
 				.HasOne(ular => ular.ToUserLogin)
-				.WithMany(ul => ul.UserFriendships)
+				.WithMany(ul => ul.UserFriendshipsOf)
 				.HasForeignKey(ular => ular.UserToID);
 
 			modelBuilder

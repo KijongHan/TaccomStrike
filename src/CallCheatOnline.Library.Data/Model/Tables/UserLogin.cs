@@ -28,5 +28,6 @@ namespace CallCheatOnline.Library.Data.Model
 		public List<UserLoginAndRole> UserLoginAndRoles { get; set; }
 
 		public List<UserFriendship> UserFriendships { get; set; }
+		public List<UserFriendship> UserFriendshipsOf { get; set; }
 	}
 }
