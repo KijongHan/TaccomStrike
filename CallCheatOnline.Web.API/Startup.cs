@@ -47,7 +47,9 @@ namespace CallCheatOnline.Web.API
 			//Data layer service configurations
 			services.AddDbContext<CallCheatOnlineContext>((options) => 
 			{
-				options.UseSqlServer(ConfigurationManager.AppSettings["ConnectionString"]);
+				options.UseSqlServer(
+					ConfigurationManager.AppSettings["ConnectionString"], 
+					sqlServerOptions => sqlServerOptions.MigrationsAssembly(typeof(CallCheatOnlineContext).Assembly.FullName));
 			});
 			services.AddScoped<GameUserRepository>();
 			services.AddScoped<ForumThreadRepository>();

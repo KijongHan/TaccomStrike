@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using CallCheatOnline.Library.Data.Model.Views;
+using CallCheatOnline.Library.Data.Model.FluentAPI;
 
 namespace CallCheatOnline.Library.Data.Model
 {
@@ -38,15 +38,14 @@ namespace CallCheatOnline.Library.Data.Model
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			if (!optionsBuilder.IsConfigured)
-			{
 
-			}
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			
+			modelBuilder.BuildTableMappings();
+			modelBuilder.BuildPrimaryKeys();
+			modelBuilder.BuildForeignKeys();
 		}
 	}
 }
