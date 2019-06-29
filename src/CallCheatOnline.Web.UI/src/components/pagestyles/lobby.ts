@@ -22,8 +22,7 @@ export class LobbyPageStyle extends BasePageStyle
         let style = new LobbyPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({ 
-                heightPixels: 150,
-                marginTopPixels: 72
+                heightPixels: 150
             })
         };
         style.gameTitlePanelStyle = {
@@ -302,8 +301,7 @@ export class LobbyPageStyle extends BasePageStyle
         let style = new LobbyPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({ 
-                heightPixels: 310,
-                marginTopPixels: 72
+                heightPixels: 310
             })
         };
         style.gameTitlePanelStyle = {
@@ -584,8 +582,7 @@ export class LobbyPageStyle extends BasePageStyle
         let style = new LobbyPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({ 
-                heightPixels: 310,
-                marginTopPixels: 72
+                heightPixels: 310
             })
         };
         style.gameTitlePanelStyle = {
@@ -843,8 +840,7 @@ export class LobbyPageStyle extends BasePageStyle
         let style = new LobbyPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({ 
-                heightPixels: 310,
-                marginTopPixels: 72
+                heightPixels: 310
             })
         };
         style.gameTitlePanelStyle = {

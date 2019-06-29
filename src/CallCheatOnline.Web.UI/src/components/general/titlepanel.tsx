@@ -35,13 +35,9 @@ const TitleCharacter = styled.div`
 
 	color: ${ColorStyle.pallet2};
 	background-color: ${ColorStyle.pallet5}
-	-webkit-box-shadow: -2px 2px 1px 0px ${ColorStyle.pallet1};
-	-moz-box-shadow: -2px 2px 1px 0px ${ColorStyle.pallet1};
-	box-shadow: -2px 2px 1px 0px ${ColorStyle.pallet1};
-
+	border-width: 1px;
 	border-style: solid;
-	border-width: 2px;
-	border-color: rgba(0, 0, 0, 0.1);
+	border-color: ${ColorStyle.pallet2};
 `;
 
 const TitlePanel = styled.div`

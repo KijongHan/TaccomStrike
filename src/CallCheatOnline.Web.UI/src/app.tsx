@@ -110,18 +110,7 @@ export class AppComponent extends React.Component<{}, AppComponentState>
                                 location={props.location}
                                 match={props.match}>
                             </PlayPageComponent>}/>
-                    <Route 
-                        path="/"
-                        render={
-                            (props: HomePageComponentProps) => 
-                            <HomePageComponent
-                                loggedInUser={this.state.loggedInUser}
-                                history={props.history}
-                                location={props.location}
-                                match={props.match}>    
-                            </HomePageComponent>}/>
-                    <Redirect from="/home" to="/"/>
-                    <Redirect from="/news" to="/"/>
+                    <Redirect from="/" to="/login"/>
 				</Switch>
 			</BrowserRouter>
 		);

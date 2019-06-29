@@ -22,8 +22,7 @@ export class LoginPageStyle extends BasePageStyle
         let style = new LoginPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({ 
-                heightPixels: 150,
-                marginTopPixels: 72
+                heightPixels: 150
             })
         };
         style.callTitlePanelStyle = {
@@ -144,7 +143,7 @@ export class LoginPageStyle extends BasePageStyle
                         floatLeft: true,
                         widthPercentage: 30,
                         heightPixels: 450,
-                        marginLeftPixels: 20
+                        marginLeftPercentage: 15
                     }),
                     perspectiveStyle: new PerspectiveStyle({
                         perspective: 3000
@@ -256,8 +255,7 @@ export class LoginPageStyle extends BasePageStyle
         let style = new LoginPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({
-                heightPixels: 340,
-                marginTopPixels: 72
+                heightPixels: 340
             })
         };
         style.callTitlePanelStyle = {
@@ -490,8 +488,7 @@ export class LoginPageStyle extends BasePageStyle
         let style = new LoginPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({ 
-                heightPixels: 355,
-                marginTopPixels: 72
+                heightPixels: 355
             })
         };
         style.callTitlePanelStyle = {
@@ -701,8 +698,7 @@ export class LoginPageStyle extends BasePageStyle
         let style = new LoginPageStyle();
         style.titlePanelsStyle = {
             displayStyling: new DisplayStyle({ 
-                heightPixels: 315,
-                marginTopPixels: 72
+                heightPixels: 315
             })
         };
         style.callTitlePanelStyle = {

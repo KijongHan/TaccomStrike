@@ -11,7 +11,7 @@ const NewsIcon = require("../../res/news.png");
 
 const Navbar = styled.div`
     position: ${(props: NavbarComponentStyle) => props.displayStyle.getPositionString()}; 
-    display: ${(props: NavbarComponentStyle) => props.displayStyle.getDisplayString()};
+    display: none;
     width: ${(props: NavbarComponentStyle) => props.displayStyle.getWidthString()};
     height: ${(props: NavbarComponentStyle) => props.displayStyle.getHeightString()};
     margin: ${(props: NavbarComponentStyle) => props.displayStyle.getMarginString()};

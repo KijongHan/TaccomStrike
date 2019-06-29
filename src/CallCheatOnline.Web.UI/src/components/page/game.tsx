@@ -78,6 +78,7 @@ const GameFinishPanel = styled.div`
     margin-left: 35%;
     top: 30%;
     padding: 10px 10px 10px 10px;
+    color: white;
 `;
 
 class DisplayStyleProps 
