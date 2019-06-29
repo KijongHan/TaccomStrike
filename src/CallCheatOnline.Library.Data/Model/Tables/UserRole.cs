@@ -14,7 +14,5 @@ namespace CallCheatOnline.Library.Data.Model
 		public DateTime? WhenDeleted {get;set;}
 
 		public List<UserLoginAndRole> UserLoginAndRoles { get; set; }
-
-		public List<UserFriendship> UserFriendships { get; set; }
 	}
 }

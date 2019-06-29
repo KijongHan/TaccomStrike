@@ -222,15 +222,11 @@ namespace CallCheatOnline.Library.Data.Migrations
 
                     b.Property<int>("UserToID");
 
-                    b.Property<int?>("UserRoleID");
-
                     b.Property<DateTime?>("WhenCreated");
 
                     b.Property<DateTime?>("WhenDeleted");
 
                     b.HasKey("UserFromID", "UserToID");
-
-                    b.HasIndex("UserRoleID");
 
                     b.HasIndex("UserToID");
 
@@ -362,10 +358,6 @@ namespace CallCheatOnline.Library.Data.Migrations
                         .WithMany("UserFriendships")
                         .HasForeignKey("UserFromID")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("CallCheatOnline.Library.Data.Model.UserRole")
-                        .WithMany("UserFriendships")
-                        .HasForeignKey("UserRoleID");
 
                     b.HasOne("CallCheatOnline.Library.Data.Model.UserLogin", "ToUserLogin")
                         .WithMany("UserFriendshipsOf")
