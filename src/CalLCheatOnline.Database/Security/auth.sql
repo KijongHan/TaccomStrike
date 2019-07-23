@@ -1,1 +1,0 @@
-CREATE SCHEMA [auth] AUTHORIZATION [db_developer];

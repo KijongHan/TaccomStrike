@@ -2,21 +2,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "CallCheatOnline.Database", "CallCheatOnline.Database\CallCheatOnline.Database.sqlproj", "{8878F18B-8DE2-4793-AEE2-8B4C045E1817}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "CallCheatOnline.Database", "src\CallCheatOnline.Database\CallCheatOnline.Database.sqlproj", "{8878F18B-8DE2-4793-AEE2-8B4C045E1817}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallCheatOnline.Library.Data", "CallCheatOnline.Library.Data\CallCheatOnline.Library.Data.csproj", "{E5F2A0F1-5F53-45A1-A918-602F6ACCB565}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallCheatOnline.Library.Data", "src\CallCheatOnline.Library.Data\CallCheatOnline.Library.Data.csproj", "{E5F2A0F1-5F53-45A1-A918-602F6ACCB565}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallCheatOnline.Web.API", "CallCheatOnline.Web.API\CallCheatOnline.Web.API.csproj", "{9472A06F-9AAB-49BC-8107-F3E7311A29E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallCheatOnline.Web.API", "src\CallCheatOnline.Web.API\CallCheatOnline.Web.API.csproj", "{9472A06F-9AAB-49BC-8107-F3E7311A29E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallCheatOnline.Library.Utility", "CallCheatOnline.Library.Utility\CallCheatOnline.Library.Utility.csproj", "{4C379C59-145E-4958-A4A4-AFD231AC77DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallCheatOnline.Library.Utility", "src\CallCheatOnline.Library.Utility\CallCheatOnline.Library.Utility.csproj", "{4C379C59-145E-4958-A4A4-AFD231AC77DD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallCheatOnline.Library.Utility.Tests", "CallCheatOnline.Library.Utility.Tests\CallCheatOnline.Library.Utility.Tests.csproj", "{0EE59340-E5EF-4723-AACA-9A61F167AFC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallCheatOnline.Library.Utility.Tests", "src\CallCheatOnline.Library.Utility.Tests\CallCheatOnline.Library.Utility.Tests.csproj", "{0EE59340-E5EF-4723-AACA-9A61F167AFC5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalllCheatOnline.Console.ConfigurationManager", "CallCheatOnline.Console.ConfigurationManager\CalllCheatOnline.Console.ConfigurationManager.csproj", "{712BA8C1-EBFD-4698-B316-3091BFAF4643}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalllCheatOnline.Console.ConfigurationManager", "src\CallCheatOnline.Console.ConfigurationManager\CalllCheatOnline.Console.ConfigurationManager.csproj", "{712BA8C1-EBFD-4698-B316-3091BFAF4643}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallCheatOnline.Game.CallCheat", "CallCheatOnline.Game.CallCheat\CallCheatOnline.Game.CallCheat.csproj", "{0FFAC2CB-069A-45AF-B338-B5D314E64812}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallCheatOnline.Game.CallCheat", "src\CallCheatOnline.Game.CallCheat\CallCheatOnline.Game.CallCheat.csproj", "{0FFAC2CB-069A-45AF-B338-B5D314E64812}"
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "CallCheatOnline.Web.UI", "CallCheatOnline.Web.UI\CallCheatOnline.Web.UI.njsproj", "{544603CF-AA2E-4A5A-B235-8C75DFBCFC8F}"
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "CallCheatOnline.Web.UI", "src\CallCheatOnline.Web.UI\CallCheatOnline.Web.UI.njsproj", "{544603CF-AA2E-4A5A-B235-8C75DFBCFC8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
