@@ -4,7 +4,7 @@ import { ButtonComponent, ButtonComponentStyle } from "./button";
 import styled from "styled-components";
 import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
 import { debug } from "util";
-import { LabelledInputComponent, LabelledInputComponentStyle } from "./labelledinput";
+import { LabelledInputComponent, LabelledInputComponentStyle, InputValidationResult } from "./labelledinput";
 import { PostUserLogin } from "../../models/rest/postuserlogin";
 import { ComboButtonComponent, ComboButtonItem, ComboButtonComponentStyle } from "./combobutton";
 import { ColorStyle } from "../../styles/colorstyle";
@@ -23,6 +23,9 @@ export class LoginComponentProps
 	guestnameInputOnChangeHandler: (input: string) => void;
 	usernameInputOnChangeHandler: (input: string) => void;
 	passwordInputOnChangeHandler: (input: string) => void;
+
+	guestnameInputValidation: () => Promise<InputValidationResult>;
+	guestnameInputValidationWait: number;
 }
 
 export class LoginComponentState 
@@ -121,6 +124,8 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 					comboButtonComponentStyle={this.props.loginComponentStyle.userGuestComboButtonComponentStyle}>
 				</ComboButtonComponent>
 				<LabelledInputComponent
+					inputValidation={this.props.guestnameInputValidation}
+					validationWait={this.props.guestnameInputValidationWait}
 					inputValue={this.props.guestLogin.guestname}
 					labelValue={"Guestname"}
 					inputOnChangeHandler={this.guestnameInputOnChangeHandler}

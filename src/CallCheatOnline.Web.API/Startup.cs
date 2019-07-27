@@ -57,6 +57,7 @@ namespace CallCheatOnline.Web.API
 			services.AddScoped<ForumUserRepository>();
 			services.AddScoped<UserLoginRepository>();
 			services.AddScoped<AppExceptionRepository>();
+			services.AddSingleton<GuestLoginRepository>();
 
 			//Service layer configurations
 			services.AddScoped<UserAuthenticationService>();
