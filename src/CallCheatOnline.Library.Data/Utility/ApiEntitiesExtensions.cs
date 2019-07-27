@@ -62,6 +62,20 @@ namespace CallCheatOnline.Library.Data.Utility
 				.ToList();
 		}
 
+		public static List<GetUser> ApiGetUsers(this IEnumerable<GuestLogin> users)
+		{
+			return users
+				.Select((guest) =>
+				{
+					return new GetUser
+					{
+						UserID = guest.GuestLoginID,
+						Username = guest.GuestName
+					};
+				})
+				.ToList();
+		}
+
 		public static GetUser ApiGetUser(this ClaimsPrincipal principal)
 		{
 			if(principal == null)

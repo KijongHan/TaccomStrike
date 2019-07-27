@@ -1,8 +1,19 @@
 using System;
 using System.Security.Claims;
 
-namespace CallCheatOnline.Library.Utility.Security {
-	public static class PrincipalExtensions {
+namespace CallCheatOnline.Library.Utility.Security 
+{
+	public static class PrincipalExtensions 
+	{
+		public static bool? IsGuest(this ClaimsPrincipal principal) 
+		{
+			foreach(Claim claim in principal.Claims) {
+				if(claim.Type == Security.UserLoginIDClaim) {
+					return int.Parse(claim.Value) < 0 ? true : false;
+				}
+			}
+			return null;
+		}
 
 		public static int GetUserLoginID(this ClaimsPrincipal principal)
 		{

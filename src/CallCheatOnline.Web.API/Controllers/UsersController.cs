@@ -17,10 +17,15 @@ namespace CallCheatOnline.Web.API.Controllers
 	{
 		private readonly UserConnectionsService userConnectionsService;
 		private readonly UserLoginRepository userLoginRepository;
+		private readonly GuestLoginRepository guestLoginRepository;
 
-		public UsersController(UserLoginRepository userLoginRepository, UserConnectionsService userConnectionsService)
+		public UsersController(
+			UserLoginRepository userLoginRepository, 
+			GuestLoginRepository guestLoginRepository, 
+			UserConnectionsService userConnectionsService)
 		{
 			this.userLoginRepository = userLoginRepository;
+			this.guestLoginRepository = guestLoginRepository;
 			this.userConnectionsService = userConnectionsService;
 		}
 
@@ -46,6 +51,16 @@ namespace CallCheatOnline.Web.API.Controllers
 		{
 			var userLogins = await userLoginRepository.GetUserLoginsAsync(email, username);
 			return Ok(userLogins.ApiGetUsers());
+		}
+
+		[Route("guests")]
+		[HttpGet]
+		public async Task<IActionResult> GetGuestLogins([FromQuery] string guestname) 
+		{
+			return await Task.Run(() => {
+				var guestLogins = guestLoginRepository.GetGuestLogins(guestname);
+				return Ok(guestLogins.ApiGetUsers());
+			});
 		}
 
 		[Route("")]

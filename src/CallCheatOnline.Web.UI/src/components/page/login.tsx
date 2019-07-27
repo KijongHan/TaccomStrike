@@ -43,6 +43,7 @@ export class LoginPageComponentState extends BasePageComponentState
 	userLogin: PostUserLogin;
 	guestLogin: PostGuestLogin;
 
+	guestnameValidated: boolean;
 	usernameValidated: boolean;
 	emailValidated: boolean;
 	passwordValidated: boolean;
@@ -67,6 +68,7 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 			usernameValidated: false,
 			emailValidated: false,
 			passwordValidated: false,
+			guestnameValidated: false,
 
 			loginRequestFailed: null
 		};
@@ -74,6 +76,7 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 		GameConnectionsService.removeHandlers();
 		ChatConnectionsService.deinitializeChatConnections();
 
+		this.guestnameInputValidation = this.guestnameInputValidation.bind(this);
 		this.usernameInputValidation = this.usernameInputValidation.bind(this);
 		this.emailInputValidation = this.emailInputValidation.bind(this);
 		this.passwordInputValidation = this.passwordInputValidation.bind(this);
@@ -114,6 +117,8 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 					<LoginComponent
 						guestLogin={this.state.guestLogin}
 						userLogin={this.state.userLogin}
+						guestnameInputValidation={this.guestnameInputValidation}
+						guestnameInputValidationWait={200}
 						loginComponentStyle={loginPageStyle.loginComponentStyle}
 						userLoginButtonClickHandler={this.userLoginButtonClickHandler}
 						guestLoginButtonClickHandler={this.guestLoginButtonClickHandler}
@@ -202,7 +207,20 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 
 	guestLoginButtonClickHandler = () => 
 	{
-		
+		AuthenticationService
+			.guestLogin(this.state.guestLogin)
+			.then((getUser: GetUser) => {
+				this.props.userLoggedIn(getUser);
+				this.props.history.push("/play");
+				this.setState({
+					loginRequestFailed: null
+				})
+			})
+			.catch(() => {
+				this.setState({
+					loginRequestFailed: true
+				});
+			});
 	}
 
 	registerButtonClickHandler = () => 
@@ -249,6 +267,25 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 		let newCreateUser = Object.assign({}, this.state.createUser);
 		newCreateUser.confirmPassword = input;
 		this.setState({createUser: newCreateUser});
+	}
+
+	async guestnameInputValidation() 
+	{
+		let users = await UserLoginsService.getGuests(this.state.guestLogin.guestname);
+		if(users.length>0) 
+		{
+			this.setState({guestnameValidated: false});
+			return new InputValidationResult(false, "Guestname not available for use");
+		}
+		users = await UserLoginsService.getUsers(this.state.guestLogin.guestname, null);
+		if(users.length>0) 
+		{
+			this.setState({guestnameValidated: false});
+			return new InputValidationResult(false, "Guestname not available for use");
+		}
+
+		this.setState({guestnameValidated: true});
+		return new InputValidationResult(true, "Guestname available for use");
 	}
 
 	async usernameInputValidation() 
