@@ -103,9 +103,10 @@ const GameLobbyMessageItem = styled.div`
 `;
 
 const GameLobbyMessagePlayerItem = styled.span`
-    font-weight: bold;
     color: ${ColorStyle.pallet1};
     padding-left: 5px;
+    font-family: "Times New Roman";
+    font-size: 1.1em;
 `;
 
 const GameLobbyMessageMessageItem = styled.span`
