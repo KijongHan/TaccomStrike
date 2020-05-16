@@ -95,6 +95,12 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 			registerButtonEnabled = true;
 		}
 
+		let guestLoginButtonEnabled = false;
+		if(this.state.guestnameValidated && this.state.guestLogin.guestname.length>0) 
+		{
+			guestLoginButtonEnabled = true;
+		}
+
 		let messageDialog: JSX.Element;
 		if(this.state.loginRequestFailed) 
 		{
@@ -115,6 +121,7 @@ export class LoginPageComponent extends BasePageComponent<LoginPageComponentProp
 
 				<PanelsContainer>
 					<LoginComponent
+						guestLoginButtonEnabled={guestLoginButtonEnabled}
 						guestLogin={this.state.guestLogin}
 						userLogin={this.state.userLogin}
 						guestnameInputValidation={this.guestnameInputValidation}
