@@ -15,6 +15,10 @@ echo "Deployment: Running Web API Server"
 cd "CallCheatOnline.Web.API"
 dotnet publish --configuration Release
 
+echo "Moving server applicatino to public web folder"
+sleep 5
 cp "bin/Release/netcoreapp2.2/publish/CallCheatOnline.Web.API.dll" "/var/www/callcheatonline/CallCheatOnline.Web.API.dll"
 
+echo "Starting api server service"
+sleep 5
 sudo systemctl start callcheatonline_apiserver.service
