@@ -2,6 +2,7 @@
 Description=CallCheatOnline UI Server
 
 [Service]
+WorkingDirectory=/home/projects/TaccomStrike/src/CallCheatOnline.Web.UI
 ExecStart=/usr/bin/node /home/projects/TaccomStrike/src/CallCheatOnline.Web.UI/app.js 60239
 Restart=always
 # Restart service after 10 seconds if the dotnet service crashes:
