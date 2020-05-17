@@ -2,8 +2,8 @@
 Description=CallCheatOnline API Server
 
 [Service]
-WorkingDirectory=/var/www/callcheatonline
-ExecStart=/usr/bin/dotnet /var/www/callcheatonline/CallCheatOnline.Web.API.dll
+WorkingDirectory=/home/projects/CallCheatOnline/src/CallCheatOnline.Web.API
+ExecStart=/usr/bin/dotnet /home/projects/CallCheatOnline/src/CallCheatOnline.Web.API/CallCheatOnline.Web.API.dll
 Restart=always
 # Restart service after 10 seconds if the dotnet service crashes:
 RestartSec=10
