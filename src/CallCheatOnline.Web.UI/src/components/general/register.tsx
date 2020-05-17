@@ -3,9 +3,15 @@ import { ButtonComponent, ButtonComponentStyle } from "./button";
 
 import styled from "styled-components";
 import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
+import { ComboButtonComponent, ComboButtonItem, ComboButtonComponentStyle } from "./combobutton";
 import { LabelledInputComponentStyle, LabelledInputComponent, InputValidationResult } from "./labelledinput";
 import { ColorStyle } from "../../styles/colorstyle";
 import { CreateUserLogin } from "../../models/rest/createuserlogin";
+
+const FacebookIcon = require("../../res/facebook_icon.png");
+const TwitterIcon = require("../../res/twitter_icon.png");
+const RedditIcon = require("../../res/reddit_icon.png");
+const YoutubeIcon = require("../../res/youtube_icon.png");
 
 export class RegisterComponentProps
 {
@@ -29,7 +35,11 @@ export class RegisterComponentProps
 	registerButtonClickHandler: () => void;
 }
 
-export class RegisterComponentState {}
+export class RegisterComponentState 
+{
+	userGuestComboButton: ComboButtonItem[];
+	flipAnimation: CardRotationAnimation;
+}
 
 export class RegisterComponentStyle
 {
@@ -40,6 +50,7 @@ export class RegisterComponentStyle
 	passwordLabelledInputStyle: LabelledInputComponentStyle;
 	confirmPasswordLabelledInputStyle: LabelledInputComponentStyle;
 
+	registerDashboardComboButtonComponentStyle: ComboButtonComponentStyle;
 	registerButtonComponentStyle: ButtonComponentStyle;
 }
 
@@ -62,12 +73,51 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 	constructor(props: RegisterComponentProps)
 	{
 		super(props);
+		this.state = {
+			userGuestComboButton: [
+				new ComboButtonItem("Dashboard", true, this.dashboardButtonClickHandler),
+				new ComboButtonItem("Register", false, this.registerButtonClickHandler)
+			],
+			flipAnimation: null
+		}
 	}
 
 	render()
 	{
-		let registerComponent = (
+		let registerComponent = this.getUserRegisterComponent();
+		let dashboardComponent = this.getDashboardComponent();
+
+		return (
+			<CardComponent
+				front={dashboardComponent}
+				back={registerComponent}
+				cardStyle={this.props.registerComponentStyle.cardComponentStyle}
+				rotationAnimation={this.state.flipAnimation}>
+			</CardComponent>
+		);
+	}
+
+	getDashboardComponent = () => 
+	{
+		return (
 			<RegisterComponentElement>
+				<ComboButtonComponent
+					comboButtons={this.state.userGuestComboButton}
+					comboButtonComponentStyle={this.props.registerComponentStyle.registerDashboardComboButtonComponentStyle}>
+				</ComboButtonComponent>
+				
+			</RegisterComponentElement>
+		);
+	}
+
+	getUserRegisterComponent = () => 
+	{
+		return (
+			<RegisterComponentElement>
+				<ComboButtonComponent
+					comboButtons={this.state.userGuestComboButton}
+					comboButtonComponentStyle={this.props.registerComponentStyle.registerDashboardComboButtonComponentStyle}>
+				</ComboButtonComponent>
 				<LabelledInputComponent
 					inputValue={this.props.createUser.username}
 					labelValue={"Username"}
@@ -95,18 +145,42 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, R
 					buttonText="Register"
 					buttonClickHandler={this.props.registerButtonClickHandler}
 					buttonComponentStyle={this.props.registerComponentStyle.registerButtonComponentStyle} />
-			</RegisterComponentElement>);
-
-		let flipAnimation = new CardRotationAnimation();
-		flipAnimation.rotationDelay = 0;
-		flipAnimation.rotationDuration = 2;
-		return (
-			<CardComponent
-				front={registerComponent}
-				cardStyle={this.props.registerComponentStyle.cardComponentStyle}
-				rotationAnimation={null}>
-			</CardComponent>
+			</RegisterComponentElement>
 		);
+	}
+
+	registerButtonClickHandler= () =>  
+	{
+		this.setState({
+			flipAnimation: new CardRotationAnimation({
+				rotationDelay: 0,
+				rotationDirection: 1,
+				rotationDuration: 1000,
+				rotationFrom: 0,
+				rotationTo: 180
+			}),
+			userGuestComboButton: [
+				new ComboButtonItem("Dashboard", false, this.dashboardButtonClickHandler),
+				new ComboButtonItem("Register", true, this.registerButtonClickHandler)
+			]
+		});
+	}
+
+	dashboardButtonClickHandler= () => 
+	{
+		this.setState({
+			flipAnimation: new CardRotationAnimation({
+				rotationDelay: 0,
+				rotationDirection: 1,
+				rotationDuration: 1000,
+				rotationFrom: 180,
+				rotationTo: 359.9
+			}),
+			userGuestComboButton: [
+				new ComboButtonItem("Dashboard", true, this.dashboardButtonClickHandler),
+				new ComboButtonItem("Register", false, this.registerButtonClickHandler)
+			]
+		});
 	}
 
 	usernameOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => 

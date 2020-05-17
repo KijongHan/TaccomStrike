@@ -42,6 +42,21 @@ export class UserLoginsService
         });
     }
 
+    static getGuests = (guestname: string) => 
+    {
+        return fetch(Config.apiUrl + `/api/users/guests?guestname=${isNullOrUndefined(guestname) ? "" : guestname}`, {
+            method: 'GET',
+            credentials: 'include'
+        })
+        .then((response: Response) => {
+            return response
+                .json()
+                .then((value: any) => {
+                    return <GetUser[]>value;
+                });
+        });
+    }
+
     static getConnectedUsersCount = () => 
     {
         return fetch(`${Config.apiUrl}/api/users/connected/count`, {

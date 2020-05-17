@@ -197,7 +197,7 @@ export class LoginPageStyle extends BasePageStyle
                         marginLeftPixels: 20
                     }),
                     perspectiveStyle: new PerspectiveStyle({
-                        perspective: 1200
+                        perspective: 3000
                     })
                 },
         
@@ -205,7 +205,8 @@ export class LoginPageStyle extends BasePageStyle
                 {
                     displayStyle: new DisplayStyle({
                         widthPercentage: 70,
-                        marginLeftPercentage: 5
+                        marginLeftPercentage: 5,
+                        marginTopPixels: 20
                     })
                 },
         
@@ -245,7 +246,15 @@ export class LoginPageStyle extends BasePageStyle
                         position: Position.absolute,
                         bottomPixels: 10
                     })
-                }
+                },
+
+                registerDashboardComboButtonComponentStyle: new ComboButtonComponentStyle(
+                    new DisplayStyle({
+                        widthPercentage: 60,
+                        heightPixels: 50,
+                        marginLeftPercentage: 5
+                    })
+                ),
         }
         return style;
     }
@@ -478,7 +487,15 @@ export class LoginPageStyle extends BasePageStyle
                         position: Position.absolute,
                         bottomPixels: 10
                     })
-                }
+                },
+
+                registerDashboardComboButtonComponentStyle: new ComboButtonComponentStyle(
+                    new DisplayStyle({
+                        widthPercentage: 60,
+                        heightPixels: 50,
+                        marginLeftPercentage: 5
+                    })
+                )
         }
         return style;
     }
@@ -688,7 +705,15 @@ export class LoginPageStyle extends BasePageStyle
                         position: Position.absolute,
                         bottomPixels: 10
                     })
-                }
+                },
+
+                registerDashboardComboButtonComponentStyle: new ComboButtonComponentStyle(
+                    new DisplayStyle({
+                        widthPercentage: 60,
+                        heightPixels: 50,
+                        marginLeftPercentage: 5
+                    })
+                )
         }
         return style;
     }
@@ -900,7 +925,15 @@ export class LoginPageStyle extends BasePageStyle
                         position: Position.absolute,
                         bottomPixels: 10
                     })
-                }
+                },
+
+                registerDashboardComboButtonComponentStyle: new ComboButtonComponentStyle(
+                    new DisplayStyle({
+                        widthPercentage: 60,
+                        heightPixels: 50,
+                        marginLeftPercentage: 5
+                    })
+                )
         }
         return style;
     }

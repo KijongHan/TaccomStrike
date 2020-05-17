@@ -4,7 +4,7 @@ import { ButtonComponent, ButtonComponentStyle } from "./button";
 import styled from "styled-components";
 import { CardComponent, CardComponentStyle, CardRotationAnimation } from "./card";
 import { debug } from "util";
-import { LabelledInputComponent, LabelledInputComponentStyle } from "./labelledinput";
+import { LabelledInputComponent, LabelledInputComponentStyle, InputValidationResult } from "./labelledinput";
 import { PostUserLogin } from "../../models/rest/postuserlogin";
 import { ComboButtonComponent, ComboButtonItem, ComboButtonComponentStyle } from "./combobutton";
 import { ColorStyle } from "../../styles/colorstyle";
@@ -13,7 +13,9 @@ import { LoginPageComponentState } from "../page/login";
 
 export class LoginComponentProps
 {
-	loginComponentStyle: LoginComponentStyle
+	guestLoginButtonEnabled: boolean;
+
+	loginComponentStyle: LoginComponentStyle;
 	userLogin: PostUserLogin;
 	guestLogin: PostGuestLogin;
 
@@ -23,6 +25,9 @@ export class LoginComponentProps
 	guestnameInputOnChangeHandler: (input: string) => void;
 	usernameInputOnChangeHandler: (input: string) => void;
 	passwordInputOnChangeHandler: (input: string) => void;
+
+	guestnameInputValidation: () => Promise<InputValidationResult>;
+	guestnameInputValidationWait: number;
 }
 
 export class LoginComponentState 
@@ -63,8 +68,8 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 		super(props);
 		this.state = {
 			userGuestComboButton: [
-				new ComboButtonItem("User", true, this.userButtonClickHandler),
-				new ComboButtonItem("Guest", false, this.guestButtonClickHandler)
+				new ComboButtonItem("User", false, this.userButtonClickHandler),
+				new ComboButtonItem("Guest", true, this.guestButtonClickHandler)
 			],
 			flipAnimation: null
 		}
@@ -77,8 +82,8 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 		
 		return (
 			<CardComponent
-				front={loginComponent}
-				back={guestComponent}
+				front={guestComponent}
+				back={loginComponent}
 				cardStyle={this.props.loginComponentStyle.cardComponentStyle}
 				rotationAnimation={this.state.flipAnimation}>
 			</CardComponent>
@@ -121,11 +126,14 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 					comboButtonComponentStyle={this.props.loginComponentStyle.userGuestComboButtonComponentStyle}>
 				</ComboButtonComponent>
 				<LabelledInputComponent
+					inputValidation={this.props.guestnameInputValidation}
+					validationWait={this.props.guestnameInputValidationWait}
 					inputValue={this.props.guestLogin.guestname}
 					labelValue={"Guestname"}
 					inputOnChangeHandler={this.guestnameInputOnChangeHandler}
 					componentStyle={this.props.loginComponentStyle.usernameLabelledInputStyle} />
 				<ButtonComponent
+					enabled={!this.props.guestLoginButtonEnabled}
 					buttonText="Login"
 					buttonClickHandler={this.props.guestLoginButtonClickHandler}
 					buttonComponentStyle={this.props.loginComponentStyle.loginButtonComponentStyle} />
@@ -155,8 +163,8 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 				rotationDelay: 0,
 				rotationDirection: 1,
 				rotationDuration: 1000,
-				rotationFrom: 0,
-				rotationTo: 180
+				rotationFrom: 180,
+				rotationTo: 359.9
 			}),
 			userGuestComboButton: [
 				new ComboButtonItem("User", false, this.userButtonClickHandler),
@@ -172,8 +180,8 @@ export class LoginComponent extends React.Component<LoginComponentProps, LoginCo
 				rotationDelay: 0,
 				rotationDirection: 1,
 				rotationDuration: 1000,
-				rotationFrom: 180,
-				rotationTo: 359.9
+				rotationFrom: 0,
+				rotationTo: 180
 			}),
 			userGuestComboButton: [
 				new ComboButtonItem("User", true, this.userButtonClickHandler),
