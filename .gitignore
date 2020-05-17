@@ -11,6 +11,8 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+Deployment
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -22,6 +24,9 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+
+# NPM build results
+dist/
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -225,3 +230,4 @@ FakesAssemblies/
 **/*.DesktopClient/GeneratedArtifacts
 **/*.DesktopClient/ModelManifest.xml
 **/*.Server/GeneratedArtifacts
+TaccomStrike.Web.UI/app.config.json
