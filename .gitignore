@@ -230,4 +230,4 @@ FakesAssemblies/
 **/*.DesktopClient/GeneratedArtifacts
 **/*.DesktopClient/ModelManifest.xml
 **/*.Server/GeneratedArtifacts
-TaccomStrike.Web.UI/app.config.json
+src/CallCheatOnline.Web.UI/app.config.json
