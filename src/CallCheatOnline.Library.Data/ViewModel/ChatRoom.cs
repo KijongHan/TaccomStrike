@@ -75,7 +75,7 @@ namespace CallCheatOnline.Library.Data.ViewModel
 			{
 				User = user,
 				Message = message,
-				WhenCreated = DateTime.Now
+				WhenCreated = DateTime.UtcNow
 			};
 			chatMessgages.Add(chatMessage);
 		}

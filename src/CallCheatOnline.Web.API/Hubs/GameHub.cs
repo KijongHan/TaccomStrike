@@ -21,7 +21,7 @@ using System.Linq;
 namespace CallCheatOnline.Web.API.Hubs
 {
 	[Authorize]
-	[EnableCors("AllowSpecificOrigin")]
+	[EnableCors(Security.CrossOriginRequestPolicy)]
 	public class GameHub : Hub
 	{
 		private IHubContext<GameHub> gameHubContext;
@@ -276,7 +276,7 @@ namespace CallCheatOnline.Web.API.Hubs
 							ChatMessage = new GetChatMessage(new ChatMessage
 							{
 								Message = $"{Context.User.GetUserName()} has left the game lobby",
-								WhenCreated = DateTime.Now
+								WhenCreated = DateTime.UtcNow
 							})
 						};
 
@@ -347,7 +347,7 @@ namespace CallCheatOnline.Web.API.Hubs
 							{
 								User = null,
 								Message = $"{newUser.Username} has joined the game lobby",
-								WhenCreated = DateTime.Now
+								WhenCreated = DateTime.UtcNow
 							})
 						};
 
@@ -380,7 +380,7 @@ namespace CallCheatOnline.Web.API.Hubs
 						{
 							User = Context.User,
 							Message = message,
-							WhenCreated = DateTime.Now
+							WhenCreated = DateTime.UtcNow
 						};
 						var apiObject = new GameLobbySendMessage
 						{

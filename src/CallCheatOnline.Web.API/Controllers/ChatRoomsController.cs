@@ -15,7 +15,7 @@ namespace CallCheatOnline.Web.API.Controllers
 {
 	
 	[Route("api/chatrooms")]
-	[EnableCors("AllowSpecificOrigin")]
+	[EnableCors(Security.CrossOriginRequestPolicy)]
 	public class ChatRoomsController : Controller
 	{
 		private ChatRoomService chatRoomService;

@@ -23,7 +23,7 @@ namespace CallCheatOnline.Library.Data.DAL
 				Message = e.Message,
 				StackTrace = e.StackTrace,
 				ExceptionString = e.ToString(),
-				WhenCreated = DateTime.Now
+				WhenCreated = DateTime.UtcNow
 			};
 
 			context.AppException.Add(appException);

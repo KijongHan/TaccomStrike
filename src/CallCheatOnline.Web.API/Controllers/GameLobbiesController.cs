@@ -14,7 +14,7 @@ using CallCheatOnline.Library.Data.Utility;
 namespace CallCheatOnline.Web.API.Controllers
 {
 	[Route("api/gamelobbies")]
-	[EnableCors("AllowSpecificOrigin")]
+	[EnableCors(Security.CrossOriginRequestPolicy)]
 	public class GameLobbiesController : Controller
 	{
 		private GameLobbyService gameLobbyService;

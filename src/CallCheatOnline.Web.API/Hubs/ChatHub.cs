@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Cors;
 
 namespace CallCheatOnline.Web.API.Hubs
 {
-	[EnableCors("AllowSpecificOrigin")]
+	[EnableCors(Security.CrossOriginRequestPolicy)]
 	public class ChatHub : Hub
 	{
 		private ChatRoomService chatRoomService;
@@ -33,7 +33,7 @@ namespace CallCheatOnline.Web.API.Hubs
 				{
 					User = Context.User,
 					Message = message,
-					WhenCreated = DateTime.Now
+					WhenCreated = DateTime.UtcNow
 				};
 				var apiObject = new ChatUserSendMessage
 				{
@@ -59,7 +59,7 @@ namespace CallCheatOnline.Web.API.Hubs
 					{
 						User = Context.User,
 						Message = message,
-						WhenCreated = DateTime.Now
+						WhenCreated = DateTime.UtcNow
 					};
 					chatRoom.AddChatMessage(chatMessage);
 

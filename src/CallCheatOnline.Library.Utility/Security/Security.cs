@@ -6,7 +6,8 @@ namespace CallCheatOnline.Library.Utility.Security
 {
 	public static class Security
 	{
-		public static string AuthenticationScheme = "CallCheatOnlineAuthentication";
+        public const string CrossOriginRequestPolicy = "AllowSpecificOrigin";
+        public static string AuthenticationScheme = "CallCheatOnlineAuthentication";
 		public static string CookieName = "CallCheatOnlineCookie";
 
 		public static string UserLoginIDClaim = "UserLoginIDClaim";

@@ -21,7 +21,7 @@ namespace CallCheatOnline.Library.Data.DAL
 		public int CreateGameUser()
 		{
 			GameUser user = new GameUser();
-			user.WhenCreated = DateTime.Now;
+			user.WhenCreated = DateTime.UtcNow;
 			user.GameScore = 0;
 			dbContext.GameUser.Add(user);
 			dbContext.SaveChanges();

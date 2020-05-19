@@ -34,7 +34,7 @@ namespace CallCheatOnline.Library.Data.DAL
 				ForumUserID = forumUserID,
 				GameUserID = gameUserID
 			};
-			insertUser.WhenCreated = DateTime.Now;
+			insertUser.WhenCreated = DateTime.UtcNow;
 			dbContext.UserLogin.Add(insertUser);
 			dbContext.SaveChanges();
 			return insertUser.UserLoginID;

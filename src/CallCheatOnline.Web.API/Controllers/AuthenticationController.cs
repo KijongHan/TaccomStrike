@@ -14,7 +14,7 @@ using CallCheatOnline.Library.Data.Utility;
 namespace CallCheatOnline.Web.API.Controllers
 {
 	[Route("api/authentication")]
-	[EnableCors("AllowSpecificOrigin")]
+	[EnableCors(Security.CrossOriginRequestPolicy)]
 	public class AuthenticationController : Controller
 	{
 

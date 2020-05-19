@@ -8,11 +8,12 @@ using CallCheatOnline.Library.Data.DAL;
 using CallCheatOnline.Library.Data.Services;
 using CallCheatOnline.Library.Data.Utility;
 using CallCheatOnline.Library.Data.ViewModel;
+using CallCheatOnline.Library.Utility.Security;
 
 namespace CallCheatOnline.Web.API.Controllers
 {
 	[Route("api/users")]
-	[EnableCors("AllowSpecificOrigin")]
+	[EnableCors(Security.CrossOriginRequestPolicy)]
 	public class UsersController : Controller
 	{
 		private readonly UserConnectionsService userConnectionsService;

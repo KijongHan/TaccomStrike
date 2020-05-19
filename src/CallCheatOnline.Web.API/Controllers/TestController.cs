@@ -12,7 +12,7 @@ using CallCheatOnline.Library.Utility.Security;
 namespace CallCheatOnline.Web.API.Controllers {
 	
 	[Route("api/test")]
-	[EnableCors("AllowSpecificOrigin")]
+	[EnableCors(Security.CrossOriginRequestPolicy)]
 	public class TestController : Controller {
 
 		[Route("authorized")]

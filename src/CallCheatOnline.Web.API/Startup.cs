@@ -33,7 +33,7 @@ namespace CallCheatOnline.Web.API
 		{
 			services.AddCors(options => 
 			{
-				options.AddPolicy("AllowSpecificOrigin",
+				options.AddPolicy(Security.CrossOriginRequestPolicy,
 					builder => builder
 					.WithOrigins(new string[] {ConfigurationManager.AppSettings["WebUIIPAddress"]})
 					.AllowAnyHeader()
@@ -74,7 +74,7 @@ namespace CallCheatOnline.Web.API
 		{
 			app.UseMiddleware<ExceptionLogMiddleware>();
 
-			app.UseCors("AllowSpecificOrigin");
+			app.UseCors(Security.CrossOriginRequestPolicy);
 			
 			app.UseAuthentication();
 

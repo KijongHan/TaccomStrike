@@ -20,7 +20,7 @@ namespace CallCheatOnline.Library.Data.DAL
 		public int CreateForumUser()
 		{
 			ForumUser user = new ForumUser();
-			user.WhenCreated = DateTime.Now;
+			user.WhenCreated = DateTime.UtcNow;
 			dbContext.ForumUser.Add(user);
 			dbContext.SaveChanges();
 			return user.ForumUserID;
@@ -31,7 +31,7 @@ namespace CallCheatOnline.Library.Data.DAL
 			return Task.Run(() => 
 			{
 				ForumUser user = new ForumUser();
-				user.WhenCreated = DateTime.Now;
+				user.WhenCreated = DateTime.UtcNow;
 				dbContext.ForumUser.Add(user);
 				dbContext.SaveChanges();
 				return user.ForumUserID;
